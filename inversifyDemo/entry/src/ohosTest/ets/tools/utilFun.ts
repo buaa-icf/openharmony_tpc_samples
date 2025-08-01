@@ -12,25 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Container, decorate, inject, injectable, multiInject, postConstruct } from 'inversify';
-import * as METADATA_KEY from 'inversify/lib/constants/metadata_keys';
-import { Metadata } from 'inversify/lib/planning/metadata';
 import * as ns from "reflect-metadata"
 ns
-export function VanillaJSWarrior1() {
-  const VanillaJSWarrior = function () {
-    // ...
-  };
-  VanillaJSWarrior.prototype.testMethod = function () {
-    // ..
-  };
-
-  decorate(postConstruct(), VanillaJSWarrior.prototype, 'testMethod');
-
-  const metadata: Metadata = Reflect.getMetadata(METADATA_KEY.POST_CONSTRUCT, VanillaJSWarrior);
-
-  return metadata.value
-}
 
 export function arrayConversion(Katana, Shuriken) {
 

@@ -12,42 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Container, injectable, METADATA_KEY } from 'inversify';
-
-export function metadataFun(){
-  class Katana { }
-
-  interface Weapon { }
-
-  @injectable()
-  @Reflect.metadata("design:paramtypes",[Katana,Object])
-  class Warrior {
-
-    private _primaryWeapon: Katana;
-    private _secondaryWeapon: Weapon;
-
-    public constructor(primaryWeapon: Katana, secondaryWeapon: Weapon) {
-      this._primaryWeapon = primaryWeapon;
-      this._secondaryWeapon = secondaryWeapon;
-    }
-
-    public debug() {
-      interface result1{
-        primaryWeapon: Katana;
-        secondaryWeapon: Weapon;
-      }
-      let results1:result1 = {
-        primaryWeapon: this._primaryWeapon,
-        secondaryWeapon: this._secondaryWeapon
-      };
-      return results1
-    }
-
-  }
-  let metadata2
-  return metadata2= Reflect.getMetadata(METADATA_KEY.PARAM_TYPES, Warrior);
-}
-
+import { Container, injectable } from 'inversify';
 
 export function ninjaFun(){
   @injectable()
@@ -65,7 +30,6 @@ export function ninjaFun(){
   }
 
   @injectable()
-  @Reflect.metadata("design:paramtypes",[Katana,Shuriken])
   class Ninja {
 
     public _katana: Katana;
@@ -104,7 +68,6 @@ export function tryGetNinjaFun() {
   }
 
   @injectable()
-  @Reflect.metadata("design:paramtypes",[Katana])
   class Ninja implements Ninja1 {
     public katana: Katana;
 
@@ -121,7 +84,7 @@ export function tryGetNinjaFun() {
   container.bind(Katana).toSelf();
 
   const tryGet = () => container.get(Ninja);
-  const ninja = container.resolve(Ninja);
+  const ninja = container.get(Ninja);
  return{tryGet,ninja,container,Ninja}
 
 }
@@ -138,7 +101,6 @@ export function ninjaContainerFun(){
 
   }
   @injectable()
-  @Reflect.metadata("design:paramtypes",[Katana])
   class Ninja implements Ninja1 {
     public katana: Katana;
     public constructor(katana: Katana) {
@@ -151,6 +113,6 @@ export function ninjaContainerFun(){
   container.bind(Katana).toSelf();
   container.bind(Ninja).toSelf();
 
-  const ninja = container.resolve(Ninja);
+  const ninja = container.get(Ninja);
   return ninja
 }

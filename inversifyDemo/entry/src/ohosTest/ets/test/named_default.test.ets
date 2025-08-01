@@ -14,8 +14,6 @@
  */
 import { Container, inject, injectable, named } from "inversify";
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
-import * as ns from "reflect-metadata"
-ns
 
 export default function named_defaultTest() {
   describe('named_defaultTest',  ()=> {
@@ -89,20 +87,23 @@ export default function named_defaultTest() {
         }
       }
 
-      const container = new Container();
-      container.bind<Warrior>(TYPES.Warrior).to(Ninja).whenTargetNamed(TAG.chinese);
-      container.bind<Warrior>(TYPES.Warrior).to(Samurai).whenTargetNamed(TAG.japanese);
-      container.bind<Weapon>(TYPES.Weapon).to(Shuriken).whenTargetNamed(TAG.throwable);
-      container.bind<Weapon>(TYPES.Weapon).to(Katana).whenTargetIsDefault();
+      const container: Container = new Container();
+      container.bind<Warrior>(TYPES.Warrior).to(Ninja).whenNamed(TAG.chinese);
+      container.bind<Warrior>(TYPES.Warrior).to(Samurai).whenNamed(TAG.japanese);
+      container.bind<Weapon>(TYPES.Weapon).to(Shuriken).whenNamed(TAG.throwable);
+      container.bind<Weapon>(TYPES.Weapon).to(Katana).whenDefault();
 
-      const ninja = container.getNamed<Warrior>(TYPES.Warrior, TAG.chinese);
-      const samurai = container.getNamed<Warrior>(TYPES.Warrior, TAG.japanese);
+      const ninja: Warrior = container.get<Warrior>(TYPES.Warrior, {
+        name: TAG.chinese,
+      });
+      const samurai: Warrior = container.get<Warrior>(TYPES.Warrior, {
+        name: TAG.japanese,
+      });
 
-      expect(ninja.name).to.eql("Ninja");
-      expect(ninja.weapon.name).to.eql("Shuriken");
-      expect(samurai.name).to.eql("Samurai");
-      expect(samurai.weapon.name).to.eql("Katana");
-
+      expect(ninja.name).to.eql('Ninja');
+      expect(ninja.weapon.name).to.eql('Shuriken');
+      expect(samurai.name).to.eql('Samurai');
+      expect(samurai.weapon.name).to.eql('Katana');
     });
 
     _it("Should_be_able_to_select_a_default_to_avoid_ambiguous_binding_exceptions", () => {
@@ -140,16 +141,21 @@ export default function named_defaultTest() {
         }
       }
 
-      const container = new Container();
-      container.bind<Weapon>(TYPES.Weapon).to(Shuriken).whenTargetNamed(TAG.throwable);
-      container.bind<Weapon>(TYPES.Weapon).to(Katana).inSingletonScope().whenTargetIsDefault();
+      const container: Container = new Container();
+      container.bind<Weapon>(TYPES.Weapon).to(Shuriken).whenNamed(TAG.throwable);
+      container
+        .bind<Weapon>(TYPES.Weapon)
+        .to(Katana)
+        .inSingletonScope()
+        .whenDefault();
 
-      const defaultWeapon = container.get<Weapon>(TYPES.Weapon);
-      const throwableWeapon = container.getNamed<Weapon>(TYPES.Weapon, TAG.throwable);
+      const defaultWeapon: Weapon = container.get<Weapon>(TYPES.Weapon);
+      const throwableWeapon: Weapon = container.get<Weapon>(TYPES.Weapon, {
+        name: TAG.throwable,
+      });
 
-      expect(defaultWeapon.name).eql("Katana");
-      expect(throwableWeapon.name).eql("Shuriken");
-
+      expect(defaultWeapon.name).eql('Katana');
+      expect(throwableWeapon.name).eql('Shuriken');
     });
   })
 }

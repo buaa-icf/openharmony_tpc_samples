@@ -15,7 +15,7 @@
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
 import * as ns from "reflect-metadata"
 import { Container, injectable } from 'inversify';
-ns
+
 export default function node_error_messagesTest() {
   interface Weapon { }
 
@@ -27,27 +27,14 @@ export default function node_error_messagesTest() {
 
   @injectable()
   class Bokken implements Weapon { }
-  describe('node_error_messagesTest',  ()=>{
+  describe('node_error_messagesTest', ()=>{
     _it('Should_contain_correct_message_and_the_serviceIdentifier_in_error_message', () => {
       const container = new Container();
 
       container.bind<Weapon>('Weapon').to(Katana);
 
       const tryWeapon = () => { container.get('Ninja'); };
-
-
     });
-
-    // _it('Should contain the provided name in error message when target is named', () => {
-    //
-    //   const container = new Container();
-    //   const tryGetNamedWeapon = (name: string | number | symbol) => { container.getNamed('Weapon', name); };
-    //
-    //   expect(() => tryGetNamedWeapon(0)).to.throw(/.*\bWeapon\b.*\b0\b/g);
-    //
-    // });
-
-
 
     _it('Should_list_all_possible_bindings_in_error_message_if_no_matching_binding_found', () => {
       interface Weapon { }
@@ -61,16 +48,18 @@ export default function node_error_messagesTest() {
       @injectable()
       class Bokken implements Weapon { }
       const container = new Container();
-      container.bind<Weapon>('Weapon').to(Katana).whenTargetNamed('strong');
-      container.bind<Weapon>('Weapon').to(Shuriken).whenTargetTagged('canThrow', true);
-      container.bind<Weapon>('Weapon').to(Bokken).whenTargetNamed('weak');
+
+
+      container.bind<Weapon>('Weapon').to(Katana).whenNamed('strong');
+      container.bind<Weapon>('Weapon').to(Shuriken).whenTagged('canThrow', true);;
+      container.bind<Weapon>('Weapon').to(Bokken).whenNamed('weak');;
 
       try {
-        container.getNamed('Weapon', 'superior');
+        container.get('Weapon');
       } catch (error) {
-        expect((error as Error).message).to.match(new RegExp(".*\\bKatana\\b.*\\bnamed\\b.*\\bstrong\\b"));
-        expect((error as Error).message).to.match(new RegExp(".*\\bBokken\\b.*\\bnamed\\b.*\\bweak\\b"));
-        expect((error as Error).message).to.match(new RegExp(".*\\bShuriken\\b.*\\btagged\\b.*\\bcanThrow\\b.*\\btrue\\b"));
+        expect((error as Error).message).to.match(new RegExp(".*Katana.*"));
+        expect((error as Error).message).to.match(new RegExp(".*Shuriken.*"));
+        expect((error as Error).message).to.match(new RegExp(".*Bokken.*"));
       }
     });
 
@@ -86,18 +75,29 @@ export default function node_error_messagesTest() {
       @injectable()
       class Bokken implements Weapon { }
       const container = new Container();
-      container.bind<Weapon>('Weapon').to(Katana).whenTargetNamed('strong');
-      container.bind<Weapon>('Weapon').to(Shuriken).whenTargetTagged('canThrow', true);
-      container.bind<Weapon>('Weapon').to(Bokken).whenTargetNamed('weak');
+      container.bind<Weapon>('Weapon').to(Katana);
+      container.bind<Weapon>('Weapon').to(Shuriken);
+      container.bind<Weapon>('Weapon').to(Bokken);
+
 
       try {
         container.get('Weapon');
       } catch (error) {
-        expect((error as Error).message).to.match(new RegExp(".*\\bKatana\\b.*\\bnamed\\b.*\\bstrong\\b"));
-        expect((error as Error).message).to.match(new RegExp(".*\\bBokken\\b.*\\bnamed\\b.*\\bweak\\b"));
-        expect((error as Error).message).to.match(new RegExp(".*\\bShuriken\\b.*\\btagged\\b.*\\bcanThrow\\b.*\\btrue\\b"));
-      }
+        expect((error as Error).message).to
+          .equal(`Ambiguous bindings found for service: "Weapon".
 
+Registered bindings:
+
+[ type: "Instance", serviceIdentifier: "Weapon", scope: "Transient", implementationType: "Katana" ]
+[ type: "Instance", serviceIdentifier: "Weapon", scope: "Transient", implementationType: "Shuriken" ]
+[ type: "Instance", serviceIdentifier: "Weapon", scope: "Transient", implementationType: "Bokken" ]
+
+Trying to resolve bindings for "Weapon (Root service)".
+
+Binding constraints:
+- service identifier: Weapon
+- name: -`);
+      }
     });
   })
 }

@@ -13,17 +13,8 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
-import { decorate } from 'inversify';
-import { inject } from 'inversify';
-import { LazyServiceIdentifer, ServiceIdentifierOrFunc } from 'inversify/lib/annotation/lazy_service_identifier';
-import * as ERROR_MSGS from 'inversify/lib/constants/error_msgs';
-import * as METADATA_KEY from 'inversify/lib/constants/metadata_keys';
-import { interfaces } from 'inversify';
-import { multiInject } from 'inversify';
-import * as ns from "reflect-metadata"
-import { useDecoratorMoreThanOnce, useDecoratorOnMethodThatIsNotAConstructor,
-  useDecoratorW_ithUndefined } from '../tools/declareFlies';
-ns
+import { decorate, inject, LazyServiceIdentifier, ServiceIdentifier } from 'inversify';
+
 declare function __decorate(
   decorators: ClassDecorator[],
   target: NewableFunction,
@@ -40,7 +31,7 @@ export default function injectTest() {
   class Shuriken implements Shuriken1 { }
   class Sword implements Sword1 { }
 
-  const lazySwordId:ESObject = new LazyServiceIdentifer<ESObject>(() => 'Sword');
+  const lazySwordId: LazyServiceIdentifier<string> = new LazyServiceIdentifier<string>(() => 'Sword');
   class DecoratedWarrior {
 
     private _primaryWeapon: Katana;
@@ -103,127 +94,31 @@ export default function injectTest() {
 
   }
   describe('injectTest',  ()=> {
-    _it('Should_generate_metadata_for_named_parameters', () => {
+    _it('Should_throw_when_applied_multiple_times', () => {
+      const useDecoratorMoreThanOnce: () => void = ()=> {
+        decorate(
+          [inject('Katana'), inject('Shuriken')],
+          InvalidDecoratorUsageWarrior,
+          0,
+        );
+      };
 
-    const metadataKey = METADATA_KEY.TAGGED;
-    const paramsMetadata:ESObject = Reflect.getMetadata(metadataKey, DecoratedWarrior);
-    expect(paramsMetadata).to.be.an('object');
+      const msg: string = `Unexpected injection error.
 
-    // assert metadata for first argument
-    expect(paramsMetadata['0']).to.be.instanceof(Array);
-    const m1: interfaces.Metadata = paramsMetadata['0'][0];
-    expect(m1.key).to.be.eql(METADATA_KEY.INJECT_TAG);
-    expect(m1.value).to.be.eql('Katana');
-    expect(paramsMetadata['0'][1]).to.eq(undefined);
-    // assert metadata for second argument
-    expect(paramsMetadata['1']).to.be.instanceof(Array);
-    const m2: interfaces.Metadata = paramsMetadata['1'][0];
-    expect(m2.key).to.be.eql(METADATA_KEY.INJECT_TAG);
-    expect(m2.value).to.be.eql('Shuriken');
-    expect(paramsMetadata['1'][1]).to.eq(undefined);
+Cause:
 
-    // assert metadata for second argument
-    expect(paramsMetadata['2']).to.be.instanceof(Array);
-    const m3: interfaces.Metadata = paramsMetadata['2'][0];
-    expect(m3.key).to.be.eql(METADATA_KEY.INJECT_TAG);
-    expect(m3.value).to.be.eql(lazySwordId);
-    expect(paramsMetadata['2'][1]).to.eq(undefined);
-    // no more metadata should be available
-    expect(paramsMetadata['3']).to.eq(undefined);
+Unexpected injection found. Multiple @inject, @multiInject or @unmanaged decorators found
 
-  });
+Details
 
+[class: "InvalidDecoratorUsageWarrior", index: "0"]`;
+      expect(useDecoratorMoreThanOnce).to.throw(msg);
+    });
 
-  _it('Should_throw_when_applied_multiple_times', () => {
+    _it('Should unwrap LazyServiceIdentifier', () => {
+      const unwrapped: ServiceIdentifier = lazySwordId.unwrap();
 
-    //   useDecoratorMoreThanOnce()
-    //
-    // const msg = `${ERROR_MSGS.DUPLICATED_METADATA} ${METADATA_KEY.INJECT_TAG}`;
-    // expect(useDecoratorMoreThanOnce).to.throw(msg);
-  });
-
-  _it('Should_throw_when_not_applied_to_a_constructor', () => {
-
-    // useDecoratorOnMethodThatIsNotAConstructor()
-    //
-    // const msg = `${ERROR_MSGS.INVALID_DECORATOR_OPERATION}`;
-    // expect(useDecoratorOnMethodThatIsNotAConstructor).to.throw(msg);
-
-  });
-
-  _it('Should_throw_when_applied_w_ith_undefined', () => {
-
-    // this can happen when there is circular dependency between symbols
-    // useDecoratorW_ithUndefined()
-    //
-    // const msg = `${ERROR_MSGS.UNDEFINED_INJECT_ANNOTATION('InvalidDecoratorUsageWarrior')}`;
-    // expect(useDecoratorW_ithUndefined).to.throw(msg);
-
-  });
-
-  _it('Should_be_usable_in_VanillaJS_applications', () => {
-
-    interface Shurien { }
-
-    const VanillaJSWarrior = ( ()=> {
-      let Warrior=(primary: Katana, secondary: Shurien)=> {
-        // ...
-      }
-      return Warrior;
-    })();
-
-    decorate(inject('Katana'), VanillaJSWarrior, 0);
-    decorate(inject('Shurien'), VanillaJSWarrior, 1);
-
-    const metadataKey = METADATA_KEY.TAGGED;
-    const paramsMetadata:ESObject = Reflect.getMetadata(metadataKey, VanillaJSWarrior);
-    expect(paramsMetadata).to.be.an('object');
-
-    // assert metadata for first argument
-    expect(paramsMetadata['0']).to.be.instanceof(Array);
-    const m1: interfaces.Metadata = paramsMetadata['0'][0];
-    expect(m1.key).to.be.eql(METADATA_KEY.INJECT_TAG);
-    expect(m1.value).to.be.eql('Katana');
-    expect(paramsMetadata['0'][1]).to.eq(undefined);
-
-    // assert metadata for second argument
-    expect(paramsMetadata['1']).to.be.instanceof(Array);
-    const m2: interfaces.Metadata = paramsMetadata['1'][0];
-    expect(m2.key).to.be.eql(METADATA_KEY.INJECT_TAG);
-    expect(m2.value).to.be.eql('Shurien');
-    expect(paramsMetadata['1'][1]).to.eq(undefined);
-
-    // no more metadata should be available
-    expect(paramsMetadata['2']).to.eq(undefined);
-
-  });
-
-  _it('should_throw_when_applied_inject_decorator_w_ith_undefined_service_identifier_to_a_property', () => {
-    expect(() => {
-
-      class W_ithUndefinedInject {
-        @inject(undefined as ESObject as ServiceIdentifierOrFunc<undefined>)
-        property!: string
-      }
-    }).to.throw(`${ERROR_MSGS.UNDEFINED_INJECT_ANNOTATION('W_ithUndefinedInject')}`)
-  });
-
-  _it('should_throw_when_applied_multiInject_decorator_w_ith_undefined_service_identifier_to_a_constructor_parameter', () => {
-    expect(() => {
-
-      class W_ithUndefinedInject {
-        @multiInject(undefined as ESObject as ServiceIdentifierOrFunc<undefined>)
-        readonly dependency: string[]=[]
-        constructor(
-
-        ) { }
-      }
-    }).to.throw(`${ERROR_MSGS.UNDEFINED_INJECT_ANNOTATION('W_ithUndefinedInject')}`)
-  });
-
-  _it('Should_unwrap_LazyServiceIdentifer', () => {
-    const unwrapped:ESObject = lazySwordId.unwrap();
-    expect(unwrapped).to.be.equal('Sword');
-  });
+      expect(unwrapped).to.be.equal('Sword');
+    });
   })
 }

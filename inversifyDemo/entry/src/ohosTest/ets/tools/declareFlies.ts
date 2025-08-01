@@ -12,8 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { inject, LazyServiceIdentifer } from 'inversify';
-import { ServiceIdentifierOrFunc } from 'inversify/lib/annotation/lazy_service_identifier';
+import { inject } from 'inversify';
 
 declare function __decorate(
   decorators: ClassDecorator[],
@@ -31,7 +30,6 @@ class Katana implements Katana1 { }
 class Shuriken implements Shuriken1 { }
 class Sword implements Sword1 { }
 
-const lazySwordId:ESObject = new LazyServiceIdentifer<ESObject>(() => 'Sword');
 class DecoratedWarrior {
 
   private _primaryWeapon: Katana;
@@ -41,11 +39,9 @@ class DecoratedWarrior {
   public constructor(
     @inject('Katana') primary: Katana,
     @inject('Shuriken') secondary: Shuriken,
-    @inject(lazySwordId) tertiary: Shuriken
   ) {
     this._primaryWeapon = primary;
     this._secondaryWeapon = secondary;
-    this._tertiaryWeapon = tertiary ;
   }
 
   public debug() {
@@ -104,10 +100,5 @@ export function useDecoratorOnMethodThatIsNotAConstructor() {
   __decorate([__param(0, inject('Katana'))],
     InvalidDecoratorUsageWarrior.prototype as ESObject as NewableFunction,
     'test', Object.getOwnPropertyDescriptor(InvalidDecoratorUsageWarrior.prototype, 'test'));
-
-}
-
-export function useDecoratorW_ithUndefined() {
-  __decorate([__param(0, inject(undefined as ESObject as ServiceIdentifierOrFunc<ESObject>))], InvalidDecoratorUsageWarrior);
 
 }

@@ -12,27 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Container, inject, injectable } from 'inversify';
-
-export function throwableWeapon() {
-  const throwableWeapon = Symbol('throwable');
-  interface Weapon { }
-  @injectable()
-  class Shuriken implements Weapon { }
-  @injectable()
-  class Ninja {
-    @inject('Weapon')
-    [throwableWeapon]: Weapon
-  }
-  const container = new Container();
-  container.bind('Weapon').to(Shuriken).when(request => {
-    return request.target.name.equals('throwable');
-  })
-  const myNinja = container.resolve(Ninja);
-  const weapon = myNinja[throwableWeapon];
-  return weapon
-}
-
 
 export function symbolFor(str) {
   return Symbol.for(str)

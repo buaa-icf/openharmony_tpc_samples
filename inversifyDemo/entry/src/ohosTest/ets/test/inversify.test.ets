@@ -13,23 +13,13 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
-import * as ERROR_MSGS from 'inversify/lib/constants/error_msgs';
-import { interfaces } from 'inversify';
-import {  arrayConversion } from '../tools/utilFun';
-import { Container, ContainerModule, decorate, inject, injectable, LazyServiceIdentifer, multiInject, named, tagged, targetName, typeConstraint, unmanaged } from 'inversify';
-import * as ns from "reflect-metadata"
-import {
-  SYMBOL,
-  invertPrototype,
-  SYMBOLSSymbol2,
-  SYMBOLSSymbol4, TYPESSymbol2, TYPESSymbol3, TYPESSymbol4 } from '../tools/tools';
+import { Container, ContainerModule, ContainerModuleLoadOptions, decorate, Factory, inject, injectable,
+  BindingConstraints, multiInject, named, Newable, ResolutionContext, tagged, unmanaged } from 'inversify';
+import {SYMBOL, SYMBOLSSymbol2, TYPESSymbol2, TYPESSymbol3 } from '../tools/tools';
 import {
   symbolFor,
    } from '../tools/symbol';
-import { ninjaFun } from '../tools/reflectMetadata';
 
-
-ns
 export default function inversifyTest() {
   describe('inversifyTest',  ()=> {
 
@@ -139,16 +129,16 @@ export default function inversifyTest() {
 
     _it('Should_be_able_to_resolve_and_inject_dependencies_in_VanillaJS', () => {
       interface  typs{
+        Blowgun: string;
         Katana: string;
         Ninja: string;
         Shuriken: string;
-        Blowgun: string;
       }
       const TYPES:typs = {
+        Blowgun: 'Blowgun',
         Katana: 'Katana',
         Ninja: 'Ninja',
         Shuriken: 'Shuriken',
-        Blowgun: 'Blowgun'
       };
 
       class Blowgun {
@@ -170,7 +160,6 @@ export default function inversifyTest() {
       }
 
       class Ninja {
-
         public _katana: Katana;
         public _shuriken: Shuriken;
         public _blowgun!: Blowgun;
@@ -179,6 +168,7 @@ export default function inversifyTest() {
           this._katana = katana;
           this._shuriken = shuriken;
         }
+
         public fight():string { return this._katana.h_it(); }
         public sneak():string { return this._shuriken.throw(); }
         public poisonDart(): string { return this._blowgun.blow(); }
@@ -187,71 +177,70 @@ export default function inversifyTest() {
           this._blowgun = blowgun;
         }
       }
-      let Prototype:ESObject=invertPrototype(Ninja)
-      decorate(injectable(), Katana);
-      decorate(injectable(), Shuriken);
-      decorate(injectable(), Ninja);
-      decorate(injectable(), Blowgun);
-      decorate(inject(TYPES.Katana), Ninja, 0);
-      decorate(inject(TYPES.Shuriken), Ninja, 1);
-      decorate(inject(TYPES.Blowgun), Prototype, 'blowgun');
 
-      const container = new Container();
+      decorate([injectable()], Katana);
+      decorate([injectable()], Shuriken);
+      decorate([injectable()], Ninja);
+      decorate([injectable()], Blowgun);
+      decorate([inject(TYPES.Katana)], Ninja, 0);
+      decorate([inject(TYPES.Shuriken)], Ninja, 1);
+      decorate([inject(TYPES.Blowgun)], Ninja, 'blowgun');
+
+      const container: Container = new Container();
       container.bind<Ninja>(TYPES.Ninja).to(Ninja);
       container.bind<Katana>(TYPES.Katana).to(Katana);
       container.bind<Shuriken>(TYPES.Shuriken).to(Shuriken);
       container.bind<Blowgun>(TYPES.Blowgun).to(Blowgun);
 
-      const ninja = container.get<Ninja>(TYPES.Ninja);
+      const ninja: Ninja = container.get(TYPES.Ninja);
 
       expect(ninja.fight()).eql('cut!');
       expect(ninja.sneak()).eql('hit!');
       expect(ninja.poisonDart()).eql('poison!');
-
     });
 
     _it('Should_be_able_to_use_classes_as_runtime_identifiers', () => {
+      @injectable()
+      class Katana {
+        public hit() {
+          return 'cut!';
+        }
+      }
 
-      // @injectable()
-      // class Katana {
-      //   public h_it() {
-      //     return 'cut!';
-      //   }
-      // }
-      //
-      // @injectable()
-      // class Shuriken {
-      //   public throw() {
-      //     return 'hit!';
-      //   }
-      // }
-      //
-      // @injectable()
-      // @Reflect.metadata("design:paramtypes",[Katana,Shuriken])
-      // class Ninja {
-      //
-      //   private _katana: Katana;
-      //   private _shuriken: Shuriken;
-      //
-      //   public constructor(katana: Katana, shuriken: Shuriken) {
-      //     this._katana = katana;
-      //     this._shuriken = shuriken;
-      //   }
-      //
-      //   public fight():string { return this._katana.h_it(); }
-      //   public sneak():string { return this._shuriken.throw(); }
-      //
-      // }
-      //
-      // const container = new Container();
-      // container.bind<Ninja>(Ninja).to(Ninja);
-      // container.bind<Katana>(Katana).to(Katana);
-      // container.bind<Shuriken>(Shuriken).to(Shuriken);
-      //
-      const ninja:ESObject= ninjaFun()
+      @injectable()
+      class Shuriken {
+        public throw() {
+          return 'hit!';
+        }
+      }
+
+      @injectable()
+      class Ninja {
+        private readonly _katana: Katana;
+        private readonly _shuriken: Shuriken;
+
+        constructor(katana: Katana, shuriken: Shuriken) {
+          this._katana = katana;
+          this._shuriken = shuriken;
+        }
+
+        public fight(): string{
+          return this._katana.hit();
+        }
+        public sneak(): string{
+          return this._shuriken.throw();
+        }
+      }
+
+      const container: Container = new Container();
+      container.bind<Ninja>(Ninja).to(Ninja);
+      container.bind<Katana>(Katana).to(Katana);
+      container.bind<Shuriken>(Shuriken).to(Shuriken);
+
+      const ninja: Ninja = container.get<Ninja>(Ninja);
+
       expect(ninja.fight()).eql('cut!');
       expect(ninja.sneak()).eql('hit!');
-
     });
 
     _it('Should_be_able_to_use_Symbols_as_runtime_identifiers', () => {
@@ -316,66 +305,68 @@ export default function inversifyTest() {
 
     });
 
-    _it('Should_be_able_to_wrap_Symbols_with_LazyServiceIdentifer', () => {
-
+    _it('Should_be_able_to_wrap_Symbols_with_LazyServiceIdentifier', () => {
       interface Ninja3 {
         fight(): string;
         sneak(): string;
       }
 
-      interface Katana3 {
-        h_it(): string;
-      }
-
-      interface Shuriken3 {
-        throw(): string;
+      interface TypeType {
+        Katana: string;
+        Ninja: string;
+        Shuriken: string;
       }
 
       @injectable()
-      class Katana implements Katana3 {
-        public h_it() {
+      class Katana {
+        public hit() {
           return 'cut!';
         }
       }
 
       @injectable()
-      class Shuriken implements Shuriken3 {
+      class Shuriken {
         public throw() {
           return 'hit!';
         }
       }
 
-      const TYPES = TYPESSymbol3()
+      const TYPES :TypeType = {
+        Katana: 'Katana',
+        Ninja: 'Ninja',
+        Shuriken: 'Shuriken',
+      };
 
       @injectable()
       class Ninja implements Ninja3 {
+        private readonly _katana: Katana;
+        private readonly _shuriken: Shuriken;
 
-        private _katana: Katana;
-        private _shuriken: Shuriken;
-
-        public constructor(
-          @inject(new LazyServiceIdentifer<string>(() => TYPES.Katana)) katana: Katana,
-          @inject(new LazyServiceIdentifer<string>(() => TYPES.Shuriken)) shuriken: Shuriken
+        constructor(
+          @inject('Katana') katana: Katana,
+          @inject('Shuriken') shuriken: Shuriken,
         ) {
           this._katana = katana;
           this._shuriken = shuriken;
         }
 
-        public fight():string { return this._katana.h_it(); }
-        public sneak():string{ return this._shuriken.throw(); }
-
+        public fight():string {
+          return this._katana.hit();
+        }
+        public sneak():string {
+          return this._shuriken.throw();
+        }
       }
 
-      const container = new Container();
+      const container: Container = new Container();
       container.bind<Ninja>(TYPES.Ninja).to(Ninja);
       container.bind<Katana>(TYPES.Katana).to(Katana);
       container.bind<Shuriken>(TYPES.Shuriken).to(Shuriken);
 
-      const ninja = container.get<Ninja>(TYPES.Ninja);
+      const ninja: Ninja = container.get<Ninja>(TYPES.Ninja);
 
       expect(ninja.fight()).eql('cut!');
       expect(ninja.sneak()).eql('hit!');
-
     });
 
     _it('Should_support_Container_modules', () => {
@@ -423,14 +414,16 @@ export default function inversifyTest() {
 
       }
 
-      const warriors = new ContainerModule((bind: interfaces.Bind) => {
-        bind<Ninja>('Ninja').to(Ninja);
+      const warriors = new ContainerModule((options: ContainerModuleLoadOptions) => {
+        options.bind<Ninja>('Ninja').to(Ninja);
       });
 
-      const weapons = new ContainerModule((bind: interfaces.Bind) => {
-        bind<Katana>('Katana').to(Katana);
-        bind<Shuriken>('Shuriken').to(Shuriken);
-      });
+      const weapons = new ContainerModule(
+        (options: ContainerModuleLoadOptions) => {
+          options.bind<Katana>('Katana').to(Katana);
+          options.bind<Shuriken>('Shuriken').to(Shuriken);
+        },
+      );
 
       const container = new Container();
 
@@ -598,7 +591,7 @@ export default function inversifyTest() {
 
       const container = new Container();
       container.bind<UseDate1>('UseDate').to(UseDate);
-      container.bind<Date>('Date').toDynamicValue((context: interfaces.Context) => new Date());
+      container.bind<Date>('Date').toDynamicValue((context: ResolutionContext) => new Date());
 
       const subject1 = container.get<UseDate1>('UseDate');
       const subject2 = container.get<UseDate1>('UseDate');
@@ -661,8 +654,8 @@ export default function inversifyTest() {
         public shortDistanceWeaponFactory: ShortDistanceWeaponFactory;
         public longDistanceWeapon: LongDistanceWeapon;
         public constructor(
-          @inject(shortDistanceWeaponFactoryId) @targetName('katana') shortDistanceWeaponFactory: ShortDistanceWeaponFactory,
-          @inject(longDistanceWeaponId) @targetName('shuriken') longDistanceWeapon: LongDistanceWeapon
+          @inject(shortDistanceWeaponFactoryId) shortDistanceWeaponFactory: ShortDistanceWeaponFactory,
+          @inject(longDistanceWeaponId) longDistanceWeapon: LongDistanceWeapon
         ) {
           this.shortDistanceWeaponFactory = shortDistanceWeaponFactory;
           this.longDistanceWeapon = longDistanceWeapon;
@@ -677,7 +670,7 @@ export default function inversifyTest() {
         return new Katana(new KatanaHandler(), new KatanaBlade());
       };
 
-      container.bind<ShortDistanceWeaponFactory>(shortDistanceWeaponFactoryId).toFunction(katanaFactory); // IMPORTANT!
+      container.bind<ShortDistanceWeaponFactory>(shortDistanceWeaponFactoryId).toConstantValue(katanaFactory); // IMPORTANT!
       const ninja = container.get<Ninja>(ninjaId);
 
       expect(ninja instanceof Ninja).eql(true);
@@ -708,7 +701,7 @@ export default function inversifyTest() {
         private _katana: Katana1;
 
         public constructor(
-          @inject('Newable<Katana>') katana: interfaces.Newable<Katana1>
+          @inject('Newable<Katana>') katana: Newable<Katana1>
         ) {
           this._katana = new katana();
         }
@@ -718,7 +711,7 @@ export default function inversifyTest() {
 
       const container = new Container();
       container.bind<Ninja>('Ninja').to(Ninja);
-      container.bind<interfaces.Newable<Katana1>>('Newable<Katana>').toConstructor<Katana1>(Katana);
+      container.bind<Newable<Katana1>>('Newable<Katana>').toConstantValue(Katana);
 
       const ninja = container.get<Ninja>('Ninja');
 
@@ -778,9 +771,9 @@ export default function inversifyTest() {
       container.bind<Ninja>('Ninja').to(NinjaWithUserDefinedFactory);
       container.bind<Shuriken>('Shuriken').to(Shuriken);
       container.bind<Katana>('Katana').to(Katana);
-      container.bind<interfaces.Factory<Katana>>('Factory<Katana>').toFactory<Katana>((context) =>
-      () =>
-      context.container.get<Katana>('Katana'));
+      container.bind<Factory<Katana>>('Factory<Katana>').toFactory(
+        (context: ResolutionContext) => () => context.get<Katana>('Katana'),
+      );
 
       const ninja = container.get<Ninja>('Ninja');
 
@@ -822,7 +815,7 @@ export default function inversifyTest() {
 
         public constructor(
           @inject('Factory<Weapon>') weaponFactory: (throwable: boolean) => Weapon
-        ) {
+        ) {``
           this._katana = weaponFactory(false);
           this._shuriken = weaponFactory(true);
         }
@@ -834,12 +827,18 @@ export default function inversifyTest() {
 
       const container = new Container();
       container.bind<Ninja>('Ninja').to(NinjaWithUserDefinedFactory);
-      container.bind<Weapon>('Weapon').to(Shuriken).whenTargetTagged('throwable', true);
-      container.bind<Weapon>('Weapon').to(Katana).whenTargetTagged('throwable', false);
+      container.bind<Weapon>('Weapon').to(Shuriken).whenTagged('throwable', true);
+      container.bind<Weapon>('Weapon').to(Katana).whenTagged('throwable', false);
 
-      container.bind<interfaces.Factory<Weapon>>('Factory<Weapon>').toFactory<Weapon, [boolean]>((context) =>
-      (throwable: boolean) =>
-      context.container.getTagged<Weapon>('Weapon', 'throwable', throwable));
+      container.bind<Factory<Weapon>>('Factory<Weapon>').toFactory(
+        (context: ResolutionContext) => (throwable: boolean) =>
+        context.get<Weapon>('Weapon', {
+          tag: {
+            key: 'throwable',
+            value: throwable,
+          },
+        }),
+      );
 
       const ninja = container.get<Ninja>('Ninja');
 
@@ -914,15 +913,18 @@ export default function inversifyTest() {
       const container = new Container();
       container.bind<SparkPlugs>('SparkPlugs').to(SparkPlugs);
       container.bind<InjectorPump>('InjectorPump').to(InjectorPump);
-      container.bind<Engine>('Engine').to(PetrolEngine).whenTargetNamed('petrol');
-      container.bind<Engine>('Engine').to(DieselEngine).whenTargetNamed('diesel');
+      container.bind<Engine>('Engine').to(PetrolEngine).whenNamed('petrol');
+      container.bind<Engine>('Engine').to(DieselEngine).whenNamed('diesel');
 
-      container.bind<interfaces.Factory<Engine>>('Factory<Engine>').toFactory<Engine, [string], [number]>((context: interfaces.Context) =>
-      (theNamed: string) => (displacement: number) => {
-        const theEngine = context.container.getNamed<Engine>('Engine', theNamed);
-        theEngine.displacement = displacement;
-        return theEngine;
-      });
+      container.bind<Factory<(displacement: number) => Engine>>('Factory<Engine>').toFactory((context: ResolutionContext) =>
+        (theNamed: string) => (displacement: number) => {
+          const theEngine: Engine = context.get<Engine>('Engine', {
+            name: theNamed,
+          });
+          theEngine.displacement = displacement;
+          return theEngine;
+        },
+      );
 
       container.bind<CarFactory>('DieselCarFactory').to(DieselCarFactory);
 
@@ -986,70 +988,9 @@ export default function inversifyTest() {
       container.bind<Ninja>('Ninja').to(NinjaWithAutoFactory);
       container.bind<Shuriken>('Shuriken').to(Shuriken);
       container.bind<Katana>('Katana').to(Katana);
-      container.bind<interfaces.Factory<Katana>>('Factory<Katana>').toAutoFactory<Katana>('Katana');
-
-      const ninja = container.get<Ninja>('Ninja');
-
-      expect(ninja.fight()).eql('cut!');
-      expect(ninja.sneak()).eql('hit!');
-
-    });
-
-    _it('Should_support_the_injection_of_auto_named_factories', () => {
-
-      interface Ninja {
-        fight(): string;
-        sneak(): string;
-      }
-      interface Weapon { }
-
-      interface Katana1 extends Weapon {
-        h_it(): string;
-      }
-
-      interface Shuriken1 extends Weapon {
-        throw(): string;
-      }
-
-      @injectable()
-      class Katana implements Katana1 {
-        public h_it() {
-          return 'cut!';
-        }
-      }
-
-      @injectable()
-      class Shuriken implements Shuriken1 {
-        public throw() {
-          return 'hit!';
-        }
-      }
-
-      @injectable()
-      class NinjaWithAutoNamedFactory implements Ninja {
-
-        private _katana: Katana;
-        private _shuriken: Shuriken;
-
-        public constructor(
-          @inject('Factory<Weapon>') weaponFactory: <TWeapon extends Weapon = Weapon>(named: string) => TWeapon
-        ) {
-          this._katana = weaponFactory<Katana>('katana');
-          this._shuriken = weaponFactory<Shuriken>('shuriken');
-        }
-
-        public fight():string { return this._katana.h_it(); }
-        public sneak():string { return this._shuriken.throw(); }
-
-      }
-
-      const container = new Container();
-      container.bind<Ninja>('Ninja').to(NinjaWithAutoNamedFactory);
-      container.bind<Shuriken>('Shuriken').to(Shuriken);
-      container.bind<Katana>('Katana').to(Katana);
-      container.bind<Weapon>('Weapon').to(Katana).whenTargetNamed('katana');
-      container.bind<Weapon>('Weapon').to(Shuriken).whenTargetNamed('shuriken');
-      container.bind<interfaces.Factory<Weapon>>('Factory<Weapon>').toAutoNamedFactory<Weapon>('Weapon');
+      container.bind<Factory<Katana>>('Factory<Katana>').toFactory(
+        (context: ResolutionContext) => () => context.get<Katana>('Katana'),
+      );
 
       const ninja = container.get<Ninja>('Ninja');
 
@@ -1097,12 +1038,13 @@ export default function inversifyTest() {
       container.bind<Ninja>('Ninja').to(NinjaWithProvider);
       container.bind<Katana>('Katana').to(Katana);
 
-      container.bind<KatanaProvider>('Provider<Katana>').toProvider<Katana>((context: interfaces.Context) =>
-      () =>
-      new Promise<Katana>((resolve) => {
-        const katana = context.container.get<Katana>('Katana');
-        resolve(katana);
-      }));
+      container.bind<KatanaProvider>('Provider<Katana>').toProvider(
+        (context: ResolutionContext) => () =>
+          new Promise<Katana>((resolve) => {
+            const katana = context.get<Katana>('Katana');
+            resolve(katana);
+          })
+      );
 
       const ninja = container.get<Ninja>('Ninja');
 
@@ -1115,6 +1057,7 @@ export default function inversifyTest() {
         .catch(( ) => { /* do nothing */ });
 
     });
+
     _it('Should_support_the_injection_of_multiple_values', () => {
 
       const warriorId = 'Warrior';
@@ -1169,51 +1112,35 @@ export default function inversifyTest() {
     });
 
     _it('Should_support_the_injection_of_multiple_values_with_nested_inject', () => {
-
-      interface Ninja1 {
-        fight(): string;
-        sneak(): string;
-      }
-
-      interface Katana1 {
-        h_it(): string;
-      }
-
-      interface Shuriken1 {
-        throw(): string;
-      }
-
       @injectable()
-      class Katana implements Katana1 {
-        public h_it() {
+      class Katana {
+        public hit() {
           return 'cut!';
         }
       }
 
       @injectable()
-      class Shuriken implements Shuriken1 {
+      class Shuriken {
         public throw() {
           return 'hit!';
         }
       }
 
       @injectable()
-      class Ninja implements Ninja1 {
+      class Ninja {
+        private readonly _katana: Katana;
+        private readonly _shuriken: Shuriken;
 
-        private _katana: Katana;
-        private _shuriken: Shuriken;
-
-        public constructor(
+        constructor(
           @inject('Katana') katana: Katana,
-          @inject('Shuriken') shuriken: Shuriken
+          @inject('Shuriken') shuriken: Shuriken,
         ) {
           this._katana = katana;
           this._shuriken = shuriken;
         }
 
-        public fight():string { return this._katana.h_it(); }
-        public sneak():string  { return this._shuriken.throw(); }
-
+        public fight() : string{return this._katana.hit();}
+        public sneak() : string{return this._shuriken.throw();}
       }
 
       interface School {
@@ -1226,28 +1153,25 @@ export default function inversifyTest() {
         public ninjaMaster: Ninja;
         public student: Ninja;
 
-        public constructor(
-          @multiInject('Ninja') ninja: Ninja[]
-        ) {
+        constructor(@multiInject('Ninja') ninja: Ninja[]) {
           this.ninjaMaster = ninja[0] as Ninja;
           this.student = ninja[1] as Ninja;
         }
       }
 
-      const container = new Container();
+      const container: Container = new Container();
       container.bind<Katana>('Katana').to(Katana);
       container.bind<Shuriken>('Shuriken').to(Shuriken);
       container.bind<Ninja>('Ninja').to(Ninja);
       container.bind<Ninja>('Ninja').to(Ninja);
       container.bind<School>('School').to(NinjaSchool);
 
-      const ninjaSchool = container.get<School>('School');
+      const ninjaSchool: School = container.get<School>('School');
       expect(ninjaSchool.ninjaMaster.fight()).eql('cut!');
       expect(ninjaSchool.ninjaMaster.sneak()).eql('hit!');
 
       expect(ninjaSchool.student.fight()).eql('cut!');
       expect(ninjaSchool.student.sneak()).eql('hit!');
-
     });
 
     _it('Should_support_the_injection_of_multiple_values_with_nested_multiInject', () => {
@@ -1360,7 +1284,6 @@ export default function inversifyTest() {
 
     });
 
-
     _it('Should_support_the_injection_of_multiple_values_when_using_classes_as_keys', () => {
 
       @injectable()
@@ -1413,11 +1336,10 @@ export default function inversifyTest() {
 
     });
 
-    _it('Should_support_the_injection_of_multiple_values_with_nested_inject', () => {
-
+    _it('Should_support_the_injection_of_multiple_values_with_nested_inject_', () => {
       @injectable()
       class Katana {
-        public h_it() {
+        public hit() {
           return 'cut!';
         }
       }
@@ -1430,60 +1352,49 @@ export default function inversifyTest() {
       }
 
       @injectable()
-      @Reflect.metadata("design:paramtypes",arrayConversion(Katana,Shuriken))
       class Ninja {
+        private readonly _katana: Katana;
+        private readonly _shuriken: Shuriken;
 
-        private _katana: Katana;
-        private _shuriken: Shuriken;
-
-        public constructor(
-          katana: Katana,
-          shuriken: Shuriken
-        ) {
+        constructor(katana: Katana, shuriken: Shuriken) {
           this._katana = katana;
           this._shuriken = shuriken;
         }
 
-        public fight():string { return this._katana.h_it(); }
-        public sneak():string { return this._shuriken.throw(); }
-
+        public fight() :string {return this._katana.hit();}
+        public sneak() :string {return this._shuriken.throw();}
       }
 
       @injectable()
-      @Reflect.metadata("design:paramtypes",Ninja)
       class NinjaSchool {
         public ninjaMaster: Ninja;
         public student: Ninja;
 
-        public constructor(
-          @multiInject(Ninja) ninja: Ninja[]
-        ) {
+        constructor(@multiInject(Ninja) ninja: Ninja[]) {
           this.ninjaMaster = ninja[0] as Ninja;
           this.student = ninja[1] as Ninja;
         }
       }
 
-      const container = new Container();
+      const container: Container = new Container();
       container.bind<Katana>(Katana).to(Katana);
       container.bind<Shuriken>(Shuriken).to(Shuriken);
       container.bind<Ninja>(Ninja).to(Ninja);
       container.bind<Ninja>(Ninja).to(Ninja);
       container.bind<NinjaSchool>(NinjaSchool).to(NinjaSchool);
 
-      const ninjaSchool = container.get<NinjaSchool>(NinjaSchool);
+      const ninjaSchool: NinjaSchool = container.get<NinjaSchool>(NinjaSchool);
       expect(ninjaSchool.ninjaMaster.fight()).eql('cut!');
       expect(ninjaSchool.ninjaMaster.sneak()).eql('hit!');
 
       expect(ninjaSchool.student.fight()).eql('cut!');
       expect(ninjaSchool.student.sneak()).eql('hit!');
-
     });
 
-    _it('Should_support_the_injection_of_multiple_values_with_nested_multiInject', () => {
-
+    _it('Should_support_the_injection_of_multiple_values_with_nested_multiInject_', () => {
       @injectable()
       class Katana {
-        public h_it() {
+        public hit() {
           return 'cut!';
         }
       }
@@ -1496,71 +1407,62 @@ export default function inversifyTest() {
       }
 
       @injectable()
-      @Reflect.metadata("design:paramtypes", arrayConversion(Katana,Shuriken))
       class Ninja {
+        private readonly _katana: Katana;
+        private readonly _shuriken: Shuriken;
 
-        private _katana: Katana;
-        private _shuriken: Shuriken;
-
-        public constructor(
-          katana: Katana,
-          shuriken: Shuriken
-        ) {
+        constructor(katana: Katana, shuriken: Shuriken) {
           this._katana = katana;
           this._shuriken = shuriken;
         }
 
-        public fight():string { return this._katana.h_it(); }
-        public sneak():string { return this._shuriken.throw(); }
-
+        public fight() :string {return this._katana.hit();}
+        public sneak() :string {return this._shuriken.throw();}
       }
 
       @injectable()
-      @Reflect.metadata("design:paramtypes",Ninja)
       class NinjaSchool {
         public ninjaMaster: Ninja;
         public student: Ninja;
 
-        public constructor(
-          @multiInject(Ninja) ninjas: Ninja[]
-        ) {
+        constructor(@multiInject(Ninja) ninjas: Ninja[]) {
           this.ninjaMaster = ninjas[0] as Ninja;
           this.student = ninjas[1] as Ninja;
         }
       }
 
       @injectable()
-      @Reflect.metadata("design:paramtypes",NinjaSchool)
       class NinjaOrganisation {
         public schools: NinjaSchool[];
 
-        public constructor(
-          @multiInject(NinjaSchool) schools: NinjaSchool[]
-        ) {
+        constructor(@multiInject(NinjaSchool) schools: NinjaSchool[]) {
           this.schools = schools;
         }
       }
 
-      const container = new Container();
+      const container: Container = new Container();
       container.bind<Katana>(Katana).to(Katana);
       container.bind<Shuriken>(Shuriken).to(Shuriken);
       container.bind<Ninja>(Ninja).to(Ninja);
       container.bind<Ninja>(Ninja).to(Ninja);
       container.bind<NinjaSchool>(NinjaSchool).to(NinjaSchool);
       container.bind<NinjaSchool>(NinjaSchool).to(NinjaSchool);
-      container.bind<NinjaOrganisation>(NinjaOrganisation).to(NinjaOrganisation);
+      container
+        .bind<NinjaOrganisation>(NinjaOrganisation)
+        .to(NinjaOrganisation);
 
-      const ninjaOrganisation = container.get<NinjaOrganisation>(NinjaOrganisation);
+      const ninjaOrganisation: NinjaOrganisation =
+        container.get<NinjaOrganisation>(NinjaOrganisation);
 
-      for (let i = 0; i < 2; i++) {
-        const ithNinjaOrganizationSchool = ninjaOrganisation.schools[i] as NinjaSchool;
+      for (let i: number = 0; i < 2; i++) {
+        const ithNinjaOrganizationSchool: NinjaSchool = ninjaOrganisation
+          .schools[i] as NinjaSchool;
 
         expect(ithNinjaOrganizationSchool.ninjaMaster.fight()).eql('cut!');
         expect(ithNinjaOrganizationSchool.ninjaMaster.sneak()).eql('hit!');
         expect(ithNinjaOrganizationSchool.student.fight()).eql('cut!');
         expect(ithNinjaOrganizationSchool.student.sneak()).eql('hit!');
       }
-
     });
 
     _it('Should_support_the_injection_of_multiple_values_when_using_Symbols_as_keys', () => {
@@ -1614,53 +1516,50 @@ export default function inversifyTest() {
 
     });
 
-    _it('Should_support_the_injection_of_multiple_values_with_nested_inject', () => {
-
-      const TYPES = TYPESSymbol4()
-      interface Ninja1 {
-        fight(): string;
-        sneak(): string;
+    _it('Should_support_the_injection_of_multiple_values_with_nested_inject__', () => {
+      interface TypeType {
+        Katana: string,
+        Ninja: string,
+        School: string,
+        Shuriken: string,
       }
 
-      interface Katana1 {
-        h_it(): string;
-      }
-
-      interface Shuriken1 {
-        throw(): string;
-      }
+      const TYPES :TypeType = {
+        Katana: 'Katana',
+        Ninja: 'Ninja',
+        School: 'School',
+        Shuriken: 'Shuriken',
+      };
 
       @injectable()
-      class Katana implements Katana1 {
-        public h_it() {
+      class Katana {
+        public hit() {
           return 'cut!';
         }
       }
 
       @injectable()
-      class Shuriken implements Shuriken1 {
+      class Shuriken {
         public throw() {
           return 'hit!';
         }
       }
 
       @injectable()
-      class Ninja implements Ninja1{
+      class Ninja {
+        private readonly _katana: Katana;
+        private readonly _shuriken: Shuriken;
 
-        private _katana: Katana;
-        private _shuriken: Shuriken;
-
-        public constructor(
+        constructor(
           @inject(TYPES.Katana) katana: Katana,
-          @inject(TYPES.Shuriken) shuriken: Shuriken
+          @inject(TYPES.Shuriken) shuriken: Shuriken,
         ) {
           this._katana = katana;
           this._shuriken = shuriken;
         }
 
-        public fight():string { return this._katana.h_it(); }
-        public sneak():string { return this._shuriken.throw(); }
-
+        public fight() :string{return this._katana.hit();}
+        public sneak() :string{return this._shuriken.throw();}
       }
 
       interface School {
@@ -1673,78 +1572,73 @@ export default function inversifyTest() {
         public ninjaMaster: Ninja;
         public student: Ninja;
 
-        public constructor(
-          @multiInject(TYPES.Ninja) ninja: Ninja[]
-        ) {
+        constructor(@multiInject(TYPES.Ninja) ninja: Ninja[]) {
           this.ninjaMaster = ninja[0] as Ninja;
           this.student = ninja[1] as Ninja;
         }
       }
 
-      const container = new Container();
+      const container: Container = new Container();
       container.bind<Katana>(TYPES.Katana).to(Katana);
       container.bind<Shuriken>(TYPES.Shuriken).to(Shuriken);
       container.bind<Ninja>(TYPES.Ninja).to(Ninja);
       container.bind<Ninja>(TYPES.Ninja).to(Ninja);
       container.bind<School>(TYPES.School).to(NinjaSchool);
 
-      const ninjaSchool = container.get<School>(TYPES.School);
+      const ninjaSchool: School = container.get<School>(TYPES.School);
       expect(ninjaSchool.ninjaMaster.fight()).eql('cut!');
       expect(ninjaSchool.ninjaMaster.sneak()).eql('hit!');
 
       expect(ninjaSchool.student.fight()).eql('cut!');
       expect(ninjaSchool.student.sneak()).eql('hit!');
-
     });
 
-    _it('Should_support_the_injection_of_multiple_values_with_nested_multiInject', () => {
-
-      const TYPES = TYPESSymbol4()
-
-      interface Ninja1 {
-        fight(): string;
-        sneak(): string;
+    _it('Should_support_the_injection_of_multiple_values_with_nested_multiInject__', () => {
+      interface TypeType {
+        Katana: string,
+        Ninja: string,
+        Organisation: string,
+        School: string,
+        Shuriken: string,
       }
 
-      interface Katana1 {
-        h_it(): string;
-      }
-
-      interface Shuriken1 {
-        throw(): string;
-      }
+      const TYPES :TypeType = {
+        Katana: 'Katana',
+        Ninja: 'Ninja',
+        Organisation: 'Organisation',
+        School: 'School',
+        Shuriken: 'Shuriken',
+      };
 
       @injectable()
-      class Katana implements Katana1 {
-        public h_it() {
+      class Katana {
+        public hit() {
           return 'cut!';
         }
       }
 
       @injectable()
-      class Shuriken implements Shuriken1 {
+      class Shuriken {
         public throw() {
           return 'hit!';
         }
       }
 
       @injectable()
-      class Ninja implements Ninja1 {
+      class Ninja {
+        private readonly _katana: Katana;
+        private readonly _shuriken: Shuriken;
 
-        private _katana: Katana;
-        private _shuriken: Shuriken;
-
-        public constructor(
+        constructor(
           @inject(TYPES.Katana) katana: Katana,
-          @inject(TYPES.Shuriken) shuriken: Shuriken
+          @inject(TYPES.Shuriken) shuriken: Shuriken,
         ) {
           this._katana = katana;
           this._shuriken = shuriken;
         }
 
-        public fight():string { return this._katana.h_it(); }
-        public sneak():string { return this._shuriken.throw(); }
-
+        public fight() :string {return this._katana.hit();}
+        public sneak() :string {return this._shuriken.throw();}
       }
 
       interface School {
@@ -1757,9 +1651,7 @@ export default function inversifyTest() {
         public ninjaMaster: Ninja;
         public student: Ninja;
 
-        public constructor(
-          @multiInject(TYPES.Ninja) ninjas: Ninja[]
-        ) {
+        constructor(@multiInject(TYPES.Ninja) ninjas: Ninja[]) {
           this.ninjaMaster = ninjas[0] as Ninja;
           this.student = ninjas[1] as Ninja;
         }
@@ -1773,14 +1665,12 @@ export default function inversifyTest() {
       class NinjaOrganisation implements Organisation {
         public schools: NinjaSchool[];
 
-        public constructor(
-          @multiInject(TYPES.School) schools: School[]
-        ) {
+        constructor(@multiInject(TYPES.School) schools: School[]) {
           this.schools = schools;
         }
       }
 
-      const container = new Container();
+      const container: Container = new Container();
       container.bind<Katana>(TYPES.Katana).to(Katana);
       container.bind<Shuriken>(TYPES.Shuriken).to(Shuriken);
       container.bind<Ninja>(TYPES.Ninja).to(Ninja);
@@ -1789,17 +1679,18 @@ export default function inversifyTest() {
       container.bind<School>(TYPES.School).to(NinjaSchool);
       container.bind<Organisation>(TYPES.Organisation).to(NinjaOrganisation);
 
-      const ninjaOrganisation = container.get<Organisation>(TYPES.Organisation);
+      const ninjaOrganisation: Organisation = container.get<Organisation>(
+        TYPES.Organisation,
+      );
 
-      for (let i = 0; i < 2; i++) {
-        const ithNinjaOrganizationSchool = ninjaOrganisation.schools[i] as School;
+      for (let i: number = 0; i < 2; i++) {
+        const ithNinjaOrganizationSchool: School = ninjaOrganisation.schools[i] as School;
 
         expect(ithNinjaOrganizationSchool.ninjaMaster.fight()).eql('cut!');
         expect(ithNinjaOrganizationSchool.ninjaMaster.sneak()).eql('hit!');
         expect(ithNinjaOrganizationSchool.student.fight()).eql('cut!');
         expect(ithNinjaOrganizationSchool.student.sneak()).eql('hit!');
       }
-
     });
 
     _it('Should_support_tagged_bindings', () => {
@@ -1834,8 +1725,8 @@ export default function inversifyTest() {
 
       const container = new Container();
       container.bind<Warrior>('Warrior').to(Ninja);
-      container.bind<Weapon>('Weapon').to(Katana).whenTargetTagged('canThrow', false);
-      container.bind<Weapon>('Weapon').to(Shuriken).whenTargetTagged(Tag.CanThrow, true);
+      container.bind<Weapon>('Weapon').to(Katana).whenTagged('canThrow', false);
+      container.bind<Weapon>('Weapon').to(Shuriken).whenTagged(Tag.CanThrow, true);
 
       const ninja = container.get<Warrior>('Warrior');
       expect(ninja.katana instanceof Katana).eql(true);
@@ -1876,8 +1767,8 @@ export default function inversifyTest() {
 
       const container = new Container();
       container.bind<Warrior>('Warrior').to(Ninja);
-      container.bind<Weapon>('Weapon').to(Katana).whenTargetTagged('canThrow', false);
-      container.bind<Weapon>('Weapon').to(Shuriken).whenTargetTagged('canThrow', true);
+      container.bind<Weapon>('Weapon').to(Katana).whenTagged('canThrow', false);
+      container.bind<Weapon>('Weapon').to(Shuriken).whenTagged('canThrow', true);
 
       const ninja = container.get<Warrior>('Warrior');
       expect(ninja.katana instanceof Katana).eql(true);
@@ -1917,8 +1808,8 @@ export default function inversifyTest() {
 
       const container = new Container();
       container.bind<Warrior>('Warrior').to(Ninja);
-      container.bind<Weapon>('Weapon').to(Katana).whenTargetNamed('strong');
-      container.bind<Weapon>('Weapon').to(Shuriken).whenTargetNamed(name);
+      container.bind<Weapon>('Weapon').to(Katana).whenNamed('strong');
+      container.bind<Weapon>('Weapon').to(Shuriken).whenNamed(name);
 
       const ninja = container.get<Warrior>('Warrior');
       expect(ninja.katana instanceof Katana).eql(true);
@@ -1946,8 +1837,8 @@ export default function inversifyTest() {
         public katana: Weapon;
         public shuriken: Weapon;
         public constructor(
-          @inject('Weapon') @targetName('katana') katana: Weapon,
-          @inject('Weapon') @targetName('shuriken') shuriken: Weapon
+          @inject('Weapon') @named('katana') katana: Weapon,
+          @inject('Weapon') @named('shuriken') shuriken: Weapon
         ) {
           this.katana = katana;
           this.shuriken = shuriken;
@@ -1957,11 +1848,8 @@ export default function inversifyTest() {
       const container = new Container();
       container.bind<Warrior>('Warrior').to(Ninja);
 
-      container.bind<Weapon>('Weapon').to(Katana).when((request: interfaces.Request) =>
-      request !== null && request.target !== null && request.target.name.equals('katana'));
-
-      container.bind<Weapon>('Weapon').to(Shuriken).when((request: interfaces.Request) =>
-      request !== null && request.target !== null && request.target.name.equals('shuriken'));
+      container.bind('Weapon').to(Katana).whenNamed('katana');
+      container.bind('Weapon').to(Shuriken).whenNamed('shuriken');
 
       const ninja = container.get<Warrior>('Warrior');
       expect(ninja.katana instanceof Katana).eql(true);
@@ -1970,7 +1858,6 @@ export default function inversifyTest() {
     });
 
     _it('Should_be_able_to_resolve_a_ambiguous_binding_by_providing_a_named_tag', () => {
-
       interface Weapon {
         name: string;
       }
@@ -1978,7 +1865,7 @@ export default function inversifyTest() {
       @injectable()
       class Katana implements Weapon {
         public name: string;
-        public constructor() {
+        constructor() {
           this.name = 'katana';
         }
       }
@@ -1986,21 +1873,24 @@ export default function inversifyTest() {
       @injectable()
       class Shuriken implements Weapon {
         public name: string;
-        public constructor() {
+        constructor() {
           this.name = 'shuriken';
         }
       }
 
-      const container = new Container();
-      container.bind<Weapon>('Weapon').to(Katana).whenTargetNamed('japonese');
-      container.bind<Weapon>('Weapon').to(Shuriken).whenTargetNamed('chinese');
+      const container: Container = new Container();
+      container.bind<Weapon>('Weapon').to(Katana).whenNamed('japanese');
+      container.bind<Weapon>('Weapon').to(Shuriken).whenNamed('chinese');
 
-      const katana = container.getNamed<Weapon>('Weapon', 'japonese');
-      const shuriken = container.getNamed<Weapon>('Weapon', 'chinese');
+      const katana: Weapon = container.get<Weapon>('Weapon', {
+        name: 'japanese',
+      });
+      const shuriken: Weapon = container.get<Weapon>('Weapon', {
+        name: 'chinese',
+      });
 
       expect(katana.name).eql('katana');
       expect(shuriken.name).eql('shuriken');
-
     });
 
     _it('Should_be_able_to_resolve_a_ambiguous_binding_by_providing_a_custom_tag', () => {
@@ -2026,11 +1916,21 @@ export default function inversifyTest() {
       }
 
       const container = new Container();
-      container.bind<Weapon>('Weapon').to(Katana).whenTargetTagged('faction', 'samurai');
-      container.bind<Weapon>('Weapon').to(Shuriken).whenTargetTagged('faction', 'ninja');
+      container.bind<Weapon>('Weapon').to(Katana).whenTagged('faction', 'samurai');
+      container.bind<Weapon>('Weapon').to(Shuriken).whenTagged('faction', 'ninja');
 
-      const katana = container.getTagged<Weapon>('Weapon', 'faction', 'samurai');
-      const shuriken = container.getTagged<Weapon>('Weapon', 'faction', 'ninja');
+      const katana = container.get<Weapon>('Weapon', {
+        tag: {
+          key: 'faction',
+          value: 'samurai',
+        },
+      });
+      const shuriken = container.get<Weapon>('Weapon', {
+        tag: {
+          key: 'faction',
+          value: 'ninja',
+        },
+      });
 
       expect(katana.name).eql('katana');
       expect(shuriken.name).eql('shuriken');
@@ -2038,8 +1938,19 @@ export default function inversifyTest() {
     });
 
     _it('Should_be_able_to_inject_into_a_super_constructor', () => {
+      interface TypeSymbol {
+        Samurai: string,
+        SamuraiMaster: string,
+        SamuraiMaster2: string,
+        Weapon: string,
+      }
 
-      const SYMBOLS = SYMBOLSSymbol4()
+      const SYMBOLS :TypeSymbol = {
+        Samurai: 'Samurai',
+        SamuraiMaster: 'SamuraiMaster',
+        SamuraiMaster2: 'SamuraiMaster2',
+        Weapon: 'Weapon',
+      };
 
       interface Weapon {
         name: string;
@@ -2052,51 +1963,39 @@ export default function inversifyTest() {
       @injectable()
       class Katana implements Weapon {
         public name: string;
-        public constructor() {
+        constructor() {
           this.name = 'katana';
         }
       }
 
       @injectable()
       class Samurai implements Warrior {
-
         public weapon: Weapon;
 
-        public constructor(weapon: Weapon) {
+        constructor(weapon: Weapon) {
           this.weapon = weapon;
         }
       }
 
-      // Important: derived classes constructor must be manually implemented and annotated
-      // Therefore the following will fail
       @injectable()
       class SamuraiMaster extends Samurai implements Warrior {
-        public isMaster!: boolean;
-      }
-
-      // However, he following will work
-      @injectable()
-      class SamuraiMaster2 extends Samurai implements Warrior {
         public isMaster: boolean;
-        public constructor(@inject(SYMBOLS.Weapon) weapon: Weapon) {
+        constructor(@inject(SYMBOLS.Weapon) weapon: Weapon) {
           super(weapon);
           this.isMaster = true;
         }
       }
 
-      const container = new Container();
+      const container: Container = new Container();
       container.bind<Weapon>(SYMBOLS.Weapon).to(Katana);
-      container.bind<Warrior>(SYMBOLS.Samurai).to(Samurai);
-      container.bind<Warrior>(SYMBOLS.SamuraiMaster).to(SamuraiMaster);
-      container.bind<Warrior>(SYMBOLS.SamuraiMaster2).to(SamuraiMaster2);
 
-      const errorFunction = () => { container.get<Warrior>(SYMBOLS.SamuraiMaster); };
-      const error = ERROR_MSGS.ARGUMENTS_LENGTH_MISMATCH('SamuraiMaster');
+      container.bind<Warrior>(SYMBOLS.SamuraiMaster2).to(SamuraiMaster);
 
-      const samuraiMaster2 = container.get<SamuraiMaster2>(SYMBOLS.SamuraiMaster2);
+      const samuraiMaster2: SamuraiMaster = container.get<SamuraiMaster>(
+        SYMBOLS.SamuraiMaster2,
+      );
       expect(samuraiMaster2.weapon.name).eql('katana');
       expect(typeof samuraiMaster2.isMaster).eql('boolean');
-
     });
 
     _it('Should_allow_to_flag_arguments_as_unmanaged', () => {
@@ -2123,8 +2022,6 @@ export default function inversifyTest() {
       }
 
       container.bind<Base1>(Base1Id).to(Derived1);
-      const tryGet = () => { container.get(Base1Id); };
-      const error = ERROR_MSGS.ARGUMENTS_LENGTH_MISMATCH('Derived1');
 
       // CASE 2: Use @unmanaged to overcome issue
 
@@ -2177,81 +2074,6 @@ export default function inversifyTest() {
       expect(derived2 instanceof Base3).to.eql(true);
       expect(derived2.prop1).to.eql('unmanaged-injected-value');
       expect(derived2.prop2).to.eql('managed-injected-value');
-
-    });
-
-    _it('Should_support_a_whenInjectedInto_contextual_bindings_constraint', () => {
-      interface types{
-        Ninja: string;
-        Weapon: string;
-      }
-      const TYPES:types = {
-        Ninja: 'Ninja',
-        Weapon: 'Weapon'
-      };
-
-      interface Weapon {
-        name: string;
-      }
-
-      @injectable()
-      class Katana implements Weapon {
-        public name: string;
-        public constructor() {
-          this.name = 'katana';
-        }
-      }
-
-      @injectable()
-      class Bokken implements Weapon {
-        public name: string;
-        public constructor() {
-          this.name = 'bokken';
-        }
-      }
-
-      interface Ninja {
-        weapon: Weapon;
-      }
-
-      @injectable()
-      class NinjaStudent implements Ninja {
-
-        public weapon: Weapon;
-
-        public constructor(
-          @inject('Weapon') @targetName('weapon') weapon: Weapon
-        ) {
-          this.weapon = weapon;
-        }
-      }
-
-      @injectable()
-      class NinjaMaster implements Ninja {
-
-        public weapon: Weapon;
-
-        public constructor(
-          @inject('Weapon') @targetName('weapon') weapon: Weapon
-        ) {
-          this.weapon = weapon;
-        }
-      }
-
-      const container = new Container();
-      container.bind<Ninja>(TYPES.Ninja).to(NinjaStudent).whenTargetTagged('master', false);
-      container.bind<Ninja>(TYPES.Ninja).to(NinjaMaster).whenTargetTagged('master', true);
-      container.bind<Weapon>(TYPES.Weapon).to(Katana).whenInjectedInto(NinjaMaster);
-      container.bind<Weapon>(TYPES.Weapon).to(Bokken).whenInjectedInto(NinjaStudent);
-
-      const master = container.getTagged<Ninja>(TYPES.Ninja, 'master', true);
-      const student = container.getTagged<Ninja>(TYPES.Ninja, 'master', false);
-
-      expect(master instanceof NinjaMaster).eql(true);
-      expect(student instanceof NinjaStudent).eql(true);
-
-      expect(master.weapon.name).eql('katana');
-      expect(student.weapon.name).eql('bokken');
 
     });
 
@@ -2328,14 +2150,24 @@ export default function inversifyTest() {
       }
 
       const container = new Container();
-      container.bind<Ninja>(TYPES.Ninja).to(NinjaStudent).whenTargetTagged('master', false);
-      container.bind<Ninja>(TYPES.Ninja).to(NinjaMaster).whenTargetTagged('master', true);
+      container.bind<Ninja>(TYPES.Ninja).to(NinjaStudent).whenTagged('master', false);
+      container.bind<Ninja>(TYPES.Ninja).to(NinjaMaster).whenTagged('master', true);
       container.bind<Weapon>(TYPES.Weapon).to(Sword);
       container.bind<Material>(TYPES.Material).to(Iron).whenParentNamed('lethal');
       container.bind<Material>(TYPES.Material).to(Wood).whenParentNamed('non-lethal');
 
-      const master = container.getTagged<Ninja>(TYPES.Ninja, 'master', true);
-      const student = container.getTagged<Ninja>(TYPES.Ninja, 'master', false);
+      const master = container.get<Ninja>(TYPES.Ninja, {
+        tag: {
+          key: 'master',
+          value: true,
+        },
+      });
+      const student = container.get<Ninja>(TYPES.Ninja, {
+        tag: {
+          key: 'master',
+          value: false,
+        },
+      });
 
       expect(master.weapon.material.name).eql('iron');
       expect(student.weapon.material.name).eql('wood');
@@ -2415,14 +2247,24 @@ export default function inversifyTest() {
       }
 
       const container = new Container();
-      container.bind<Ninja>(TYPES.Ninja).to(NinjaStudent).whenTargetTagged('master', false);
-      container.bind<Ninja>(TYPES.Ninja).to(NinjaMaster).whenTargetTagged('master', true);
+      container.bind<Ninja>(TYPES.Ninja).to(NinjaStudent).whenTagged('master', false);
+      container.bind<Ninja>(TYPES.Ninja).to(NinjaMaster).whenTagged('master', true);
       container.bind<Weapon>(TYPES.Weapon).to(Sword);
       container.bind<Material>(TYPES.Material).to(Iron).whenParentTagged('lethal', true);
       container.bind<Material>(TYPES.Material).to(Wood).whenParentTagged('lethal', false);
 
-      const master = container.getTagged<Ninja>(TYPES.Ninja, 'master', true);
-      const student = container.getTagged<Ninja>(TYPES.Ninja, 'master', false);
+      const master = container.get<Ninja>(TYPES.Ninja, {
+        tag: {
+          key: 'master',
+          value: true,
+        },
+      });
+      const student = container.get<Ninja>(TYPES.Ninja, {
+        tag: {
+          key: 'master',
+          value: false,
+        },
+      });
 
       expect(master.weapon.material.name).eql('iron');
       expect(student.weapon.material.name).eql('wood');
@@ -2479,56 +2321,111 @@ export default function inversifyTest() {
 
       @injectable()
       class NinjaStudent implements Ninja {
-
         public weapon: Weapon;
 
-        public constructor(
-          @inject('Weapon') weapon: Weapon
-        ) {
+        public constructor(@inject('Weapon') weapon: Weapon) {
           this.weapon = weapon;
         }
       }
 
       @injectable()
       class NinjaMaster implements Ninja {
-
         public weapon: Weapon;
 
-        public constructor(
-          @inject('Weapon') weapon: Weapon
-        ) {
+        public constructor(@inject('Weapon') weapon: Weapon) {
           this.weapon = weapon;
         }
       }
 
-      // whenAnyAncestorIs
-      const container = new Container();
-      container.bind<Ninja>(TYPES.Ninja).to(NinjaStudent).whenTargetTagged('master', false);
-      container.bind<Ninja>(TYPES.Ninja).to(NinjaMaster).whenTargetTagged('master', true);
-      container.bind<Weapon>(TYPES.Weapon).to(Sword);
-      container.bind<Material>(TYPES.Material).to(Iron).whenAnyAncestorIs(NinjaMaster);
-      container.bind<Material>(TYPES.Material).to(Wood).whenAnyAncestorIs(NinjaStudent);
+      let isNinjaStudentConstraint = (
+        bindingConstraints: BindingConstraints,
+      ): boolean => {
+        return (
+          bindingConstraints.serviceIdentifier === TYPES.Ninja &&
+            bindingConstraints.tags.get('master') === false
+        );
+      }
 
-      const master = container.getTagged<Ninja>(TYPES.Ninja, 'master', true);
-      const student = container.getTagged<Ninja>(TYPES.Ninja, 'master', false);
+      let isNinjaMasterConstraint = (
+        bindingConstraints: BindingConstraints,
+      ): boolean => {
+        return (
+          bindingConstraints.serviceIdentifier === TYPES.Ninja &&
+            bindingConstraints.tags.get('master') === true
+        );
+      }
+
+      // whenAnyAncestorIs
+      const container: Container = new Container();
+      container
+        .bind<Ninja>(TYPES.Ninja)
+        .to(NinjaStudent)
+        .whenTagged('master', false);
+      container
+        .bind<Ninja>(TYPES.Ninja)
+        .to(NinjaMaster)
+        .whenTagged('master', true);
+      container.bind<Weapon>(TYPES.Weapon).to(Sword);
+      container
+        .bind<Material>(TYPES.Material)
+        .to(Iron)
+        .whenAnyAncestor(isNinjaMasterConstraint);
+      container
+        .bind<Material>(TYPES.Material)
+        .to(Wood)
+        .whenAnyAncestor(isNinjaStudentConstraint);
+
+      const master: Ninja = container.get<Ninja>(TYPES.Ninja, {
+        tag: {
+          key: 'master',
+          value: true,
+        },
+      });
+      const student: Ninja = container.get<Ninja>(TYPES.Ninja, {
+        tag: {
+          key: 'master',
+          value: false,
+        },
+      });
 
       expect(master.weapon.material.name).eql('iron');
       expect(student.weapon.material.name).eql('wood');
 
       // whenNoAncestorIs
-      const container2 = new Container();
-      container2.bind<Ninja>(TYPES.Ninja).to(NinjaStudent).whenTargetTagged('master', false);
-      container2.bind<Ninja>(TYPES.Ninja).to(NinjaMaster).whenTargetTagged('master', true);
+      const container2: Container = new Container();
+      container2
+        .bind<Ninja>(TYPES.Ninja)
+        .to(NinjaStudent)
+        .whenTagged('master', false);
+      container2
+        .bind<Ninja>(TYPES.Ninja)
+        .to(NinjaMaster)
+        .whenTagged('master', true);
       container2.bind<Weapon>(TYPES.Weapon).to(Sword);
-      container2.bind<Material>(TYPES.Material).to(Iron).whenNoAncestorIs(NinjaStudent);
-      container2.bind<Material>(TYPES.Material).to(Wood).whenNoAncestorIs(NinjaMaster);
+      container2
+        .bind<Material>(TYPES.Material)
+        .to(Iron)
+        .whenNoAncestor(isNinjaStudentConstraint);
+      container2
+        .bind<Material>(TYPES.Material)
+        .to(Wood)
+        .whenNoAncestor(isNinjaMasterConstraint);
 
-      const master2 = container2.getTagged<Ninja>(TYPES.Ninja, 'master', true);
-      const student2 = container2.getTagged<Ninja>(TYPES.Ninja, 'master', false);
+      const master2: Ninja = container2.get<Ninja>(TYPES.Ninja, {
+        tag: {
+          key: 'master',
+          value: true,
+        },
+      });
+      const student2: Ninja = container2.get<Ninja>(TYPES.Ninja, {
+        tag: {
+          key: 'master',
+          value: false,
+        },
+      });
 
       expect(master2.weapon.material.name).eql('iron');
       expect(student2.weapon.material.name).eql('wood');
-
     });
 
     _it('Should_support_a_whenAnyAncestorNamed_and_whenNoAncestorNamed_contextual_bindings_constraint', () => {
@@ -2605,28 +2502,36 @@ export default function inversifyTest() {
 
       // whenAnyAncestorNamed
       const container = new Container();
-      container.bind<Ninja>(TYPES.Ninja).to(NinjaStudent).whenTargetNamed('non-lethal');
-      container.bind<Ninja>(TYPES.Ninja).to(NinjaMaster).whenTargetNamed('lethal');
+      container.bind<Ninja>(TYPES.Ninja).to(NinjaStudent).whenNamed('non-lethal');
+      container.bind<Ninja>(TYPES.Ninja).to(NinjaMaster).whenNamed('lethal');
       container.bind<Weapon>(TYPES.Weapon).to(Sword);
       container.bind<Material>(TYPES.Material).to(Iron).whenAnyAncestorNamed('lethal');
       container.bind<Material>(TYPES.Material).to(Wood).whenAnyAncestorNamed('non-lethal');
 
-      const master = container.getNamed<Ninja>(TYPES.Ninja, 'lethal');
-      const student = container.getNamed<Ninja>(TYPES.Ninja, 'non-lethal');
+      const master = container.get<Ninja>(TYPES.Ninja, {
+        name: 'lethal',
+      });
+      const student = container.get<Ninja>(TYPES.Ninja, {
+        name: 'non-lethal',
+      });
 
       expect(master.weapon.material.name).eql('iron');
       expect(student.weapon.material.name).eql('wood');
 
       // whenNoAncestorNamed
       const container2 = new Container();
-      container2.bind<Ninja>(TYPES.Ninja).to(NinjaStudent).whenTargetNamed('non-lethal');
-      container2.bind<Ninja>(TYPES.Ninja).to(NinjaMaster).whenTargetNamed('lethal');
+      container2.bind<Ninja>(TYPES.Ninja).to(NinjaStudent).whenNamed('non-lethal');
+      container2.bind<Ninja>(TYPES.Ninja).to(NinjaMaster).whenNamed('lethal');
       container2.bind<Weapon>(TYPES.Weapon).to(Sword);
       container2.bind<Material>(TYPES.Material).to(Iron).whenNoAncestorNamed('non-lethal');
       container2.bind<Material>(TYPES.Material).to(Wood).whenNoAncestorNamed('lethal');
 
-      const master2 = container.getNamed<Ninja>(TYPES.Ninja, 'lethal');
-      const student2 = container.getNamed<Ninja>(TYPES.Ninja, 'non-lethal');
+      const master2 = container.get<Ninja>(TYPES.Ninja, {
+        name: 'lethal',
+      });
+      const student2 = container.get<Ninja>(TYPES.Ninja, {
+        name: 'non-lethal',
+      });
 
       expect(master2.weapon.material.name).eql('iron');
       expect(student2.weapon.material.name).eql('wood');
@@ -2707,28 +2612,48 @@ export default function inversifyTest() {
 
       // whenAnyAncestorTagged
       const container = new Container();
-      container.bind<Ninja>(TYPES.Ninja).to(NinjaStudent).whenTargetTagged('lethal', false);
-      container.bind<Ninja>(TYPES.Ninja).to(NinjaMaster).whenTargetTagged('lethal', true);
+      container.bind<Ninja>(TYPES.Ninja).to(NinjaStudent).whenTagged('lethal', false);
+      container.bind<Ninja>(TYPES.Ninja).to(NinjaMaster).whenTagged('lethal', true);
       container.bind<Weapon>(TYPES.Weapon).to(Sword);
       container.bind<Material>(TYPES.Material).to(Iron).whenAnyAncestorTagged('lethal', true);
       container.bind<Material>(TYPES.Material).to(Wood).whenAnyAncestorTagged('lethal', false);
 
-      const master = container.getTagged<Ninja>(TYPES.Ninja, 'lethal', true);
-      const student = container.getTagged<Ninja>(TYPES.Ninja, 'lethal', false);
+      const master = container.get<Ninja>(TYPES.Ninja, {
+        tag: {
+          key: 'lethal',
+          value: true,
+        },
+      });
+      const student = container.get<Ninja>(TYPES.Ninja, {
+        tag: {
+          key: 'lethal',
+          value: false,
+        },
+      });
 
       expect(master.weapon.material.name).eql('iron');
       expect(student.weapon.material.name).eql('wood');
 
       // whenNoAncestorTagged
       const container2 = new Container();
-      container2.bind<Ninja>(TYPES.Ninja).to(NinjaStudent).whenTargetTagged('lethal', false);
-      container2.bind<Ninja>(TYPES.Ninja).to(NinjaMaster).whenTargetTagged('lethal', true);
+      container2.bind<Ninja>(TYPES.Ninja).to(NinjaStudent).whenTagged('lethal', false);
+      container2.bind<Ninja>(TYPES.Ninja).to(NinjaMaster).whenTagged('lethal', true);
       container2.bind<Weapon>(TYPES.Weapon).to(Sword);
       container2.bind<Material>(TYPES.Material).to(Iron).whenNoAncestorTagged('lethal', false);
       container2.bind<Material>(TYPES.Material).to(Wood).whenNoAncestorTagged('lethal', true);
 
-      const master2 = container.getTagged<Ninja>(TYPES.Ninja, 'lethal', true);
-      const student2 = container.getTagged<Ninja>(TYPES.Ninja, 'lethal', false);
+      const master2 = container.get<Ninja>(TYPES.Ninja, {
+        tag: {
+          key: 'lethal',
+          value: true,
+        },
+      });
+      const student2 = container.get<Ninja>(TYPES.Ninja, {
+        tag: {
+          key: 'lethal',
+          value: false,
+        },
+      });
 
       expect(master2.weapon.material.name).eql('iron');
       expect(student2.weapon.material.name).eql('wood');
@@ -2808,33 +2733,68 @@ export default function inversifyTest() {
       }
 
       // custom constraints
-      const anyAncestorIsNinjaMasterConstraint = typeConstraint(NinjaMaster);
-      const anyAncestorIsNinjaStudentConstraint = typeConstraint(NinjaStudent);
+      let isNinjaStudentConstraint = (
+        bindingConstraints: BindingConstraints,
+      ): boolean => {
+        return (
+          bindingConstraints.serviceIdentifier === TYPES.Ninja &&
+            bindingConstraints.tags.get('master') === false
+        );
+      }
+
+      let isNinjaMasterConstraint = (
+        bindingConstraints: BindingConstraints,
+      ): boolean => {
+        return (
+          bindingConstraints.serviceIdentifier === TYPES.Ninja &&
+            bindingConstraints.tags.get('master') === true
+        );
+      }
 
       // whenAnyAncestorMatches
       const container = new Container();
-      container.bind<Ninja>(TYPES.Ninja).to(NinjaStudent).whenTargetTagged('master', false);
-      container.bind<Ninja>(TYPES.Ninja).to(NinjaMaster).whenTargetTagged('master', true);
+      container.bind<Ninja>(TYPES.Ninja).to(NinjaStudent).whenTagged('master', false);
+      container.bind<Ninja>(TYPES.Ninja).to(NinjaMaster).whenTagged('master', true);
       container.bind<Weapon>(TYPES.Weapon).to(Sword);
-      container.bind<Material>(TYPES.Material).to(Iron).whenAnyAncestorMatches(anyAncestorIsNinjaMasterConstraint);
-      container.bind<Material>(TYPES.Material).to(Wood).whenAnyAncestorMatches(anyAncestorIsNinjaStudentConstraint);
+      container.bind<Material>(TYPES.Material).to(Iron).whenAnyAncestor(isNinjaMasterConstraint);
+      container.bind<Material>(TYPES.Material).to(Wood).whenAnyAncestor(isNinjaStudentConstraint);
 
-      const master = container.getTagged<Ninja>(TYPES.Ninja, 'master', true);
-      const student = container.getTagged<Ninja>(TYPES.Ninja, 'master', false);
+      const master = container.get<Ninja>(TYPES.Ninja, {
+        tag: {
+          key: 'master',
+          value: true,
+        },
+      });
+      const student = container.get<Ninja>(TYPES.Ninja, {
+        tag: {
+          key: 'master',
+          value: false,
+        },
+      });
 
       expect(master.weapon.material.name).eql('iron');
       expect(student.weapon.material.name).eql('wood');
 
       // whenNoAncestorMatches
       const container2 = new Container();
-      container2.bind<Ninja>(TYPES.Ninja).to(NinjaStudent).whenTargetTagged('master', false);
-      container2.bind<Ninja>(TYPES.Ninja).to(NinjaMaster).whenTargetTagged('master', true);
+      container2.bind<Ninja>(TYPES.Ninja).to(NinjaStudent).whenTagged('master', false);
+      container2.bind<Ninja>(TYPES.Ninja).to(NinjaMaster).whenTagged('master', true);
       container2.bind<Weapon>(TYPES.Weapon).to(Sword);
-      container2.bind<Material>(TYPES.Material).to(Iron).whenNoAncestorMatches(anyAncestorIsNinjaStudentConstraint);
-      container2.bind<Material>(TYPES.Material).to(Wood).whenNoAncestorMatches(anyAncestorIsNinjaMasterConstraint);
+      container2.bind<Material>(TYPES.Material).to(Iron).whenNoAncestor(isNinjaStudentConstraint);
+      container2.bind<Material>(TYPES.Material).to(Wood).whenNoAncestor(isNinjaMasterConstraint);
 
-      const master2 = container2.getTagged<Ninja>(TYPES.Ninja, 'master', true);
-      const student2 = container2.getTagged<Ninja>(TYPES.Ninja, 'master', false);
+      const master2 = container2.get<Ninja>(TYPES.Ninja, {
+        tag: {
+          key: 'master',
+          value: true,
+        },
+      });
+      const student2 = container2.get<Ninja>(TYPES.Ninja, {
+        tag: {
+          key: 'master',
+          value: false,
+        },
+      });
 
       expect(master2.weapon.material.name).eql('iron');
       expect(student2.weapon.material.name).eql('wood');

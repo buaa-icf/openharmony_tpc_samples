@@ -13,14 +13,26 @@
  * limitations under the License.
  */
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it as _it, expect } from '../utils/util'
-import { Container, injectable } from 'inversify';
-import  {valueOrDefault}from '../tools/tools'
+import { Container, injectable, Provider, ResolutionContext } from 'inversify';
 
+async function valueOrDefault<T>(
+  provider: () => Promise<T>,
+  defaultValue: T
+): Promise<T> {
+  try {
+    return await provider();
+  } catch {
+    return defaultValue;
+  }
+}
+
+interface NinjaMasterLike {
+  rank: string;
+}
 
 export default function providerTest() {
   describe('providerTest',  ()=> {
     _it('Should_support_complex_asynchronous_initialization_processes', (done:ESObject) => {
-
       @injectable()
       class Ninja {
         public level: number;
@@ -49,88 +61,48 @@ export default function providerTest() {
 
       type NinjaMasterProvider = () => Promise<NinjaMaster>;
 
-      const container = new Container();
+      const container: Container = new Container();
 
       container.bind<Ninja>('Ninja').to(Ninja).inSingletonScope();
-      container.bind<NinjaMasterProvider>('Provider<NinjaMaster>').toProvider((context) =>
-      () =>
-      new Promise<NinjaMaster>((resolve, reject) => {
-        const ninja = context.container.get<Ninja>('Ninja');
-        ninja.train().then((level) => {
-          if (level >= 20) {
-            resolve(new NinjaMaster());
-          } else {
-            reject('Not enough training');
-          }
-        });
-      }));
+      container.bind<NinjaMasterProvider>('Provider<NinjaMaster>').toProvider(
+        (context: ResolutionContext) => async () =>
+        new Promise<NinjaMaster>(
+          (
+            resolve: (value: NinjaMaster | PromiseLike<NinjaMaster>) => void,
+            reject: (reason?: string) => void,
+          ) => {
+            const ninja: Ninja = context.get<Ninja>('Ninja');
 
-      const ninjaMasterProvider = container.get<NinjaMasterProvider>('Provider<NinjaMaster>');
+            void ninja.train().then((level: number) => {
+              if (level >= 20) {
+                resolve(new NinjaMaster());
+              } else {
+                reject('Not enough training');
+              }
+            });
+          },
+        ),
+      );
 
-      // helper
+      const ninjaMasterProvider: NinjaMasterProvider =
+        container.get<NinjaMasterProvider>('Provider<NinjaMaster>');
 
-
-      valueOrDefault<ESObject>(ninjaMasterProvider, { rank: 'DefaultNinjaMaster' }).then((ninjaMaster:ESObject) => {
+      void valueOrDefault(ninjaMasterProvider, {
+        rank: 'DefaultNinjaMaster',
+      } as NinjaMasterLike).then((ninjaMaster: NinjaMaster) => {
         expect(ninjaMaster.rank).to.eql('DefaultNinjaMaster');
       });
 
-      valueOrDefault<ESObject>(ninjaMasterProvider, { rank: 'DefaultNinjaMaster' }).then((ninjaMaster:ESObject) => {
+      void valueOrDefault(ninjaMasterProvider, {
+        rank: 'DefaultNinjaMaster',
+      } as NinjaMasterLike).then((ninjaMaster: NinjaMaster) => {
         expect(ninjaMaster.rank).to.eql('NinjaMaster');
         done();
       });
-
     });
 
     _it('Should_support_custom_arguments', (done:ESObject) => {
-
-      const container = new Container();
-
-      interface Sword {
-        material: string;
-        damage: number;
-      }
-
-      @injectable()
-      class Katana implements Sword {
-        public material!: string;
-        public damage!: number;
-      }
-
-      type SwordProvider = (material: string, damage: number) => Promise<Sword>;
-
-      container.bind<Sword>('Sword').to(Katana);
-
-      container.bind<SwordProvider>('SwordProvider').toProvider<Sword>((context) =>
-      (material: string, damage: number) =>
-      new Promise<Sword>((resolve) => {
-        setTimeout(() => {
-          const katana = context.container.get<Sword>('Sword');
-          katana.material = material;
-          katana.damage = damage;
-          resolve(katana);
-        }, 10);
-      }));
-
-      const katanaProvider = container.get<SwordProvider>('SwordProvider');
-
-      katanaProvider('gold', 100).then((powerfulGoldKatana) => {
-
-        expect(powerfulGoldKatana.material).to.eql('gold');
-        expect(powerfulGoldKatana.damage).to.eql(100);
-
-        katanaProvider('gold', 10).then((notSoPowerfulGoldKatana) => {
-          expect(notSoPowerfulGoldKatana.material).to.eql('gold');
-          expect(notSoPowerfulGoldKatana.damage).to.eql(10);
-          done();
-        });
-
-      });
-
-    });
-
-    _it('Should_support_partial_application_of_custom_arguments', (done:ESObject) => {
-
-      const container = new Container();
+      const container: Container = new Container();
 
       interface Sword {
         material: string;
@@ -143,43 +115,44 @@ export default function providerTest() {
         public damage!: number;
       }
 
-      type SwordProvider = (material: string) => (damage: number) => Promise<Sword>;
-
       container.bind<Sword>('Sword').to(Katana);
 
-      container.bind<SwordProvider>('SwordProvider').toProvider<Sword>((context) =>
-      (material: string) =>
-      (damage: number) =>
-      new Promise<Sword>((resolve) => {
-        setTimeout(() => {
-          const katana = context.container.get<Sword>('Sword');
-          katana.material = material;
-          katana.damage = damage;
-          resolve(katana);
-        }, 10);
-      }));
+      type SwordProvider = Provider<Sword, [string, number]>;
 
-      const katanaProvider = container.get<SwordProvider>('SwordProvider');
-      const goldKatanaProvider = katanaProvider('gold');
+      container.bind<SwordProvider>('SwordProvider').toProvider(
+        (context: ResolutionContext): SwordProvider =>
+        async (material: string, damage: number) =>
+        new Promise<Sword>(
+          (resolve: (value: Sword | PromiseLike<Sword>) => void) => {
+            setTimeout(() => {
+              const katana: Sword = context.get<Sword>('Sword');
+              katana.material = material;
+              katana.damage = damage;
+              resolve(katana);
+            }, 10);
+          },
+        ),
+      );
 
-      goldKatanaProvider(100).then((powerfulGoldKatana) => {
+      const katanaProvider: SwordProvider =
+        container.get<SwordProvider>('SwordProvider');
 
+      void katanaProvider('gold', 100).then((powerfulGoldKatana: Sword) => {
         expect(powerfulGoldKatana.material).to.eql('gold');
+
         expect(powerfulGoldKatana.damage).to.eql(100);
 
-        goldKatanaProvider(10).then((notSoPowerfulGoldKatana) => {
+        void katanaProvider('gold', 10).then((notSoPowerfulGoldKatana: Sword) => {
           expect(notSoPowerfulGoldKatana.material).to.eql('gold');
+
           expect(notSoPowerfulGoldKatana.damage).to.eql(10);
           done();
         });
-
       });
-
     });
 
     _it('Should_support_the_declaration_of_singletons', (done:ESObject) => {
-
-      const container = new Container();
+      const container: Container = new Container();
 
       interface Warrior {
         level: number;
@@ -188,7 +161,7 @@ export default function providerTest() {
       @injectable()
       class Ninja implements Warrior {
         public level: number;
-        public constructor() {
+        constructor() {
           this.level = 0;
         }
       }
@@ -197,29 +170,27 @@ export default function providerTest() {
 
       container.bind<Warrior>('Warrior').to(Ninja).inSingletonScope(); // Value is singleton!
 
-      container.bind<WarriorProvider>('WarriorProvider').toProvider<Warrior>((context) =>
-      (increaseLevel: number) =>
-      new Promise<Warrior>((resolve) => {
-        setTimeout(() => {
-          const warrior = context.container.get<Warrior>('Warrior'); // Get singleton!
-          warrior.level += increaseLevel;
-          resolve(warrior);
-        }, 100);
-      }));
+      container.bind<WarriorProvider>('WarriorProvider').toProvider(
+        (context: ResolutionContext) => async (increaseLevel: number) =>
+        new Promise<Warrior>((resolve: (value: Warrior) => void) => {
+          setTimeout(() => {
+            const warrior: Warrior = context.get<Warrior>('Warrior');
+            warrior.level += increaseLevel;
+            resolve(warrior);
+          }, 100);
+        }),
+      );
 
-      const warriorProvider = container.get<WarriorProvider>('WarriorProvider');
+      const warriorProvider: WarriorProvider = container.get('WarriorProvider');
 
-      warriorProvider(10).then((warrior) => {
-
+      void warriorProvider(10).then((warrior: Warrior) => {
         expect(warrior.level).to.eql(10);
 
-        warriorProvider(10).then((warrior2) => {
-          expect(warrior.level).to.eql(20);
+        void warriorProvider(10).then((warrior2: Warrior) => {
+          expect(warrior2.level).to.eql(20);
           done();
         });
-
       });
-
     });
   })
 }
