@@ -52,13 +52,14 @@ import _classCallCheck from "@babel/runtime/helpers/esm/classCallCheck";
 import _toConsumableArray from "@babel/runtime/helpers/esm/toConsumableArray";
 import _interopRequireDefault from "@babel/runtime/helpers/esm/interopRequireDefault";
 import _checkPrivateRedeclaration from "@babel/runtime/helpers/esm/checkPrivateRedeclaration";
-interface ReactElementBean{
+
+interface ReactElementBean {
   $$typeof: Object,
   type: Object,
-  key: Object,
+  key: Object | null,
   ref: Object,
-  props: Object,
-  _owner: Object
+  props: Object | null,
+  _owner: Object | null
 }
 
 interface DefaultConfigBean {
@@ -103,8 +104,9 @@ const DEFAULT_CONFIG: DefaultConfigBean = {
   predictable: false,
   // random seed for seeded pseudo random number generation
   // null = randomly seed
-  randomSeed: null
+  randomSeed: Object
 };
+
 export default function abilityTest() {
   describe('ActsAbilityTest', () => {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
@@ -136,13 +138,15 @@ export default function abilityTest() {
     it('_checkInRHS_string', 0, () => {
       try {
         _checkInRHS("a")
-      }catch (e){
+      } catch (e) {
         expect(e.message).assertEqual("right-hand side of 'in' should be an object, got string")
       }
     });
-    interface NameTestBean{
+
+    interface NameTestBean {
       name: string
     }
+
     it('_checkInRHS_obj', 0, () => {
       let a: NameTestBean = {
         name: "a"
@@ -154,7 +158,8 @@ export default function abilityTest() {
       let a: NameTestBean = {
         name: "a"
       }
-      let fun = () => {}
+      let fun = () => {
+      }
       expect(_defineAccessor("string", a, "a", fun)).assertDeepEquals(a)
     });
 
@@ -181,33 +186,36 @@ export default function abilityTest() {
       } as prop, {
         name: "height", value: 30
       } as prop]
-      let reactElement: ReactElementBean = _createRawReactElement('div',props,"key","text" )
+      let reactElement: ReactElementBean = _createRawReactElement('div', props, "key", "text")
       expect(reactElement.props).assertDeepEquals(props)
       expect(reactElement.type).assertEqual("div")
       expect(reactElement.key).assertEqual("key")
     });
 
     it('_objectSpread2_string', 0, () => {
-      expect( _objectSpread2('target')).assertEqual('target')
+      expect(_objectSpread2('target')).assertEqual('target')
     });
 
     it('_objectSpread2_bool', 0, () => {
-      expect( _objectSpread2(false)).assertFalse()
+      expect(_objectSpread2(false)).assertFalse()
     });
 
     it('_using_err', 0, () => {
       try {
-        expect(_using([], {name:'a'},true)).assertDeepEquals([])
-      }catch (e){
+        expect(_using([], {
+          name: 'a'
+        }, true)).assertDeepEquals([])
+      } catch (e) {
         expect(e.message).assertEqual('Property [Symbol.dispose] is not a function.')
       }
     });
 
     it('_using_err2', 0, () => {
       try {
-        _using([],'a')
-      }catch (e){
-        expect(e.message).assertEqual('using declarations can only be used with objects, functions, null, or undefined.')
+        _using([], 'a')
+      } catch (e) {
+        expect(e.message)
+          .assertEqual('using declarations can only be used with objects, functions, null, or undefined.')
       }
     });
 
@@ -242,7 +250,9 @@ export default function abilityTest() {
     });
 
     it('defineProperty', 0, () => {
-      expect(_defineProperty({}, 'name', "abc")).assertDeepEquals({ "name" : "abc" })
+      expect(_defineProperty({}, 'name', "abc")).assertDeepEquals({
+        "name": "abc"
+      })
     });
 
     it('getPrototypeOf', 0, () => {
@@ -261,16 +271,16 @@ export default function abilityTest() {
 
     it('inherits', 0, () => {
       try {
-      _inherits()
-      }catch (e){
+        _inherits()
+      } catch (e) {
         expect(e.message).assertEqual('Super expression must either be null or a function')
       }
     });
 
     it('get', 0, () => {
-      try{
-       _get()
-      }catch (e){
+      try {
+        _get()
+      } catch (e) {
         expect(e.message).assertEqual('Reflect.get target is not object')
       }
     });
@@ -292,16 +302,22 @@ export default function abilityTest() {
     });
 
     it('_interopRequireDefault', 0, () => {
-      expect(typeof _interopRequireDefault({ name : "abc"})).assertEqual('object')
+      expect(typeof _interopRequireDefault({
+        name: "abc"
+      })).assertEqual('object')
     });
 
     it('_typeof', 0, () => {
-      expect(_typeof({name: "abc"})).assertEqual('object')
+      expect(_typeof({
+        name: "abc"
+      })).assertEqual('object')
     });
 
     it('_classApplyDescriptorDestructureSet', 0, () => {
       try {
-        _classApplyDescriptorDestructureSet({ name: 'abc'}, 'abc')
+        _classApplyDescriptorDestructureSet({
+          name: 'abc'
+        }, 'abc')
       } catch (e) {
         expect(e.message).assertEqual('attempted to set read only private field')
       }
@@ -340,7 +356,8 @@ export default function abilityTest() {
     });
 
     it('identity_function', 0, () => {
-      let fun = () => {}
+      let fun = () => {
+      }
       expect(identity(fun)).assertDeepEquals(fun);
     });
 
