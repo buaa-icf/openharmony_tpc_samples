@@ -15,8 +15,7 @@
 import hilog from '@ohos.hilog';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 import { md5 } from 'js-md5'
-import hmacTestMain from './md5.hmac_test';
-import md5TestMain from './md5.test';
+
 
 export default function abilityTest() {
   describe('ActsAbilityTest', () => {
@@ -72,8 +71,11 @@ export default function abilityTest() {
       let t4: string = md5.base64(''); // 1B2M2Y8AsgTpgAmY7PhCfg==
       expect(t4).assertEqual('1B2M2Y8AsgTpgAmY7PhCfg==')
     })
-    hmacTestMain()
-    md5TestMain()
+
+    it('md5.hmac',0, () => {
+      const result = md5.hmac(new Uint8Array(0), 'Hi There');
+      expect(result).assertEqual('72c33c78cac0b7a581ac263a344ed01d');
+    })
 
   })
 }

@@ -26,17 +26,16 @@ md5.hmac('key', 'Message to hash');
 
 | API                                | Parameter                | Description |
 |:-----------------------------------|:-------------------------|:------------|
-| md5(data)                          | data                     | Algorithm.  |
-| md5.hex(data)                      | data                     | Algorithm.  |
-| md5.base64(data)                   | data                     | Algorithm.  |
-| md5.digest(data)                   | data                     | Algorithm.  |
-| md5.array(data)                    | data                     | Algorithm.  |
-| md5.hmac(secretKey,message)        | secretKey:key, message:content | HMAC-MD5 Algorithm          |
-| md5.hmac.hex(secretKey,message)    | secretKey:key, message:content | HMAC-MD5 Algorithm          |
-| md5.hmac.base64(secretKey,message) | secretKey:key, message:content | HMAC-MD5 Algorithm          |
-| md5.hmac.digest(secretKey,message) | secretKey:key, message:content | HMAC-MD5 Algorithm          |
-| md5.hmac.array(secretKey,message)  | secretKey:key, message:content | HMAC-MD5 Algorithm
-
+| md5(data)                          | data:内容                  | 算法          |
+| md5.hex(data)                      | data:内容                  | 算法          |
+| md5.base64(data)                   | data:内容                  | 算法          |
+| md5.digest(data)                   | data:内容                  | 算法          |
+| md5.array(data)                    | data:内容                  | 算法          |
+| md5.hmac(secretKey,message)        | secretKey:密钥, message:内容 | HMAC-MD5 算法 |
+| md5.hmac.hex(secretKey,message)    | secretKey:密钥, message:内容 | HMAC-MD5 算法 |
+| md5.hmac.base64(secretKey,message) | secretKey:密钥, message:内容 | HMAC-MD5 算法 |
+| md5.hmac.digest(secretKey,message) | secretKey:密钥, message:内容 | HMAC-MD5 算法 |
+| md5.hmac.array(secretKey,message)  | secretKey:密钥, message:内容 | HMAC-MD5 算法 |
 
 ## 约束与限制
 在下述版本验证通过：
