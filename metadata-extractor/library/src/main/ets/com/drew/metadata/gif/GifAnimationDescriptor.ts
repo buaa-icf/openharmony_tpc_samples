@@ -15,6 +15,9 @@ limitations under the License.
 
 import TagDescriptor from '../TagDescriptor';
 import GifAnimationDirectory from './GifAnimationDirectory';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "GifAnimationDescriptor";
 
 class GifAnimationDescriptor extends TagDescriptor<GifAnimationDirectory> {
   public constructor(directory: GifAnimationDirectory) {
@@ -22,6 +25,7 @@ class GifAnimationDescriptor extends TagDescriptor<GifAnimationDirectory> {
   }
 
   public getDescription(tagType: number): string {
+    LogUtil.debug(TAG, `getDescription start, tagType: ${tagType}`);
     switch (tagType) {
       case GifAnimationDirectory.TAG_ITERATION_COUNT:
         return this.getIterationCountDescription();
@@ -31,10 +35,13 @@ class GifAnimationDescriptor extends TagDescriptor<GifAnimationDirectory> {
   }
 
   public getIterationCountDescription(): string {
+    LogUtil.debug(TAG, `getIterationCountDescription start`);
     let count: number = this._directory.getInteger(GifAnimationDirectory.TAG_ITERATION_COUNT);
     if (count == null) {
+      LogUtil.error(TAG, `getIterationCountDescription end, count is null`);
       return null;
     }
+    LogUtil.debug(TAG, `getIterationCountDescription end, count: ${count}`);
     return count == 0 ? "Infinite" : count == 1 ? "Once" : count == 2 ? "Twice" : count.toString() + " times";
   }
 }

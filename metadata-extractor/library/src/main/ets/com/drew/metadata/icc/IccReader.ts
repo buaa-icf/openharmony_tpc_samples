@@ -22,6 +22,9 @@ import RandomAccessReader from '../../lang/RandomAccessReader';
 import Directory from '../Directory';
 import DateUtil from '../../lang/DateUtil';
 import IccDirectory from './IccDirectory';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "IccReader";
 
 class IccReader implements JpegSegmentMetadataReader, MetadataReader {
   public static readonly JPEG_SEGMENT_PREAMBLE: string = 'ICC_PROFILE';
@@ -31,6 +34,7 @@ class IccReader implements JpegSegmentMetadataReader, MetadataReader {
   }
 
   public readJpegSegments(segments: Set<Int8Array>, metadata: Metadata, segmentType: JpegSegmentType): void {
+    LogUtil.debug(TAG, `readJpegSegments start`);
     let preambleLength: number = IccReader.JPEG_SEGMENT_PREAMBLE.length;
 
     // ICC data can be spread across multiple JPEG segments.
@@ -64,13 +68,16 @@ class IccReader implements JpegSegmentMetadataReader, MetadataReader {
     if (buffer != null) {
       this.extract(new ByteArrayReader(buffer), metadata);
     }
+    LogUtil.debug(TAG, `readJpegSegments end`);
   }
 
   public extract(reader: RandomAccessReader, metadata: Metadata, parentDirectory?: Directory): void {
+    LogUtil.debug(TAG, `extract start`);
     // TODO review whether the 'tagPtr' values below really do require RandomAccessReader or whether SequentialReader may be used instead
     let directory: IccDirectory = new IccDirectory();
 
     if (parentDirectory != null) {
+      LogUtil.debug(TAG, `parentDirectory not null, setting parent`);
       directory.setParent(parentDirectory);
     }
 
@@ -123,10 +130,12 @@ class IccReader implements JpegSegmentMetadataReader, MetadataReader {
         directory.setByteArray(tagType, b);
       }
     } catch (error) {
+      LogUtil.error(TAG, `extract end, Exception reading ICC profile: ${JSON.stringify(error)}`);
       throw new Error("Exception reading ICC profile: " + error);
     }
 
     metadata.addDirectory(directory);
+    LogUtil.debug(TAG, `extract end`);
   }
 
   private set4ByteString(directory: Directory, tagType: number, reader: RandomAccessReader): void {

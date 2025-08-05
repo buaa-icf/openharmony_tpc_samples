@@ -18,6 +18,9 @@ import IccReader from './IccReader';
 import TagDescriptor from '../TagDescriptor';
 import RandomAccessReader from '../../lang/RandomAccessReader';
 import ByteArrayReader from '../../lang/ByteArrayReader';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "IccDescriptor";
 
 class IccDescriptor extends TagDescriptor<IccDirectory> {
   public constructor(directory: IccDirectory) {
@@ -25,6 +28,7 @@ class IccDescriptor extends TagDescriptor<IccDirectory> {
   }
 
   public getDescription(tagType: number): string {
+    LogUtil.debug(TAG, `getDescription start, tagType: ${tagType}`);
     switch (tagType) {
       case IccDirectory.TAG_PROFILE_VERSION:
         return this.getProfileVersionDescription();
@@ -52,14 +56,17 @@ class IccDescriptor extends TagDescriptor<IccDirectory> {
   private static readonly ICC_TAG_TYPE_CURV: number = 0x74657874;
 
   private getTagDataString(tagType: number): string {
+    LogUtil.debug(TAG, `getTagDataString start, tagType: ${tagType}`);
     try {
       let bytes: Int8Array = this._directory.getByteArray(tagType);
       if (bytes == null) {
+        LogUtil.error(TAG, `getTagDataString end, bytes is null, tagType: ${tagType}`);
         return this._directory.getString(tagType);
       }
 
       let reader: RandomAccessReader = new ByteArrayReader(bytes);
       let iccTagType: number = reader.getInt32(0);
+      LogUtil.debug(TAG, `getTagDataString iccTagType: ${iccTagType}`);
       switch (iccTagType) {
         case IccDescriptor.ICC_TAG_TYPE_TEXT:
           try {
@@ -82,6 +89,7 @@ class IccDescriptor extends TagDescriptor<IccDirectory> {
           let flare: number = reader.getS15Fixed16(28);
           let illuminantType: number = reader.getInt32(32);
           let observerString: string;
+          LogUtil.debug(TAG, `observerType: ${observerType}`);
           switch (observerType) {
             case 0:
               observerString = "Unknown";
@@ -97,6 +105,7 @@ class IccDescriptor extends TagDescriptor<IccDirectory> {
           }
 
           let geometryString;
+          LogUtil.debug(TAG, `geometryType: ${geometryType}`);
           switch (geometryType) {
             case 0:
               geometryString = "Unknown";
@@ -112,6 +121,7 @@ class IccDescriptor extends TagDescriptor<IccDirectory> {
           }
 
           let illuminantString: string;
+          LogUtil.debug(TAG, `illuminantType: ${illuminantType}`);
           switch (illuminantType) {
             case 0:
               illuminantString = "unknown";
@@ -208,12 +218,15 @@ class IccDescriptor extends TagDescriptor<IccDirectory> {
 
       }
     } catch (error) {
+      LogUtil.error(TAG, `getTagDataString end, error: ${JSON.stringify(error)}`);
       return null;
     }
   }
 
   public static formatDoubleAsString(value: number, precision: number, zeroes: boolean): string {
+    LogUtil.debug(TAG, `formatDoubleAsString start, value: ${value}, precision: ${precision}, zeroes: ${zeroes}`);
     if (precision < 1) {
+      LogUtil.error(TAG, `formatDoubleAsString end, precision must be greater than or equal to 1`);
       return "" + Math.round(value);
     }
     let intPart: number = Math.abs(value);
@@ -230,6 +243,7 @@ class IccDescriptor extends TagDescriptor<IccDirectory> {
     }
     intPart += rest;
     let isNegative: boolean = ((value < 0) && (intPart != 0 || restKept != 0));
+    LogUtil.debug(TAG, `formatDoubleAsString end, res: ${res}, isNegative: ${isNegative}`);
     return (isNegative ? "-" : "") + intPart + "." + res;
   }
 
@@ -243,8 +257,10 @@ class IccDescriptor extends TagDescriptor<IccDirectory> {
   }
 
   private getPlatformDescription(): string {
+    LogUtil.debug(TAG, `getPlatformDescription start`);
     let str: string = this._directory.getString(IccDirectory.TAG_PLATFORM);
     if (str == null) {
+      LogUtil.error(TAG, `getPlatformDescription end, str is null`);
       return null;
     }
     // Because Java doesn't allow switching on string values, create an integer from the first four chars
@@ -253,9 +269,11 @@ class IccDescriptor extends TagDescriptor<IccDirectory> {
     try {
       i = IccDescriptor.getInt32FromString(str);
     } catch (error) {
+      LogUtil.error(TAG, `getPlatformDescription end, error: ${JSON.stringify(error)}`);
       return str;
     }
 
+    LogUtil.debug(TAG, `getPlatformDescription end, i: ${i}`);
     switch (i) {
       case 0x4150504C: // "APPL"
         return "Apple Computer, Inc.";
@@ -273,8 +291,10 @@ class IccDescriptor extends TagDescriptor<IccDirectory> {
   }
 
   private getProfileClassDescription(): string {
+    LogUtil.debug(TAG, `getProfileClassDescription start`);
     let str: string = this._directory.getString(IccDirectory.TAG_PROFILE_CLASS);
     if (str == null) {
+      LogUtil.error(TAG, `getProfileClassDescription end, str is null`);
       return null;
     }
     // Because Java doesn't allow switching on string values, create an integer from the first four chars
@@ -283,8 +303,10 @@ class IccDescriptor extends TagDescriptor<IccDirectory> {
     try {
       i = IccDescriptor.getInt32FromString(str);
     } catch (error) {
+      LogUtil.error(TAG, `getProfileClassDescription end, error: ${JSON.stringify(error)}`);
       return str;
     }
+    LogUtil.debug(TAG, `getProfileClassDescription end, i: ${i}`);
     switch (i) {
       case 0x73636E72:
         return "Input Device";
@@ -306,8 +328,10 @@ class IccDescriptor extends TagDescriptor<IccDirectory> {
   }
 
   private getProfileVersionDescription(): string {
+    LogUtil.debug(TAG, `getProfileVersionDescription start`);
     let value: number = this._directory.getInteger(IccDirectory.TAG_PROFILE_VERSION);
     if (value == null) {
+      LogUtil.error(TAG, `getProfileVersionDescription end, value is null`);
       return null;
     }
 
@@ -315,6 +339,7 @@ class IccDescriptor extends TagDescriptor<IccDirectory> {
     let r: number = (value & 0x00F00000) >> 20;
     let R: number = (value & 0x000F0000) >> 16;
 
+    LogUtil.debug(TAG, `getProfileVersionDescription end, m: ${m}, r: ${r}, R: ${R}`);
     return m + "." + r + "." + R;
   }
 

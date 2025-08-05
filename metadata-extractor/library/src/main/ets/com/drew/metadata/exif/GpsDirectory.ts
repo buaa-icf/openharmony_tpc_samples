@@ -18,6 +18,9 @@ import Rational from '../../lang/Rational';
 import GeoLocation from '../../lang/GeoLocation';
 import GpsDescriptor from './GpsDescriptor';
 import ExifDirectoryBase from './ExifDirectoryBase';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "GpsDirectory";
 
 class GpsDirectory extends ExifDirectoryBase {
   /** GPS tag version GPSVersionID 0 0 BYTE 4 */
@@ -142,26 +145,36 @@ class GpsDirectory extends ExifDirectoryBase {
    */
   public getGeoLocation(): GeoLocation
   {
+    LogUtil.debug(TAG,`getGeoLocation start`);
     let latitudes: Rational[] = this.getRationalArray(GpsDirectory.TAG_LATITUDE);
     let longitudes: Rational[] = this.getRationalArray(GpsDirectory.TAG_LONGITUDE);
     let latitudeRef = this.getString(GpsDirectory.TAG_LATITUDE_REF);
     let longitudeRef = this.getString(GpsDirectory.TAG_LONGITUDE_REF);
 
     // Make sure we have the required values
-    if (latitudes == null || latitudes.length != 3)
-    return null;
-    if (longitudes == null || longitudes.length != 3)
-    return null;
-    if (latitudeRef == null || longitudeRef == null)
-    return null;
+    if (latitudes == null || latitudes.length != 3) {
+      LogUtil.error(TAG,`getGeoLocation end, latitudes is null or length is not 3`);
+      return null;
+    }
+    if (longitudes == null || longitudes.length != 3) {
+      LogUtil.error(TAG,`getGeoLocation end, longitudes is null or length is not 3`);
+      return null;
+    }
+    if (latitudeRef == null || longitudeRef == null) {
+      LogUtil.error(TAG,`getGeoLocation end, latitudeRef or longitudeRef is null`);
+      return null;
+    }
 
     let lat = GeoLocation.degreesMinutesSecondsToDecimal(latitudes[0], latitudes[1], latitudes[2], latitudeRef.toLocaleUpperCase() == "S");
     let lon = GeoLocation.degreesMinutesSecondsToDecimal(longitudes[0], longitudes[1], longitudes[2], longitudeRef.toLocaleUpperCase() == "W");
 
     // This can return null, in cases where the conversion was not possible
-    if (lat == null || lon == null)
-    return null;
+    if (lat == null || lon == null) {
+      LogUtil.error(TAG,`getGeoLocation end, lat or lon is null`);
+      return null;
+    }
 
+    LogUtil.debug(TAG,`getGeoLocation end, lat: ${lat}, lon: ${lon}`);
     return new GeoLocation(lat, lon);
   }
 
@@ -173,14 +186,19 @@ class GpsDirectory extends ExifDirectoryBase {
    */
   public getGpsDate(): string
   {
+    LogUtil.debug(TAG,`getGpsDate start`);
     let date = this.getString(GpsDirectory.TAG_DATE_STAMP);
     let timeComponents: Rational[] = this.getRationalArray(GpsDirectory.TAG_TIME_STAMP);
 
     // Make sure we have the required values
-    if (date == null)
-    return null;
-    if (timeComponents == null || timeComponents.length != 3)
-    return null;
+    if (date == null) {
+      LogUtil.error(TAG,`getGpsDate end, date is null`);
+      return null;
+    }
+    if (timeComponents == null || timeComponents.length != 3) {
+      LogUtil.error(TAG,`getGpsDate end, timeComponents is null or length is not 3`);
+      return null;
+    }
 
     //        let dateTime = String.format(Locale.US, "%s %02d:%02d:%02.3f UTC",
     //            date, timeComponents[0].intValue(), timeComponents[1].intValue(), timeComponents[2].doubleValue());
@@ -189,10 +207,12 @@ class GpsDirectory extends ExifDirectoryBase {
       .replace(/%02d/, timeComponents[1].numberValue().toFixed())
       .replace(/%02.3f/, timeComponents[2].numberValue().toFixed())
     try {
+      LogUtil.debug(TAG,`getGpsDate end, dateTime: ${dateTime}`);
       return DateUtils.dateFormat(dateTime, "yyyy:MM:dd HH:mm:ss.f q")
       //            DateFormat parser = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss.S z");
       //            return parser.parse(dateTime);
     } catch (e) {
+      LogUtil.error(TAG,`getGpsDate end, ${JSON.stringify(e)}`);
       return null;
     }
   }

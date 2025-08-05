@@ -16,12 +16,17 @@ limitations under the License.
 import fileio from '@ohos.fileio';
 import FileSystemDirectory from './FileSystemDirectory';
 import Metadata from '../Metadata';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "FileSystemMetadataReader";
 
 class FileSystemMetadataReader {
   public read(filePath: string, metadata: Metadata): void
   {
+    LogUtil.debug(TAG, `read start, filePath: ${filePath}`);
     let directory = metadata.getFirstDirectoryOfType(new FileSystemDirectory());
     if (directory == null) {
+      LogUtil.debug(TAG, `directory is null, create new directory`);
       directory = new FileSystemDirectory();
       metadata.addDirectory(directory);
     }
@@ -31,6 +36,7 @@ class FileSystemMetadataReader {
     directory.setString(FileSystemDirectory.TAG_FILE_NAME, filePath.substr(filePath.lastIndexOf('/') + 1, filePath.length));
     directory.setLong(FileSystemDirectory.TAG_FILE_SIZE, stat.size);
     directory.setDate(FileSystemDirectory.TAG_FILE_MODIFIED_DATE, new Date(stat.mtime * 1000));
+    LogUtil.debug(TAG, `read end`);
   }
 }
 

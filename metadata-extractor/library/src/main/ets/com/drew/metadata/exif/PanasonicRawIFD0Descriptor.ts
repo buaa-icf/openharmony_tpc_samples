@@ -15,6 +15,9 @@ limitations under the License.
 
 import TagDescriptor from '../TagDescriptor';
 import PanasonicRawIFD0Directory from './PanasonicRawIFD0Directory';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "PanasonicRawIFD0Descriptor";
 
 class PanasonicRawIFD0Descriptor extends TagDescriptor<PanasonicRawIFD0Directory> {
   constructor(directory: PanasonicRawIFD0Directory) {
@@ -23,6 +26,7 @@ class PanasonicRawIFD0Descriptor extends TagDescriptor<PanasonicRawIFD0Directory
 
   public getDescription(tagType: number): string
   {
+    LogUtil.debug(TAG, `getDescription start, tagType = ${tagType}`);
     switch (tagType) {
       case PanasonicRawIFD0Directory.TagPanasonicRawVersion:
         return this.getVersionBytesDescription(PanasonicRawIFD0Directory.TagPanasonicRawVersion, 2);

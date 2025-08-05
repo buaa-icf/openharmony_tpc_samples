@@ -15,6 +15,9 @@
 
 import ExifThumbnailDirectory from './ExifThumbnailDirectory';
 import ExifDescriptorBase from './ExifDescriptorBase';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "ExifThumbnailDescriptor";
 
 /**
  * Provides human-readable string representations of tag values stored in a {@link ExifThumbnailDirectory}.
@@ -25,6 +28,7 @@ class ExifThumbnailDescriptor extends ExifDescriptorBase<ExifThumbnailDirectory>
   }
 
   public getDescription(tagType: number): string {
+    LogUtil.debug(TAG, `getDescription start, tagType = ${tagType}`);
     switch (tagType) {
       case ExifThumbnailDirectory.TAG_THUMBNAIL_OFFSET:
         return this.getThumbnailOffsetDescription();

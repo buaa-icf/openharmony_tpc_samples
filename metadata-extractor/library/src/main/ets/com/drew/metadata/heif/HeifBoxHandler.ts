@@ -25,6 +25,9 @@ import HeifBoxTypes from './HeifBoxTypes';
 import HeifContainerTypes from './HeifContainerTypes';
 import SequentialReader from '../../lang/SequentialReader';
 import SequentialByteArrayReader from '../../lang/SequentialByteArrayReader';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "HeifBoxHandler";
 
 class HeifBoxHandler extends HeifHandler {
   public handlerBox: HandlerBox;
@@ -47,12 +50,14 @@ class HeifBoxHandler extends HeifHandler {
   }
 
   public shouldAcceptContainer(box: Box): boolean {
+    LogUtil.debug(TAG, `shouldAcceptContainer start, box type: ${box.type}`)
     return box.type == HeifContainerTypes.BOX_METADATA
     || box.type == HeifContainerTypes.BOX_IMAGE_PROPERTY
     || box.type == HeifContainerTypes.BOX_ITEM_PROPERTY;
   }
 
   public processBox(box: Box, payload: Int8Array): HeifHandler {
+    LogUtil.debug(TAG, `processBox start, box type: ${box.type}, payload size: ${payload.length}`);
     if (payload != null) {
       let reader: SequentialReader = new SequentialByteArrayReader(payload);
       if (box.type == HeifBoxTypes.BOX_FILE_TYPE) {
@@ -62,6 +67,7 @@ class HeifBoxHandler extends HeifHandler {
         return this.handlerFactory.getHandler(this.handlerBox, this.metadata);
       }
     }
+    LogUtil.debug(TAG, `processBox end`);
     return this;
   }
 
@@ -72,11 +78,14 @@ class HeifBoxHandler extends HeifHandler {
   }
 
   private processFileType(reader: SequentialReader, box: Box): void {
+    LogUtil.debug(TAG, `processFileType start`);
     let fileTypeBox: FileTypeBox = new FileTypeBox(reader, box);
     fileTypeBox.addMetadata(this.directory);
     if (!fileTypeBox.getCompatibleBrands().has("mif1")) {
+      LogUtil.error(TAG, "File Type Box does not contain required brand, mif1");
       this.directory.addError("File Type Box does not contain required brand, mif1");
     }
+    LogUtil.debug(TAG, `processFileType end`);
   }
 }
 

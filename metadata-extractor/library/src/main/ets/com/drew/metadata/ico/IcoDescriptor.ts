@@ -15,6 +15,9 @@ limitations under the License.
 
 import IcoDirectory from './IcoDirectory';
 import TagDescriptor from '../TagDescriptor';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "IcoDescriptor";
 
 class IcoDescriptor extends TagDescriptor<IcoDirectory> {
   constructor(directory: IcoDirectory) {
@@ -23,6 +26,7 @@ class IcoDescriptor extends TagDescriptor<IcoDirectory> {
 
   public getDescription(tagType: number): string
   {
+    LogUtil.debug(TAG, `getDescription start, tagType: ${tagType}`);
     switch (tagType) {
       case IcoDirectory.TAG_IMAGE_TYPE:
         return this.getImageTypeDescription();
@@ -44,25 +48,37 @@ class IcoDescriptor extends TagDescriptor<IcoDirectory> {
 
   public getImageWidthDescription(): string
   {
+    LogUtil.debug(TAG, `getImageWidthDescription start`);
     let width = this._directory.getInteger(IcoDirectory.TAG_IMAGE_WIDTH);
-    if (width == null)
-    return null;
+    if (width == null) {
+      LogUtil.error(TAG, `getImageWidthDescription end, width is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getImageWidthDescription end, width: ${width}`);
     return (width == 0 ? 256 : width) + " pixels";
   }
 
   public getImageHeightDescription(): string
   {
+    LogUtil.debug(TAG, `getImageHeightDescription start`);
     let width = this._directory.getInteger(IcoDirectory.TAG_IMAGE_HEIGHT);
-    if (width == null)
-    return null;
+    if (width == null) {
+      LogUtil.error(TAG, `getImageHeightDescription end, width is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getImageHeightDescription end, width: ${width}`);
     return (width == 0 ? 256 : width) + " pixels";
   }
 
   public getColourPaletteSizeDescription(): string
   {
+    LogUtil.debug(TAG, `getColourPaletteSizeDescription start`);
     let size = this._directory.getInteger(IcoDirectory.TAG_COLOUR_PALETTE_SIZE);
-    if (size == null)
-    return null;
+    if (size == null) {
+      LogUtil.error(TAG, `getColourPaletteSizeDescription end, size is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getColourPaletteSizeDescription end, size: ${size}`);
     return size == 0 ? "No palette" : size + " colour" + (size == 1 ? "" : "s");
   }
 }

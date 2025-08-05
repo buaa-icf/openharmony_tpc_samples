@@ -16,6 +16,9 @@ limitations under the License.
 import TagDescriptor from '../TagDescriptor';
 import PanasonicRawWbInfoDirectory from './PanasonicRawWbInfoDirectory';
 import ExifDescriptorBase from './ExifDescriptorBase';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "PanasonicRawWbInfoDescriptor";
 
 export default class PanasonicRawWbInfoDescriptor extends TagDescriptor<PanasonicRawWbInfoDirectory> {
   public constructor(directory: PanasonicRawWbInfoDirectory) {
@@ -24,6 +27,7 @@ export default class PanasonicRawWbInfoDescriptor extends TagDescriptor<Panasoni
 
   public getDescription(tagType: number): string
   {
+    LogUtil.debug(TAG, `getDescription start, tagType = ${tagType}`);
     switch (tagType) {
       case PanasonicRawWbInfoDirectory.TagWbType1:
       case PanasonicRawWbInfoDirectory.TagWbType2:
@@ -40,9 +44,13 @@ export default class PanasonicRawWbInfoDescriptor extends TagDescriptor<Panasoni
 
   public getWbTypeDescription(tagType: number): string
   {
+    LogUtil.debug(TAG, `getWbTypeDescription start, tagType = ${tagType}`);
     let value = this._directory.getInteger(tagType);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getWbTypeDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getWbTypeDescription end`);
     return ExifDescriptorBase.getWhiteBalanceDescription(value);
   }
 }

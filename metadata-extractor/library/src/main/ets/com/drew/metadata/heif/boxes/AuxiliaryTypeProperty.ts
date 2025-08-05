@@ -16,6 +16,9 @@ limitations under the License.
 import FullBox from './FullBox';
 import Box from './Box';
 import SequentialReader from '../../../lang/SequentialReader';
+import LogUtil from '../../../tools/LogUtils';
+
+const TAG: string = "AuxiliaryTypeProperty";
 
 class AuxiliaryTypeProperty extends FullBox {
   public auxType: string;
@@ -28,6 +31,7 @@ class AuxiliaryTypeProperty extends FullBox {
   }
 
   private getZeroTerminatedString(maxLengthBytes: number, reader: SequentialReader): string {
+    LogUtil.debug(TAG, `getZeroTerminatedString start, maxLengthBytes: ${maxLengthBytes}`);
     let stringBuilder: string = "";
     for (let i = 0; i < maxLengthBytes; i++) {
       stringBuilder.concat(reader.getByte().toString());
@@ -35,6 +39,7 @@ class AuxiliaryTypeProperty extends FullBox {
         break;
       }
     }
+    LogUtil.debug(TAG, `getZeroTerminatedString end, stringBuilder: ${stringBuilder}`);
     return stringBuilder.toString().trim();
   }
 }

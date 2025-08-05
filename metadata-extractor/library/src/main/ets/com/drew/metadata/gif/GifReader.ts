@@ -25,24 +25,29 @@ import GifControlDirectory from './GifControlDirectory';
 import GifImageDirectory from './GifImageDirectory';
 import ByteArrayReader from '../../lang/ByteArrayReader';
 import ErrorDirectory from '../ErrorDirectory';
+import LogUtil from '../../tools/LogUtils';
 
+const TAG: string = "GifReader";
 
 class GifReader {
   private static readonly GIF_87A_VERSION_IDENTIFIER: string = "87a";
   private static readonly GIF_89A_VERSION_IDENTIFIER: string = "89a";
 
   public extract(reader: SequentialReader, metadata: Metadata): void {
+    LogUtil.debug(TAG, `extract start`);
     reader.setMotorolaByteOrder(false);
     let header: GifHeaderDirectory;
     try {
       header = GifReader.readGifHeader(reader);
       metadata.addDirectory(header);
     } catch (error) {
+      LogUtil.error(TAG, `extract end, Error reading GIF header: ${JSON.stringify(error)}`);
       metadata.addDirectory(error);
       return;
     }
 
     if (header.hasErrors()) {
+      LogUtil.error(TAG, `extract end, Error reading GIF header: ${header.getErrors()}`);
       return;
     }
 
@@ -92,8 +97,10 @@ class GifReader {
         }
       }
     } catch (error) {
+      LogUtil.error(TAG, `extract end, Error reading GIF data: ${JSON.stringify(error)}`);
       metadata.addDirectory(new ErrorDirectory("IOException processing GIF data"));
     }
+    LogUtil.debug(TAG, `extract end`);
   }
 
   public static readGifHeader(reader: SequentialReader): GifHeaderDirectory {
@@ -113,17 +120,20 @@ class GifReader {
     //       7    Global color table flag
     // 1 - background color index
     // 1 - pixel aspect ratio
+    LogUtil.debug(TAG, `readGifHeader start`);
     let headerDirectory: GifHeaderDirectory = new GifHeaderDirectory();
     let signature: string = reader.getString(3);
 
     if ("GIF" != signature) {
       headerDirectory.addError("Invalid GIF file signature");
+      LogUtil.error(TAG, `readGifHeader end, Invalid GIF file signature`);
       return headerDirectory;
     }
 
     let version: string = reader.getString(3);
     if (GifReader.GIF_87A_VERSION_IDENTIFIER != version && GifReader.GIF_89A_VERSION_IDENTIFIER != version) {
       headerDirectory.addError("Unexpected GIF version");
+      LogUtil.error(TAG, `readGifHeader end, Unexpected GIF version`);
       return headerDirectory;
     }
 
@@ -156,14 +166,17 @@ class GifReader {
       headerDirectory.setFloat(GifHeaderDirectory.TAG_PIXEL_ASPECT_RATIO, pixelAspectRatio);
     }
 
+    LogUtil.debug(TAG, `readGifHeader end`);
     return headerDirectory;
   }
 
   private static readGifExtensionBlock(reader: SequentialReader, metadata: Metadata): void {
+    LogUtil.debug(TAG, `readGifExtensionBlock start`);
     let extensionLabel: number = reader.getInt8();
     let blockSizeBytes: number = reader.getUInt8();
     let blockStartPos: number = reader.getPosition();
 
+    LogUtil.debug(TAG, `readGifExtensionBlock extensionLabel: ${extensionLabel}, blockSizeBytes: ${blockSizeBytes}`);
     switch (extensionLabel) {
       case 0x01:
         let plainTextBlock: Directory = GifReader.readPlainTextBlock(reader, blockSizeBytes);
@@ -188,12 +201,15 @@ class GifReader {
     if (skipCount > 0) {
       reader.skip(skipCount);
     }
+    LogUtil.debug(TAG, `readGifExtensionBlock end`);
   }
 
   private static readPlainTextBlock(reader: SequentialReader, blockSizeBytes: number): Directory {
     // It seems this extension is deprecated. If somebody finds an image with this in it, could implement here.
     // Just skip the entire block for now.
+    LogUtil.debug(TAG, `readPlainTextBlock start`);
     if (blockSizeBytes != 12) {
+      LogUtil.error(TAG, `readPlainTextBlock end, Invalid GIF plain text block size. Expected 12`);
       return new ErrorDirectory("Invalid GIF plain text block size. Expected 12, got " + blockSizeBytes + ".");
     }
 
@@ -203,6 +219,7 @@ class GifReader {
     // keep reading and skipping until a 0 byte is reached
     GifReader.skipBlocks(reader);
 
+    LogUtil.debug(TAG, `readPlainTextBlock end`);
     return null;
   }
 
@@ -212,13 +229,16 @@ class GifReader {
   }
 
   private static readApplicationExtensionBlock(reader: SequentialReader, blockSizeBytes: number, metadata: Metadata): void {
+    LogUtil.debug(TAG, `readApplicationExtensionBlock start`);
     if (blockSizeBytes != 11) {
       metadata.addDirectory(new ErrorDirectory("Invalid GIF application extension block size. Expected 11, got " + blockSizeBytes + "."));
+      LogUtil.error(TAG, `readApplicationExtensionBlock end, Invalid GIF application extension block size. Expected 11`);
       return;
     }
 
     let extensionType: string = reader.getString(blockSizeBytes, "UTF_8");
 
+    LogUtil.debug(TAG, `readApplicationExtensionBlock extensionType: ${extensionType}`);
     if (extensionType == "XMP DataXMP") {
       // XMP data extension
       let xmpBytes: Int8Array = GifReader.gatherBytes(reader);
@@ -265,6 +285,7 @@ class GifReader {
   }
 
   private static readImageBlock(reader: SequentialReader): GifImageDirectory {
+    LogUtil.debug(TAG, `readImageBlock start`);
     let imageDirectory: GifImageDirectory = new GifImageDirectory();
 
     imageDirectory.setInt(GifImageDirectory.TAG_LEFT, reader.getUInt16());
@@ -279,6 +300,7 @@ class GifReader {
     imageDirectory.setBoolean(GifImageDirectory.TAG_HAS_LOCAL_COLOUR_TABLE, hasColorTable);
     imageDirectory.setBoolean(GifImageDirectory.TAG_IS_INTERLACED, isInterlaced);
 
+    LogUtil.debug(TAG, `readImageBlock hasColorTable: ${hasColorTable}, isInterlaced: ${isInterlaced}`);
     if (hasColorTable) {
       let isColorTableSorted: boolean = (flags & 0x20) != 0;
       imageDirectory.setBoolean(GifImageDirectory.TAG_IS_COLOR_TABLE_SORTED, isColorTableSorted);
@@ -291,17 +313,20 @@ class GifReader {
     }
 
     // skip "LZW Minimum Code Size" byte
+    LogUtil.debug(TAG, `readImageBlock end`);
     reader.getByte();
 
     return imageDirectory;
   }
 
   private static gatherBytes(reader: SequentialReader): Int8Array {
+    LogUtil.debug(TAG, `gatherBytes start`);
     let buffer = new ArrayBuffer(257);
 
     while (true) {
       let b: number = reader.getByte();
       if (b == 0) {
+        LogUtil.error(TAG, `gatherBytes end, return null`);
         return null;
       }
 
@@ -314,6 +339,7 @@ class GifReader {
   }
 
   private static gatherBytesWithFirstLength(reader: SequentialReader, firstLength: number): Int8Array {
+    LogUtil.debug(TAG, `gatherBytesWithFirstLength start`);
     let length: number = firstLength;
     let buffer = new ArrayBuffer(4096);
 
@@ -322,14 +348,17 @@ class GifReader {
       length = reader.getByte() & 0xff;
     }
 
+    LogUtil.debug(TAG, `gatherBytesWithFirstLength end`);
     return new Int8Array(buffer);
   }
 
   private static skipBlocks(reader: SequentialReader): void {
+    LogUtil.debug(TAG, `skipBlocks start`);
     while (true) {
       let length: number = reader.getUInt8();
 
       if (length == 0) {
+        LogUtil.debug(TAG, `skipBlocks end, length is 0`);
         return;
       }
 

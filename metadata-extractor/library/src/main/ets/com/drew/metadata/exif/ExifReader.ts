@@ -22,6 +22,9 @@ import StringUtil from '../../lang/StringUtil';
 import JpegSegmentType from '../../imaging/jpeg/JpegSegmentType';
 import Metadata from '../Metadata';
 import JpegSegmentMetadataReader from '../../imaging/jpeg/JpegSegmentMetadataReader'
+import LogUtil from '../../tools/LogUtils'
+
+const TAG: string = "ExifReader";
 
 class ExifReader implements JpegSegmentMetadataReader {
   /** Exif data stored in JPEG files' APP1 segment are preceded by this six character preamble "Exif\0\0". */
@@ -48,18 +51,23 @@ class ExifReader implements JpegSegmentMetadataReader {
   /** Indicates whether 'bytes' starts with 'JpegSegmentPreamble'. */
   public static startsWithJpegExifPreamble(bytes: Int8Array): boolean
   {
+    LogUtil.debug(TAG, `startsWithJpegExifPreamble satrt`);
     if (bytes.length < ExifReader.JPEG_SEGMENT_PREAMBLE.length) {
+      LogUtil.error(TAG, `startsWithJpegExifPreamble end, bytes.length < ExifReader.JPEG_SEGMENT_PREAMBLE.length`);
       return false
     }
     if (StringUtil.compare(StringUtil.utf8ByteToUnicodeStr(bytes), ExifReader.JPEG_SEGMENT_PREAMBLE) != 0) {
+      LogUtil.error(TAG, `startsWithJpegExifPreamble end, StringUtil.compare(StringUtil.utf8ByteToUnicodeStr(bytes), ExifReader.JPEG_SEGMENT_PREAMBLE) != 0`);
       return false
     }
+    LogUtil.debug(TAG, `startsWithJpegExifPreamble end`);
     return true
   }
 
   /** Reads TIFF formatted Exif data at a specified offset within a {@link RandomAccessReader}. */
   public extract(reader: RandomAccessReader, metadata: Metadata, readerOffset?: number, parentDirectory?: Directory): void
   {
+    LogUtil.debug(TAG, `extract start`);
     if (parentDirectory == undefined) {
       parentDirectory = null
     }
@@ -73,6 +81,7 @@ class ExifReader implements JpegSegmentMetadataReader {
         readerOffset
       );
     } catch (e) {
+      LogUtil.error(TAG, `extract end, ${JSON.stringify(e)}`);
       throw new Error("Exception processing TIFF data");
     }
   }

@@ -19,6 +19,9 @@ import Metadata from '../../Metadata';
 import IccReader from '../../icc/IccReader';
 import ByteArrayReader from '../../../lang/ByteArrayReader';
 import HeifDirectory from '../HeifDirectory';
+import LogUtil from '../../../tools/LogUtils';
+
+const TAG: string = "ColourInformationBox";
 
 class ColourInformationBox extends Box {
   public colourType: string;
@@ -29,6 +32,7 @@ class ColourInformationBox extends Box {
 
   public constructor(reader: SequentialReader, box: Box, metadata: Metadata) {
     super(null, box);
+    LogUtil.debug(TAG, `constructor start, this.colourType: ${this.colourType}, this.size: ${this.size}`);
     this.colourType = reader.getString(4);
     if (this.colourType == "nclx") {
       this.colourPrimaries = reader.getUInt16();
@@ -43,6 +47,7 @@ class ColourInformationBox extends Box {
       let buffer: Int8Array = reader.getBytes((this.size - 12));
       new IccReader().extract(new ByteArrayReader(buffer), metadata);
     }
+    LogUtil.debug(TAG, `constructor end`);
   }
 
   public addMetadata(directory: HeifDirectory): void {

@@ -15,6 +15,9 @@ limitations under the License.
 
 import FileSystemDirectory from './FileSystemDirectory';
 import TagDescriptor from '../TagDescriptor';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "FileSystemDescriptor";
 
 class FileSystemDescriptor extends TagDescriptor<FileSystemDirectory> {
   constructor(directory: FileSystemDirectory) {
@@ -23,6 +26,7 @@ class FileSystemDescriptor extends TagDescriptor<FileSystemDirectory> {
 
   public getDescription(tagType: number): string
   {
+    LogUtil.debug(TAG, `getDescription start, tagType = ${tagType}`);
     switch (tagType) {
       case FileSystemDirectory.TAG_FILE_SIZE:
         return this.getFileSizeDescription();
@@ -33,11 +37,15 @@ class FileSystemDescriptor extends TagDescriptor<FileSystemDirectory> {
 
   private getFileSizeDescription(): string
   {
+    LogUtil.debug(TAG, `getFileSizeDescription start`);
     let size = this._directory.getLongObject(FileSystemDirectory.TAG_FILE_SIZE);
 
-    if (size == null)
-    return null;
+    if (size == null) {
+      LogUtil.error(TAG, `getFileSizeDescription end, size is null`);
+      return null;
+    }
 
+    LogUtil.debug(TAG, `getFileSizeDescription end, size = ${size}`);
     return size + " bytes";
   }
 }

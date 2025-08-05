@@ -17,6 +17,9 @@ import Rational from '../../lang/Rational';
 import GeoLocation from '../../lang/GeoLocation';
 import GpsDirectory from './GpsDirectory';
 import TagDescriptor from '../TagDescriptor';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "GpsDescriptor";
 
 class GpsDescriptor extends TagDescriptor<GpsDirectory> {
   constructor(directory: GpsDirectory) {
@@ -25,6 +28,7 @@ class GpsDescriptor extends TagDescriptor<GpsDirectory> {
 
   public getDescription(tagType: number): string
   {
+    LogUtil.debug(TAG, `getDescription start, tagType: ${tagType}`);
     switch (tagType) {
       case GpsDirectory.TAG_VERSION_ID:
         return this.getGpsVersionIdDescription();
@@ -119,24 +123,32 @@ class GpsDescriptor extends TagDescriptor<GpsDirectory> {
   }
 
   private getGeoLocationDimension(tagValue: number, tagRef: number, positiveRef: string) {
+    LogUtil.debug(TAG, `getGeoLocationDimension start, tagValue: ${tagValue}, tagRef: ${tagRef}, positiveRef: ${positiveRef}`);
     let values: Rational[] = this._directory.getRationalArray(tagValue);
     let ref = this._directory.getString(tagRef);
 
-    if (values == null || values.length != 3 || ref == null)
-    return null;
+    if (values == null || values.length != 3 || ref == null) {
+      LogUtil.error(TAG, `getGeoLocationDimension end, values or ref is null, values: ${values}, ref: ${ref}`);
+      return null;
+    }
 
     let dec = GeoLocation.degreesMinutesSecondsToDecimal(
       values[0], values[1], values[2], ref.toLocaleUpperCase() == positiveRef.toString());
 
+    LogUtil.debug(TAG, `getGeoLocationDimension end, dec: ${dec}`);
     return dec == null ? null : GeoLocation.decimalToDegreesMinutesSecondsString(dec);
   }
 
   public getGpsDestinationReferenceDescription(): string
   {
+    LogUtil.debug(TAG, `getGpsDestinationReferenceDescription start`);
     let value = this._directory.getString(GpsDirectory.TAG_DEST_DISTANCE_REF);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getGpsDestinationReferenceDescription end, value is null`);
+      return null;
+    }
     let distanceRef = value.trim();
+    LogUtil.debug(TAG, `getGpsDestinationReferenceDescription end, distanceRef: ${distanceRef.toLocaleUpperCase()}`);
     if ("K" == distanceRef.toLocaleUpperCase()) {
       return "kilometers";
     } else if ("M" == distanceRef.toLocaleUpperCase()) {
@@ -149,10 +161,14 @@ class GpsDescriptor extends TagDescriptor<GpsDirectory> {
   }
 
   public getGpsDestDistanceDescription() {
+    LogUtil.debug(TAG, `getGpsDestDistanceDescription start`);
     let value: Rational = this._directory.getRational(GpsDirectory.TAG_DEST_DISTANCE);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getGpsDestDistanceDescription end, value is null`);
+      return null;
+    }
     let unit = this.getGpsDestinationReferenceDescription();
+    LogUtil.debug(TAG, `getGpsDestDistanceDescription end`);
     return "%s %s".replace(/%s/, value.numberValue().toFixed(2))
       .replace(/%s/, unit == null ? "unit" : unit.toLowerCase());
     //        return String.format("%s %s",
@@ -161,19 +177,26 @@ class GpsDescriptor extends TagDescriptor<GpsDirectory> {
   }
 
   public getGpsDirectionDescription(tagType: number) {
+    LogUtil.debug(TAG, `getGpsDirectionDescription start, tagType: ${tagType}`);
     let angle: Rational = this._directory.getRational(tagType);
     // provide a decimal version of rational numbers in the description, to avoid strings like "35334/199 degrees"
+    LogUtil.debug(TAG, `getGpsDirectionDescription end, angle: ${angle}`);
     let value = angle != null
       ? angle.numberValue().toFixed(2)
       : this._directory.getString(tagType);
+    LogUtil.debug(TAG, `getGpsDirectionDescription end, value: ${value}`);
     return value == null || value.trim().length == 0 ? null : value.trim() + " degrees";
   }
 
   public getGpsDirectionReferenceDescription(tagType: number) {
+    LogUtil.debug(TAG, `getGpsDirectionReferenceDescription start, tagType: ${tagType}`);
     let value = this._directory.getString(tagType);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getGpsDirectionReferenceDescription end, value is null`);
+      return null;
+    }
     let gpsDistRef = value.trim();
+    LogUtil.debug(TAG, `getGpsDirectionReferenceDescription end, gpsDistRef: ${gpsDistRef.toLocaleUpperCase()}`);
     if ("T" == gpsDistRef.toLocaleUpperCase()) {
       return "True direction";
     } else if ("M" == gpsDistRef.toLocaleUpperCase()) {
@@ -191,10 +214,14 @@ class GpsDescriptor extends TagDescriptor<GpsDirectory> {
 
   public getGpsSpeedRefDescription(): string
   {
+    LogUtil.debug(TAG, `getGpsSpeedRefDescription start`);
     let value = this._directory.getString(GpsDirectory.TAG_SPEED_REF);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getGpsSpeedRefDescription end, value is null`);
+      return null;
+    }
     let gpsSpeedRef = value.trim();
+    LogUtil.debug(TAG, `getGpsSpeedRefDescription end, gpsSpeedRef: ${gpsSpeedRef.toLocaleUpperCase()}`);
     if ("K" == gpsSpeedRef.toLocaleUpperCase()) {
       return "km/h";
     } else if ("M" == gpsSpeedRef.toLocaleUpperCase()) {
@@ -207,10 +234,14 @@ class GpsDescriptor extends TagDescriptor<GpsDirectory> {
   }
 
   public getGpsSpeedDescription() {
+    LogUtil.debug(TAG, `getGpsSpeedDescription start`);
     let value: Rational = this._directory.getRational(GpsDirectory.TAG_SPEED);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getGpsSpeedDescription end, value is null`);
+      return null;
+    }
     let unit = this.getGpsSpeedRefDescription();
+    LogUtil.debug(TAG, `getGpsSpeedDescription end`);
     return "%s %s".replace(/%s/, value.numberValue().toFixed(2))
       .replace(/%s/, unit == null ? "unit" : unit.toLowerCase())
     //        return String.format("%s %s",
@@ -220,10 +251,14 @@ class GpsDescriptor extends TagDescriptor<GpsDirectory> {
 
   public getGpsMeasureModeDescription(): string
   {
+    LogUtil.debug(TAG, `getGpsMeasureModeDescription start`);
     let value = this._directory.getString(GpsDirectory.TAG_MEASURE_MODE);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getGpsMeasureModeDescription end, value is null`);
+      return null;
+    }
     let gpsSpeedMeasureMode = value.trim();
+    LogUtil.debug(TAG, `getGpsMeasureModeDescription end, gpsSpeedMeasureMode: ${gpsSpeedMeasureMode.toLocaleUpperCase()}`);
     if ("2" == gpsSpeedMeasureMode.toLocaleUpperCase()) {
       return "2-dimensional measurement";
     } else if ("3" == gpsSpeedMeasureMode.toLocaleUpperCase()) {
@@ -235,10 +270,14 @@ class GpsDescriptor extends TagDescriptor<GpsDirectory> {
 
   public getGpsStatusDescription(): string
   {
+    LogUtil.debug(TAG, `getGpsStatusDescription start`);
     let value = this._directory.getString(GpsDirectory.TAG_STATUS);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getGpsStatusDescription end, value is null`);
+      return null;
+    }
     let gpsStatus = value.trim();
+    LogUtil.debug(TAG, `getGpsStatusDescription end, gpsStatus: ${gpsStatus.toLocaleUpperCase()}`);
     if ("A" == gpsStatus.toLocaleUpperCase()) {
       return "Active (Measurement in progress)";
     } else if ("V" == gpsStatus.toLocaleUpperCase()) {

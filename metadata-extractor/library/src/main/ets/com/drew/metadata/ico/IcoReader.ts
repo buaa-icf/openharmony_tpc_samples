@@ -16,6 +16,9 @@ limitations under the License.
 import IcoDirectory from './IcoDirectory';
 import Metadata from '../Metadata';
 import SequentialReader from '../../lang/SequentialReader';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "IcoReader";
 
 /**
  * Reads ICO (Windows Icon) file metadata.
@@ -27,6 +30,7 @@ import SequentialReader from '../../lang/SequentialReader';
  */
 class IcoReader {
   public extract(reader: SequentialReader, metadata: Metadata) {
+    LogUtil.debug(TAG, `extract start`);
     reader.setMotorolaByteOrder(false);
 
     let etype;
@@ -40,6 +44,7 @@ class IcoReader {
         let directory = new IcoDirectory();
         directory.addError("Invalid header bytes");
         metadata.addDirectory(directory);
+        LogUtil.error(TAG, "extract end, Invalid header bytes");
         return;
       }
 
@@ -49,6 +54,7 @@ class IcoReader {
         let directory = new IcoDirectory();
         directory.addError("Invalid etype " + etype + " -- expecting 1 or 2");
         metadata.addDirectory(directory);
+        LogUtil.error(TAG, `extract end, Invalid etype  ${etype} -- expecting 1 or 2`);
         return;
       }
 
@@ -58,6 +64,7 @@ class IcoReader {
         let directory = new IcoDirectory();
         directory.addError("Image count cannot be zero");
         metadata.addDirectory(directory);
+        LogUtil.error(TAG, `extract end, Image count cannot be zero`);
         return;
       }
 
@@ -65,6 +72,7 @@ class IcoReader {
       let directory = new IcoDirectory();
       directory.addError("Exception reading ICO file metadata: " + e.getMessage());
       metadata.addDirectory(directory);
+      LogUtil.error(TAG, `extract end, Exception reading ICO file metadata: ${JSON.stringify(e)}`);
       return;
     }
 
@@ -92,9 +100,11 @@ class IcoReader {
         directory.setLong(IcoDirectory.TAG_IMAGE_OFFSET_BYTES, reader.getUInt32());
       } catch (e) {
         directory.addError("Exception reading ICO file metadata: " + e.getMessage());
+        LogUtil.error(TAG, `extract end, Exception reading ICO file metadata: ${JSON.stringify(e)}`);
       }
       metadata.addDirectory(directory);
     }
+    LogUtil.debug(TAG, `extract end`);
   }
 }
 

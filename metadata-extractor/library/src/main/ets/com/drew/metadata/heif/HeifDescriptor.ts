@@ -15,6 +15,9 @@ limitations under the License.
 
 import TagDescriptor from '../TagDescriptor';
 import HeifDirectory from './HeifDirectory';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "HeifDescriptor";
 
 class HeifDescriptor extends TagDescriptor<HeifDirectory> {
   public constructor(directory: HeifDirectory) {
@@ -22,6 +25,7 @@ class HeifDescriptor extends TagDescriptor<HeifDirectory> {
   }
 
   public getDescription(tagType: number): string {
+    LogUtil.debug(TAG, `getDescription start, tagType: ${tagType}`);
     switch (tagType) {
       case HeifDirectory.TAG_IMAGE_WIDTH:
       case HeifDirectory.TAG_IMAGE_HEIGHT:
