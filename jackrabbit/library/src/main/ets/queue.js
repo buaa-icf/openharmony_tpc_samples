@@ -3,6 +3,7 @@
 
 import assignin from 'lodash.assignin/'
 import { EventEmitter, buffer } from '@ohos/node-polyfill';
+import { LogUtil } from './LogUtil';
 
 const Extend = assignin;
 
@@ -33,7 +34,7 @@ const queue = (options) => {
     };
 
     const consume = (callback, consumeOptions) => {
-
+        LogUtil.info('queue.consume start');
         const onMessage = (msg) => {
 
             const data = parseMessage(msg);
@@ -93,7 +94,7 @@ const queue = (options) => {
     };
 
     const purge = (done) => {
-
+        LogUtil.info('queue.purge start');
         const onPurged = (err, obj) => {
 
             if (err) {
@@ -124,7 +125,7 @@ const queue = (options) => {
     };
 
     const parseMessage = (msg) => {
-
+        LogUtil.info('queue.parseMessage start');
         msg = msg || {};
 
         if (msg.properties && msg.properties.contentType === 'application/json') {
@@ -159,7 +160,7 @@ const queue = (options) => {
     };
 
     const onChannel = (err, chan) => {
-
+        LogUtil.info('queue.onChannel start');
         if (err) {
             return bail(err);
         }
@@ -177,7 +178,7 @@ const queue = (options) => {
     };
 
     const onQueue = (err, info) => {
-
+        LogUtil.info('queue.onQueue start');
         if (err) {
             return bail(err);
         }

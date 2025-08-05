@@ -5,6 +5,8 @@ import Extend from 'lodash.assignin'
 import { EventEmitter, once, buffer, Writable } from '@ohos/node-polyfill';
 import Queue from './queue'
 import { v4 as Uuid }  from './compat/uuid'
+import { LogUtil } from './LogUtil';
+
 const Buffer= buffer.Buffer
 const DEFAULT_EXCHANGES = {
     'direct': 'amq.direct',
@@ -101,7 +103,7 @@ const exchange = (name, type, exchangeOptions) => {
     };
 
     const rpcServer = (key, handler) => {
-
+        LogUtil.info('exchange.rpcServer start');
         if (!replyQueue) {
             throw new Error('replyQueue not set - ensure { noReply: false } is passed to exchange options');
         }
@@ -127,6 +129,7 @@ const exchange = (name, type, exchangeOptions) => {
     };
 
     const connect = (con) => {
+        LogUtil.info('exchange.connect start');
         connecting = true;
         connection = con;
         connection.createChannel(onChannel);
@@ -216,7 +219,7 @@ const exchange = (name, type, exchangeOptions) => {
     };
 
     const publishSafe = async (message, publishOptions) => {
-
+        LogUtil.info('exchange.publishSafe start');
         publishing++;
         publishOptions = publishOptions || {};
 
@@ -234,7 +237,7 @@ const exchange = (name, type, exchangeOptions) => {
     };
 
     const publish = (message, publishOptions) => {
-
+        LogUtil.info('exchange.publish start');
         publishing++;
         publishOptions = publishOptions || {};
 
@@ -272,7 +275,7 @@ const exchange = (name, type, exchangeOptions) => {
 
 
     const sendRpcMessage = (message, publishOptions) => {
-
+        LogUtil.info('exchange.sendRpcMessage start');
         const opts = Extend({}, DEFAULT_PUBLISH_OPTIONS, publishOptions);
         const msg = encodeMessage(message, opts.contentType);
 
