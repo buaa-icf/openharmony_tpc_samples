@@ -29,6 +29,7 @@ import Queue from '@ohos.util.Queue';
 import HashMap from '@ohos.util.HashMap';
 import emitter from '@ohos.events.emitter';
 import { VideoCacheConstant } from './constant/VideoCacheConstant';
+import { LogUtil } from './LogUtil';
 
 export default class HttpUrlSource implements Source {
   private MAX_REDIRECTS: number = 5;
@@ -67,6 +68,7 @@ export default class HttpUrlSource implements Source {
             self.isInitFinish = true;
             self.notifyInitFinish()
           }).catch((err: Error) => {
+            LogUtil.error('sourceInfoStorage.get error: ' + JSON.stringify(err));
             self.sourceInfo = new SourceInfo(args[0] as string, Number.MIN_VALUE, ProxyCacheUtils.getSupposablyMime(args[0] as string))
             self.isInitFinish = true;
             self.notifyInitFinish()
@@ -92,6 +94,7 @@ export default class HttpUrlSource implements Source {
             self.isInitFinish = true;
             self.notifyInitFinish()
           }).catch((err: Error) => {
+            LogUtil.error('2 args, sourceInfo.then error: ' + JSON.stringify(err));
             self.sourceInfo = new SourceInfo(args[0] as string, Number.MIN_VALUE, ProxyCacheUtils.getSupposablyMime(args[0] as string))
             self.isInitFinish = true;
             self.notifyInitFinish()
@@ -110,12 +113,14 @@ export default class HttpUrlSource implements Source {
           self.isInitFinish = true;
           self.notifyInitFinish()
         }).catch((err: Error) => {
+          LogUtil.error('3 args, sourceInfo.then error: ' + JSON.stringify(err));
           self.sourceInfo = new SourceInfo(args[0] as string, Number.MIN_VALUE, ProxyCacheUtils.getSupposablyMime(args[0] as string))
           self.isInitFinish = true;
           self.notifyInitFinish()
         });
       }
     } catch (err) {
+      LogUtil.error('constructor error: ' + JSON.stringify(err));
       self.isInitFinish = true;
       self.notifyInitFinish()
     }
@@ -312,7 +317,7 @@ export default class HttpUrlSource implements Source {
         if (!self.sourceInfo) {
           return reject(new Error('sourceInfo is null'))
         }
-        console.debug("Read content info from " + this.sourceInfo!!.url);
+        LogUtil.debug("Read content info from " + this.sourceInfo!!.url);
         urlConnection?.on('headersReceive', async (headers: Object) => {
           if (headers) {
             let length = self.getContentLength(headers);
@@ -322,7 +327,7 @@ export default class HttpUrlSource implements Source {
             if (lastLocation == undefined || this.lastLocation == lastLocation) {
               self.sourceInfo = new SourceInfo(self.sourceInfo!!.url, length, mime);
               await self.sourceInfoStorage?.put(self.sourceInfo!!.url, self.sourceInfo);
-              console.debug("Source info fetched: " + self.sourceInfo);
+              LogUtil.debug("Source info fetched: " + self.sourceInfo);
               urlConnection?.off('headersReceive');
               return resolve();
             }
@@ -339,7 +344,7 @@ export default class HttpUrlSource implements Source {
       }
       return Promise.resolve();
     } catch (err) {
-      console.error("Error fetching info from " + self.sourceInfo!!.url + err.message);
+      LogUtil.error("Error fetching info from " + self.sourceInfo!!.url + err.message);
       return Promise.reject(err);
     }
   }
@@ -353,6 +358,7 @@ export default class HttpUrlSource implements Source {
       this.connection?.destroy();
       this.connection = null;
     } catch (err) {
+      LogUtil.error('openConnection error: ' + JSON.stringify(err));
       this.connection = null;
     }
     return http.createHttp();

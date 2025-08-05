@@ -16,6 +16,7 @@
 import fs from '@ohos.file.fs';
 import LinkedList from '@ohos.util.LinkedList';
 import ListFileOption from './ListFileOption';
+import { LogUtil } from '../LogUtil';
 
 export class Files {
   static makeDir(directory: string): void {
@@ -61,7 +62,7 @@ export class Files {
         }
       }
     } catch (err) {
-
+      LogUtil.error('getLruListFiles error: ' + JSON.stringify(err));
     }
 
 
@@ -76,7 +77,7 @@ export class Files {
         throw new Error(`Last modified date is not set for file ${file},reason is ${err.message}`)
       }
     } else {
-      console.log(`file ${file} IS not exist`);
+      LogUtil.log(`file ${file} IS not exist`);
     }
   }
 

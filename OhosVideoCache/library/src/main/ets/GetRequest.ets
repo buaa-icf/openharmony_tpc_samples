@@ -15,6 +15,7 @@
 
 import buffer from '@ohos.buffer';
 import Preconditions from './Preconditions';
+import { LogUtil } from './LogUtil';
 
 export default class GetRequest {
   private RANGE_HEADER_PATTERN: RegExp = new RegExp("[R,r]ange:[ ]?bytes=(\\d*)-");
@@ -43,7 +44,7 @@ export default class GetRequest {
       let rangeValue = matcher[1];
       return Number.parseInt(rangeValue);
     } catch (err) {
-
+      LogUtil.error('findRangeOffset error: ' + JSON.stringify(err));
     }
     return -1;
   }
