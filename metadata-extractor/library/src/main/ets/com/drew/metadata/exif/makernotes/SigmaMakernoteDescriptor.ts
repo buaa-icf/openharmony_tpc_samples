@@ -15,6 +15,9 @@ limitations under the License.
 
 import { SigmaMakernoteDirectory } from './SigmaMakernoteDirectory';
 import TagDescriptor from '../../TagDescriptor';
+import  LogUtil  from '../../../tools/LogUtils';
+
+const TAG: string = "SigmaMakernoteDescriptor";
 
 export class SigmaMakernoteDescriptor extends TagDescriptor<SigmaMakernoteDirectory> {
   constructor(directory: SigmaMakernoteDirectory) {
@@ -22,6 +25,7 @@ export class SigmaMakernoteDescriptor extends TagDescriptor<SigmaMakernoteDirect
   }
 
   public getDescription(tagType: number): string{
+    LogUtil.debug(TAG, `getDescription enter, tagType: ${tagType}`);
     switch (tagType) {
       case SigmaMakernoteDirectory.TAG_EXPOSURE_MODE:
         return this.getExposureModeDescription();
@@ -32,9 +36,13 @@ export class SigmaMakernoteDescriptor extends TagDescriptor<SigmaMakernoteDirect
   }
 
   private getMeteringModeDescription(): string{
+    LogUtil.debug(TAG, `getMeteringModeDescription enter`);
     let value = this._directory.getString(SigmaMakernoteDirectory.TAG_METERING_MODE);
-    if (value == null || value.length == 0)
-    return null;
+    if (value == null || value.length == 0) {
+      LogUtil.error(TAG, `getMeteringModeDescription end, value is null or empty`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getMeteringModeDescription end, value: ${value}`);
     switch (value.charAt(0)) {
       case '8':
         return "Multi Segment";
@@ -48,9 +56,13 @@ export class SigmaMakernoteDescriptor extends TagDescriptor<SigmaMakernoteDirect
   }
 
   private getExposureModeDescription(): string{
+    LogUtil.debug(TAG, `getExposureModeDescription enter`);
     let value = this._directory.getString(SigmaMakernoteDirectory.TAG_EXPOSURE_MODE);
-    if (value == null || value.length == 0)
-    return null;
+    if (value == null || value.length == 0) {
+      LogUtil.error(TAG, `getExposureModeDescription end, value is null or empty`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getExposureModeDescription end, value: ${value}`);
     switch (value.charAt(0)) {
       case 'A':
         return "Aperture Priority AE";

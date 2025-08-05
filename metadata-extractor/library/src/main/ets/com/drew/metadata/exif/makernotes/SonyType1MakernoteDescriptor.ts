@@ -16,6 +16,9 @@
 import SonyType1MakernoteDirectory from './SonyType1MakernoteDirectory';
 import TagDescriptor from '../../TagDescriptor';
 import util from '@ohos.util';
+import  LogUtil  from '../../../tools/LogUtils';
+
+const TAG: string = "SonyType1MakernoteDescriptor";
 
 /**
  * Provides human-readable string representations of tag values stored in a {@link SonyType1MakernoteDirectory}.
@@ -27,6 +30,7 @@ class SonyType1MakernoteDescriptor extends TagDescriptor<SonyType1MakernoteDirec
 
   public getDescription(tagType: number): string
   {
+    LogUtil.debug(TAG, `getDescription enter, tagType: ${tagType}`);
     switch (tagType) {
       case SonyType1MakernoteDirectory.TAG_IMAGE_QUALITY:
         return this.getImageQualityDescription();
@@ -118,9 +122,13 @@ class SonyType1MakernoteDescriptor extends TagDescriptor<SonyType1MakernoteDirec
 
   public getTeleconverterDescription(): string
   {
+    LogUtil.debug(TAG, `getTeleconverterDescription enter`);
     let value: number = this._directory.getInteger(SonyType1MakernoteDirectory.TAG_TELECONVERTER);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getTeleconverterDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getTeleconverterDescription end, value: ${value}`);
     switch (value) {
       case 0x00:
         return "None";
@@ -143,9 +151,13 @@ class SonyType1MakernoteDescriptor extends TagDescriptor<SonyType1MakernoteDirec
 
   public getWhiteBalanceDescription(): string
   {
+    LogUtil.debug(TAG, `getWhiteBalanceDescription enter`);
     let value: number = this._directory.getInteger(SonyType1MakernoteDirectory.TAG_WHITE_BALANCE);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getWhiteBalanceDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getWhiteBalanceDescription end, value: ${value}`);
     switch (value) {
       case 0x00:
         return "Auto";
@@ -172,12 +184,18 @@ class SonyType1MakernoteDescriptor extends TagDescriptor<SonyType1MakernoteDirec
 
   public getColorTemperatureDescription(): string
   {
+    LogUtil.debug(TAG, `getColorTemperatureDescription enter`);
     let value: number = this._directory.getInteger(SonyType1MakernoteDirectory.TAG_COLOR_TEMPERATURE);
-    if (value == null)
-    return null;
-    if (value == 0)
-    return "Auto";
+    if (value == null) {
+      LogUtil.error(TAG, `getColorTemperatureDescription end, value is null`);
+      return null;
+    }
+    if (value == 0) {
+      LogUtil.warn(TAG, `getColorTemperatureDescription end, value is 0`);
+      return "Auto";
+    }
     let kelvin: number = ((value & 0x00FF0000) >> 8) | ((value & 0xFF000000) >> 24);
+    LogUtil.debug(TAG, `getColorTemperatureDescription end, kelvin: ${kelvin}`);
     return util.printf("%d K", kelvin);
   }
 
@@ -189,9 +207,13 @@ class SonyType1MakernoteDescriptor extends TagDescriptor<SonyType1MakernoteDirec
 
   public getDynamicRangeOptimizerDescription(): string
   {
+    LogUtil.debug(TAG, `getDynamicRangeOptimizerDescription enter`);
     let value: number = this._directory.getInteger(SonyType1MakernoteDirectory.TAG_DYNAMIC_RANGE_OPTIMISER);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getDynamicRangeOptimizerDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getDynamicRangeOptimizerDescription end, value: ${value}`);
     switch (value) {
       case 0:
         return "Off";
@@ -228,9 +250,13 @@ class SonyType1MakernoteDescriptor extends TagDescriptor<SonyType1MakernoteDirec
 
   public getImageStabilizationDescription(): string
   {
+    LogUtil.debug(TAG, `getImageStabilizationDescription enter`);
     let value: number = this._directory.getInteger(SonyType1MakernoteDirectory.TAG_IMAGE_STABILISATION);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getImageStabilizationDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getImageStabilizationDescription end, value: ${value}`);
     switch (value) {
       case 0:
         return "Off";
@@ -243,9 +269,13 @@ class SonyType1MakernoteDescriptor extends TagDescriptor<SonyType1MakernoteDirec
 
   public getColorModeDescription(): string
   {
+    LogUtil.debug(TAG, `getColorModeDescription enter`);
     let value: number = this._directory.getInteger(SonyType1MakernoteDirectory.TAG_COLOR_MODE);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getColorModeDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getColorModeDescription end, value: ${value}`);
     switch (value) {
       case 0:
         return "Standard";
@@ -290,9 +320,13 @@ class SonyType1MakernoteDescriptor extends TagDescriptor<SonyType1MakernoteDirec
 
   public getMacroDescription(): string
   {
+    LogUtil.debug(TAG, `getMacroDescription enter`);
     let value: number = this._directory.getInteger(SonyType1MakernoteDirectory.TAG_MACRO);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getMacroDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getMacroDescription end, value: ${value}`);
     switch (value) {
       case 0:
         return "Off";
@@ -309,9 +343,13 @@ class SonyType1MakernoteDescriptor extends TagDescriptor<SonyType1MakernoteDirec
 
   public getExposureModeDescription(): string
   {
+    LogUtil.debug(TAG, `getExposureModeDescription enter`);
     let value: number = this._directory.getInteger(SonyType1MakernoteDirectory.TAG_EXPOSURE_MODE);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getExposureModeDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getExposureModeDescription end, value: ${value}`);
     switch (value) {
       case 0:
         return "Program";
@@ -382,9 +420,13 @@ class SonyType1MakernoteDescriptor extends TagDescriptor<SonyType1MakernoteDirec
 
   public getJpegQualityDescription(): string
   {
+    LogUtil.debug(TAG, `getJpegQualityDescription enter`);
     let value: number = this._directory.getInteger(SonyType1MakernoteDirectory.TAG_JPEG_QUALITY);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getJpegQualityDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getJpegQualityDescription end, value: ${value}`);
     switch (value) {
       case 0:
         return "Normal";
@@ -401,9 +443,13 @@ class SonyType1MakernoteDescriptor extends TagDescriptor<SonyType1MakernoteDirec
 
   public getAntiBlurDescription(): string
   {
+    LogUtil.debug(TAG, `getAntiBlurDescription enter`);
     let value: number = this._directory.getInteger(SonyType1MakernoteDirectory.TAG_ANTI_BLUR);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getAntiBlurDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getAntiBlurDescription end, value: ${value}`);
     switch (value) {
       case 0:
         return "Off";
@@ -420,9 +466,13 @@ class SonyType1MakernoteDescriptor extends TagDescriptor<SonyType1MakernoteDirec
 
   public getLongExposureNoiseReductionDescription(): string
   {
+    LogUtil.debug(TAG, `getLongExposureNoiseReductionDescription enter`);
     let value: number = this._directory.getInteger(SonyType1MakernoteDirectory.TAG_LONG_EXPOSURE_NOISE_REDUCTION_OR_FOCUS_MODE);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getLongExposureNoiseReductionDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getLongExposureNoiseReductionDescription end, value: ${value}`);
     switch (value) {
       case 0:
         return "Off";
@@ -437,9 +487,13 @@ class SonyType1MakernoteDescriptor extends TagDescriptor<SonyType1MakernoteDirec
 
   public getHighIsoNoiseReductionDescription(): string
   {
+    LogUtil.debug(TAG, `getHighIsoNoiseReductionDescription enter`);
     let value: number = this._directory.getInteger(SonyType1MakernoteDirectory.TAG_HIGH_ISO_NOISE_REDUCTION);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getHighIsoNoiseReductionDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getHighIsoNoiseReductionDescription end, value: ${value}`);
     switch (value) {
       case 0:
         return "Off";
@@ -460,9 +514,13 @@ class SonyType1MakernoteDescriptor extends TagDescriptor<SonyType1MakernoteDirec
 
   public getPictureEffectDescription(): string
   {
+    LogUtil.debug(TAG, `getPictureEffectDescription enter`);
     let value: number = this._directory.getInteger(SonyType1MakernoteDirectory.TAG_PICTURE_EFFECT);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getPictureEffectDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getPictureEffectDescription end, value: ${value}`);
     switch (value) {
       case 0:
         return "Off";
@@ -548,9 +606,13 @@ class SonyType1MakernoteDescriptor extends TagDescriptor<SonyType1MakernoteDirec
 
   public getVignettingCorrectionDescription(): string
   {
+    LogUtil.debug(TAG, `getVignettingCorrectionDescription enter`);
     let value: number = this._directory.getInteger(SonyType1MakernoteDirectory.TAG_VIGNETTING_CORRECTION);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getVignettingCorrectionDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getVignettingCorrectionDescription end, value: ${value}`);
     switch (value) {
       case 0:
         return "Off";
@@ -565,9 +627,13 @@ class SonyType1MakernoteDescriptor extends TagDescriptor<SonyType1MakernoteDirec
 
   public getLateralChromaticAberrationDescription(): string
   {
+    LogUtil.debug(TAG, `getLateralChromaticAberrationDescription enter`);
     let value: number = this._directory.getInteger(SonyType1MakernoteDirectory.TAG_LATERAL_CHROMATIC_ABERRATION);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getLateralChromaticAberrationDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getLateralChromaticAberrationDescription end, value: ${value}`);
     switch (value) {
       case 0:
         return "Off";
@@ -582,9 +648,13 @@ class SonyType1MakernoteDescriptor extends TagDescriptor<SonyType1MakernoteDirec
 
   public getDistortionCorrectionDescription(): string
   {
+    LogUtil.debug(TAG, `getDistortionCorrectionDescription enter`);
     let value: number = this._directory.getInteger(SonyType1MakernoteDirectory.TAG_DISTORTION_CORRECTION);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getDistortionCorrectionDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getDistortionCorrectionDescription end, value: ${value}`);
     switch (value) {
       case 0:
         return "Off";
@@ -636,11 +706,14 @@ class SonyType1MakernoteDescriptor extends TagDescriptor<SonyType1MakernoteDirec
 
   public getSonyModelIdDescription(): string
   {
+    LogUtil.debug(TAG, `getSonyModelIdDescription enter`);
     let value: number = this._directory.getInteger(SonyType1MakernoteDirectory.TAG_SONY_MODEL_ID);
 
-    if (value == null)
-    return null;
-
+    if (value == null) {
+      LogUtil.error(TAG, `getSonyModelIdDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getSonyModelIdDescription end, value: ${value}`);
     switch (value) {
       case 2:
         return "DSC-R1";
@@ -821,11 +894,14 @@ class SonyType1MakernoteDescriptor extends TagDescriptor<SonyType1MakernoteDirec
 
   public getSceneModeDescription(): string
   {
+    LogUtil.debug(TAG, `getSceneModeDescription enter`);
     let value: number = this._directory.getInteger(SonyType1MakernoteDirectory.TAG_SCENE_MODE);
 
-    if (value == null)
-    return null;
-
+    if (value == null) {
+      LogUtil.error(TAG, `getSceneModeDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getSceneModeDescription end, value: ${value}`);
     switch (value) {
       case 0:
         return "Standard";
@@ -880,11 +956,14 @@ class SonyType1MakernoteDescriptor extends TagDescriptor<SonyType1MakernoteDirec
 
   public getAFModeDescription(): string
   {
+    LogUtil.debug(TAG, `getAFModeDescription enter`);
     let value: number = this._directory.getInteger(SonyType1MakernoteDirectory.TAG_AF_MODE);
 
-    if (value == null)
-    return null;
-
+    if (value == null) {
+      LogUtil.error(TAG, `getAFModeDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getAFModeDescription end, value: ${value}`);
     switch (value) {
       case 0:
         return "Default";
@@ -911,11 +990,14 @@ class SonyType1MakernoteDescriptor extends TagDescriptor<SonyType1MakernoteDirec
 
   public getAFIlluminatorDescription(): string
   {
+    LogUtil.debug(TAG, `getAFIlluminatorDescription enter`);
     let value: number = this._directory.getInteger(SonyType1MakernoteDirectory.TAG_AF_ILLUMINATOR);
 
-    if (value == null)
-    return null;
-
+    if (value == null) {
+      LogUtil.error(TAG, `getAFIlluminatorDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getAFIlluminatorDescription end, value: ${value}`);
     switch (value) {
       case 0:
         return "Off";
@@ -930,11 +1012,15 @@ class SonyType1MakernoteDescriptor extends TagDescriptor<SonyType1MakernoteDirec
 
   public getFlashLevelDescription(): string
   {
+    LogUtil.debug(TAG, `getFlashLevelDescription enter`);
     let value: number = this._directory.getInteger(SonyType1MakernoteDirectory.TAG_FLASH_LEVEL);
 
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getFlashLevelDescription end, value is null`);
+      return null;
+    }
 
+    LogUtil.debug(TAG, `getFlashLevelDescription end, value: ${value}`);
     switch (value) {
       case -32768:
         return "Low";
@@ -963,11 +1049,15 @@ class SonyType1MakernoteDescriptor extends TagDescriptor<SonyType1MakernoteDirec
 
   public getReleaseModeDescription(): string
   {
+    LogUtil.debug(TAG, `getReleaseModeDescription enter`);
     let value: number = this._directory.getInteger(SonyType1MakernoteDirectory.TAG_RELEASE_MODE);
 
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getReleaseModeDescription end, value is null`);
+      return null;
+    }
 
+    LogUtil.debug(TAG, `getReleaseModeDescription end, value: ${value}`);
     switch (value) {
       case 0:
         return "Normal";
@@ -986,11 +1076,15 @@ class SonyType1MakernoteDescriptor extends TagDescriptor<SonyType1MakernoteDirec
 
   public getSequenceNumberDescription(): string
   {
+    LogUtil.debug(TAG, `getSequenceNumberDescription enter`);
     let value: number = this._directory.getInteger(SonyType1MakernoteDirectory.TAG_RELEASE_MODE);
 
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getSequenceNumberDescription end, value is null`);
+      return null;
+    }
 
+    LogUtil.debug(TAG, `getSequenceNumberDescription end, value: ${value}`);
     switch (value) {
       case 0:
         return "Single";

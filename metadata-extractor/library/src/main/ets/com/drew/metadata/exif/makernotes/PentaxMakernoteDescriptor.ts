@@ -15,6 +15,9 @@
 
 import PentaxMakernoteDirectory from './PentaxMakernoteDirectory';
 import TagDescriptor from '../../TagDescriptor';
+import LogUtil from '../../../tools/LogUtils'
+
+const TAG: string = "PentaxMakernoteDescriptor";
 
 /**
  * Provides human-readable string representations of tag values stored in a {@link PentaxMakernoteDirectory}.
@@ -26,6 +29,7 @@ class PentaxMakernoteDescriptor extends TagDescriptor<PentaxMakernoteDirectory> 
 
   public getDescription(tagType: number): string
   {
+    LogUtil.debug(TAG, `getDescription enter, tagType = ${tagType}`);
     switch (tagType) {
       case PentaxMakernoteDirectory.TAG_CAPTURE_MODE:
         return this.getCaptureModeDescription();
@@ -61,9 +65,13 @@ class PentaxMakernoteDescriptor extends TagDescriptor<PentaxMakernoteDirectory> 
 
   public getIsoSpeedDescription(): string
   {
+    LogUtil.debug(TAG, `getIsoSpeedDescription enter`);
     let value: number = this._directory.getInteger(PentaxMakernoteDirectory.TAG_ISO_SPEED);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.debug(TAG, `getIsoSpeedDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getIsoSpeedDescription end, value = ${value}`);
     switch (value) {
     // TODO there must be other values which aren't catered for here
       case 10:
@@ -96,11 +104,17 @@ class PentaxMakernoteDescriptor extends TagDescriptor<PentaxMakernoteDirectory> 
 
   public getDigitalZoomDescription(): string
   {
+    LogUtil.debug(TAG, `getDigitalZoomDescription enter`);
     let value: number = this._directory.getFloatObject(PentaxMakernoteDirectory.TAG_DIGITAL_ZOOM);
-    if (value == null)
-    return null;
-    if (value == 0)
-    return "Off";
+    if (value == null) {
+      LogUtil.debug(TAG, `getDigitalZoomDescription end, value is null`);
+      return null;
+    }
+    if (value == 0) {
+      LogUtil.debug(TAG, `getDigitalZoomDescription end, value is 0`);
+      return "Off";
+    }
+    LogUtil.debug(TAG, `getDigitalZoomDescription end, value = ${value}`);
     return value.toString();
   }
 

@@ -16,6 +16,9 @@ limitations under the License.
 import OlympusMakernoteDirectory from './OlympusMakernoteDirectory';
 import TagDescriptor from '../../TagDescriptor';
 import OlympusEquipmentMakernoteDirectory from './OlympusEquipmentMakernoteDirectory';
+import LogUtil from '../../../tools/LogUtils';
+
+const TAG: string = "OlympusEquipmentMakernoteDescriptor";
 
 class OlympusEquipmentMakernoteDescriptor extends TagDescriptor<OlympusEquipmentMakernoteDirectory> {
   constructor(directory: OlympusEquipmentMakernoteDirectory) {
@@ -24,6 +27,7 @@ class OlympusEquipmentMakernoteDescriptor extends TagDescriptor<OlympusEquipment
 
   public getDescription(tagType: number): string
   {
+    LogUtil.debug(TAG, `getDescription enter, tagType: ${tagType}`);
     switch (tagType) {
       case OlympusEquipmentMakernoteDirectory.TAG_EQUIPMENT_VERSION:
         return this.getEquipmentVersionDescription();
@@ -63,13 +67,19 @@ class OlympusEquipmentMakernoteDescriptor extends TagDescriptor<OlympusEquipment
 
   public getCameraType2Description(): string
   {
+    LogUtil.debug(TAG, `getCameraType2Description enter`);
     let cameratype = this._directory.getString(OlympusEquipmentMakernoteDirectory.TAG_CAMERA_TYPE_2);
-    if (cameratype == null)
-    return null;
+    if (cameratype == null) {
+      LogUtil.error(TAG, `getCameraType2Description end, cameratype is null`);
+      return null;
+    }
 
-    if (OlympusMakernoteDirectory.OlympusCameraTypes.has(cameratype))
-    return OlympusMakernoteDirectory.OlympusCameraTypes.get(cameratype);
+    if (OlympusMakernoteDirectory.OlympusCameraTypes.has(cameratype)) {
+      LogUtil.debug(TAG, `getCameraType2Description end, cameratype: ${cameratype} is found`);
+      return OlympusMakernoteDirectory.OlympusCameraTypes.get(cameratype);
+    }
 
+    LogUtil.debug(TAG, `getCameraType2Description end, cameratype: ${cameratype} is not found`);
     return cameratype;
   }
 
@@ -80,12 +90,16 @@ class OlympusEquipmentMakernoteDescriptor extends TagDescriptor<OlympusEquipment
 
   public getBodyFirmwareVersionDescription(): string
   {
+    LogUtil.debug(TAG, `getBodyFirmwareVersionDescription enter`);
     let value = this._directory.getInteger(OlympusEquipmentMakernoteDirectory.TAG_BODY_FIRMWARE_VERSION);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getBodyFirmwareVersionDescription end, value is null`);
+      return null;
+    }
 
 
     let hex = "%04X".replace(/%04X/, value);
+    LogUtil.debug(TAG, `getBodyFirmwareVersionDescription end, value: ${value}, hex: ${hex}`);
     return "%s.%s".replace(/%s/, hex.substr(0, hex.length - 3)).replace(/%s/, hex.substr(hex.length - 3, hex.length))
     //        let hex = String.format("%04X", value);
     //        return String.format("%s.%s",
@@ -95,10 +109,13 @@ class OlympusEquipmentMakernoteDescriptor extends TagDescriptor<OlympusEquipment
 
   public getLensTypeDescription(): string
   {
+    LogUtil.debug(TAG, `getLensTypeDescription enter`);
     let str = this._directory.getString(OlympusEquipmentMakernoteDirectory.TAG_LENS_TYPE);
 
-    if (str == null)
-    return null;
+    if (str == null) {
+      LogUtil.error(TAG, `getLensTypeDescription end, str is null`);
+      return null;
+    }
 
     // The String contains six numbers:
     //
@@ -112,28 +129,36 @@ class OlympusEquipmentMakernoteDescriptor extends TagDescriptor<OlympusEquipment
     // Only the Make, Model and Sub-model are used to identify the lens type
     let values = str.split(" ");
 
-    if (values.length < 6)
-    return null;
+    if (values.length < 6) {
+      LogUtil.error(TAG, `getLensTypeDescription end, values.length < 6`);
+      return null;
+    }
 
     try {
       let num1 = values[0];
       let num2 = values[2];
       let num3 = values[3];
+      LogUtil.debug(TAG, `getLensTypeDescription end, num1: ${num1}, num2: ${num2}, num3: ${num3}`);
       return OlympusEquipmentMakernoteDescriptor._olympusLensTypes.get("%X %02X %02X".replace(/%X/, num1)
         .replace(/%02X/, num2)
         .replace(/%02X/, num3));
     } catch (e) {
+      LogUtil.error(TAG, `getLensTypeDescription end, error: ${JSON.stringify(e)}`);
       return null;
     }
   }
 
   public getLensFirmwareVersionDescription(): string
   {
+    LogUtil.debug(TAG, `getLensFirmwareVersionDescription enter`);
     let value = this._directory.getInteger(OlympusEquipmentMakernoteDirectory.TAG_LENS_FIRMWARE_VERSION);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getLensFirmwareVersionDescription end, value is null`);
+      return null;
+    }
 
     let hex = "%04X".replace(/%04X/, value)
+    LogUtil.debug(TAG, `getLensFirmwareVersionDescription end, value: ${value}, hex: ${hex}`);
     return "%s.%s".replace(/%s/, hex.substr(0, hex.length - 3)).replace(/%s/, hex.substr(hex.length - 3, hex.length))
     //        return String.format("%s.%s",
     //            hex.substring(0, hex.length() - 3),
@@ -142,10 +167,14 @@ class OlympusEquipmentMakernoteDescriptor extends TagDescriptor<OlympusEquipment
 
   public getMaxApertureAtMinFocalDescription(): string
   {
+    LogUtil.debug(TAG, `getMaxApertureAtMinFocalDescription enter`);
     let value = this._directory.getInteger(OlympusEquipmentMakernoteDirectory.TAG_MAX_APERTURE_AT_MIN_FOCAL);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getMaxApertureAtMinFocalDescription end, value is null`);
+      return null;
+    }
 
+    LogUtil.debug(TAG, `getMaxApertureAtMinFocalDescription end, value: ${value}`);
     return OlympusEquipmentMakernoteDescriptor.CalcMaxAperture(value).toFixed(1)
     //        DecimalFormat format = new DecimalFormat("0.#");
     //        return format.format(CalcMaxAperture(value));
@@ -153,10 +182,14 @@ class OlympusEquipmentMakernoteDescriptor extends TagDescriptor<OlympusEquipment
 
   public getMaxApertureAtMaxFocalDescription(): string
   {
+    LogUtil.debug(TAG, `getMaxApertureAtMaxFocalDescription enter`);
     let value = this._directory.getInteger(OlympusEquipmentMakernoteDirectory.TAG_MAX_APERTURE_AT_MAX_FOCAL);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getMaxApertureAtMaxFocalDescription end, value is null`);
+      return null;
+    }
 
+    LogUtil.debug(TAG, `getMaxApertureAtMaxFocalDescription end, value: ${value}`);
     return OlympusEquipmentMakernoteDescriptor.CalcMaxAperture(value).toFixed(1)
     //        DecimalFormat format = new DecimalFormat("0.#");
     //        return format.format(CalcMaxAperture(value));
@@ -164,10 +197,14 @@ class OlympusEquipmentMakernoteDescriptor extends TagDescriptor<OlympusEquipment
 
   public getMaxApertureDescription(): string
   {
+    LogUtil.debug(TAG, `getMaxApertureDescription enter`);
     let value = this._directory.getInteger(OlympusEquipmentMakernoteDirectory.TAG_MAX_APERTURE);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getMaxApertureDescription end, value is null`);
+      return null;
+    }
 
+    LogUtil.debug(TAG, `getMaxApertureDescription end, value: ${value}`);
     return OlympusEquipmentMakernoteDescriptor.CalcMaxAperture(value).toFixed(1)
     //        DecimalFormat format = new DecimalFormat("0.#");
     //        return format.format(CalcMaxAperture(value));
@@ -180,20 +217,27 @@ class OlympusEquipmentMakernoteDescriptor extends TagDescriptor<OlympusEquipment
 
   public getLensPropertiesDescription(): string
   {
+    LogUtil.debug(TAG, `getLensPropertiesDescription enter`);
     let value = this._directory.getInteger(OlympusEquipmentMakernoteDirectory.TAG_LENS_PROPERTIES);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getLensPropertiesDescription end, value is null`);
+      return null;
+    }
 
+    LogUtil.debug(TAG, `getLensPropertiesDescription end, value: ${value}`);
     return "0x%04X".replace(/0x%04X/, value)
     //        return String.format("0x%04X", value);
   }
 
   public getExtenderDescription(): string
   {
+    LogUtil.debug(TAG, `getExtenderDescription enter`);
     let str = this._directory.getString(OlympusEquipmentMakernoteDirectory.TAG_EXTENDER);
 
-    if (str == null)
-    return null;
+    if (str == null) {
+      LogUtil.error(TAG, `getExtenderDescription end, str is null`);
+      return null;
+    }
 
     // The String contains six numbers:
     //
@@ -207,15 +251,19 @@ class OlympusEquipmentMakernoteDescriptor extends TagDescriptor<OlympusEquipment
     // Only the Make and Model are used to identify the extender
     let values = str.split(" ");
 
-    if (values.length < 6)
-    return null;
+    if (values.length < 6) {
+      LogUtil.error(TAG, `getExtenderDescription end, values.length < 6`);
+      return null;
+    }
 
     try {
       let num1 = values[0];
       let num2 = values[2];
       let extenderType = "%X %02X".replace(/%X/, num1).replace(/%02X/, num2);
+      LogUtil.debug(TAG, `getExtenderDescription end, extenderType: ${extenderType}`);
       return OlympusEquipmentMakernoteDescriptor._olympusExtenderTypes.get(extenderType);
     } catch (e) {
+      LogUtil.error(TAG, `getExtenderDescription end, error: ${JSON.stringify(e)}`);
       return null;
     }
   }

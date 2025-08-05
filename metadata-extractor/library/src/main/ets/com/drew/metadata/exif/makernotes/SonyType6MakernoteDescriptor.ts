@@ -15,6 +15,9 @@
 
 import SonyType6MakernoteDirectory from './SonyType6MakernoteDirectory';
 import TagDescriptor from '../../TagDescriptor';
+import  LogUtil  from '../../../tools/LogUtils';
+
+const TAG: string = "SonyType6MakernoteDescriptor";
 
 /**
  * Provides human-readable string representations of tag values stored in a {@link SonyType6MakernoteDirectory}.
@@ -26,6 +29,7 @@ class SonyType6MakernoteDescriptor extends TagDescriptor<SonyType6MakernoteDirec
 
   public getDescription(tagType: number): string
   {
+    LogUtil.debug(TAG, `getDescription enter, tagType: ${tagType}`);
     switch (tagType) {
       case SonyType6MakernoteDirectory.TAG_MAKERNOTE_THUMB_VERSION:
         return this.getMakernoteThumbVersionDescription();

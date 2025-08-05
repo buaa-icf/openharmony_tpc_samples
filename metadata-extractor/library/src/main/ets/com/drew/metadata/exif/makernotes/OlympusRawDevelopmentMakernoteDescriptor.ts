@@ -15,6 +15,9 @@ limitations under the License.
 
 import TagDescriptor from '../../TagDescriptor'
 import OlympusRawDevelopmentMakernoteDirectory from './OlympusRawDevelopmentMakernoteDirectory'
+import LogUtil from '../../../tools/LogUtils';
+
+const TAG: string = "OlympusRawDevelopmentMakernoteDescriptor";
 
 /**
  * Provides human-readable String representations of tag values stored in a {@link OlympusRawDevelopmentMakernoteDirectory}.
@@ -28,6 +31,7 @@ class OlympusRawDevelopmentMakernoteDescriptor extends TagDescriptor<OlympusRawD
   }
 
   public getDescription(tagType: number): string {
+    LogUtil.debug(TAG, `getDescription enter, tagType: ${tagType}`);
     switch (tagType) {
       case OlympusRawDevelopmentMakernoteDirectory.TagRawDevVersion:
         return this.getRawDevVersionDescription();
@@ -61,12 +65,17 @@ class OlympusRawDevelopmentMakernoteDescriptor extends TagDescriptor<OlympusRawD
   }
 
   public getRawDevNoiseReductionDescription(): string {
+    LogUtil.debug(TAG, `getRawDevNoiseReductionDescription enter`);
     let value = this._directory.getInteger(OlympusRawDevelopmentMakernoteDirectory.TagRawDevNoiseReduction);
-    if (value == null)
+    if (value == null) {
+      LogUtil.error(TAG, `getRawDevNoiseReductionDescription end, value is null`);
       return null;
+    }
 
-    if (value == 0)
+    if (value == 0) {
+      LogUtil.error(TAG, `getRawDevNoiseReductionDescription end, value is 0`);
       return "(none)";
+    }
 
     let sb: string = '';
     let v = value;
@@ -75,14 +84,19 @@ class OlympusRawDevelopmentMakernoteDescriptor extends TagDescriptor<OlympusRawD
     if (((v >> 1) & 1) != 0) sb.concat("Noise Filter, ");
     if (((v >> 2) & 1) != 0) sb.concat("Noise Filter (ISO Boost), ");
 
+    LogUtil.debug(TAG, `getRawDevNoiseReductionDescription end, result: ${sb}`);
     return sb.substring(0, sb.length - 2);
   }
 
   public getRawDevEditStatusDescription(): string {
+    LogUtil.debug(TAG, `getRawDevEditStatusDescription enter`);
     let value = this._directory.getInteger(OlympusRawDevelopmentMakernoteDirectory.TagRawDevEditStatus);
-    if (value == null)
+    if (value == null) {
+      LogUtil.error(TAG, `getRawDevEditStatusDescription end, value is null`);
       return null;
+    }
 
+    LogUtil.debug(TAG, `getRawDevEditStatusDescription end, value: ${value}`);
     switch (value) {
       case 0:
         return "Original";
@@ -97,12 +111,17 @@ class OlympusRawDevelopmentMakernoteDescriptor extends TagDescriptor<OlympusRawD
   }
 
   public getRawDevSettingsDescription(): string {
+    LogUtil.debug(TAG, `getRawDevSettingsDescription enter`);
     let value = this._directory.getInteger(OlympusRawDevelopmentMakernoteDirectory.TagRawDevSettings);
-    if (value == null)
+    if (value == null) {
+      LogUtil.error(TAG, `getRawDevSettingsDescription end, value is null`);
       return null;
+    }
 
-    if (value == 0)
+    if (value == 0) {
+      LogUtil.error(TAG, `getRawDevSettingsDescription end, value is 0`);
       return "(none)";
+    }
 
     let sb: string = '';
     let v = value;
@@ -116,6 +135,7 @@ class OlympusRawDevelopmentMakernoteDescriptor extends TagDescriptor<OlympusRawD
     if (((v >> 6) & 1) != 0) sb.concat("High Function, ");
     if (((v >> 7) & 1) != 0) sb.concat("Noise Reduction, ");
 
+    LogUtil.debug(TAG, `getRawDevSettingsDescription end, result: ${sb}`);
     return sb.substring(0, sb.length - 2);
   }
 }

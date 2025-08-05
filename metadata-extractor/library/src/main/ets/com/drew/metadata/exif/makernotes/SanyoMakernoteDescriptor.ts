@@ -15,6 +15,9 @@ limitations under the License.
 
 import { SanyoMakernoteDirectory } from './SanyoMakernoteDirectory';
 import TagDescriptor from '../../TagDescriptor';
+import  LogUtil  from '../../../tools/LogUtils';
+
+const TAG: string = "SanyoMakernoteDescriptor";
 
 export class SanyoMakernoteDescriptor extends TagDescriptor<SanyoMakernoteDirectory> {
   constructor(directory: SanyoMakernoteDirectory) {
@@ -22,6 +25,7 @@ export class SanyoMakernoteDescriptor extends TagDescriptor<SanyoMakernoteDirect
   }
 
   getDescription(tagType: number): string{
+    LogUtil.debug(TAG, `getDescription enter, tagType: ${tagType}`);
     switch (tagType) {
       case SanyoMakernoteDirectory.TAG_SANYO_QUALITY:
         return this.getSanyoQualityDescription();
@@ -65,9 +69,13 @@ export class SanyoMakernoteDescriptor extends TagDescriptor<SanyoMakernoteDirect
   }
 
   getSanyoQualityDescription(): string{
+    LogUtil.debug(TAG, `getSanyoQualityDescription enter`);
     let value = this._directory.getInteger(SanyoMakernoteDirectory.TAG_SANYO_QUALITY);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getSanyoQualityDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getSanyoQualityDescription end, value: ${value}`);
     switch (value) {
       case 0x0:
         return "Normal/Very Low";

@@ -15,6 +15,9 @@ limitations under the License.
 
 import TagDescriptor from '../../TagDescriptor'
 import OlympusImageProcessingMakernoteDirectory from './OlympusImageProcessingMakernoteDirectory'
+import LogUtil from '../../../tools/LogUtils';
+
+const TAG: string = "OlympusImageProcessingMakernoteDescriptor";
 
 /**
  * Provides human-readable String representations of tag values stored in a {@link OlympusImageProcessingMakernoteDirectory}.
@@ -28,6 +31,7 @@ class OlympusImageProcessingMakernoteDescriptor extends TagDescriptor<OlympusIma
   }
 
   public getDescription(tagType: number): string {
+    LogUtil.debug(TAG, `getDescriptionenter, tagType: ${tagType}`);
     switch (tagType) {
       case OlympusImageProcessingMakernoteDirectory.TagImageProcessingVersion:
         return this.getImageProcessingVersionDescription();
@@ -57,9 +61,12 @@ class OlympusImageProcessingMakernoteDescriptor extends TagDescriptor<OlympusIma
   }
 
   public getColorMatrixDescription(): string {
+    LogUtil.debug(TAG, `getColorMatrixDescription enter`);
     let obj = this._directory.getIntArray(OlympusImageProcessingMakernoteDirectory.TagColorMatrix);
-    if (obj == null)
+    if (obj == null) {
+      LogUtil.error(TAG, `getColorMatrixDescription end, obj is null`);
       return null;
+    }
 
     let sb: string = '';
     for (let i = 0; i < obj.length; i++) {
@@ -67,16 +74,22 @@ class OlympusImageProcessingMakernoteDescriptor extends TagDescriptor<OlympusIma
         sb.concat(" ");
       sb.concat(obj[i]);
     }
+    LogUtil.debug(TAG, `getColorMatrixDescription end, sb: ${sb}`);
     return sb.toString();
   }
 
   public getNoiseReduction2Description(): string {
+    LogUtil.debug(TAG, `getNoiseReduction2Description enter`);
     let value = this._directory.getInteger(OlympusImageProcessingMakernoteDirectory.TagNoiseReduction2);
-    if (value == null)
+    if (value == null) {
+      LogUtil.error(TAG, `getNoiseReduction2Description end, value is null`);
       return null;
+    }
 
-    if (value == 0)
+    if (value == 0) {
+      LogUtil.error(TAG, `getNoiseReduction2Description end, value is 0`);
       return "(none)";
+    }
 
     let sb: string = '';
     let v = value.shortValue();
@@ -85,6 +98,7 @@ class OlympusImageProcessingMakernoteDescriptor extends TagDescriptor<OlympusIma
     if (((v >> 1) & 1) != 0) sb.concat("Noise Filter, ");
     if (((v >> 2) & 1) != 0) sb.concat("Noise Filter (ISO Boost), ");
 
+    LogUtil.debug(TAG, `getNoiseReduction2Description end, sb: ${sb}`);
     return sb.substring(0, sb.length - 2);
   }
 
@@ -97,20 +111,25 @@ class OlympusImageProcessingMakernoteDescriptor extends TagDescriptor<OlympusIma
   }
 
   public getMultipleExposureModeDescription(): string {
+    LogUtil.debug(TAG, `getMultipleExposureModeDescription enter`);
     let values = this._directory.getIntArray(OlympusImageProcessingMakernoteDirectory.TagMultipleExposureMode);
     if (values == null)
     {
       // check if it's only one value long also
       let value = this._directory.getInteger(OlympusImageProcessingMakernoteDirectory.TagMultipleExposureMode);
-      if(value == null)
+      if(value == null) {
+        LogUtil.error(TAG, `getMultipleExposureModeDescription end, values is null`);
         return null;
+      }
 
       values = new Array<number>();
       values[0] = value;
     }
 
-    if (values.length == 0)
+    if (values.length == 0) {
+      LogUtil.error(TAG, `getMultipleExposureModeDescription end, values.length is 0`);
       return null;
+    }
 
     let sb: string = '';
 
@@ -133,13 +152,17 @@ class OlympusImageProcessingMakernoteDescriptor extends TagDescriptor<OlympusIma
     if (values.length > 1)
       sb.concat("; ").concat(values[1]);
 
+    LogUtil.debug(TAG, `getMultipleExposureModeDescription end, sb: ${sb}`);
     return sb.toString();
   }
 
   public getAspectRatioDescription(): string {
+    LogUtil.debug(TAG, `getAspectRatioDescription enter`);
     let values = this._directory.getByteArray(OlympusImageProcessingMakernoteDirectory.TagAspectRatio);
-    if (values == null || values.length < 2)
+    if (values == null || values.length < 2) {
+      LogUtil.error(TAG, `getAspectRatioDescription end, values is null or length < 2`);
       return null;
+    }
 
     let join = parseInt(values[0].toString()).toString() + " " + parseInt(values[1].toString()).toString();
 
@@ -175,13 +198,17 @@ class OlympusImageProcessingMakernoteDescriptor extends TagDescriptor<OlympusIma
     else
       ret = "Unknown (" + join + ")";
 
+    LogUtil.debug(TAG, `getAspectRatioDescription end, ret: ${ret}`);
     return ret;
   }
 
   public getKeystoneCompensationDescription(): string {
+    LogUtil.debug(TAG, `getKeystoneCompensationDescription enter`);
     let values = this._directory.getByteArray(OlympusImageProcessingMakernoteDirectory.TagKeystoneCompensation);
-    if (values == null || values.length < 2)
+    if (values == null || values.length < 2) {
+      LogUtil.error(TAG, `getKeystoneCompensationDescription end, values is null or length < 2`);
       return null;
+    }
 
     let join = parseInt(values[0].toString()).toString() + " " + parseInt(values[1].toString()).toString();
 
@@ -193,6 +220,7 @@ class OlympusImageProcessingMakernoteDescriptor extends TagDescriptor<OlympusIma
     else
       ret = "Unknown (" + join + ")";
 
+    LogUtil.debug(TAG, `getKeystoneCompensationDescription end, ret: ${ret}`);
     return ret;
   }
 

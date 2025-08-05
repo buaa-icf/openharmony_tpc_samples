@@ -16,6 +16,9 @@ limitations under the License.
 import Rational from '../../../lang/Rational'
 import TagDescriptor from '../../TagDescriptor'
 import OlympusRawInfoMakernoteDirectory from './OlympusRawInfoMakernoteDirectory'
+import LogUtil from '../../../tools/LogUtils';
+
+const TAG: string = "OlympusRawInfoMakernoteDescriptor";
 
 /**
  * Provides human-readable String representations of tag values stored in a {@link OlympusRawInfoMakernoteDirectory}.
@@ -29,6 +32,7 @@ class OlympusRawInfoMakernoteDescriptor extends TagDescriptor<OlympusRawInfoMake
   }
 
   public getDescription(tagType: number): string {
+    LogUtil.debug(TAG, `getDescription enter, tagType: ${tagType}`);
     switch (tagType) {
       case OlympusRawInfoMakernoteDirectory.TagRawInfoVersion:
         return this.getVersionBytesDescription(OlympusRawInfoMakernoteDirectory.TagRawInfoVersion, 4);
@@ -44,9 +48,12 @@ class OlympusRawInfoMakernoteDescriptor extends TagDescriptor<OlympusRawInfoMake
   }
 
   public getColorMatrix2Description(): string {
+    LogUtil.debug(TAG, `getColorMatrix2Description enter`);
     let values = this._directory.getIntArray(OlympusRawInfoMakernoteDirectory.TagColorMatrix2);
-    if (values == null)
+    if (values == null) {
+      LogUtil.error(TAG, `getColorMatrix2Description end, values is null`);
       return null;
+    }
 
     let sb: string = '';
     for (let i = 0; i < values.length; i++) {
@@ -54,13 +61,17 @@ class OlympusRawInfoMakernoteDescriptor extends TagDescriptor<OlympusRawInfoMake
       if (i < values.length - 1)
          sb.concat(" ");
     }
+    LogUtil.debug(TAG, `getColorMatrix2Description end, values: ${sb}`);
     return sb.length == 0 ? null : sb.toString();
   }
 
   public getYCbCrCoefficientsDescription(): string {
+    LogUtil.debug(TAG, `getYCbCrCoefficientsDescription enter`);
     let values = this._directory.getIntArray(OlympusRawInfoMakernoteDirectory.TagYCbCrCoefficients);
-    if (values == null)
+    if (values == null) {
+      LogUtil.error(TAG, `getYCbCrCoefficientsDescription end, values is null`);
       return null;
+    }
 
     let ret = new Rational[values.length / 2];
     for(let i = 0; i < values.length / 2; i++)
@@ -74,14 +85,19 @@ class OlympusRawInfoMakernoteDescriptor extends TagDescriptor<OlympusRawInfoMake
       if (i < ret.length - 1)
         sb.concat(" ");
     }
+    LogUtil.debug(TAG, `getYCbCrCoefficientsDescription end, values: ${sb}`);
     return sb.length == 0 ? null : sb.toString();
   }
 
   public getOlympusLightSourceDescription(): string {
+    LogUtil.debug(TAG, `getOlympusLightSourceDescription enter`);
     let value = this._directory.getInteger(OlympusRawInfoMakernoteDirectory.TagLightSource);
-    if (value == null)
+    if (value == null) {
+      LogUtil.error(TAG, `getOlympusLightSourceDescription end, value is null`);
       return null;
+    }
 
+    LogUtil.debug(TAG, `getOlympusLightSourceDescription end, value: ${value}`);
     switch (value.shortValue())
     {
       case 0:
