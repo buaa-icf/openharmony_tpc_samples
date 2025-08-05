@@ -311,7 +311,7 @@ export default function abilityTest() {
       try {
         _classCheckPrivateStaticAccess(undefined, 'abc')
       } catch (e) {
-        expect(e.message).assertEqual('is not callable')
+        expect(e.message).assertEqual('undefined is not callable')
       }
     });
 
