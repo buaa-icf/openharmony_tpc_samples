@@ -30,7 +30,9 @@ import Mp4BoxTypes from './Mp4BoxTypes'
 import Mp4ContainerTypes from './Mp4ContainerTypes'
 import Mp4UuidBoxHandler from './media/Mp4UuidBoxHandler'
 import HandlerBox from './boxes/HandlerBox'
+import LogUtil from '../../tools/LogUtils'
 
+const TAG: string = "Mp4BoxHandler";
 
 export default class Mp4BoxHandler extends Mp4Handler<Mp4Directory> {
   private handlerFactory: Mp4HandlerFactory = new Mp4HandlerFactory(this);
@@ -45,6 +47,7 @@ export default class Mp4BoxHandler extends Mp4Handler<Mp4Directory> {
 
   public shouldAcceptBox(box: Box): boolean
   {
+    LogUtil.debug(TAG, `shouldAcceptBoxstart, classtype: ${box.classtype}`)
     return box.classtype == Mp4BoxTypes.BOX_FILE_TYPE
     || box.classtype == Mp4BoxTypes.BOX_MOVIE_HEADER
     || box.classtype == Mp4BoxTypes.BOX_HANDLER
@@ -56,6 +59,7 @@ export default class Mp4BoxHandler extends Mp4Handler<Mp4Directory> {
 
   public shouldAcceptContainer(box: Box): boolean
   {
+    LogUtil.debug(TAG, `shouldAcceptContainer, classtype: ${box.classtype}`)
     return box.classtype == Mp4ContainerTypes.BOX_TRACK
     || box.classtype == Mp4ContainerTypes.BOX_METADATA
     || box.classtype == Mp4ContainerTypes.BOX_MOVIE
@@ -64,6 +68,7 @@ export default class Mp4BoxHandler extends Mp4Handler<Mp4Directory> {
 
   public processBox(box: Box, payload: Int8Array, context: Mp4Context): Mp4Handler<Mp4Directory>
   {
+    LogUtil.debug(TAG, `processBox, classtype: ${box.classtype}`)
     if (payload != null) {
       let reader: SequentialReader = new SequentialByteArrayReader(payload);
       if (box.classtype == Mp4BoxTypes.BOX_MOVIE_HEADER) {
@@ -86,8 +91,10 @@ export default class Mp4BoxHandler extends Mp4Handler<Mp4Directory> {
     } else {
       if (box.classtype == Mp4ContainerTypes.BOX_COMPRESSED_MOVIE) {
         this.directory.addError("Compressed MP4 movies not supported");
+        LogUtil.error(TAG, "Compressed MP4 movies not supported");
       }
     }
+    LogUtil.debug(TAG, `processBox end`)
     return this;
   }
 

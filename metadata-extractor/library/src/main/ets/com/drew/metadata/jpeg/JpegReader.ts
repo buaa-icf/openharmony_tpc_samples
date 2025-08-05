@@ -19,6 +19,9 @@ import JpegSegmentType from '../../imaging/jpeg/JpegSegmentType';
 import JpegComponent from './JpegComponent';
 import JpegDirectory from './JpegDirectory';
 import Metadata from '../Metadata';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "JpegReader";
 
 class JpegReader implements JpegSegmentMetadataReader {
   public getSegmentTypes(): Set<JpegSegmentType>{
@@ -43,16 +46,20 @@ class JpegReader implements JpegSegmentMetadataReader {
   }
 
   public readJpegSegments(segments: Set<Int8Array>, metadata: Metadata, segmentType: JpegSegmentType): void {
+    LogUtil.debug(TAG, `readJpegSegments start`);
     if (segments == null || segments.size == 0) {
+      LogUtil.error(TAG, `readJpegSegments end, segments is null or empty`);
       return;
     }
 
     for (let segmentBytes of segments) {
       this.extract(segmentBytes, metadata, segmentType);
     }
+    LogUtil.debug(TAG, `readJpegSegments end`);
   }
 
   public extract(segmentBytes: Int8Array, metadata: Metadata, segmentType: JpegSegmentType) {
+    LogUtil.debug(TAG, `extract start`);
     let directory: JpegDirectory = new JpegDirectory();
     metadata.addDirectory(directory);
 
@@ -76,7 +83,9 @@ class JpegReader implements JpegSegmentMetadataReader {
 
     } catch (ex) {
       directory.addError(ex.getMessage());
+      LogUtil.error(TAG, `extract end, ex: ${JSON.stringify(ex)}`);
     }
+    LogUtil.debug(TAG, `extract end`);
   }
 }
 

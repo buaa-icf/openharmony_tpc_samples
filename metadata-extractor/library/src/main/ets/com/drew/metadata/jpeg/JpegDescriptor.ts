@@ -16,6 +16,9 @@ limitations under the License.
 import JpegDirectory from './JpegDirectory';
 import TagDescriptor from '../TagDescriptor';
 import JpegComponent from './JpegComponent';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "JpegDescriptor";
 
 class JpegDescriptor extends TagDescriptor<JpegDirectory> {
   constructor(directory: JpegDirectory) {
@@ -24,6 +27,7 @@ class JpegDescriptor extends TagDescriptor<JpegDirectory> {
 
   public getDescription(tagType: number): string
   {
+    LogUtil.debug(TAG, `getDescription start, tagType: ${tagType}`);
     switch (tagType) {
       case JpegDirectory.TAG_COMPRESSION_TYPE:
         return this.getImageCompressionTypeDescription();
@@ -67,33 +71,49 @@ class JpegDescriptor extends TagDescriptor<JpegDirectory> {
   }
 
   public getImageWidthDescription(): string{
+    LogUtil.debug(TAG, `getImageWidthDescription start`);
     let value: string = this._directory.getString(JpegDirectory.TAG_IMAGE_WIDTH);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getImageWidthDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getImageWidthDescription end, value: ${value}`);
     return value + " pixels";
   }
 
   public getImageHeightDescription(): string
   {
+    LogUtil.debug(TAG, `getImageHeightDescription start`);
     let value: string = this._directory.getString(JpegDirectory.TAG_IMAGE_HEIGHT);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getImageHeightDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getImageHeightDescription end, value: ${value}`);
     return value + " pixels";
   }
 
   public getDataPrecisionDescription(): string
   {
+    LogUtil.debug(TAG, `getDataPrecisionDescription start`);
     let value: String = this._directory.getString(JpegDirectory.TAG_DATA_PRECISION);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getDataPrecisionDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getDataPrecisionDescription end, value: ${value}`);
     return value + " bits";
   }
 
   public getComponentDataDescription(componentNumber: number): string
   {
+    LogUtil.debug(TAG, `getComponentDataDescription start, componentNumber: ${componentNumber}`);
     let value: JpegComponent = this._directory.getComponent(componentNumber);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getComponentDataDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getComponentDataDescription end, value: ${value.toString()}`);
     return value.getComponentName() + " component: " + value.toString();
   }
 }

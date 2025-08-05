@@ -15,6 +15,9 @@ limitations under the License.
 
 import PcxDirectory from './PcxDirectory';
 import TagDescriptor from '../TagDescriptor';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "PcxDescriptor";
 
 class PcxDescriptor extends TagDescriptor<PcxDirectory> {
   constructor(directory: PcxDirectory) {
@@ -22,6 +25,7 @@ class PcxDescriptor extends TagDescriptor<PcxDirectory> {
   }
 
   public getDescription(tagType: number): string {
+    LogUtil.debug(TAG, `getDescription start, tagType: ${tagType}`);
     switch (tagType) {
       case PcxDirectory.TAG_VERSION:
         return this.getVersionDescription();

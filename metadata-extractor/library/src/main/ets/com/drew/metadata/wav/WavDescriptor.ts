@@ -15,6 +15,9 @@
 
 import WavDirectory from './WavDirectory';
 import TagDescriptor from '../TagDescriptor';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "WavDescriptor"
 
 class WavDescriptor extends TagDescriptor<WavDirectory> {
   public constructor(directory: WavDirectory) {
@@ -22,6 +25,7 @@ class WavDescriptor extends TagDescriptor<WavDirectory> {
   }
 
   public getDescription(tagType: number): string {
+    LogUtil.debug(TAG, `getDescription start, tagType: ${tagType}`);
     switch (tagType) {
       case WavDirectory.TAG_FORMAT:
         return this._directory.getString(WavDirectory.TAG_FORMAT)

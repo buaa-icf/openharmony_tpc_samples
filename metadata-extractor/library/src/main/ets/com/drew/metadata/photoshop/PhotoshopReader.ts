@@ -26,6 +26,9 @@ import IccReader from '../icc/IccReader';
 import { IptcReader } from '../iptc/IptcReader'
 import XmpReader from '../xmp/XmpReader';
 import Directory from '../Directory'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "PhotoshopReader";
 
 class PhotoshopReader implements JpegSegmentMetadataReader {
   private static JPEG_SEGMENT_PREAMBLE = "Photoshop 3.0";
@@ -52,10 +55,12 @@ class PhotoshopReader implements JpegSegmentMetadataReader {
   }
 
   public extract(reader: SequentialReader, length: number, metadata: Metadata, parentDirectory?: Directory) {
+    LogUtil.debug(TAG, `extract start`);
     let directory: PhotoshopDirectory = new PhotoshopDirectory();
     metadata.addDirectory(directory);
 
     if (parentDirectory != null) {
+      LogUtil.debug(TAG, `parentDirectory not null, set parent directory`);
       directory.setParent(parentDirectory);
     }
 
@@ -133,10 +138,12 @@ class PhotoshopReader implements JpegSegmentMetadataReader {
           }
         }
       } catch (e) {
+        LogUtil.error(TAG, `extract end, e: ${JSON.stringify(e)}`);
           directory.addError(e.getMessage());
           return;
       }
     }
+    LogUtil.debug(TAG, `extract end`);
   }
 }
 

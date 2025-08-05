@@ -13,6 +13,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "HuffmanTableClass";
+
 class HuffmanTableClass {
   public static readonly DC: HuffmanTableClass = new HuffmanTableClass()
   public static readonly AC: HuffmanTableClass = new HuffmanTableClass()
@@ -23,6 +27,7 @@ class HuffmanTableClass {
 
   public static typeOf(value: number): HuffmanTableClass
   {
+    LogUtil.debug(TAG, `typeOf start, value: ${value}`);
     switch (value) {
       case 0:
         return HuffmanTableClass.DC;

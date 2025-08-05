@@ -20,6 +20,9 @@ import JpegDirectory from './JpegDirectory';
 import Metadata from '../Metadata';
 import ErrorDirectory from '../ErrorDirectory';
 import SequentialReader from '../../lang/SequentialReader';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "JpegDnlReader";
 
 class JpegDnlReader implements JpegSegmentMetadataReader {
   public getSegmentTypes(): Set<JpegSegmentType>{
@@ -33,11 +36,13 @@ class JpegDnlReader implements JpegSegmentMetadataReader {
   }
 
   public extract(segmentBytes: Int8Array, metadata: Metadata, segmentType: JpegSegmentType) {
+    LogUtil.debug(TAG, `extract start`);
     let directory = metadata.getFirstDirectoryOfType(new JpegDirectory());
     if (directory == null) {
       let errorDirectory: ErrorDirectory = new ErrorDirectory();
       metadata.addDirectory(errorDirectory);
       errorDirectory.addError("DNL segment found without SOFx - illegal JPEG format");
+      LogUtil.error(TAG, "extract end, DNL segment found without SOFx - illegal JPEG format");
       return;
     }
 
@@ -51,7 +56,9 @@ class JpegDnlReader implements JpegSegmentMetadataReader {
       }
     } catch (ex) {
       directory.addError(ex.getMessage());
+      LogUtil.error(TAG, `extract end, error: ${JSON.stringify(ex)}`);
     }
+    LogUtil.debug(TAG, `extract end`);
   }
 }
 

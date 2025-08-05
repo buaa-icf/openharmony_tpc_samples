@@ -20,6 +20,9 @@ import ByteArrayReader from '../../lang/ByteArrayReader';
 import Charsets from '../../lang/Charsets';
 import Knot from './Knot'
 import Subpath from './Subpath'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "PhotoshopDescriptor";
 
 class PhotoshopDescriptor extends TagDescriptor<PhotoshopDirectory> {
   constructor(directory: PhotoshopDirectory) {
@@ -27,6 +30,7 @@ class PhotoshopDescriptor extends TagDescriptor<PhotoshopDirectory> {
   }
 
   public getDescription(tagType: number): string {
+    LogUtil.debug(TAG, `getDescription start, tagType: ${tagType}`);
     switch (tagType) {
       case PhotoshopDirectory.TAG_THUMBNAIL:
       case PhotoshopDirectory.TAG_THUMBNAIL_OLD:
@@ -66,10 +70,12 @@ class PhotoshopDescriptor extends TagDescriptor<PhotoshopDirectory> {
   }
 
   public getJpegQualityString(): string {
+    LogUtil.debug(TAG, `getJpegQualityString start`);
     try {
       let b = this._directory.getByteArray(PhotoshopDirectory.TAG_JPEG_QUALITY);
 
       if (b == null) {
+        LogUtil.error(TAG, `getJpegQualityString end, b is null`);
         return this._directory.getString(PhotoshopDirectory.TAG_JPEG_QUALITY);
       }
 
@@ -85,6 +91,7 @@ class PhotoshopDescriptor extends TagDescriptor<PhotoshopDirectory> {
               : q;
 
       let quality: string
+      LogUtil.debug(TAG, `getJpegQualityString end, q: ${q}, f: ${f}, s: ${s}`)
       switch (q) {
         case 0xFFFD:
         case 0xFFFE:
@@ -131,28 +138,34 @@ class PhotoshopDescriptor extends TagDescriptor<PhotoshopDirectory> {
 
       return parseInt(q1.toString()) + " (" + quality + "), " + format + "format, " + scans + " scans"
     } catch (e) {
-       return null;
+      LogUtil.error(TAG, `getJpegQualityString error: ${JSON.stringify(e)}`);
+      return null;
     }
   }
 
   public getPixelAspectRatioString(): string {
+    LogUtil.debug(TAG, `getPixelAspectRatioString start`);
     try {
       let bytes = this._directory.getByteArray(PhotoshopDirectory.TAG_PIXEL_ASPECT_RATIO);
       if (bytes == null) {
+        LogUtil.error(TAG, `getPixelAspectRatioString end, bytes is null`);
         return null;
       }
       let reader = new ByteArrayReader(bytes);
       let d = reader.getDouble64(4);
       return d.toString();
     } catch (e) {
-        return null;
+      LogUtil.error(TAG, `getPixelAspectRatioString error: ${JSON.stringify(e)}`);
+      return null;
     }
   }
 
   public getPrintScaleDescription(): string {
+    LogUtil.debug(TAG, `getPrintScaleDescription start`);
     try {
       let bytes = this._directory.getByteArray(PhotoshopDirectory.TAG_PRINT_SCALE);
       if (bytes == null) {
+        LogUtil.error(TAG, `getPrintScaleDescription end, bytes is null`);
         return null;
       }
       let reader = new ByteArrayReader(bytes);
@@ -160,6 +173,7 @@ class PhotoshopDescriptor extends TagDescriptor<PhotoshopDirectory> {
       let locX = reader.getFloat32(2);
       let locY = reader.getFloat32(6);
       let scale = reader.getFloat32(10);
+      LogUtil.debug(TAG, `getPrintScaleDescription end, style: ${style}, locX: ${locX}, locY: ${locY}, scale: ${scale}`)
       switch (style) {
         case 0:
           return "Centered, Scale " + scale;
@@ -172,14 +186,17 @@ class PhotoshopDescriptor extends TagDescriptor<PhotoshopDirectory> {
                    locX.toString() + " Y:" + locY.toString() + ", Scale:" + scale.toString()
       }
     } catch (e) {
-        return null;
+      LogUtil.error(TAG, `getPrintScaleDescription error: ${JSON.stringify(e)}`);
+      return null;
     }
   }
 
   public getResolutionInfoDescription(): string {
+    LogUtil.debug(TAG, `getResolutionInfoDescription start`);
     try {
       let bytes = this._directory.getByteArray(PhotoshopDirectory.TAG_RESOLUTION_INFO);
       if (bytes == null) {
+        LogUtil.error(TAG, `getResolutionInfoDescription end, bytes is null`);
         return null;
       }
       let reader = new ByteArrayReader(bytes);
@@ -187,14 +204,17 @@ class PhotoshopDescriptor extends TagDescriptor<PhotoshopDirectory> {
       let resY = reader.getS15Fixed16(8); // is this the correct offset? it's only reading 4 bytes each time
       return resX.toFixed(2).toString() + "x" + resY.toFixed(2).toString() + " DPI";
     } catch (e) {
-        return null;
+      LogUtil.error(TAG, `getResolutionInfoDescription error: ${JSON.stringify(e)}`);
+      return null;
     }
   }
 
   public getVersionDescription(): string {
+    LogUtil.debug(TAG, `getVersionDescription start`);
     try {
       let bytes = this._directory.getByteArray(PhotoshopDirectory.TAG_VERSION);
       if (bytes == null) {
+        LogUtil.error(TAG, `getVersionDescription end, bytes is null`);
         return null;
       }
       let reader = new ByteArrayReader(bytes);
@@ -211,16 +231,20 @@ class PhotoshopDescriptor extends TagDescriptor<PhotoshopDirectory> {
       let writerStr = reader.getString(pos, writerLength * 2, "UTF-16");
       pos += writerLength * 2;
       let fileVersion = reader.getInt32(pos);
+      LogUtil.debug(TAG, `getVersionDescription end, ver: ${ver}, readerStr: ${readerStr}, writerStr: ${writerStr}, fileVersion: ${fileVersion}`)
         return parseInt(ver.toString()).toString() + " (" + readerStr + ", " + writerStr + ") " + parseInt(fileVersion.toString()).toString()
     } catch (e) {
-        return null;
+      LogUtil.error(TAG, `getVersionDescription error: ${JSON.stringify(e)}`);
+      return null;
     }
   }
 
   public getSlicesDescription(): string {
+    LogUtil.debug(TAG, `getSlicesDescription start`);
     try {
       let bytes = this._directory.getByteArray(PhotoshopDirectory.TAG_SLICES);
       if (bytes == null) {
+        LogUtil.error(TAG, `getSlicesDescription end, bytes is null`);
         return null;
       }
       let reader = new ByteArrayReader(bytes);
@@ -228,20 +252,24 @@ class PhotoshopDescriptor extends TagDescriptor<PhotoshopDirectory> {
       let name = reader.getString(24, nameLength * 2, "UTF-16");
       let pos = 24 + nameLength * 2;
       let sliceCount = reader.getInt32(pos);
+      LogUtil.debug(TAG, `getSlicesDescription end, name: ${name}, sliceCount: ${sliceCount}`)
       return name + " (" + parseInt(reader.getInt32(4).toString()).toString() + "," +
                parseInt(reader.getInt32(8).toString()).toString() + "," +
                parseInt(reader.getInt32(12).toString()).toString() + "," +
                parseInt(reader.getInt32(16).toString()).toString() + ") " +
                parseInt(sliceCount.toString()).toString() + " Slices"
     } catch (e) {
-        return null;
+      LogUtil.error(TAG, `getSlicesDescription error: ${JSON.stringify(e)}`);
+      return null;
     }
   }
 
   public getThumbnailDescription(tagType: number) : string {
+    LogUtil.debug(TAG, `getThumbnailDescription start`);
     try {
       let v = this._directory.getByteArray(tagType);
       if (v == null) {
+        LogUtil.error(TAG, `getThumbnailDescription end, v is null`);
         return null;
       }
       let reader = new ByteArrayReader(v);
@@ -253,71 +281,89 @@ class PhotoshopDescriptor extends TagDescriptor<PhotoshopDirectory> {
       let compSize = reader.getInt32(20);
       let bpp = reader.getInt32(24);
       //skip Number of planes
+      LogUtil.debug(TAG, `getThumbnailDescription end, format: ${format}, width: ${width}, height: ${height}, totalSize: ${totalSize}, compSize: ${compSize}, bpp: ${bpp}`)
       return (format == 1 ? "JpegRGB" : "RawRGB") + ", " + parseInt(width.toString()).toString() + "x" +
                parseInt(height.toString()).toString() + ", Decomp " +
                parseInt(totalSize.toString()).toString() + " bytes, " +
                parseInt(bpp.toString()).toString() + " bpp, " +
                parseInt(compSize.toString()).toString() + " bytes"
     } catch (e) {
-        return null;
+      LogUtil.error(TAG, `getThumbnailDescription error: ${JSON.stringify(e)}`);
+      return null;
     }
   }
 
   private getBooleanString(tag: number): string {
+    LogUtil.debug(TAG, `getBooleanString start`);
     let bytes = this._directory.getByteArray(tag);
     if (bytes == null || bytes.length == 0) {
+      LogUtil.error(TAG, `getBooleanString end, bytes is null or empty`);
       return null;
     }
     return bytes[0] == 0 ? "No" : "Yes";
   }
 
   private get32BitNumberString(tag: number): string {
+    LogUtil.debug(TAG, `get32BitNumberString start`);
     let bytes = this._directory.getByteArray(tag);
     if (bytes == null) {
+      LogUtil.error(TAG, `get32BitNumberString end, bytes is null`);
       return null;
     }
     let reader = new ByteArrayReader(bytes);
     try {
       return parseInt(reader.getInt32(0).toString()).toString()
     } catch (e) {
-        return null;
+      LogUtil.error(TAG, `get32BitNumberString error: ${JSON.stringify(e)}`);
+      return null;
     }
   }
 
   private getSimpleString(tagType: number): string {
+    LogUtil.debug(TAG, `getSimpleString start`);
     let bytes = this._directory.getByteArray(tagType);
     if (bytes == null) {
+      LogUtil.error(TAG, `getSimpleString end, bytes is null`);
       return null;
     }
+    LogUtil.debug(TAG, `getSimpleString end`)
     return new String(bytes).toString();
   }
 
   private getBinaryDataString(tagType: number): string {
+    LogUtil.debug(TAG, `getBinaryDataString start`);
     let bytes = this._directory.getByteArray(tagType);
     if (bytes == null) {
+      LogUtil.error(TAG, `getBinaryDataString end, bytes is null`);
       return null;
     }
+    LogUtil.debug(TAG, `getBinaryDataString end`)
     return parseInt(bytes.length.toString()).toString() + " bytes binary data"
   }
 
   public getClippingPathNameString(tagType: number): string {
+    LogUtil.debug(TAG, `getClippingPathNameString start`);
     try {
       let bytes = this._directory.getByteArray(tagType);
       if (bytes == null) {
+        LogUtil.error(TAG, `getClippingPathNameString end, bytes is null`);
         return null;
       }
       let reader = new ByteArrayReader(bytes);
       let length = reader.getByte(0);
       return new String(reader.getBytes(1, length)).toString();
     } catch (e) {
-        return null;
+      LogUtil.error(TAG, `getClippingPathNameString error: ${JSON.stringify(e)}`);
+      return null;
     }
   }
 
   public getPathString(tagType: number): string {
+    LogUtil.debug(TAG, `getPathString start`);
     try {
       let bytes = this._directory.getByteArray(tagType);
       if (bytes == null) {
+        LogUtil.error(TAG, `getPathString end, bytes is null`);
         return null;
       }
       let reader = new ByteArrayReader(bytes);
@@ -451,10 +497,11 @@ class PhotoshopDescriptor extends TagDescriptor<PhotoshopDirectory> {
           str.concat(" (").concat(knot.getPoint(4).toString()).concat(",").concat(knot.getPoint(5).toString()).concat(")");
         });
       });
-
+      LogUtil.debug(TAG, `getPathString end, str: ${str}`)
       return str.toString();
     } catch (e) {
-         return null;
+      LogUtil.error(TAG, `getPathString error: ${JSON.stringify(e)}`);
+      return null;
     }
   }
 }

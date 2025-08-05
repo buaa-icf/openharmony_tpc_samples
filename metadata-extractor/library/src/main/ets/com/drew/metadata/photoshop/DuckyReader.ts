@@ -20,6 +20,9 @@ import JpegSegmentType from '../../imaging/jpeg/JpegSegmentType';
 import JpegSegmentMetadataReader from '../../imaging/jpeg/JpegSegmentMetadataReader';
 import DuckyDirectory from './DuckyDirectory'
 import Charsets from '../../lang/Charsets'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "DuckyReader";
 
 export default class DuckyReader implements JpegSegmentMetadataReader {
   private static readonly JPEG_SEGMENT_PREAMBLE: string = "Ducky";
@@ -49,6 +52,7 @@ export default class DuckyReader implements JpegSegmentMetadataReader {
 
   public extract(reader: SequentialReader, metadata: Metadata): void
   {
+    LogUtil.debug(TAG, `extract start`);
     let directory: DuckyDirectory = new DuckyDirectory();
     metadata.addDirectory(directory);
 
@@ -66,6 +70,7 @@ export default class DuckyReader implements JpegSegmentMetadataReader {
           case DuckyDirectory.TAG_QUALITY:
           {
             if (length != 4) {
+              LogUtil.error(TAG, "extract end, Unexpected length for the quality tag");
               directory.addError("Unexpected length for the quality tag");
               return;
             }
@@ -89,7 +94,9 @@ export default class DuckyReader implements JpegSegmentMetadataReader {
       }
     }
     catch (error) {
+      LogUtil.error(TAG, `extract end, ${JSON.stringify(error)}`);
       directory.addError(JSON.stringify(error));
     }
+    LogUtil.debug(TAG, `extract end`);
   }
 }

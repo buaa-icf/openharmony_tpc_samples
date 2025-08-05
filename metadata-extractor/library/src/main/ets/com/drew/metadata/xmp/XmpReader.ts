@@ -20,6 +20,9 @@ import XmpDirectory from './XmpDirectory';
 import Directory from '../Directory';
 import SequentialReader from '../../lang/SequentialReader';
 import SequentialByteArrayReader from '../../lang/SequentialByteArrayReader';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "XmpReader";
 
 class XmpReader implements JpegSegmentMetadataReader {
   private static readonly XMP_JPEG_PREAMBLE: string = "http://ns.adobe.com/xap/1.0/\0";
@@ -87,9 +90,10 @@ class XmpReader implements JpegSegmentMetadataReader {
    * The extraction is done with Adobe's XMPCore library.
    */
   public extract(xmpBytes?: Int8Array, offset?: number, length?: number, metadata?: Metadata, parentDirectory?: Directory): void {
-
+    LogUtil.debug(TAG, `extract start`);
     let directory: XmpDirectory = new XmpDirectory();
     if (parentDirectory != null) {
+      LogUtil.debug(TAG, `parentDirectory is not null, calling setParent`);
       directory.setParent(parentDirectory);
     }
 
@@ -106,16 +110,20 @@ class XmpReader implements JpegSegmentMetadataReader {
 
       directory.setXMPMeta(xmpMeta);*/
     } catch (error) {
+      LogUtil.error(TAG, `Error processing XMP data: ${JSON.stringify(error)}`);
       directory.addError("Error processing XMP data: " + error);
     }
     if (!directory.isEmpty()) {
       metadata.addDirectory(directory);
     }
+    LogUtil.debug(TAG, `extract end`);
   }
 
   public extractString(xmpString: string, metadata: Metadata, parentDirectory: Directory): void {
+    LogUtil.debug(TAG, `extractString start`);
     let directory: XmpDirectory = new XmpDirectory();
     if (parentDirectory != null) {
+      LogUtil.debug(TAG, `parentDirectory is not null, calling setParent`);
       directory.setParent(parentDirectory);
     }
 
@@ -123,11 +131,13 @@ class XmpReader implements JpegSegmentMetadataReader {
       /*let xmpMeta = XMPMetaFactory.parseFromString(xmpString, XmpReader.PARSE_OPTIONS);
       directory.setXMPMeta(xmpMeta);*/
     } catch (error) {
+      LogUtil.error(TAG, `Error processing XMP data: ${JSON.stringify(error)}`);
       directory.addError("Error processing XMP data: " + error);
     }
     if (!directory.isEmpty()) {
       metadata.addDirectory(directory);
     }
+    LogUtil.debug(TAG, `extractString end`);
   }
 
   /**
@@ -170,7 +180,8 @@ class XmpReader implements JpegSegmentMetadataReader {
    */
   private static processExtendedXMPChunk(metadata: Metadata, segmentBytes: Int8Array,
                                          extendedXMPGUID: string, extendedXMPBuffer: Int8Array): Int8Array {
-    let extensionPreambleLength: number = XmpReader.XMP_EXTENSION_JPEG_PREAMBLE.length;
+    LogUtil.debug(TAG, `processExtendedXMPChunk start`);
+                                          let extensionPreambleLength: number = XmpReader.XMP_EXTENSION_JPEG_PREAMBLE.length;
     let segmentLength: number = segmentBytes.length;
     let totalOffset: number = extensionPreambleLength + XmpReader.EXTENDED_XMP_GUID_LENGTH
     + XmpReader.EXTENDED_XMP_INT_LENGTH + XmpReader.EXTENDED_XMP_INT_LENGTH;
@@ -195,6 +206,7 @@ class XmpReader implements JpegSegmentMetadataReader {
           let chunkOffset: number = Number(reader.getUInt32());
 
           if (extendedXMPBuffer == null) {
+            LogUtil.debug(TAG, `Creating new buffer of length ${fullLength}`);
             extendedXMPBuffer = new Int8Array[fullLength];
           }
 
@@ -203,17 +215,19 @@ class XmpReader implements JpegSegmentMetadataReader {
             //extendedXMPBuffer.slice(0, chunkOffset) + segmentBytes.slice(totalOffset, segmentLength) + extendedXMPBuffer.slice(chunkOffset, fullLength);
           } else {
             let directory: XmpDirectory = new XmpDirectory();
+            LogUtil.error(TAG, `Inconsistent length for the Extended XMP buffer: ${fullLength} instead of ${extendedXMPBuffer.length}`);
             directory.addError("Inconsistent length for the Extended XMP buffer: " + fullLength + " instead of " + extendedXMPBuffer.length);
             metadata.addDirectory(directory);
           }
         }
       } catch (error) {
         let directory: XmpDirectory = new XmpDirectory();
+        LogUtil.error(TAG, `Error processing Extended XMP chunk: ${JSON.stringify(error)}`);
         directory.addError(error);
         metadata.addDirectory(directory);
       }
     }
-
+    LogUtil.debug(TAG, `processExtendedXMPChunk end`);
     return extendedXMPBuffer;
   }
 }

@@ -17,9 +17,13 @@ import PsdHeaderDirectory from './PsdHeaderDirectory';
 import Metadata from '../Metadata';
 import SequentialReader from '../../lang/SequentialReader';
 import PhotoshopReader from './PhotoshopReader'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "PsdReader";
 
 class PsdReader {
   public extract(reader: SequentialReader, metadata: Metadata) {
+    LogUtil.debug(TAG, `extract start`);
     let directory = new PsdHeaderDirectory();
     metadata.addDirectory(directory);
 
@@ -29,12 +33,14 @@ class PsdReader {
       let signature = reader.getInt32();
       if (signature != 0x38425053) { // "8BPS"
         directory.addError("Invalid PSD file signature");
+        LogUtil.error(TAG, `extract end, Invalid PSD file signature: ${signature}`);
         return;
       }
 
       let version = reader.getUInt16();
       if (version != 1 && version != 2) {
         directory.addError("Invalid PSD file version (must be 1 or 2)");
+        LogUtil.error(TAG, `extract end, Invalid PSD file version: ${version}`);
         return;
       }
 
@@ -59,6 +65,7 @@ class PsdReader {
       directory.setInt(PsdHeaderDirectory.TAG_COLOR_MODE, colorMode);
     } catch (e) {
         directory.addError("Unable to read PSD header");
+        LogUtil.error(TAG, `extract end, Unable to read PSD header: ${JSON.stringify(e)}`);
         return;
     }
 
@@ -68,7 +75,8 @@ class PsdReader {
       let sectionLength = reader.getUInt32();
       reader.skip(sectionLength);
     } catch (e) {
-        return;
+      LogUtil.error(TAG, `extract end, Unable to read color mode data section: ${JSON.stringify(e)}`);
+      return;
     }
 
     // IMAGE RESOURCES SECTION
@@ -77,13 +85,15 @@ class PsdReader {
       let sectionLength = reader.getUInt32();
       new PhotoshopReader().extract(reader, sectionLength, metadata, null);
     } catch (e) {
+      LogUtil.error(TAG, `Unable to read image resources section: ${JSON.stringify(e)}`);
       // ignore
     }
 
     // LAYER AND MASK INFORMATION SECTION (skipped)
 
     // IMAGE DATA SECTION (skipped)
-    }
+    LogUtil.debug(TAG, `extract end`);
+  }
 }
 
 export default PsdReader

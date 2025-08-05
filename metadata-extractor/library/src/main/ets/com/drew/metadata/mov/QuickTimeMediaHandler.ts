@@ -22,6 +22,9 @@ import QuickTimeContext from './QuickTimeContext'
 import QuickTimeDirectory from './QuickTimeDirectory'
 import QuickTimeHandler from '../../imaging/quicktime/QuickTimeHandler'
 import SequentialByteArrayReader from '../../lang/SequentialByteArrayReader'
+import LogUtil from '../../tools/LogUtils'
+
+const TAG: string = "QuickTimeMediaHandler";
 
 abstract class QuickTimeMediaHandler <T extends QuickTimeDirectory> extends QuickTimeHandler<T> {
   public constructor(metadata: Metadata, context: QuickTimeContext) {
@@ -41,12 +44,14 @@ abstract class QuickTimeMediaHandler <T extends QuickTimeDirectory> extends Quic
   }
 
   public shouldAcceptAtom(atom: Atom): boolean {
+    LogUtil.debug( TAG, `shouldAcceptAtom start, atom type: ${atom.type}`);
     return atom.type == this.getMediaInformation()
     || atom.type == QuickTimeAtomTypes.ATOM_SAMPLE_DESCRIPTION
     || atom.type == QuickTimeAtomTypes.ATOM_TIME_TO_SAMPLE;
   }
 
   public shouldAcceptContainer(atom: Atom): boolean {
+    LogUtil.debug( TAG, `shouldAcceptContainer start, atom type: ${atom.type}`);
     return atom.type == QuickTimeContainerTypes.ATOM_SAMPLE_TABLE
     || atom.type == QuickTimeContainerTypes.ATOM_MEDIA_INFORMATION
     || atom.type == QuickTimeContainerTypes.ATOM_MEDIA_BASE
@@ -54,6 +59,7 @@ abstract class QuickTimeMediaHandler <T extends QuickTimeDirectory> extends Quic
   }
 
   public processAtom(atom: Atom, payload: Int8Array, context: QuickTimeContext): QuickTimeMediaHandler<T> {
+    LogUtil.debug( TAG, `processAtom start, atom type: ${atom.type}`);
     if (payload != null) {
       let reader: SequentialByteArrayReader = new SequentialByteArrayReader(payload);
       if (atom.type == this.getMediaInformation()) {
@@ -64,6 +70,7 @@ abstract class QuickTimeMediaHandler <T extends QuickTimeDirectory> extends Quic
         this.processTimeToSample(reader, atom, context);
       }
     }
+    LogUtil.debug( TAG, `processAtom end`);
     return this;
   }
 

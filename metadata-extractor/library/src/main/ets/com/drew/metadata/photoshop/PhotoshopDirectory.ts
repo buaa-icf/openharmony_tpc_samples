@@ -15,6 +15,9 @@ limitations under the License.
 
 import Directory from '../Directory'
 import PhotoshopDescriptor from './PhotoshopDescriptor'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "PhotoshopDirectory";
 
 class PhotoshopDirectory extends Directory {
   public static TAG_CHANNELS_ROWS_COLUMNS_DEPTH_MODE                  = 0x03E8;
@@ -214,17 +217,21 @@ class PhotoshopDirectory extends Directory {
   }
 
   public getThumbnailBytes(): Int8Array {
+    LogUtil.debug(TAG, `getThumbnailBytes start`);
     let storedBytes = this.getByteArray(PhotoshopDirectory.TAG_THUMBNAIL);
     if (storedBytes == null) {
+      LogUtil.debug(TAG, `getThumbnailBytes TAG_THUMBNAIL not found, try TAG_THUMBNAIL_OLD`);
       storedBytes = this.getByteArray(PhotoshopDirectory.TAG_THUMBNAIL_OLD);
     }
     if (storedBytes == null || storedBytes.length <= 28) {
+      LogUtil.error(TAG, `getThumbnailBytes end, storedBytes is null or length <= 28`);
       return null;
     }
 
     let thumbSize = storedBytes.length - 28;
     let thumbBytes = new Int8Array[thumbSize];
     thumbBytes = storedBytes.slice(28, thumbSize)
+    LogUtil.debug(TAG, `getThumbnailBytes end`);
     return thumbBytes;
   }
 }

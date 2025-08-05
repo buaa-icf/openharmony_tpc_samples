@@ -23,6 +23,9 @@ import Mp4TextHandler from './media/Mp4TextHandler'
 import Mp4HintHandler from './media/Mp4HintHandler'
 import Mp4MetaHandler from './media/Mp4MetaHandler'
 import Mp4Directory from './Mp4Directory'
+import LogUtil from '../../tools/LogUtils'
+
+const TAG: string = "Mp4HandlerFactory"
 
 export default class Mp4HandlerFactory {
      private static readonly  HANDLER_SOUND_MEDIA:string             = "soun";
@@ -40,11 +43,12 @@ export default class Mp4HandlerFactory {
 
     public getHandler( box:HandlerBox,  metadata:Metadata,context:Mp4Context): Mp4Handler<Mp4Directory>
     {
+        LogUtil.debug(TAG, `getHandler start`);
         let handleType = box.getHandlerType();
+        LogUtil.debug(TAG, `handleType:${handleType}`);
         if (handleType==Mp4HandlerFactory.HANDLER_SOUND_MEDIA) {
             return new Mp4SoundHandler(metadata, context);
-        }
-        else if (handleType==Mp4HandlerFactory.HANDLER_VIDEO_MEDIA) {
+        } else if (handleType==Mp4HandlerFactory.HANDLER_VIDEO_MEDIA) {
             return new Mp4VideoHandler(metadata, context);
         } else if (handleType==Mp4HandlerFactory.HANDLER_HINT_MEDIA) {
             return new Mp4HintHandler(metadata, context);
@@ -53,6 +57,7 @@ export default class Mp4HandlerFactory {
         } else if (handleType==Mp4HandlerFactory.HANDLER_META_MEDIA) {
             return new Mp4MetaHandler(metadata, context);
         }
+        LogUtil.debug(TAG, `getHandler end, return caller`);
         return this.caller;
     }
 }

@@ -30,6 +30,9 @@ import SequentialByteArrayReader from '../../lang/SequentialByteArrayReader'
 import SequentialReader from '../../lang/SequentialReader'
 import TrackHeaderAtom from './atoms/TrackHeaderAtom'
 import XmpReader from '../xmp/XmpReader'
+import LogUtil from '../../tools/LogUtils'
+
+const TAG: string = "QuickTimeAtomHandler";
 
 class QuickTimeAtomHandler extends QuickTimeHandler<QuickTimeDirectory> {
   private handlerFactory: QuickTimeHandlerFactory = new QuickTimeHandlerFactory(this);
@@ -61,6 +64,7 @@ class QuickTimeAtomHandler extends QuickTimeHandler<QuickTimeDirectory> {
   }
 
   public processAtom(atom: Atom, payload: Int8Array, context: QuickTimeContext): QuickTimeHandler<QuickTimeDirectory> {
+    LogUtil.debug(TAG, `processAtom start, type: ${atom.type}`)
     if (payload != null) {
       let reader: SequentialReader = new SequentialByteArrayReader(payload);
 
@@ -86,10 +90,11 @@ class QuickTimeAtomHandler extends QuickTimeHandler<QuickTimeDirectory> {
       }
     } else {
       if (atom.type == QuickTimeContainerTypes.ATOM_COMPRESSED_MOVIE) {
+        LogUtil.error(TAG, `Compressed QuickTime movies not supported`);
         this.directory.addError("Compressed QuickTime movies not supported");
       }
     }
-
+    LogUtil.debug(TAG, `processAtom end`)
     return this;
   }
 }

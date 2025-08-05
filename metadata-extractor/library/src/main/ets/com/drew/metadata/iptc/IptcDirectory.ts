@@ -15,6 +15,9 @@ limitations under the License.
 
 import { IptcDescriptor } from './IptcDescriptor';
 import Directory from '../Directory';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "IptcDirectory";
 
 export class IptcDirectory extends Directory {
   public static TAG_ENVELOPE_RECORD_VERSION             = 0x0100
@@ -188,9 +191,13 @@ export class IptcDirectory extends Directory {
   }
 
   public getKeywords() {
+    LogUtil.debug(TAG, `getKeywords start`);
     let array = this.getStringArray(IptcDirectory.TAG_KEYWORDS);
-    if (array == null)
-    return null;
+    if (array == null) {
+      LogUtil.error(TAG, `getKeywords end, ${IptcDirectory.TAG_KEYWORDS} not found, array is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getKeywords end`);
     return array;
   }
 
@@ -215,14 +222,20 @@ export class IptcDirectory extends Directory {
   }
 
   private getmDate(dateTagType: number, timeTagType: number) {
+    LogUtil.debug(TAG, `getmDate start`);
     let date = this.getString(dateTagType);
     let time = this.getString(timeTagType);
 
-    if (date == null)
-    return null;
-    if (time == null)
-    return null;
+    if (date == null) {
+      LogUtil.error(TAG, `getmDate end, ${dateTagType} not found, date is null`);
+      return null;
+    }
+    if (time == null) {
+      LogUtil.error(TAG, `getmDate end, ${timeTagType} not found, time is null`);
+      return null;
+    }
 
+    LogUtil.debug(TAG, `getmDate end`);
     return date + time
   }
 }

@@ -19,6 +19,9 @@ import PngColorType from '../../imaging/png/PngColorType';
 import KeyValuePair from '../../lang/KeyValuePair';
 import SequentialReader from '../../lang/SequentialReader';
 import SequentialByteArrayReader from '../../lang/SequentialByteArrayReader';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "PngDescriptor";
 
 class PngDescriptor extends TagDescriptor<PngDirectory> {
   public constructor(directory: PngDirectory) {
@@ -26,6 +29,7 @@ class PngDescriptor extends TagDescriptor<PngDirectory> {
   }
 
   public getDescription(tagType: number): string {
+    LogUtil.debug(TAG, `getDescription start tagType: ${tagType}`);
     switch (tagType) {
       case PngDirectory.TAG_COLOR_TYPE:
         return this.getColorTypeDescription();
@@ -51,14 +55,18 @@ class PngDescriptor extends TagDescriptor<PngDirectory> {
   }
 
   public getColorTypeDescription(): string {
+    LogUtil.debug(TAG, `getColorTypeDescription start`);
     let value: number = this._directory.getInteger(PngDirectory.TAG_COLOR_TYPE);
     if (value == null) {
+      LogUtil.error(TAG, `getColorTypeDescription end, value is null`);
       return null;
     }
     let colorType: PngColorType = PngColorType.fromNumericValue(value);
     if (colorType == null) {
+      LogUtil.error(TAG, `getColorTypeDescription end, colorType is null`);
       return null;
     }
+    LogUtil.debug(TAG, `getColorTypeDescription end`);
     return colorType.getDescription();
   }
 
@@ -98,8 +106,10 @@ class PngDescriptor extends TagDescriptor<PngDirectory> {
   }
 
   public getTextualDataDescription(): string {
+    LogUtil.debug(TAG, `getTextualDataDescription start`);
     let object: object = this._directory.getObject(PngDirectory.TAG_TEXTUAL_DATA);
     if (object == null) {
+      LogUtil.error(TAG, `getTextualDataDescription end, object is null`);
       return null;
     }
     //let keyValues = new Set<KeyValuePair>(object);
@@ -111,18 +121,22 @@ class PngDescriptor extends TagDescriptor<PngDirectory> {
       }
       sb += keyValue.getKey() + ": " + keyValue.getValue();
     }
+    LogUtil.debug(TAG, `getTextualDataDescription end`);
     return sb;
   }
 
   public getBackgroundColorDescription(): string {
+    LogUtil.debug(TAG, `getBackgroundColorDescription start`);
     let bytes: Int8Array = this._directory.getByteArray(PngDirectory.TAG_BACKGROUND_COLOR);
     if (bytes == null) {
+      LogUtil.error(TAG, `getBackgroundColorDescription end, bytes is null`);
       return null;
     }
 
     let reader: SequentialReader = new SequentialByteArrayReader(bytes);
     try {
       // TODO do we need to normalise these based upon the bit depth?
+      LogUtil.debug(TAG, `getBackgroundColorDescription end, bytes.length: ${bytes.length}`);
       switch (bytes.length) {
         case 1:
           return "Palette Index " + reader.getUInt8();
@@ -132,8 +146,10 @@ class PngDescriptor extends TagDescriptor<PngDirectory> {
           return "R " + reader.getUInt16() + ", G " + reader.getUInt16() + ", B " + reader.getUInt16();
       }
     } catch (error) {
+      LogUtil.error(TAG, `getBackgroundColorDescription end, ${JSON.stringify(error)}`);
       return null;
     }
+    LogUtil.debug(TAG, `getBackgroundColorDescription end`);
     return null;
   }
 }

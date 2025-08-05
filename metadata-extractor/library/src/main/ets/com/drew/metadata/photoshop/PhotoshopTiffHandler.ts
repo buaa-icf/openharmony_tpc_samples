@@ -22,6 +22,9 @@ import ExifTiffHandler from '../exif/ExifTiffHandler'
 import IccReader from '../icc/IccReader'
 import XmpReader from '../xmp/XmpReader'
 import PhotoshopReader from './PhotoshopReader'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "PhotoshopTiffHandler"
 
 class PhotoshopTiffHandler extends ExifTiffHandler {
   // Photoshop-specific Tiff Tags
@@ -42,6 +45,7 @@ class PhotoshopTiffHandler extends ExifTiffHandler {
 
   public customProcessTag(tagOffset: number, processedIfdOffsets: Set<number>, tiffHeaderOffset: number,
                           reader: RandomAccessReader, tagId: number, byteCount: number): boolean {
+    LogUtil.debug(TAG, `customProcessTag start, tagId: ${tagId}, byteCount: ${byteCount}`);
     switch (tagId) {
       case PhotoshopTiffHandler.TAG_XMP:
         new XmpReader().extract(reader.getBytes(tagOffset, byteCount), null, null, this._metadata, null);
@@ -53,6 +57,7 @@ class PhotoshopTiffHandler extends ExifTiffHandler {
         new IccReader().extract(new ByteArrayReader(reader.getBytes(tagOffset, byteCount)), this._metadata);
         return true;
     }
+    LogUtil.debug(TAG, `customProcessTag end`);
     return super.customProcessTag(tagOffset, processedIfdOffsets, tiffHeaderOffset, reader, tagId, byteCount);
   }
 }

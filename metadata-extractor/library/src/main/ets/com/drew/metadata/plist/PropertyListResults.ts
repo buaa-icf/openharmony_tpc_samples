@@ -14,6 +14,10 @@ limitations under the License.
 */
 
 import Trailer from './Trailer'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "PropertyListResults";
+
 export default class PropertyListResults{
    private static  readonly PLIST_DTD:string = "<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">";
       private readonly objects:Array<Object>;
@@ -37,15 +41,17 @@ export default class PropertyListResults{
 
         public getEntrySet():Set<Map<number, number>>
         {
+            LogUtil.debug(TAG, `getEntrySet start`);
             let  topObject:Object=this.getObjects()[this.getTrailer().getTopObject()]
                if (topObject instanceof Map){
                 let dict:Map<number, number> = topObject;
                 let entry:Set<Map<number, number>> = new Set();
                 entry.add(dict)
+                LogUtil.debug(TAG, `getEntrySet end, return entry`);
                 return entry;
                 }
 
-
+            LogUtil.debug(TAG, `getEntrySet end, return null`);
             return null;
         }
 

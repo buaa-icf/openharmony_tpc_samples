@@ -17,6 +17,9 @@ import QuickTimeDictionary from './QuickTimeDictionary'
 import QuickTimeDirectory from './QuickTimeDirectory'
 import Rational from '../../lang/Rational'
 import TagDescriptor from '../TagDescriptor'
+import LogUtil from '../../tools/LogUtils'
+
+const TAG: string = "QuickTimeDescriptor";
 
 export default class  QuickTimeDescriptor extends TagDescriptor<QuickTimeDirectory> {
   public constructor(directory: QuickTimeDirectory) {
@@ -24,6 +27,7 @@ export default class  QuickTimeDescriptor extends TagDescriptor<QuickTimeDirecto
   }
 
   public getDescription(tagType: number): string {
+    LogUtil.debug(TAG, `getDescription start, tagType: ${tagType}`);
     switch (tagType) {
       case QuickTimeDirectory.TAG_MAJOR_BRAND:
         return this.getMajorBrandDescription();
@@ -37,29 +41,40 @@ export default class  QuickTimeDescriptor extends TagDescriptor<QuickTimeDirecto
   }
 
   private getMajorBrandDescription(): string {
+    LogUtil.debug(TAG, `getMajorBrandDescription start`);
     let value: Int8Array = this._directory.getByteArray(QuickTimeDirectory.TAG_MAJOR_BRAND);
-    if (value == null)
-    return null;
+    if (value == null) {
+      LogUtil.error(TAG, `getMajorBrandDescription end, value is null`);
+      return null;
+    }
+    LogUtil.debug(TAG, `getMajorBrandDescription end, value: ${value}`);
     return QuickTimeDictionary.lookup(QuickTimeDirectory.TAG_MAJOR_BRAND, value.toString());
   }
 
   private getCompatibleBrandsDescription(): string {
+    LogUtil.debug(TAG, `getCompatibleBrandsDescription start`);
     let values: Array<string> = this._directory.getStringArray(QuickTimeDirectory.TAG_COMPATIBLE_BRANDS);
-    if (values == null)
-    return null;
+    if (values == null) {
+      LogUtil.error(TAG, `getCompatibleBrandsDescription end, values is null`);
+      return null;
+    }
 
     let compatibleBrandsValues: Set<string> = new Set<string>();
     for (let value in values) {
       let compatibleBrandsValue: string = QuickTimeDictionary.lookup(QuickTimeDirectory.TAG_MAJOR_BRAND, value);
       compatibleBrandsValues.add(compatibleBrandsValue == null ? value : compatibleBrandsValue);
     }
+    LogUtil.debug(TAG, `getCompatibleBrandsDescription end`);
     return Array.from(compatibleBrandsValues).toString();
   }
 
   private getDurationDescription(): string {
+    LogUtil.debug(TAG, `getDurationDescription start`);
     let duration: Rational = this._directory.getRational(QuickTimeDirectory.TAG_DURATION_SECONDS);
-    if (duration == null)
-    return null;
+    if (duration == null) {
+      LogUtil.error(TAG, `getDurationDescription end, duration is null`);
+      return null;
+    }
 
     let value: number = duration.numberValue();
     let hours: number = parseInt(String(value / (Math.pow(60, 2))).split('.')[0]);
@@ -79,6 +94,7 @@ export default class  QuickTimeDescriptor extends TagDescriptor<QuickTimeDirecto
       secondsStr = '0' + secondsStr;
     }
     let time: string = hoursStr + ':' + minutesStr + ":" + secondsStr;
+    LogUtil.debug(TAG, `getDurationDescription end, time: ${time}`);
     return time;
   }
 }

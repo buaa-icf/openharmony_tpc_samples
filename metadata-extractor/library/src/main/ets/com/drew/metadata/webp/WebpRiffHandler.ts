@@ -22,6 +22,9 @@ import ExifReader from '../exif/ExifReader'
 import IccReader from '../icc/IccReader'
 import XmpReader from '../xmp/XmpReader'
 import RandomAccessReader from '../../lang/RandomAccessReader'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "WebpRiffHandler";
 
 export default class WebpRiffHandler implements RiffHandler {
   private _metadata: Metadata;
@@ -50,6 +53,7 @@ export default class WebpRiffHandler implements RiffHandler {
 
   public processChunk(fourCC: string, payload: Int8Array): void
   {
+    LogUtil.debug (TAG, `processChunk start, fourCC: ${fourCC}, payload length: ${payload.length}`);
     let directory: WebpDirectory = new WebpDirectory();
     if (fourCC == WebpDirectory.CHUNK_EXIF) {
       // We have seen WebP images with and without the preamble here. It's likely that some software incorrectly
@@ -82,6 +86,7 @@ export default class WebpRiffHandler implements RiffHandler {
         this._metadata.addDirectory(directory);
 
       } catch (e) {
+        LogUtil.error(TAG, `processChunk error: ${JSON.stringify(e)}`);
         directory.addError(JSON.stringify(e));
       }
     } else if (fourCC == WebpDirectory.CHUNK_VP8L && payload.length > 4) {
@@ -109,6 +114,7 @@ export default class WebpRiffHandler implements RiffHandler {
         this._metadata.addDirectory(directory);
 
       } catch (e) {
+        LogUtil.error(TAG, `processChunk error: ${JSON.stringify(e)}`);
         directory.addError(JSON.stringify(e));
       }
     } else if (fourCC == WebpDirectory.CHUNK_VP8 && payload.length > 9) {
@@ -134,9 +140,10 @@ export default class WebpRiffHandler implements RiffHandler {
 
         this._metadata.addDirectory(directory);
       } catch (ex) {
-        console.debug("webp vp8" + ex)
+        LogUtil.error(TAG, `processChunk webp vp8 ${JSON.stringify(ex)}`);
         directory.addError(ex);
       }
     }
+    LogUtil.debug (TAG, `processChunk end`);
   }
 }

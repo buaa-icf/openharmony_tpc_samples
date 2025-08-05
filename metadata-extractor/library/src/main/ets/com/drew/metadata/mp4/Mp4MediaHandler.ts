@@ -23,6 +23,9 @@ import Box from './boxes/Box';
 import DateUtil from '../../lang/DateUtil';
 import Mp4Handler from '../../imaging/mp4/Mp4Handler';
 import Metadata from '../Metadata';
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "Mp4MediaHandler"
 
 abstract class Mp4MediaHandler <T extends Mp4MediaDirectory> extends Mp4Handler<T> {
   public constructor(metadata: Metadata, context: Mp4Context) {
@@ -43,6 +46,7 @@ abstract class Mp4MediaHandler <T extends Mp4MediaDirectory> extends Mp4Handler<
 
   public shouldAcceptBox(box: Box): boolean
   {
+    LogUtil.debug(TAG, `shouldAcceptBox start, classtype: ${box.classtype}`);
     return box.classtype==this.getMediaInformation()
     || box.classtype==Mp4BoxTypes.BOX_SAMPLE_DESCRIPTION
     || box.classtype==Mp4BoxTypes.BOX_TIME_TO_SAMPLE;
@@ -50,12 +54,14 @@ abstract class Mp4MediaHandler <T extends Mp4MediaDirectory> extends Mp4Handler<
 
   public shouldAcceptContainer(box: Box): boolean
   {
+    LogUtil.debug(TAG, `shouldAcceptContainer start, classtype: ${box.classtype}`);
     return box.classtype==Mp4ContainerTypes.BOX_SAMPLE_TABLE
     || box.classtype==Mp4ContainerTypes.BOX_MEDIA_INFORMATION;
   }
 
   public processBox(box: Box, payload: Int8Array, context: Mp4Context): Mp4Handler<T>
   {
+    LogUtil.debug(TAG, `processBox start, classtype: ${box.classtype}`);
     if (payload != null) {
       let reader = new SequentialByteArrayReader(payload);
       if (box.classtype==this.getMediaInformation()) {
@@ -66,6 +72,7 @@ abstract class Mp4MediaHandler <T extends Mp4MediaDirectory> extends Mp4Handler<
         this.processTimeToSample(reader, box, context);
       }
     }
+    LogUtil.debug(TAG, `processBox end`);
     return this;
   }
 

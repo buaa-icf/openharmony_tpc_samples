@@ -19,6 +19,9 @@ import Metadata from '../Metadata';
 import RiffHandler from '../../imaging/riff/RiffHandler';
 import util from '@ohos.util';
 import StringValue      from '../StringValue'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "WavRiffHandler";
 
 class WavRiffHandler implements RiffHandler {
   private _directory: WavDirectory;
@@ -41,16 +44,20 @@ class WavRiffHandler implements RiffHandler {
   }
 
   public shouldAcceptList(fourCC: string): boolean {
+    LogUtil.debug(TAG, `shouldAcceptList start, fourCC: ${fourCC}`);
     if (fourCC == WavDirectory.LIST_INFO) {
       this._currentList = WavDirectory.LIST_INFO;
+      LogUtil.debug(TAG, `shouldAcceptList end, return true`);
       return true;
     } else {
       this._currentList = "";
+      LogUtil.debug(TAG, `shouldAcceptList end, return false`);
       return false;
     }
   }
 
   public processChunk(fourCC: string, payload: Int8Array): void {
+    LogUtil.debug(TAG, `processChunk start, fourCC: ${fourCC}`);
     try {
       if (fourCC == WavDirectory.CHUNK_FORMAT) {
         let reader: ByteArrayReader = new ByteArrayReader(payload);
@@ -101,15 +108,17 @@ class WavRiffHandler implements RiffHandler {
             this._directory.setString(WavDirectory.TAG_DURATION, time);
           }
         } catch (ex: any) {
+          LogUtil.debug(TAG, `processChunk error: ${JSON.stringify(ex)}`);
           this._directory.addError("Error calculating duration: bytes per second not found");
         }
       } else if (WavDirectory._tagIntegerMap.has(fourCC)) {
         this._directory.setString(WavDirectory._tagIntegerMap.get(fourCC), new String(payload).substring(0, payload.length - 1));
       }
     } catch (ex: any) {
+      LogUtil.debug(TAG, `processChunk error: ${JSON.stringify(ex)}`);
       this._directory.addError(ex.getMessage());
     }
-
+    LogUtil.debug(TAG, `processChunk end`);
   }
 
   public addError(message: string): void {

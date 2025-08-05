@@ -16,6 +16,9 @@ limitations under the License.
 import HuffmanTablesDescriptor from './HuffmanTablesDescriptor';
 import HuffmanTable from './HuffmanTable';
 import Directory from '../Directory'
+import LogUtil from '../../tools/LogUtils';
+
+const TAG: string = "HuffmanTablesDirectory";
 
 class HuffmanTablesDirectory extends Directory {
   public static readonly TAG_NUMBER_OF_TABLES: number = 1;
@@ -124,14 +127,18 @@ class HuffmanTablesDirectory extends Directory {
 
   public isTypical(): boolean
   {
+    LogUtil.debug(TAG, "isTypical start, Checking if Huffman tables are typical.");
     if (this.tables.length == 0) {
+      LogUtil.error(TAG, "isTypical end, No Huffman tables found.");
       return false;
     }
     for (let table of this.tables) {
       if (!table.isTypical()) {
+        LogUtil.debug(TAG, "isTypical end, Huffman tables are not typical.");
         return false;
       }
     }
+    LogUtil.debug(TAG, "isTypical end, Huffman tables are typical.");
     return true;
   }
 
