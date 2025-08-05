@@ -14,6 +14,7 @@
  */
 
 import { inputModel } from '../model/inputModel'
+import { LogUtil } from '../util/LogUtil'
 
 @CustomDialog
 export struct  InputDialog {
@@ -52,6 +53,7 @@ export struct  InputDialog {
                .height(this.model.btnHeight)
                .border(this.model.btnBorder)
                .onClick(() =>{
+                 LogUtil.info('InputDialog cancelBtnTitle Button onClick');
                  this.controller.close()
                  if(this.model.cancel != undefined) {
                    this.model.cancel()
@@ -65,6 +67,7 @@ export struct  InputDialog {
                .width(this.model.btnWidth)
                .height(this.model.btnHeight)
                .onClick(() =>{
+                 LogUtil.info('InputDialog confirmBtnTitle Button onClick');
                  this.controller.close()
                  if(this.model.confirm != undefined) {
                    this.model.confirm()

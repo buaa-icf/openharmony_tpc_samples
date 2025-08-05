@@ -14,6 +14,7 @@
  */
 
 import { BaseCenterMode } from '../model/BaseCenterModel'
+import { LogUtil } from '../util/LogUtil'
 
 @CustomDialog
 export struct ConfirmDialog {
@@ -39,7 +40,7 @@ export struct ConfirmDialog {
             .width(this.model.btnWidth)
             .height(this.model.btnHeight)
             .onClick(() =>{
-
+              LogUtil.info('ConfirmDialog Button onClick');
               this.controller.close()
               if(this.model.confirm != undefined) {
                 this.model.confirm()
