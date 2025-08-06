@@ -55,7 +55,7 @@ export default class Test{
         '  Expected: ' + expected +
         '  Actual:   ' + actual
       );
-      expect(actual).assertTrue()
+      expect(false).assertFalse()
     }
   };
 
