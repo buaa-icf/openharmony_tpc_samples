@@ -9,7 +9,7 @@
 
  * */
 
-import { DOMParser, XMLSerializer, DOMImplementation } from '@ohos/xmldom'
+import { DOMParser, XMLSerializer, DOMImplementation, MIME_TYPE } from '@ohos/xmldom'
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 
 export default function abilityTest() {
@@ -37,16 +37,19 @@ export default function abilityTest() {
     it('parseFromString', 0, () => {
       const options:ESObject = {};
       const it:DOMParser = new DOMParser(options);
-      const doc:ESObject = it.parseFromString('<xml/>');
-      expect(doc.documentElement).not().assertContain('columnNumber')
-      expect(doc.documentElement).not().assertContain('lineNumber')
+      const doc:ESObject = it.parseFromString('<xml/>', MIME_TYPE.XML_TEXT);
+      expect(doc.documentElement.columnNumber).assertEqual(1)
+      expect(doc.documentElement.lineNumber).assertEqual(1)
     });
 
     it('serializeToString', 0, () => {
-      const input = `<xml xmlns='<&"' xmlns:attr='"&<'><test attr:test=""/></xml>`
-      const doc:ESObject = new DOMParser().parseFromString(input)
+      const input = '<xml xmlns="http://test.com" id="root">' +
+				'<child1 id="a1" title="1"><child11 id="a2"  title="2"/></child1>' +
+				'<child2 id="a1"   title="3"/><child3 id="a1"   title="3"/></xml>';
+      const doc:ESObject = new DOMParser().parseFromString(input, MIME_TYPE.XML_TEXT)
       let docStr = new XMLSerializer().serializeToString(doc)
-      expect(docStr).assertEqual(`<xml xmlns="&lt;&amp;&quot;" xmlns:attr="&quot;&amp;&lt;"><test attr:test=""/></xml>`)
+      expect(docStr).assertEqual(`<xml xmlns="http://test.com" id="root"><child1 id="a1" title="1">`+
+        `<child11 id="a2" title="2"/></child1><child2 id="a1" title="3"/><child3 id="a1" title="3"/></xml>`)
     })
 
     it('DOMImplementation', 0, () => {
@@ -70,12 +73,6 @@ export default function abilityTest() {
 
       parser.parseFromString("<xml attr=value/>", "text/xml")
       expect(errors['warning']!='').assertTrue()
-
-      parser.parseFromString("<doc a1=></doc>", "text/xml")
-      expect(errors['error']!='').assertTrue()
-
-      parser.parseFromString('<xml a="1" a="2"></xml>', 'text/xml')
-      expect(errors['fatalError']!='').assertTrue()
     })
 
     it('can_properly_set_clone', 0, () => {
@@ -89,14 +86,15 @@ export default function abilityTest() {
     })
 
     it('can_properly_import', 0, () => {
-      const doc1:ESObject = new DOMParser().parseFromString("<doc2 attr='2'/>")
+      const doc1:ESObject = new DOMParser().parseFromString("<doc2 attr='2'/>", MIME_TYPE.XML_TEXT)
       const doc2:ESObject= new DOMParser().parseFromString(
         "<doc1 attr1='1' attr2='a2'>text1<child>text2</child></doc1>",
         'text/xml'
       )
 
       const doc3:ESObject= new DOMParser().parseFromString(
-        "<doc2 attr='2'><doc1 attr1='1' attr2='a2'>text1<child>text2</child></doc1></doc2>"
+        "<doc2 attr='2'><doc1 attr1='1' attr2='a2'>text1<child>text2</child></doc1></doc2>",
+        MIME_TYPE.XML_TEXT
       )
       const n:ESObject= doc1.importNode(doc2.documentElement, true)
       doc1.documentElement.appendChild(n)

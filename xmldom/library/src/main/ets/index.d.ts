@@ -2,6 +2,7 @@ declare module '@ohos/xmldom' {
 	var DOMParser: DOMParserStatic
 	var XMLSerializer: XMLSerializerStatic
 	var DOMImplementation: DOMImplementationStatic
+	var MIME_TYPE: MIME_TYPE
 
 	interface DOMImplementationStatic {
 		new (): ESObject
@@ -10,6 +11,14 @@ declare module '@ohos/xmldom' {
 	interface DOMParserStatic {
 		new (): DOMParser
 		new (options: DOMParserOptions): DOMParser
+	}
+
+	interface MIME_TYPE {
+		HTML: string,
+		XML_APPLICATION: string,
+		XML_TEXT: string,
+		XML_XHTML_APPLICATION: string,
+		XML_SVG_IMAGE: string,
 	}
 
 	interface XMLSerializerStatic {
