@@ -23,7 +23,7 @@ export default function comparedTo() {
       N = 'NaN',
       I = 'Infinity';
 
-    let isMinusZero = (n: number)=> {
+    let isMinusZero = (n: number | null) => {
       return n === 0 ? 1 / n === Number.NEGATIVE_INFINITY : null
     }
 
