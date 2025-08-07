@@ -2,19 +2,15 @@
 
 import { encode } from "./encode";
 export { encode };
-import type { EncodeOptions } from "./encode";
-export type { EncodeOptions };
 
 import { decode, decodeMulti } from "./decode";
 export { decode, decodeMulti };
-import type { DecodeOptions } from "./decode";
-export type { DecodeOptions };
 
-import { decodeAsync, decodeArrayStream, decodeMultiStream, decodeStream } from "./decodeAsync";
-export { decodeAsync, decodeArrayStream, decodeMultiStream, decodeStream };
+import { decodeAsync, decodeArrayStream, decodeMultiStream } from "./decodeAsync";
+export { decodeAsync, decodeArrayStream, decodeMultiStream };
 
-import { Decoder, DataViewIndexOutOfBoundsError } from "./Decoder";
-export { Decoder, DataViewIndexOutOfBoundsError };
+import { Decoder } from "./Decoder";
+export { Decoder };
 import type { DecoderOptions } from "./Decoder";
 export type { DecoderOptions };
 import { DecodeError } from "./DecodeError";
@@ -41,12 +37,7 @@ import {
   decodeTimestampToTimeSpec,
   encodeTimestampExtension,
   decodeTimestampExtension,
-  TimeSpec,
 } from "./timestamp";
-import { getInt64, getUint64, setInt64, setUint64 } from './utils/int';
-import { utf8Count, utf8EncodeJs } from './utils/utf8';
-import { CachedKeyDecoder, KeyDecoder } from './CachedKeyDecoder';
-
 export {
   EXT_TIMESTAMP,
   encodeDateToTimeSpec,
@@ -54,7 +45,4 @@ export {
   decodeTimestampToTimeSpec,
   encodeTimestampExtension,
   decodeTimestampExtension,
-  setInt64, getInt64, getUint64, setUint64,
-  utf8Count, utf8EncodeJs, CachedKeyDecoder, KeyDecoder,
-  TimeSpec,
 };

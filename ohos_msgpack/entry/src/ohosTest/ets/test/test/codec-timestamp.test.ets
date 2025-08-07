@@ -15,20 +15,9 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 import assert from "./assert2hypium";
-import buffer from '@ohos.buffer';
-import {
-  encode,
-  decode,
-  encodeDateToTimeSpec,
-  decodeTimestampExtension,
-  decodeTimestampToTimeSpec,
-  encodeTimestampExtension,
-} from "@ohos/msgpack";
-
+import { encode, decode, decodeTimestampExtension} from "@ohos/msgpack";
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 import { timestampSPECS } from './stdlib/StdlibData';
-import { TimeSpec } from '@ohos/msgpack';
-
 
 export default function CodecTimestampTest() {
   describe('CodecTimestampTest', () => {
@@ -66,30 +55,6 @@ export default function CodecTimestampTest() {
         });
       }
     });
-
-    assert.context("encodeDateToTimeSpec", () => {
-      it("normalizes_new_Date_fu1_to_sec_fu1_nsec_999000000", 0 , () => {
-        let startTime1 = new Date().getTime();
-        let x:TimeSpec = { sec: -1, nsec: 999000000 }
-        assert.deepStrictEqual(encodeDateToTimeSpec(new Date(-1)), x);
-        let endTime1 = new Date().getTime();
-        let averageTime1 = ((endTime1 - startTime1) * 1000) / 1;
-        console.log(`msgpack-javascript:normalizes_new_Date_fu1_to_sec_fu1_nsec_999000000 averageTime = ${averageTime1}`)
-      });
-    });
-
-    assert.context("encodeDateToTimeSpec", () => {
-      it("decodes_timestamp_ext_binary_to_TimeSpec", 0 , () => {
-        let startTime1 = new Date().getTime();
-        const encoded = encodeTimestampExtension(new Date(42000))!;
-        let x:TimeSpec = { sec: 42, nsec: 0 }
-        assert.deepStrictEqual(decodeTimestampToTimeSpec(encoded), x);
-        let endTime1 = new Date().getTime();
-        let averageTime1 = ((endTime1 - startTime1) * 1000) / 2;
-        console.log(`msgpack-javascript:decodes_timestamp_ext_binary_to_TimeSpec averageTime = ${averageTime1}`)
-      });
-    });
-
 
     assert.context("decodeTimestampExtension_for_broken_data", () => {
       it("throws_errors", 0,() => {

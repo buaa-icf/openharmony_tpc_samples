@@ -8,16 +8,12 @@ THE SOFTWARE IS PROVIDED “AS IS” AND THE AUTHOR DISCLAIMS ALL WARRANTIES WIT
  */
 
 export { encode,
-  EncodeOptions,
   decode,
   decodeMulti,
-  DecodeOptions,
   decodeAsync,
   decodeArrayStream,
   decodeMultiStream,
-  decodeStream,
   Decoder,
-  DataViewIndexOutOfBoundsError,
   DecoderOptions,
   DecodeError,
   Encoder,
@@ -32,8 +28,5 @@ export { encode,
   decodeTimestampToTimeSpec,
   encodeTimestampExtension,
   decodeTimestampExtension,
-  setInt64, getInt64, getUint64, setUint64,
-  utf8Count, utf8EncodeJs, CachedKeyDecoder, KeyDecoder,
-  TimeSpec,
 
 } from './src/main/ets/index'

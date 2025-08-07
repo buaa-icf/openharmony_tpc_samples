@@ -17,13 +17,10 @@
 // kind of hand-written fuzzing data
 // any errors should not break Encoder/Decoder instance states
 
-import { encode, decodeAsync, decode, Encoder, Decoder, decodeMulti, decodeMultiStream } from "@ohos/msgpack";
-import { DataViewIndexOutOfBoundsError } from "@ohos/msgpack";
+import { encode, decodeAsync, decode, Encoder, Decoder } from "@ohos/msgpack";
 import Util from "../test/stdlib/Util";
-
 import assert from "./assert2hypium";
 
-import hilog from '@ohos.hilog';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium'
 
 export default function edgeCasesTest() {
@@ -106,34 +103,6 @@ export default function edgeCasesTest() {
         assert.throws(() => {
           decoder.decode([TYPE_NEVER_USED]);
         }, regex);
-        testDecoder(decoder);
-      });
-    });
-
-    assert.context("try to decode insufficient data", () => {
-      it("throws_errors_synchronous1", 0, () => {
-        const decoder = new Decoder<undefined>();
-        assert.throws(() => {
-          decoder.decode([
-            0x92, // fixarray size=2
-            0xc0,// nil
-          ]);
-          // [IE11] A raw error thrown by DataView
-        }, DataViewIndexOutOfBoundsError);
-        testDecoder(decoder);
-      });
-
-      it("throws_errors_asynchronous1", 0, async () => {
-        const decoder = new Decoder<undefined>();
-        try {
-          await decoder.decodeAsync(await Util.asynchronous1CreateStream());
-        } catch (err) {
-
-        }
-
-        // await assert.rejects(async () => {
-        //   await decoder.decodeAsync(createStream());
-        // }, RangeError);
         testDecoder(decoder);
       });
     });

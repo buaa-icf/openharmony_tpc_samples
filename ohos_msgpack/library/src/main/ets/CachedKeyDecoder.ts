@@ -16,11 +16,13 @@ export class CachedKeyDecoder implements KeyDecoder {
   hit = 0;
   miss = 0;
   private readonly caches: Array<Array<KeyCacheRecord>>;
+  private readonly maxKeyLength: number;
+  private readonly maxLengthPerKey: number;
 
-  constructor(
-    readonly maxKeyLength = DEFAULT_MAX_KEY_LENGTH,
-    readonly maxLengthPerKey = DEFAULT_MAX_LENGTH_PER_KEY,
-  ) {
+  constructor(maxKeyLength = DEFAULT_MAX_KEY_LENGTH, maxLengthPerKey = DEFAULT_MAX_LENGTH_PER_KEY) {
+    this.maxKeyLength = maxKeyLength;
+    this.maxLengthPerKey = maxLengthPerKey;
+
     // avoid `new Array(N)`, which makes a sparse array,
     // because a sparse array is typically slower than a non-sparse array.
     this.caches = [];
@@ -71,7 +73,7 @@ export class CachedKeyDecoder implements KeyDecoder {
     this.miss++;
 
     const str = utf8DecodeJs(bytes, inputOffset, byteLength);
-    // Ensure to copy a slice of bytes because the byte may be NodeJS Buffer and Buffer#slice() returns a reference to its internal ArrayBuffer.
+    // Ensure to copy a slice of bytes because the bytes may be a NodeJS Buffer and Buffer#slice() returns a reference to its internal ArrayBuffer.
     const slicedCopyOfBytes = Uint8Array.prototype.slice.call(bytes, inputOffset, inputOffset + byteLength);
     this.store(slicedCopyOfBytes, str);
     return str;

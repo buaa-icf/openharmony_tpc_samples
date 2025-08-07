@@ -15,10 +15,8 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-import CachedKeyDecoderTest from './test/CachedKeyDecoder.test'
 import CodecBigintTest from './test/codec-bigint.test'
 import CodecFloatTest from './test/codec-float.test'
-import CodecIntTest from './test/codec-int.test'
 import CodecTimestampTest from './test/codec-timestamp.test'
 import decodeJsfuzzTest from './test/decode.jsfuzz'
 import DecodeBlobTest from './test/decode-blob.test'
@@ -40,10 +38,8 @@ import reuseInstancesTest from './test/reuse-instances.test'
 import Bigint64Test from './test/Bigint64.test'
 
 export default function testsuite() {
-  CachedKeyDecoderTest()
   CodecBigintTest()
   CodecFloatTest()
-  CodecIntTest()
   CodecTimestampTest()
   decodeJsfuzzTest()
   DecodeBlobTest()

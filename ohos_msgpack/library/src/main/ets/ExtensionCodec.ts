@@ -9,7 +9,10 @@ export type ExtensionDecoderType<ContextType> = (
   context: ContextType,
 ) => unknown;
 
-export type ExtensionEncoderType<ContextType> = (input: unknown, context: ContextType) => Uint8Array | null;
+export type ExtensionEncoderType<ContextType> = (
+  input: unknown,
+  context: ContextType,
+) => Uint8Array | ((dataPos: number) => Uint8Array) | null;
 
 // immutable interface to ExtensionCodec
 export type ExtensionCodecType<ContextType> = {
@@ -54,7 +57,7 @@ export class ExtensionCodec<ContextType = undefined> implements ExtensionCodecTy
       this.decoders[type] = decode;
     } else {
       // built-in extensions
-      const index = 1 + type;
+      const index = -1 - type;
       this.builtInEncoders[index] = encode;
       this.builtInDecoders[index] = decode;
     }
