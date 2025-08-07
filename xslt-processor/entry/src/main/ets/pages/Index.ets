@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import { ExprContext, xmlParse, xpathParse, xsltProcess } from 'xslt-processor'
+import { ExprContext, XmlParser, Xslt } from 'xslt-processor'
 import promptAction from '@ohos.promptAction';
 import hilog from '@ohos.hilog';
 
@@ -104,175 +104,30 @@ struct Index {
   build() {
     Row() {
       Column({ space: 5 }) {
-        Button('xmlParse:null')
-          .width('90%')
-          .height('100px')
-          .onClick(() => {
-            try {
-              xmlParse(null);
-            } catch (error) {
-              this.printLog(this.getResourceString('Please_check_the_input_characters_and_catch_an_exception') + error);
-            }
-          })
-
-        Button('xmlParse:undefined')
-          .width('90%')
-          .height('100px')
-          .onClick(() => {
-            try {
-              xmlParse(undefined);
-            } catch (error) {
-              this.printLog(this.getResourceString('Please_check_the_input_characters_and_catch_an_exception') + error);
-            }
-          })
-
-        Button($r('app.string.Special_characters'))
-          .width('90%')
-          .height('100px')
-          .onClick(() => {
-            try {
-              xmlParse(this.getResourceString('The_content_contains_special_characters'));
-            } catch (error) {
-              this.printLog(this.getResourceString('Please_check_the_input_characters_and_catch_an_exception') + error);
-            }
-          })
-
-        Button('xsltProcess:null')
-          .width('90%')
-          .height('100px')
-          .onClick(() => {
-            try {
-              xsltProcess(null);
-            } catch (error) {
-              this.printLog(this.getResourceString('Please_check_the_input_characters_and_catch_an_exception') + error);
-            }
-          })
-
-        Button('xsltProcess:undefined')
-          .width('90%')
-          .height('100px')
-          .onClick(() => {
-            try {
-              xsltProcess(undefined);
-            } catch (error) {
-              this.printLog(this.getResourceString('Please_check_the_input_characters_and_catch_an_exception') + error);
-            }
-          })
-
-        Button($r('app.string.XSLT_Process_Special_Characters'))
-          .width('90%')
-          .height('100px')
-          .onClick(() => {
-            try {
-              xsltProcess(this.getResourceString('The_content_contains_special_characters'));
-            } catch (error) {
-              this.printLog(this.getResourceString('Please_check_the_input_characters_and_catch_an_exception') + error);
-            }
-          })
-
-        Button('xpathParse:null')
-          .width('90%')
-          .height('100px')
-          .onClick(() => {
-            try {
-              xpathParse(null);
-            } catch (error) {
-              this.printLog(this.getResourceString('Please_check_the_input_characters_and_catch_an_exception') + error);
-            }
-          })
-
-        Button('xpathParse:undefined')
-          .width('90%')
-          .height('100px')
-          .onClick(() => {
-            try {
-              xpathParse(undefined);
-            } catch (error) {
-              this.printLog(this.getResourceString('Please_check_the_input_characters_and_catch_an_exception') + error);
-            }
-          })
-
-        Button($r('app.string.xpathParse'))
-          .width('90%')
-          .height('100px')
-          .onClick(() => {
-            try {
-              xpathParse(this.getResourceString('The_content_contains'));
-            } catch (error) {
-              this.printLog(this.getResourceString('Please_check_the_input_characters_and_catch_an_exception') + error);
-            }
-          })
-
-        Button($r('app.string.parse_xml'))
-          .width('90%')
-          .height('100px')
-          .onClick(() => {
-            const originXMLObj:xmlParse = xmlParse(this.originTextXML);
-            this.printLog(this.getResourceString('The_original_XML_root_node_contains') + originXMLObj.childNodes[0].childNodes.length + this.getResourceString('Child_nodes'));
-          })
-
         Button($r('app.string.XSLT_Transform_Text'))
           .width('90%')
           .height('100px')
-          .onClick(() => {
-            const originXMLObj:xmlParse = xmlParse(this.originTextXML);
-            const originXSLObj:xmlParse = xmlParse(this.originTextXSL);
-            const text:xsltProcess = xsltProcess(originXMLObj, originXSLObj);
-            this.printLog(text);
+          .onClick(async () => {
+            let xslt: Xslt = new Xslt();
+            let xmlParser: XmlParser = new XmlParser();
+            const outXmlString = await xslt.xsltProcess(
+              xmlParser.xmlParse(this.originTextXML),
+              xmlParser.xmlParse(this.originTextXSL)
+            );
+            this.printLog(outXmlString);
           })
 
         Button($r('app.string.XSLT_Transform_HTML'))
           .width('90%')
           .height('100px')
-          .onClick(() => {
-            const originXMLObj:xmlParse = xmlParse(this.originHTMLXML);
-            const originXSLObj:xmlParse = xmlParse(this.originHTMLXSL);
-            const html:xsltProcess = xsltProcess(originXMLObj, originXSLObj);
-            this.printLog(html);
-          })
-
-        Button($r('app.string.XSLT_transformation_with_parameters'))
-          .width('90%')
-          .height('100px')
-          .onClick(() => {
-            const xmlString =
-              `<root>
-                <test name="test1"/>
-               </root> `;
-            const xml1:xmlParse = xmlParse(xmlString);
-            const xml2:xmlParse = xmlParse(this.variablesXSLTString);
-            const outXmlString:xsltProcess = xsltProcess(xml1, xml2,
-              {
-                test: "hugo"
-              }
+          .onClick(async () => {
+            let xslt: Xslt = new Xslt();
+            let xmlParser: XmlParser = new XmlParser();
+            const outXmlString = await xslt.xsltProcess(
+              xmlParser.xmlParse(this.originHTMLXML),
+              xmlParser.xmlParse(this.originHTMLXSL)
             );
             this.printLog(outXmlString);
-          })
-
-        Button($r('app.string.Xpath_calculation_expression_page'))
-          .width('90%')
-          .height('100px')
-          .onClick(() => {
-            const xpathExpr = '/page'
-            const expr1:xpathParse = xpathParse(xpathExpr);
-            const ctx:ExprContext = new ExprContext(xmlParse(this.xpathXML));
-            const e:xpathParse = expr1.evaluate(ctx);
-            const nodeSet:xpathParse = e.nodeSetValue();
-            this.printLog(this.getResourceString('The_number_of_page_nodes_in_the_XML_document_is') + nodeSet.length);
-          })
-
-        Button($r('app.string.Xpath_calculation_expression_page_location_lat'))
-          .width('90%')
-          .height('100px')
-          .onClick(() => {
-            const locationParam = 'location'
-            const latParam = 'lat'
-            const xpathExpr = `/page/${locationParam}/@${latParam}`
-            const expr1:xpathParse = xpathParse(xpathExpr);
-            const ctx:ExprContext = new ExprContext(xmlParse(this.xpathXML));
-            const result:xpathParse = expr1.evaluate(ctx);
-            const nodeSet:xpathParse = result.nodeSetValue();
-            this.printLog(this.getResourceString('The_current_node_attribute_is') + nodeSet[0].nodeName + "=" + nodeSet[0].nodeValue);
           })
       }
       .width('100%')

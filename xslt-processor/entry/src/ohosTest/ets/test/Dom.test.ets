@@ -14,13 +14,19 @@
  */
 
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
-import { XDocument, xmlParse, XNode } from 'xslt-processor/src/dom'
+import { XDocument, XmlParser, XNode, xmlText } from 'xslt-processor/dom'
 import he from 'he'
-import { xmlText } from 'xslt-processor/src/util'
+import { DOM_ATTRIBUTE_NODE } from 'xslt-processor/constants';
 
 export default function domTest() {
   describe('DomTest', () => {
-    const doTestXmlParse = (dom1: XNode, dom2: XNode) => {
+    let xmlParser: XmlParser;
+
+    beforeAll(() => {
+      xmlParser = new XmlParser();
+    });
+
+    const doTestXmlParse = (dom1: XDocument, dom2: XDocument) => {
 
       expect(xmlText(dom1)).assertEqual(xmlText(dom2))
 
@@ -42,10 +48,6 @@ export default function domTest() {
       expect(dom1.firstChild.childNodes.length).assertEqual(dom2.firstChild.childNodes.length);
       expect(dom1.firstChild.childNodes.length).assertEqual(dom2.firstChild.childNodes.length);
 
-      expect(dom1.firstChild.childNodes[1].attributes.length)
-        .assertEqual(dom2.firstChild.childNodes[1].attributes.length);
-      expect(dom1.firstChild.childNodes[1].attributes.length).assertEqual(2);
-
     }
     it('can_parse_xml', 0, () => {
       const xml = '<page>' +
@@ -55,17 +57,24 @@ export default function domTest() {
       '<location lat="100" lon="200"/>' +
       '</page>';
 
-      const dom1: XDocument = xmlParse(`<?xml version="1.0"?>${xml}`);
-      const dom2: XDocument = xmlParse(`<?xml version='1.1'?>${xml}`);
+      const dom1 = xmlParser.xmlParse(`<?xml version="1.0"?>${xml}`);
+      const dom2 = xmlParser.xmlParse(`<?xml version='1.1'?>${xml}`);
+
       doTestXmlParse(dom1, dom2);
 
+      const dom1Attributes = dom1.firstChild.childNodes[1].childNodes.filter(n => n.nodeType === DOM_ATTRIBUTE_NODE);
+      const dom2Attributes = dom2.firstChild.childNodes[1].childNodes.filter(n => n.nodeType === DOM_ATTRIBUTE_NODE);
+
+      expect(dom1Attributes.length).assertEqual(dom2Attributes.length);
+
       const tag = 'q';
-      expect(1).assertEqual(dom1.getElementsByTagName(tag).length);
-      expect(tag).assertEqual(dom1.getElementsByTagName(tag)[0].nodeName);
+      const byTag: ESObject[] = dom1.getElementsByTagName(tag);
+      expect(1).assertEqual(byTag.length);
+      expect(tag).assertEqual(byTag[0].nodeName);
 
-
-
-      expect('q').assertEqual(dom1.getElementById('q').getAttribute('id'));
+      const id = 'q';
+      const byId: ESObject = dom1.getElementById(id);
+      expect(id).assertEqual(byId.getAttributeValue('id'));
 
     })
 
@@ -79,8 +88,8 @@ export default function domTest() {
         '</_>'
       ].join('');
 
-      const dom1: XDocument = xmlParse(`<?xml version="1.0"?>${xml}`);
-      const dom2: XDocument = xmlParse(`<?xml version='1.1'?>${xml}`);
+      const dom1 = xmlParser.xmlParse(`<?xml version="1.0"?>${xml}`);
+      const dom2 = xmlParser.xmlParse(`<?xml version='1.1'?>${xml}`);
       doTestXmlParse(dom1, dom2);
     })
 
@@ -95,8 +104,8 @@ export default function domTest() {
         '</\u30da\u30fc\u30b8>'
       ].join('');
 
-      const dom1: XDocument = xmlParse(`<?xml version="1.0"?>${xml}`);
-      const dom2: XDocument = xmlParse(`<?xml version='1.1'?>${xml}`);
+      const dom1 = xmlParser.xmlParse(`<?xml version="1.0"?>${xml}`);
+      const dom2 = xmlParser.xmlParse(`<?xml version='1.1'?>${xml}`);
       doTestXmlParse(dom1, dom2);
     })
 

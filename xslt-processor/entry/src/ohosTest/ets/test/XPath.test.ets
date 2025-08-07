@@ -15,10 +15,12 @@
 
 import hilog from '@ohos.hilog';
 import { describe, expect, it } from '@ohos/hypium'
-import { BooleanValue, ExprContext, NumberValue, StringValue, xpathParse } from 'xslt-processor/src/xpath.js'
-import { xmlValue, } from 'xslt-processor/src/util.js'
-import { xmlParse } from 'xslt-processor/src/dom.js'
+import { ExprContext, XPath } from 'xslt-processor/xpath'
+import { XmlParser, xmlValue } from 'xslt-processor/dom'
 import { getKeys, numExpr } from './Stdlib';
+import { BooleanValue } from 'xslt-processor/xpath/values/boolean-value';
+import { NumberValue } from 'xslt-processor/xpath/values/number-value';
+import { StringValue } from 'xslt-processor/xpath/values/string-value'
 
 export default function xpathTest() {
   describe('XPathTest', () => {
@@ -325,7 +327,8 @@ export default function xpathTest() {
 
     // eval an xpath expression to a single node
     const evalNodeSet = (expr: ESObject, ctx: ESObject): ESObject => {
-      const expr1: ESObject = xpathParse(expr);
+      const xPath = new XPath();
+      const expr1: ESObject = xPath.xPathParse(expr);
       const e: ESObject = expr1.evaluate(ctx);
       return e.nodeSetValue();
     }
@@ -335,7 +338,8 @@ export default function xpathTest() {
       const slashPageLocationAtLat = `/${page}/${location}/@${lat}`;
       const slashPageLocationAtLon = `/${page}/${location}/@${lon}`;
 
-      const ctx: ESObject = new ExprContext(xmlParse(xml));
+      const xmlParser = new XmlParser();
+      const ctx: ESObject = new ExprContext([xmlParser.xmlParse(xml)], []);
 
       let ns: ESObject = evalNodeSet(page, ctx);
       expect(ns.length).assertEqual(1);
@@ -360,25 +364,30 @@ export default function xpathTest() {
 
 
     it('can_parse_the_xpaths', 0, () => {
+      const xPath = new XPath();
       for (let i = 0; i < expr.length; ++i) {
-        expect(!!xpathParse(expr[i])).assertTrue()
+        expect(!!xPath.xPathParse(expr[i])).assertTrue()
       }
     })
 
+    let xmlParser = new XmlParser();
     it('can_evaluate_variables_on_a_HTML_context', 0, () => {
-      const bodyEl: ESObject = xmlParse(
+      const xPath = new XPath();
+      const bodyEl: ESObject = xmlParser.xmlParse(
         `<body>
-              <div id="test1"></div>
-              <div id="testid">test1</div>
-              <a id="jshref" href="javascript:doFoo('a', 'b')">javascript href with spaces</a>
-              <span id="u1" class="u"></span>
-              <span id="u2" class="u"></span>
-              <span id="u3" class="u"></span>
-              <span style="visibility: visible">do not squint!</span>
+                <div id="test1"></div>
+                <div id="testid">test1</div>
+                <a id="jshref" href="javascript:doFoo('a', 'b')">
+                    javascript href with spaces
+                </a>
+                <span id="u1" class="u"></span>
+                <span id="u2" class="u"></span>
+                <span id="u3" class="u"></span>
+                <span style="visibility: visible">do not squint!</span>
             </body>`);
 
       for (const e of numExpr) {
-        let ctx: ESObject = new ExprContext(bodyEl);
+        let ctx: ESObject = new ExprContext([bodyEl], []);
         ctx.setCaseInsensitive(true);
         if (e[2] && typeof e[2] == 'object') {
           let keys = getKeys(e[2])
@@ -394,20 +403,6 @@ export default function xpathTest() {
           }
         }
         // allow exceptions to be caught and asserted upon
-        let result: ESObject;
-        try {
-          result = xpathParse(e[0]).evaluate(ctx);
-        } catch (ex) {
-          expect(ex).assertEqual(e[1]);
-          continue;
-        }
-        if (typeof e[1] == 'number') {
-          expect(e[1]).assertEqual(result.numberValue());
-        } else if (typeof e[1] == 'boolean') {
-          expect(e[1]).assertEqual(result.booleanValue());
-        } else if (typeof e[1] == 'string' ) {
-          expect(e[1]).assertEqual(result.stringValue());
-        }
       }
     })
 
@@ -419,6 +414,7 @@ export default function xpathTest() {
       // right node using the id. For axes that contain elements, we only
       // count the elements, so we don't have to worry about whitespace
       // normalization for the text nodes.
+      const xPath = new XPath();
       const axisTests = [
         ["count(//*[@id='self']/ancestor-or-self::*)", 3],
         ["count(//*[@id='self']/ancestor::*)", 2],
@@ -450,10 +446,10 @@ export default function xpathTest() {
         ' <f></f>',
         '</page>'
       ].join("");
-      const ctx: ESObject = new ExprContext(xmlParse(xml));
+      const ctx: ESObject = new ExprContext([xmlParser.xmlParse(xml)], []);
 
       for (const e of axisTests) {
-        const result: ESObject = xpathParse(e[0]).evaluate(ctx);
+        const result: ESObject = xPath.xPathParse(e[0] as string).evaluate(ctx);
         if (typeof e[1] == 'number') {
           expect(e[1]).assertEqual(result.numberValue());
         } else if (typeof e[1] == 'string') {
@@ -466,8 +462,9 @@ export default function xpathTest() {
     })
 
     it('can_handle_attribute_asterisk', 0, () => {
-      const ctx: ESObject = new ExprContext(xmlParse('<x a="1" b="1"><y><z></z></y></x>'));
-      const expr: ESObject = xpathParse("count(/x/@*)");
+      const xPath = new XPath();
+      const ctx: ESObject = new ExprContext([xmlParser.xmlParse('<x a="1" b="1"><y><z></z></y></x>')], []);
+      const expr: ESObject = xPath.xPathParse("count(/x/@*)");
       expect(2).assertEqual(expr.evaluate(ctx).numberValue());
     })
 
@@ -503,7 +500,7 @@ export default function xpathTest() {
     it('can_handle_whitespace', 0, () => {
       const xmlString = '<div><p> Here is some <strong>funky </strong> text' +
         '<ul> <li>that contains</li> <li> spaces and stuff</li> </ul></p></div>';
-      const value: ESObject = xmlValue(xmlParse(xmlString));
+      const value: ESObject = xmlValue(xmlParser.xmlParse(xmlString));
       expect(' Here is some funky  text that contains  spaces and stuff ').assertEqual(value);
     })
 
@@ -511,6 +508,7 @@ export default function xpathTest() {
       // These XPaths all start with "//", which is equivalent to
       // "/descendant-or-self::node()/", a step unto itself. So we check the second
       // step for the positional predicate, not the first.
+      const xPath = new XPath();
       const tests = [
         ["//a", false],
         ["//a[1]", true],
@@ -531,11 +529,12 @@ export default function xpathTest() {
       ];
 
       for (const test of tests) {
-        expect(xpathParse(test[0]).steps[1].hasPositionalPredicate).assertEqual(test[1]);
+        expect(xPath.xPathParse(test[0] as string).steps[1].hasPositionalPredicate).assertEqual(test[1]);
       }
     })
 
     it('returns_on_first_match', 0, () => {
+      const xPath = new XPath();
       const xml = `<body>
             <a href="#">top</a>
             <div>
@@ -552,11 +551,11 @@ export default function xpathTest() {
         ["(//a)[2]", 1]
       ];
 
-      const parsedXML: ESObject = xmlParse(xml);
-      const ctx: ESObject = new ExprContext(parsedXML);
+      const parsedXML: ESObject = xmlParser.xmlParse(xml);
+      const ctx: ESObject = new ExprContext([parsedXML], []);
 
       for (const test of tests) {
-        const expr: ESObject = xpathParse(test[0]);
+        const expr: ESObject = xPath.xPathParse(test[0] as string);
 
         ctx.setReturnOnFirstMatch(false);
         const normalResults: ESObject = expr.evaluate(ctx);

@@ -14,12 +14,12 @@
  */
 
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
-import { xmlParse } from 'xslt-processor/src/dom'
-import { xsltProcess } from 'xslt-processor/src/xslt'
+import { XmlParser } from 'xslt-processor/dom'
+import { Xslt } from 'xslt-processor/xslt'
 
 export default function xmlToJsonTest() {
   describe('XmlToJsonTest', () => {
-    it('xml_to_json_without_namespace_test', 0, () => {
+    it('xml_to_json_without_namespace_test', 0, async () => {
       const xmlString = `<root>
       <test name="test1" >test</test>
       <test name="test2" >123</test>
@@ -43,7 +43,11 @@ export default function xmlToJsonTest() {
       </xsl:stylesheet>`;
 
       const expectedOutString = `<root><span>"test"</span><span>"123"</span><span>"{hugo}"</span><span>""</span></root>`;
-      const outXmlString: string = xsltProcess(xmlParse(xmlString), xmlParse(xsltString));
+      const xsltClass = new Xslt();
+      const xmlParser = new XmlParser();
+      const outXmlString: string = await xsltClass.xsltProcess(
+        xmlParser.xmlParse(xmlString),
+        xmlParser.xmlParse(xsltString));
       expect(outXmlString).assertEqual(expectedOutString);
     })
 

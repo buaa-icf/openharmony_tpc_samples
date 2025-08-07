@@ -25,7 +25,7 @@ import {
   XML11_VERSION_INFO,
   XML_CHAR_REF,
   XML_NC_NAME
-} from 'xslt-processor/src/xmltoken.js'
+} from 'xslt-processor/dom/xmltoken.js'
 
 export default function xmlTokenTest() {
   describe('XmlTokenTest', () => {

@@ -14,12 +14,12 @@
  */
 
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from '@ohos/hypium'
-import { XDocument, xmlParse } from 'xslt-processor/src/dom'
-import { xsltProcess } from 'xslt-processor/src/xslt'
+import { XDocument, XmlParser } from 'xslt-processor/dom'
+import { Xslt } from 'xslt-processor/xslt'
 
 export default function localNameTest() {
   describe('LocalNameTest', () => {
-    it('localname_without_namespace_test', 0, () => {
+    it('localname_without_namespace_test', 0, async () => {
       const xmlString = `<root>
       <test name="test1" />
       <test name="test2" />
@@ -49,13 +49,15 @@ export default function localNameTest() {
       '<span>test4</span>' +
       '</root>';
 
-      let xml1: XDocument = xmlParse(xmlString);
-      let xml2: XDocument = xmlParse(xsltString);
-      const outXmlString: string = xsltProcess(xml1, xml2);
+      const xsltClass = new Xslt();
+      const xmlParser = new XmlParser();
+      let xml1: XDocument = xmlParser.xmlParse(xmlString);
+      let xml2: XDocument = xmlParser.xmlParse(xsltString);
+      const outXmlString: string = await xsltClass.xsltProcess(xml1, xml2);
       expect(outXmlString).assertEqual(expectedOutString);
     })
 
-    it('local_name_with_namespace_test', 0, () => {
+    it('local_name_with_namespace_test', 0, async () => {
       const xmlString = `<xhtml:root xmlns:xhtml="http://www.w3.org/1999/xhtml">
       <test name="test1" />
       <test name="test2" />
@@ -84,9 +86,11 @@ export default function localNameTest() {
       '<span>test3</span>' +
       '<span>test4</span>' +
       '</root>';
-      let xml1: XDocument = xmlParse(xmlString);
-      let xml2: XDocument = xmlParse(xsltString);
-      const outXmlString: string = xsltProcess(xml1, xml2);
+      const xsltClass = new Xslt();
+      const xmlParser = new XmlParser();
+      let xml1: XDocument = xmlParser.xmlParse(xmlString);
+      let xml2: XDocument = xmlParser.xmlParse(xsltString);
+      const outXmlString: string = await xsltClass.xsltProcess(xml1, xml2);
       expect(outXmlString).assertEqual(expectedOutString);
     })
   })
