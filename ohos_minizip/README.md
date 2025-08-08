@@ -123,7 +123,7 @@ if (minizipCompressEntry.Create() == 0) {
 - You must call the **Open** function after creating an object. The **Open** function can be called only once each time the **new minizipNative** function is called. If the return value of the **Open** function is not **0**, the file fails to be opened.
 
 ## About obfuscation
-- Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md).
 - If you want the minizip library not to be obfuscated during code obfuscation, you need to add corresponding exclusion rules in the obfuscation rule configuration file obfuscation-rules.txt：
 ```
 -keep
@@ -133,9 +133,9 @@ if (minizipCompressEntry.Create() == 0) {
 ## Constraints
 This project has been verified in the following version:
 
-DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release (5.0.0.66)
+DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release (5.0.0.66).
 
-DevEco Studio: NEXT Developer Beta1-5.0.3.320, SDK: API 12 (5.0.0.23)
+DevEco Studio: NEXT Developer Beta1-5.0.3.320, SDK: API 12 (5.0.0.23).
 
 ## Directory Structure
 ````

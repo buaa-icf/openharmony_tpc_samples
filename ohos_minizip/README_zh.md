@@ -17,7 +17,7 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
   git clone --recursive https://gitcode.com/openharmony-tpc/openharmony_tpc_samples.git
   ```
 
-如果想要在本地编译minizip_ng，参考[minizip_ng集成到应用hap](https://gitcode.com/openharmony-sig/tpc_c_cplusplus/tree/master/community/minizip-ng)
+如果想要在本地编译minizip_ng，参考[minizip_ng集成到应用hap](https://gitcode.com/openharmony-sig/tpc_c_cplusplus/tree/master/community/minizip-ng)。
 
 在cpp目录下新增third_party目录，并将编译生成的库拷贝到该目录下，如下图所示：
 
@@ -124,7 +124,7 @@ if (minizipCompressEntry.Create() == 0) {
 - **创建对象**之后**一定要调用Open函数**，并且每一次new minizipNative**只能调用一次Open**，若Open函数返回值非0则是打开文件失败。
 
 ## 关于混淆
-- 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)。
 - 如果希望minizip库在代码混淆过程中不会被混淆，需要在混淆规则配置文件obfuscation-rules.txt中添加相应的排除规则：
 
 ```
@@ -135,9 +135,9 @@ if (minizipCompressEntry.Create() == 0) {
 ## 约束与限制
 在下述版本验证通过：
 
-DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release (5.0.0.66)
+DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release (5.0.0.66)。
 
-DevEco Studio: NEXT Developer Beta1-5.0.3.320, SDK: API12(5.0.0.23)
+DevEco Studio: NEXT Developer Beta1-5.0.3.320, SDK: API12(5.0.0.23)。
 
 ## 目录结构
 ````
