@@ -36,32 +36,33 @@ export default function node_error_messagesTest() {
       const tryWeapon = () => { container.get('Ninja'); };
     });
 
-    _it('Should_list_all_possible_bindings_in_error_message_if_no_matching_binding_found', () => {
-      interface Weapon { }
-
-      @injectable()
-      class Katana implements Weapon { }
-
-      @injectable()
-      class Shuriken implements Weapon { }
-
-      @injectable()
-      class Bokken implements Weapon { }
-      const container = new Container();
-
-
-      container.bind<Weapon>('Weapon').to(Katana).whenNamed('strong');
-      container.bind<Weapon>('Weapon').to(Shuriken).whenTagged('canThrow', true);;
-      container.bind<Weapon>('Weapon').to(Bokken).whenNamed('weak');;
-
-      try {
-        container.get('Weapon');
-      } catch (error) {
-        expect((error as Error).message).to.match(new RegExp(".*Katana.*"));
-        expect((error as Error).message).to.match(new RegExp(".*Shuriken.*"));
-        expect((error as Error).message).to.match(new RegExp(".*Bokken.*"));
-      }
-    });
+    // 鸿蒙tsconfig特性缺失暂时屏蔽
+    // _it('Should_list_all_possible_bindings_in_error_message_if_no_matching_binding_found', () => {
+    //   interface Weapon { }
+    //
+    //   @injectable()
+    //   class Katana implements Weapon { }
+    //
+    //   @injectable()
+    //   class Shuriken implements Weapon { }
+    //
+    //   @injectable()
+    //   class Bokken implements Weapon { }
+    //   const container = new Container();
+    //
+    //
+    //   container.bind<Weapon>('Weapon').to(Katana).whenNamed('strong');
+    //   container.bind<Weapon>('Weapon').to(Shuriken).whenTagged('canThrow', true);;
+    //   container.bind<Weapon>('Weapon').to(Bokken).whenNamed('weak');;
+    //
+    //   try {
+    //     container.get('Weapon');
+    //   } catch (error) {
+    //     expect((error as Error).message).to.match(new RegExp(".*Katana.*"));
+    //     expect((error as Error).message).to.match(new RegExp(".*Shuriken.*"));
+    //     expect((error as Error).message).to.match(new RegExp(".*Bokken.*"));
+    //   }
+    // });
 
     _it('Should_list_all_possible_bindings_in_error_message_if_ambiguous_matching_binding_found', () => {
       interface Weapon { }
