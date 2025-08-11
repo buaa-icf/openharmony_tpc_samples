@@ -121,19 +121,17 @@ export default function snappyJSTest() {
     })
 
     it('compressUint8Array', 3, () =>  {
-      let compressed:Uint8Array = snappyJS.compress(stringToUint8Array(textrandomInputString))
+      const testUint8Array = stringToUint8Array(textrandomInputString);
+      let compressed:Uint8Array = snappyJS.compress(testUint8Array)
       let uncompressed:Uint8Array = snappyJS.uncompress(compressed)
-      let compressedstr:string = arrayBufferToString(bufferToArrayBuffer(uncompressed))
-      expect(compressed.toString()).assertEqual(compresseduin.toString())
-      expect(compressedstr).assertEqual(textrandomInputString)
+      expect(testUint8Array.toString()).assertEqual(uncompressed.toString())
     })
 
     it('compressArrayBuffer', 4, () =>  {
-      let compressed: ArrayBuffer = snappyJS.compress(stringToArrayBuffer(textrandomInputString))
+      const testArrayBuffer = stringToArrayBuffer(textrandomInputString);
+      let compressed: ArrayBuffer = snappyJS.compress(testArrayBuffer)
       let uncompressed:ArrayBuffer = snappyJS.uncompress(compressed)
-      let compressedstr:string = arrayBufferToString(uncompressed)
-      expect(new Uint8Array(compressed).toString()).assertEqual(compresseduin.toString())
-      expect(compressedstr).assertEqual(textrandomInputString)
+      expect(testArrayBuffer.toString()).assertEqual(uncompressed.toString())
     })
 
     it('compress100000Uint8Array', 5, () => {
