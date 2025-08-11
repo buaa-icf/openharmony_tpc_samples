@@ -164,9 +164,9 @@ export default function abilityTest() {
     it('test13', 0, () => {
       let xml: string = xmlbuilder.begin({
         headless: true
-      }).ele('root', {
+      } as ESObject).ele('root', {
         att: 'val'
-      }).ele('test').end()
+      } as ESObject).ele('test').end()
       expect(xml).assertEqual('<root att="val"><test/></root>')
     })
 
