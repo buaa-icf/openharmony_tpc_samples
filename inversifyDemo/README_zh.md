@@ -7,7 +7,7 @@
 ```
 ohpm install inversify reflect-metadata
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmony ohpm 包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmony ohpm 包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)。
 ## 使用说明
 
 ```
@@ -61,7 +61,7 @@ OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmo
 |     inject()     |    |    进口注入    |
 |   Container()    |   |     容器     |
 
-更多接口的使用可参考[官方文档](https://github.com/inversify/InversifyJS/tree/master/wiki)，单元测试用例详情见[TEST.md](./TEST.md)
+更多接口的使用可参考[官方文档](https://github.com/inversify/InversifyJS/tree/master/wiki)，单元测试用例详情见[TEST.md](./TEST.md)。
 
 ## 约束与限制
 在下述版本验证通过：
@@ -75,4 +75,4 @@ DevEco Studio: 4.0 Beta1(4.0.3.400), SDK: API10 (4.0.9.6)。
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建 。
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建。
