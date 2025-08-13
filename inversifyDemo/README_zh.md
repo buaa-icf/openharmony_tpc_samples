@@ -66,8 +66,8 @@ OpenHarmony ohpm 环境配置等更多内容，请参考 [如何安装 OpenHarmo
 ## 约束与限制
 在下述版本验证通过：
 
-DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release (5.0.0.66)
-DevEco Studio: 4.0 Beta1(4.0.3.400), SDK: API10 (4.0.9.6)。
+- DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release (5.0.0.66)。
+- DevEco Studio: 4.0 Beta1(4.0.3.400), SDK: API10 (4.0.9.6)。
 
 ## 开源协议
 
