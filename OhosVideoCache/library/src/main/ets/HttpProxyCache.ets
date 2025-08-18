@@ -33,8 +33,8 @@ export default class HttpProxyCache extends ProxyCache {
   private offset: number = 0;
   private serverConnect: socket.TCPSocketConnection | null = null;
 
-  constructor(source: HttpUrlSource, cache: FileCache) {
-    super(source, cache)
+  constructor(source: HttpUrlSource, cache: FileCache, url: string) {
+    super(source, cache, url)
     this.source = source;
     this.cache = cache;
     this.receiveSize = 0;
