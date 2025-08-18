@@ -1,16 +1,11 @@
 import { LogUtil } from './logUtil';
-
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.JSONDeserializer = undefined;
-
-
-var _deserializer = require('./deserializer');
-var _types = require('./types');
-var _encodings = require('./encodings');
+import {
+  Deserializer,
+  findType,
+  findTagClass,
+  Primitive,
+  findEncoding
+} from '.';
 
 const TAG = 'asn1Demo-deserializer-json';
 
@@ -38,7 +33,7 @@ function validateJSON(json, root = true) {
   // TODO schema validation
 }
 
-class JSONDeserializer extends _deserializer.Deserializer {
+export class JSONDeserializer extends Deserializer {
   deserializationImpl(json, root = true) {
     LogUtil.debug(`deserializationImpl called with json: ${JSON.stringify(json)}, root: ${root}`);
     validateJSON(json, root);
@@ -53,13 +48,13 @@ class JSONDeserializer extends _deserializer.Deserializer {
       content: contentValue
     } = json;
     LogUtil.debug(`Extracted values: tagClassValue: ${tagClassValue}, encodingValue: ${encodingValue}, typeValue: ${typeValue}, contentValue: ${JSON.stringify(contentValue)}`);
-    const tagClass = (0, _types.findTagClass)(tagClassValue);
-    const encoding = (0, _encodings.findEncoding)(encodingValue);
+    const tagClass = (0, findTagClass)(tagClassValue);
+    const encoding = (0, findEncoding)(encodingValue);
     LogUtil.debug(`Found tagClass: ${tagClass}, encoding: ${encoding}`);
-    const content = encoding.type === _encodings.Primitive.type ? contentValue : this.deserializationImpl(contentValue, false);
+    const content = encoding.type === Primitive.type ? contentValue : this.deserializationImpl(contentValue, false);
     LogUtil.debug(`Content: ${JSON.stringify(content)}`);
     if (typeof typeValue === 'string') {
-        const Type = (0, _types.findType)(typeValue);
+        const Type = (0, findType)(typeValue);
         LogUtil.info(`Found Type: ${Type}`);
         return new Type(content);
     }
@@ -67,4 +62,3 @@ class JSONDeserializer extends _deserializer.Deserializer {
     return new tagClass(typeValue, content, encoding); // eslint-disable-line new-cap
   }
 }
-exports.JSONDeserializer = JSONDeserializer;

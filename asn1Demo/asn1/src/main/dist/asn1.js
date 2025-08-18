@@ -1,7 +1,3 @@
-"use strict";
+export default class ASN1 {
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-class ASN1 {}
-exports.default = ASN1;
+}

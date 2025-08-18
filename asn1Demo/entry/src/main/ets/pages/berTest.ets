@@ -284,7 +284,12 @@ struct berTest {
   }
 
   getResourceString(res: Resource) {
-    return getContext().resourceManager.getStringSync(res.id)
+    try{
+      return this.getUIContext().getHostContext()?.resourceManager.getStringSync(res.id) || "";
+    }catch (e) {
+      console.warn("asn1Demo--getResourceString error, message" + JSON.stringify(e));
+      return "";
+    }
   }
 
   berHandle(asn:asn1js.Boolean, name: string) {

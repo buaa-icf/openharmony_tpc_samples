@@ -1,15 +1,8 @@
 import { LogUtil } from './logUtil';
-'use strict';
-const TAG = 'asn1Demo-serializer-json';
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.JSONSerializer = undefined;
-
-var Buffer = require('buffer/').Buffer
-var _serializer = require('./serializer');
-var _encodings = require('./encodings');
-var _types = require('./types');
+import { Buffer } from 'buffer/';
+import { Type } from './types';
+import { Constructed } from './encodings';
+import { Serializer } from './serializer';
 
 function jsonify(content) {
   const contentType = typeof content;
@@ -27,7 +20,7 @@ function jsonify(content) {
           LogUtil.debug(`Content is a buffer, converting to base64`);
           return content.toString('base64');
         }
-        if (typeof content.toString === 'function' && !(content instanceof _types.Type)) {
+        if (typeof content.toString === 'function' && !(content instanceof Type)) {
           LogUtil.debug(`Content has a toString method, calling it`);
           return content.toString();
         }
@@ -40,7 +33,7 @@ function jsonify(content) {
   }
 }
 
-class JSONSerializer extends _serializer.Serializer {
+export class JSONSerializer extends Serializer {
   serializationImpl(aom) {
     if (Array.isArray(aom)) {
       LogUtil.debug(`Input is an array, processing each item`);
@@ -64,10 +57,9 @@ class JSONSerializer extends _serializer.Serializer {
 
     if (content != null) {
       LogUtil.debug(`Object has content, processing content`);
-      serialized.content = encoding.type === _encodings.Constructed.type ? this.serializationImpl(content) : jsonify(content);
+      serialized.content = encoding.type === Constructed.type ? this.serializationImpl(content) : jsonify(content);
     }
 
     return serialized;
   }
 }
-exports.JSONSerializer = JSONSerializer;

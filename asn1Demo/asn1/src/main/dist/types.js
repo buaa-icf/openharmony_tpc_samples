@@ -1,22 +1,10 @@
 import { LogUtil } from './logUtil';
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Private = exports.ContextSpecific = exports.Application = exports.Universal = exports.Type = undefined;
-exports.findTagClass = findTagClass;
-exports.findType = findType;
-
- var _encodings = require('./encodings');
-
-var BigInteger = require('./BigInteger');
+import { BigInteger } from './BigInteger';
+import { Constructed, Primitive } from './encodings';
 
 const TAG = 'asn1Demo-types';
 
-class Type {}
-
-exports.Type = Type; /* eslint-disable max-len */
+export class Type { }
 
 const TypeClassFactory = (tagClass, type, validEncodings, defaultValue, defaultContent, contentProcessor) => class extends Type {
   constructor(content, { encoding = validEncodings[0], value = null } = {}) {
@@ -38,9 +26,9 @@ const TypeClassFactory = (tagClass, type, validEncodings, defaultValue, defaultC
 };
 
 const TagClassFactory = (type, defaultValue) => class {
-    //
-  constructor(value, content, encoding, { validEncodings = [_encodings.Constructed] } = {}) {
-    const NewType = class extends TypeClassFactory(this.constructor, null, validEncodings) {};
+  //
+  constructor(value, content, encoding, { validEncodings = [Constructed] } = {}) {
+    const NewType = class extends TypeClassFactory(this.constructor, null, validEncodings) { };
     return new NewType(content, { encoding, value });
   }
   static get type() {
@@ -84,47 +72,43 @@ function importInteger(content) {
 }
 
 
-Universal.EOC = class EOC extends TypeClassFactory(Universal, 'endOfContent', [_encodings.Primitive], 0) {};
-Universal.Bool = class Bool extends TypeClassFactory(Universal, 'boolean', [_encodings.Primitive], 1) {};
-Universal.Integer = class Integer extends TypeClassFactory(Universal, 'integer', [_encodings.Primitive], 2, null, importInteger) {};
-Universal.BitString = class BitString extends TypeClassFactory(Universal, 'bitString', [_encodings.Primitive, _encodings.Constructed], 3) {};
-Universal.OctetString = class OctetString extends TypeClassFactory(Universal, 'octetString', [_encodings.Primitive, _encodings.Constructed], 4) {};
-Universal.Null = class Null extends TypeClassFactory(Universal, 'null', [_encodings.Primitive], 5) {};
-Universal.OID = class OID extends TypeClassFactory(Universal, 'oid', [_encodings.Primitive], 6) {};
-Universal.ODesc = class ODesc extends TypeClassFactory(Universal, 'odesc', [_encodings.Primitive, _encodings.Constructed], 7) {};
-Universal.External = class External extends TypeClassFactory(Universal, 'external', [_encodings.Constructed], 8) {};
-Universal.Real = class Real extends TypeClassFactory(Universal, 'float', [_encodings.Primitive], 9) {};
-Universal.Enumerated = class Enumerated extends TypeClassFactory(Universal, 'enumerated', [_encodings.Primitive], 10) {};
-Universal.EnumeratedPDV = class EnumeratedPDV extends TypeClassFactory(Universal, 'embeddedPDV', [_encodings.Constructed], 11) {};
-Universal.UTF8String = class UTF8String extends TypeClassFactory(Universal, 'utf8String', [_encodings.Primitive, _encodings.Constructed], 12) {};
-Universal.ROID = class ROID extends TypeClassFactory(Universal, 'roid', [_encodings.Primitive], 13) {};
-Universal.Sequence = class Sequence extends TypeClassFactory(Universal, 'sequence', [_encodings.Constructed], 16, []) {};
-Universal.Set = class Set extends TypeClassFactory(Universal, 'set', [_encodings.Constructed], 17, []) {};
-Universal.NumericString = class NumericString extends TypeClassFactory(Universal, 'numericString', [_encodings.Primitive, _encodings.Constructed], 18) {};
-Universal.PrintableString = class PrintableString extends TypeClassFactory(Universal, 'printableString', [_encodings.Primitive, _encodings.Constructed], 19) {};
-Universal.T61String = class T61String extends TypeClassFactory(Universal, 't61String', [_encodings.Primitive, _encodings.Constructed], 20) {};
-Universal.VideoetxString = class VideoetxString extends TypeClassFactory(Universal, 'videotexString', [_encodings.Primitive, _encodings.Constructed], 21) {};
-Universal.IA5String = class IA5String extends TypeClassFactory(Universal, 'ia5String', [_encodings.Primitive, _encodings.Constructed], 22) {};
-Universal.UTCTime = class UTCTime extends TypeClassFactory(Universal, 'utcTime', [_encodings.Primitive, _encodings.Constructed], 23) {};
-Universal.GeneralizedTime = class GeneralizedTime extends TypeClassFactory(Universal, 'generalizedTime', [_encodings.Primitive, _encodings.Constructed], 24) {};
-Universal.GraphicString = class GraphicString extends TypeClassFactory(Universal, 'graphicString', [_encodings.Primitive, _encodings.Constructed], 25) {};
-Universal.VisibleString = class VisibleString extends TypeClassFactory(Universal, 'visibleString', [_encodings.Primitive, _encodings.Constructed], 26) {};
-Universal.GeneralString = class GeneralString extends TypeClassFactory(Universal, 'generalString', [_encodings.Primitive, _encodings.Constructed], 27) {};
-Universal.UniversalString = class UniversalString extends TypeClassFactory(Universal, 'universalString', [_encodings.Primitive, _encodings.Constructed], 28) {};
-Universal.CharString = class CharString extends TypeClassFactory(Universal, 'characterString', [_encodings.Primitive, _encodings.Constructed], 29) {};
-Universal.BMPString = class BMPString extends TypeClassFactory(Universal, 'bmpString', [_encodings.Primitive, _encodings.Constructed], 30) {};
+Universal.EOC = class EOC extends TypeClassFactory(Universal, 'endOfContent', [Primitive], 0) { };
+Universal.Bool = class Bool extends TypeClassFactory(Universal, 'boolean', [Primitive], 1) { };
+Universal.Integer = class Integer extends TypeClassFactory(Universal, 'integer', [Primitive], 2, null, importInteger) { };
+Universal.BitString = class BitString extends TypeClassFactory(Universal, 'bitString', [Primitive, Constructed], 3) { };
+Universal.OctetString = class OctetString extends TypeClassFactory(Universal, 'octetString', [Primitive, Constructed], 4) { };
+Universal.Null = class Null extends TypeClassFactory(Universal, 'null', [Primitive], 5) { };
+Universal.OID = class OID extends TypeClassFactory(Universal, 'oid', [Primitive], 6) { };
+Universal.ODesc = class ODesc extends TypeClassFactory(Universal, 'odesc', [Primitive, Constructed], 7) { };
+Universal.External = class External extends TypeClassFactory(Universal, 'external', [Constructed], 8) { };
+Universal.Real = class Real extends TypeClassFactory(Universal, 'float', [Primitive], 9) { };
+Universal.Enumerated = class Enumerated extends TypeClassFactory(Universal, 'enumerated', [Primitive], 10) { };
+Universal.EnumeratedPDV = class EnumeratedPDV extends TypeClassFactory(Universal, 'embeddedPDV', [Constructed], 11) { };
+Universal.UTF8String = class UTF8String extends TypeClassFactory(Universal, 'utf8String', [Primitive, Constructed], 12) { };
+Universal.ROID = class ROID extends TypeClassFactory(Universal, 'roid', [Primitive], 13) { };
+Universal.Sequence = class Sequence extends TypeClassFactory(Universal, 'sequence', [Constructed], 16, []) { };
+Universal.Set = class Set extends TypeClassFactory(Universal, 'set', [Constructed], 17, []) { };
+Universal.NumericString = class NumericString extends TypeClassFactory(Universal, 'numericString', [Primitive, Constructed], 18) { };
+Universal.PrintableString = class PrintableString extends TypeClassFactory(Universal, 'printableString', [Primitive, Constructed], 19) { };
+Universal.T61String = class T61String extends TypeClassFactory(Universal, 't61String', [Primitive, Constructed], 20) { };
+Universal.VideoetxString = class VideoetxString extends TypeClassFactory(Universal, 'videotexString', [Primitive, Constructed], 21) { };
+Universal.IA5String = class IA5String extends TypeClassFactory(Universal, 'ia5String', [Primitive, Constructed], 22) { };
+Universal.UTCTime = class UTCTime extends TypeClassFactory(Universal, 'utcTime', [Primitive, Constructed], 23) { };
+Universal.GeneralizedTime = class GeneralizedTime extends TypeClassFactory(Universal, 'generalizedTime', [Primitive, Constructed], 24) { };
+Universal.GraphicString = class GraphicString extends TypeClassFactory(Universal, 'graphicString', [Primitive, Constructed], 25) { };
+Universal.VisibleString = class VisibleString extends TypeClassFactory(Universal, 'visibleString', [Primitive, Constructed], 26) { };
+Universal.GeneralString = class GeneralString extends TypeClassFactory(Universal, 'generalString', [Primitive, Constructed], 27) { };
+Universal.UniversalString = class UniversalString extends TypeClassFactory(Universal, 'universalString', [Primitive, Constructed], 28) { };
+Universal.CharString = class CharString extends TypeClassFactory(Universal, 'characterString', [Primitive, Constructed], 29) { };
+Universal.BMPString = class BMPString extends TypeClassFactory(Universal, 'bmpString', [Primitive, Constructed], 30) { };
 
 const Types = Object.keys(Universal).map(key => Universal[key].constructor ? Universal[key] : null).filter(Boolean);
 
-exports.Universal = Universal;
-exports.Application = Application;
-exports.ContextSpecific = ContextSpecific;
-exports.Private = Private;
-
+export { Universal, Application, ContextSpecific, Private };
 
 const TagClasses = [Universal, Application, ContextSpecific, Private];
 
-function findTagClass(value) {
+export function findTagClass(value) {
   const valueType = typeof value;
   switch (valueType) {
     case 'string':
@@ -139,7 +123,7 @@ function findTagClass(value) {
   }
 }
 
-function findType(value) {
+export function findType(value) {
   const valueType = typeof value;
   switch (valueType) {
     case 'string':
