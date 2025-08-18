@@ -19,9 +19,9 @@ import ProxyCacheUtils from './ProxyCacheUtils';
 import Source from './Source';
 import InterruptedProxyCacheException from './InterruptedProxyCacheException';
 import { DataBackListener } from './interfaces/DataBackListener';
-import emitter from '@ohos.events.emitter';
-import { VideoCacheConstant } from './constant/VideoCacheConstant';
 import { connection } from '@kit.NetworkKit';
+import http from '@ohos.net.http';
+import { LogUtil } from './LogUtil';
 import { BusinessError } from '@kit.BasicServicesKit';
 
 
@@ -34,50 +34,108 @@ export default class ProxyCache {
   private readingInProgress: boolean = false;
   private percentsAvailable: number = -1;
   private timeoutId: number = (0 - Number.MAX_VALUE);
-  private netIValidated = false
-  private currentOffset = 0
-  private currentLength = 0
+  private judgeHasNetTimeoutId: number | null = null;
+  private netIValidated = false;
 
-  constructor(source: Source, cache: Cache) {
+  constructor(source: Source, cache: Cache, url: string) {
     this.source = Preconditions.checkNotNull(source);
     this.cache = Preconditions.checkNotNull(cache);
     this.stopped = false;
-    this.judgeHasNet();
+    // 使用视频URL进行网络检查
+    this.judgeHasNet(url);
   }
 
-  protected async judgeHasNet(): Promise<boolean> {
-    let self = this;
+  protected async judgeHasNet(videoUrl: string): Promise<void> {
     try {
       let netHandle = connection.getDefaultNetSync();
       if (!netHandle || netHandle.netId === 0) {
-        return false;
+        return;
       }
       let netCapability = connection.getNetCapabilitiesSync(netHandle);
       let cap = netCapability.networkCap || [];
       if (cap.includes(connection.NetCap.NET_CAPABILITY_VALIDATED)) {
-        let lastAvailable: number = -1;
-        while (self.cache && !self.cache.isCompleted() &&
-          self.cache.available() < (this.currentOffset + this.currentLength) && !self.stopped &&
-        this.netIValidated) {
-          this.readSourceAsync();
-          await self.waitForSourceData();
-          self.checkReadSourceErrorsCount();
-          if (self.cache?.available() == lastAvailable) {
-            this.tryComplete();
-          } else {
-            lastAvailable = self.cache?.available()?? -1;
-          }
-        }
         this.netIValidated = true;
       } else {
-        this.netIValidated = false;
+        await this.judgeHasNetByHttp(videoUrl);
+        return;
       }
     } catch (e) {
       let err = e as BusinessError;
       console.error("videoCache-->" + JSON.stringify(err));
     }
-    return false;
   }
+
+  protected async judgeHasNetByHttp(videoUrl: string): Promise<void> {
+    let pingResult = await this.pingVideoServer(videoUrl);
+    LogUtil.log("Ping test result: " + pingResult);
+    if (pingResult) {
+      this.netIValidated = true;
+    } else {
+      this.netIValidated = false;
+    }
+  }
+
+  /**
+   * 通过视频地址来判断网络连接
+   */
+  async pingVideoServer(url: string): Promise<boolean> {
+    try {
+      // 直接使用URL进行连接测试
+      let result = await this.pingUrl(url);
+      LogUtil.log("Connection test result: " + result);
+      return result;
+    } catch (error) {
+      LogUtil.error("Error testing video server connection: " + error.message);
+      // 出错时也允许继续尝试，避免阻塞视频播放
+      return true;
+    }
+  }
+
+  /**
+   * 直接测试URL连接
+   */
+  private async pingUrl(url: string): Promise<boolean> {
+    try {
+      // 创建一个简单的HTTP连接测试
+      let httpRequest = http.createHttp();
+      let options: http.HttpRequestOptions = {
+        method: http.RequestMethod.HEAD, // 只请求头部，不下载内容
+        header: {
+          "Connection": "close"
+        },
+        connectTimeout: 10000,  // 10秒连接超时
+        readTimeout: 10000      // 10秒读取超时
+      };
+
+      try {
+        // 尝试发送HEAD请求
+        await httpRequest.requestInStream(url, options);
+        LogUtil.log("Connection test successful");
+        httpRequest.destroy();
+        return true;
+      } catch (error) {
+        console.warn("Connection test failed " + error.message);
+        httpRequest.destroy();
+        return false;
+      }
+    } catch (error) {
+      console.error("Ping URL error: " + error.message);
+      return false;
+    }
+  }
+
+  private async waitForJudgeNet(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      this.judgeHasNetTimeoutId = setTimeout(() => {
+        if (this.judgeHasNetTimeoutId) {
+          clearTimeout(this.judgeHasNetTimeoutId);
+          this.judgeHasNetTimeoutId = null;
+          resolve();
+        }
+      }, 1);
+    });
+  }
+
 
   public async read(buffer: ArrayBuffer, offset: number, length: number): Promise<number> {
     ProxyCacheUtils.assertBuffer(buffer, offset, length);
@@ -86,14 +144,17 @@ export default class ProxyCache {
     }
     let self = this;
     let lastAvailable: number = - 1;
-    while (self.cache && !self.cache.isCompleted() && self.cache.available() < (offset + length) && !self.stopped && this.netIValidated) {
-      this.readSourceAsync();
-      await self.waitForSourceData();
-      self.checkReadSourceErrorsCount();
-      if(self.cache?.available() == lastAvailable) {
-        this.tryComplete();
-      } else {
-        lastAvailable = self.cache?.available() ?? -1;
+    while (self.cache && !self.cache.isCompleted() && self.cache.available() < (offset + length) && !self.stopped) {
+      await self.waitForJudgeNet();
+      if (this.netIValidated) {
+        this.readSourceAsync();
+        await self.waitForSourceData();
+        self.checkReadSourceErrorsCount();
+        if (self.cache?.available() == lastAvailable) {
+          this.tryComplete();
+        } else {
+          lastAvailable = self.cache?.available() ?? -1;
+        }
       }
     }
     return new Promise<number>(async (resolve, reject) => {

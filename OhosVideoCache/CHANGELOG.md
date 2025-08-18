@@ -1,3 +1,6 @@
+## 1.0.4-rc.0
+1. Fix the issue where the LAN cannot play videos
+
 ## 1.0.3
 1. Release official version
 

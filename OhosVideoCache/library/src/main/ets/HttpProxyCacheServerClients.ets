@@ -80,7 +80,8 @@ export default class HttpProxyCacheServerClients {
     }
     let source = new HttpUrlSource([this.url, this.config.sourceInfoStorage, this.config.headerInjector]);
     let cache = new FileCache(this.config.generateCacheFile(this.url), this.config.diskUsage);
-    let httpProxyCache = new HttpProxyCache(source, cache);
+    // 传递视频URL给ProxyCache，用于网络连接测试
+    let httpProxyCache = new HttpProxyCache(source, cache, this.url);
     httpProxyCache.registerCacheListener(this.uiCacheListener);
     return httpProxyCache;
   }
