@@ -20,7 +20,7 @@ struct Index {
   @State message: string = 'Test'
   @State public result: Boolean = false
   getResourceString(res:Resource) {
-    return getContext().resourceManager.getStringSync(res.id)
+    return this.getUIContext().getHostContext()!.resourceManager.getStringSync(res.id)
   }
   build() {
     Row() {
