@@ -43,7 +43,7 @@ struct SendMailPage {
 
   showToast(text: string, name = 'test') {
     console.log(`zdy---${name}--->${text}`)
-    promptAction.showToast({
+    this.getUIContext().getPromptAction().showToast({
       message: text,
       duration: 2000,
       bottom: 50
@@ -51,7 +51,7 @@ struct SendMailPage {
   }
 
   aboutToAppear() {
-    let params = router.getParams()
+    let params = this.getUIContext().getRouter().getParams()
     let temp = params as Record<string, Object>
     if (temp && temp['sendCount'] && typeof temp['sendCount'] === 'string') {
       this.from = temp['sendCount'];
@@ -398,7 +398,7 @@ struct SendMailPage {
     try {
       if (ctx.attachment && ctx.attachment.length == 0) {
         ctx.showToast(this.getResourceString('Start_generating_a_single_local_file'), 'createSingleFile')
-        let context = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext()
+        let context = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : this.getUIContext().getHostContext()!
         let randomNum = Math.round(Math.random() * 1024 + 1);
         let filePath = context?.cacheDir + '/' + 'attachment-' + randomNum + '.txt'
         let file = fs.openSync(filePath, fs.OpenMode.CREATE | fs.OpenMode.READ_WRITE)
@@ -416,7 +416,7 @@ struct SendMailPage {
         ctx.showToast(this.getResourceString('Successfully_generated_local_single_file') + filePath, 'createSingleFile')
       } else if (ctx.attachment && ctx.attachment.length == 1) {
         ctx.showToast(this.getResourceString('Start_generating_a_single_local_file'), 'createSingleFile')
-        let context: Context | null = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext()
+        let context: Context | null = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : this.getUIContext().getHostContext()!
         let filePath = context?.cacheDir + '/icon.png'
         context?.resourceManager?.getRawFileContent('icon.png')?.then((imageData) => {
           if (imageData) {
@@ -440,7 +440,7 @@ struct SendMailPage {
         ctx.showToast(this.getResourceString('Successfully_generated_local_single_file') + filePath, 'createSingleFile')
       } else if (ctx.attachment && ctx.attachment.length == 2) {
         ctx.showToast(this.getResourceString('Start_generating_a_single_local_file'), 'createSingleFile')
-        let context: Context | null = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext()
+        let context: Context | null = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : this.getUIContext().getHostContext()!
         let filePath = context?.cacheDir + '/test.docx'
         context?.resourceManager?.getRawFileContent('test.docx')?.then((wordData) => {
           if (wordData) {
@@ -464,7 +464,7 @@ struct SendMailPage {
         ctx.showToast(this.getResourceString('Successfully_generated_local_single_file') + filePath, 'createSingleFile')
       } else if (ctx.attachment && ctx.attachment.length == 3) {
         ctx.showToast(this.getResourceString('Start_generating_a_single_local_file'), 'createSingleFile')
-        let context: Context | null = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : getContext()
+        let context: Context | null = GlobalObj?.getInstance()?.getContext() ? GlobalObj?.getInstance()?.getContext() : this.getUIContext().getHostContext()!
         if (!context) {
           return
         }
@@ -542,6 +542,6 @@ struct SendMailPage {
   }
 
   getResourceString(resourceName:string) {
-    return getContext().resourceManager.getStringByNameSync(resourceName)
+    return this.getUIContext().getHostContext()!.resourceManager.getStringByNameSync(resourceName)
   }
 }
