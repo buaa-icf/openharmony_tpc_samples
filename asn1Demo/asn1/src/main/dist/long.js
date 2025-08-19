@@ -18,11 +18,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 
 // WebAssembly optimizations to do native i64 multiplication and divide
 var wasm = null;
@@ -1468,5 +1463,5 @@ Long.fromBytesBE = function fromBytesBE(bytes, unsigned) {
         unsigned
     );
 };
-module.exports = Long;
+export { Long };
 

@@ -21,7 +21,6 @@ import { DERSerializer, DERDeserializer } from '@ohos/asn1-der';
 
 import { btoa, atob } from 'Base64'
 import { encode, decode } from 'hex-encode-decode'
-import prompt from '@system.prompt';
 
 let sequence:Universal.Sequence = new Universal.Sequence([
   new Universal.Integer(-Number.MAX_SAFE_INTEGER),
@@ -57,7 +56,12 @@ struct Index {
     // findType(1)
   }
   getResourceString(res: Resource) {
-    return getContext().resourceManager.getStringSync(res.id)
+    try{
+      return this.getUIContext().getHostContext()?.resourceManager.getStringSync(res.id) || "";
+    }catch (e) {
+      console.warn("asn1Demo--getResourceString error, message" + JSON.stringify(e));
+      return "";
+    }
   }
   build() {
     Row() {
@@ -89,7 +93,7 @@ struct Index {
             .margin({ top: "20px" })
             .onClick((event) => {
               if(!this.json){
-                prompt.showToast({message:this.getResourceString($r('app.string.Serialize')),duration:2000})
+                this.getUIContext().getPromptAction().showToast({message:this.getResourceString($r('app.string.Serialize')),duration:2000})
                 return;
               }
               const deserialize:JSONDeserializer = new JSONDeserializer();
@@ -202,7 +206,7 @@ struct Index {
             .fontSize(16)
             .margin({ top: "20px" })
             .onClick((event) => {
-              router.pushUrl({
+              this.getUIContext().getRouter().pushUrl({
                 url: "pages/berTest"
               })
             })
@@ -217,6 +221,6 @@ struct Index {
   }
 
   aboutToAppear() {
-    console.log("asnd1 aboutToAppear");
+    console.log("asn1 aboutToAppear");
   }
 }

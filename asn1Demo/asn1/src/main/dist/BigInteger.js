@@ -1,12 +1,7 @@
 import { LogUtil } from './logUtil';
+import { Long } from './long';
 
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 const TAG = 'asn1Demo-BigInteger';
-var Long = require('./long')
 
 var MIN_RADIX = 2;
 var MAX_RADIX = 36;
@@ -412,5 +407,5 @@ var ONE = BigInteger.fromMag([1], 1);
 BigInteger.ZERO = ZERO;
 BigInteger.ONE = ONE;
 
-module.exports = BigInteger;
+export { BigInteger }
 

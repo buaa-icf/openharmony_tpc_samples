@@ -1,11 +1,4 @@
 import { LogUtil } from './logUtil';
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Constructed = exports.Primitive = undefined;
-exports.findEncoding = findEncoding;
 
 const Encoding = (type, value) => class {
   static get type() {
@@ -16,15 +9,13 @@ const Encoding = (type, value) => class {
   }
 };
 
-class Primitive extends Encoding('primitive', 0x00) {}
-exports.Primitive = Primitive;
-class Constructed extends Encoding('constructed', 0x20) {}
+export class Primitive extends Encoding('primitive', 0x00) {}
+export class Constructed extends Encoding('constructed', 0x20) {}
 
-exports.Constructed = Constructed;
 const Encodings = [Primitive, Constructed];
 const TAG = 'asn1Demo-encodings';
 
-function findEncoding(value) {
+export function findEncoding(value) {
   const valueType = typeof value;
   switch (valueType) {
     case 'string':

@@ -1,10 +1,4 @@
 import { LogUtil } from './logUtil';
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Serializer = undefined;
 
 const TAG = 'asn1Demo-serializer';
 
@@ -27,7 +21,7 @@ function validateAOM(aom) {
     }
 }
 
-class Serializer {
+export class Serializer {
   constructor() {
     return this.serialize.bind(this);
   }
@@ -37,4 +31,3 @@ class Serializer {
     return this.serializationImpl(aom, params);
   }
 }
-exports.Serializer = Serializer;
