@@ -60,7 +60,7 @@ struct Index {
   }
 
   showMessage(message: string) {
-    promptAction.showToast({ message });
+    this.getUIContext().getPromptAction().showToast({ message });
     console.log(`${tag}${message}`)
   }
 
