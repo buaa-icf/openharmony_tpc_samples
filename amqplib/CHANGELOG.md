@@ -1,5 +1,6 @@
-## v1.0.2
+## v1.0.2-rc.0
 - Modify the document to a GitCode address and add parameter instructions.
+- Fix the issue of package compilation errors when generating har on the latest IDE.
 
 ## v1.0.1
 - 发布1.0.1正式版。

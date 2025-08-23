@@ -169,7 +169,7 @@ export class Socket extends Duplex {
             encoding = 'buffer';
         }
         let result = this._write(data, encoding, cb);
-        return result === true;
+        return true;
     }
 
     on(event: string, callback: (...any) => void) {
@@ -231,12 +231,6 @@ export class Socket extends Duplex {
         }
     }
     private messageDispatcher = (message: any) => {
-        if (message?.message) {
-            let data = Buffer.from(message.message)
-            this.push(data, 'buffer');
-        } else {
-            this.push(null);
-        }
         this.messageListeners.forEach((callback) => {
             callback(message)
         })

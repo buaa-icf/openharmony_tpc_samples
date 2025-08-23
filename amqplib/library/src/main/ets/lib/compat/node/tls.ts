@@ -52,7 +52,7 @@ export interface SecureContextOptions {
     cert: string;
     key: string;
     passwd?: string;
-    protocols?: Protocol | Array<Protocol>;
+    protocols?: Array<string>;
     useRemoteCipherPrefer?: boolean;
     signatureAlgorithms?: string;
     cipherSuite?: string;
@@ -90,7 +90,6 @@ export class Socket extends Duplex {
     connect(options: ConnectionOptions, connectionListener?: () => void) {
         this.connecting = true;
         this.options = options;
-        this.parseOptions(options);
         connectionListener && this.on('connect', connectionListener)
         this.tlsSocket.connect(this.tlsConnectOptions).then(() => {
             this.connecting = false;
@@ -103,15 +102,6 @@ export class Socket extends Duplex {
                 }
             }
         })
-    }
-
-    private parseOptions(netConnectOpts: NetConnectOpts) {
-        if (netConnectOpts) {
-            this.tcpConnectOptions.address = { address: netConnectOpts.host, port: netConnectOpts.port, family: 1 }
-            if (netConnectOpts.timeout != undefined) {
-                this.tcpConnectOptions.timeout = netConnectOpts.timeout / 1000;
-            }
-        }
     }
 
     setNoDelay(noDelay: boolean) {
@@ -158,12 +148,12 @@ export class Socket extends Duplex {
 
     _write(data, encoding, cb) {
         if (typeof cb != 'function') {
-            cb = nop;
+            cb = 'nop';
         }
         if (this.connecting || !this.tlsSocket) {
             this.once('connect', () => this._write(data, encoding, cb));
         } else {
-            this.tlsSocket.send({ data: Uint8Array.from(Array.from(data)).buffer, encoding }, (err) => {
+            this.tlsSocket.send(data, (err) => {
                 if (err) {
                     cb(err)
                 } else {
@@ -178,7 +168,7 @@ export class Socket extends Duplex {
             encoding = 'buffer';
         }
         let result = this._write(data, encoding, cb);
-        return result === true;
+        return true;
     }
 
     on(event: string, callback: (...any) => void) {
@@ -240,14 +230,6 @@ export class Socket extends Duplex {
         }
     }
     private messageDispatcher = (message: any) => {
-        if (message?.message) {
-            let data = Buffer.from(message.message)
-
-            this.push(data, 'buffer');
-        } else {
-
-            this.push(null);
-        }
         this.messageListeners.forEach((callback) => {
             callback(message)
         })
