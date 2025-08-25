@@ -1,3 +1,9 @@
+## v1.0.2-rc.0
+
+modify docs
+
+- add new fileds for oh-package.json5
+
 ## v1.0.1
 
 fix bug
