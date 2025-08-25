@@ -11,9 +11,9 @@
     "org": "opensource"
   },
   "main": "index.ets",
-  "repository": "https://gitee.com/hihopeorg/stun-server",
+  "repository": "https://gitcode.com/hihopeorg/stun-server",
   "type": "module",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "tags": [
     "OpenHarmony",
     "stun",
