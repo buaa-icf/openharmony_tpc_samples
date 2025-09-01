@@ -21,6 +21,7 @@ import taskpool from '@ohos.taskpool';
 import emitter from '@ohos.events.emitter';
 import { VideoCacheConstant } from '../constant/VideoCacheConstant';
 import StorageUtils from '../StorageUtils';
+import { LogUtil } from '../LogUtil';
 
 async function TouchCallable(file: string) {
   'use concurrent'
@@ -54,6 +55,7 @@ async function TouchCallable(file: string) {
     priority: emitter.EventPriority.IMMEDIATE
   }
   emitter.emit(event);
+  LogUtil.info(`touch file, COUNT_TOTAL_SIZE_END_ID`);
 
   let totalSize = await new Promise<number>((resolve, reject) => {
     let sendSizeEvent: emitter.InnerEvent = {
@@ -72,6 +74,7 @@ async function TouchCallable(file: string) {
   })
 
   let totalCount = files.length;
+  LogUtil.info(`touch file, totalSize = ${totalSize}`);
   for (let i = 0; i < files.length; i++) {
     let file: string = files[i];
     let eventData: emitter.EventData = {
@@ -131,6 +134,7 @@ export default class LruDiskUsage implements DiskUsage {
       if (data && data.data && typeof data.data.content === "string") {
         let content = data.data.content;
         self.list.add(content);
+        LogUtil.info(`touch file, self.list.length = ${self.list.length}`);
       }
     })
     let countTotalStratEvent: emitter.InnerEvent = {

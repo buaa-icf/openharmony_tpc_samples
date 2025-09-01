@@ -19,6 +19,7 @@ import fs from '@ohos.file.fs';
 import { UnlimitedDiskUsage } from './UnlimitedDiskUsage';
 import emitter from '@ohos.events.emitter';
 import { VideoCacheConstant } from '../constant/VideoCacheConstant';
+import { LogUtil } from '../LogUtil';
 
 export default class FileCache implements Cache {
   private TEMP_POSTFIX: string = ".download";
@@ -58,6 +59,11 @@ export default class FileCache implements Cache {
         fs.closeSync(self.dataFile.fd);
       }
       self.dataFile = fs.createRandomAccessFileSync(self.tempFilePath, fs.OpenMode.READ_WRITE | fs.OpenMode.APPEND);
+      try {
+        this.diskUsage?.touch(this.tempFilePath);
+      } catch (err) {
+        LogUtil.warn("Failed to touch file for cache cleanup:" + err);
+      }
     } catch (e) {
       throw new Error("Error using file " + this.tempFilePath + " as disc cache" + e.message);
     }
@@ -165,7 +171,12 @@ export default class FileCache implements Cache {
         return -1;
       }
       if (this.fileLength > 0 && offset >= this.fileLength) {
-        this.diskUsage?.touch(this.tempFilePath);
+        // 在读取超出文件长度时触发缓存清理
+        try {
+          this.diskUsage?.touch(this.tempFilePath);
+        } catch (err) {
+          LogUtil.warn("Failed to touch file during read for cache cleanup:" + err);
+        }
         return -1;
       }
       if (offset >= this.available()) {

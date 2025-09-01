@@ -30,6 +30,7 @@ import HashMap from '@ohos.util.HashMap';
 import emitter from '@ohos.events.emitter';
 import { VideoCacheConstant } from './constant/VideoCacheConstant';
 import { LogUtil } from './LogUtil';
+import { BusinessError } from '@kit.BasicServicesKit';
 
 export default class HttpUrlSource implements Source {
   private MAX_REDIRECTS: number = 5;
@@ -150,11 +151,37 @@ export default class HttpUrlSource implements Source {
   }
 
   notifyInitFinish() {
-    let event: emitter.InnerEvent = {
-      eventId: VideoCacheConstant.HTTP_URL_SOURCE_READY_ID,
-      priority: emitter.EventPriority.IMMEDIATE
+    emitter.emit(VideoCacheConstant.HTTP_URL_SOURCE_READY_ID.toString())
+  }
+
+  /**
+   * 销毁连接并释放资源
+   * 外部可以调用此方法来主动关闭 HTTP 请求连接
+   */
+  public destroy(): void {
+    try {
+      if (this.connection) {
+        this.connection.off('headersReceive');
+        this.connection.off('dataReceive');
+        this.connection.off('dataReceiveProgress');
+        this.connection.off('dataEnd');
+        this.connection.destroy();
+        this.connection = null;
+      }
+      // 清理其他资源
+      if (this.useInterVal) {
+        this.cacheData = new Queue();
+        this.isHeaderDealFinish = false;
+        this.isDataFinish = false;
+      }
+      if (this.interId !== 0 - Number.MAX_VALUE) {
+        clearInterval(this.interId);
+        this.interId = 0 - Number.MAX_VALUE;
+      }
+      emitter.off(VideoCacheConstant.HTTP_URL_SOURCE_READY_ID.toString());
+    } catch (err) {
+      LogUtil.error('destroy connection error: ' + JSON.stringify(err));
     }
-    emitter.emit(event)
   }
 
   close(): void {
@@ -165,7 +192,7 @@ export default class HttpUrlSource implements Source {
       if (this.interId != 0 - Number.MAX_VALUE) {
         clearInterval(this.interId)
       }
-      emitter.off(VideoCacheConstant.HTTP_URL_SOURCE_READY_ID)
+      emitter.off(VideoCacheConstant.HTTP_URL_SOURCE_READY_ID.toString())
       if(this.useInterVal){
         this.isHeaderDealFinish = false;
       }
@@ -287,8 +314,23 @@ export default class HttpUrlSource implements Source {
         if (this.useInterVal) {
           self.cacheData = new Queue();
         }
-        await self.connection?.requestInStream(self.sourceInfo!!.url, option)
-        return resolve()
+        self.connection?.requestInStream(self.sourceInfo!!.url, option).then(() => {
+          return resolve()
+        }).catch((err: BusinessError) => {
+          try {
+            if (self.connection) {
+              self.connection.off('headersReceive');
+              self.connection.off('dataReceive');
+              self.connection.off('dataReceiveProgress');
+              self.connection.off('dataEnd');
+              self.connection.destroy();
+              self.connection = null;
+            }
+          } catch (cleanupErr) {
+            LogUtil.error('连接清理失败: ' + JSON.stringify(cleanupErr));
+          }
+          return resolve()
+        })
       })
 
 
@@ -349,19 +391,42 @@ export default class HttpUrlSource implements Source {
     }
   }
 
-  private openConnection(): http.HttpRequest {
+  private openConnection(): http.HttpRequest | null {
     try {
-      this.connection?.off('headersReceive')
-      this.connection?.off('dataReceive')
-      this.connection?.off('dataReceiveProgress')
-      this.connection?.off('dataEnd')
-      this.connection?.destroy();
-      this.connection = null;
+      if (this.connection) {
+        try {
+          this.connection.off('headersReceive');
+          this.connection.off('dataReceive');
+          this.connection.off('dataReceiveProgress');
+          this.connection.off('dataEnd');
+          this.connection.destroy();
+        } catch (destroyErr) {
+          console.error('销毁旧连接失败: ' + JSON.stringify(destroyErr));
+        } finally {
+          this.connection = null;
+        }
+      }
+      
+      // 创建新连接前检查状态
+      if (this.connection !== null) {
+        console.warn('连接状态异常，强制重置');
+        this.connection = null;
+      }
+      
+      // 创建新连接
+      let newConnection = http.createHttp();
+      if (!newConnection) {
+        throw new Error('Failed to create HTTP connection');
+      }
+      
+      this.connection = newConnection;
+      console.log('新连接创建成功');
+      
     } catch (err) {
-      LogUtil.error('openConnection error: ' + JSON.stringify(err));
+      console.error('openConnection error: ' + JSON.stringify(err));
       this.connection = null;
     }
-    return http.createHttp();
+    return this.connection;
   }
 
   private initRequestParam(offset: number, timeout: number): http.HttpRequestOptions {
@@ -369,11 +434,10 @@ export default class HttpUrlSource implements Source {
     let option: http.HttpRequestOptions = {
       method: http.RequestMethod.GET,
       header: {
-        "Content-Type": 'application/json',
         "Connection": 'Keep-Alive'
       },
       connectTimeout: 10000,
-      readTimeout: 0,
+      readTimeout: 10000,
       usingProtocol: http.HttpProtocol.HTTP1_1
     }
     if (!self.sourceInfo) {
@@ -435,10 +499,7 @@ export default class HttpUrlSource implements Source {
     let self = this;
     if (!self?.isInitFinish) {
       return new Promise<void>((resolve, reject) => {
-        let event: emitter.InnerEvent = {
-          eventId: VideoCacheConstant.HTTP_URL_SOURCE_READY_ID
-        }
-        emitter.on(event, (data: emitter.EventData) => {
+        emitter.on(VideoCacheConstant.HTTP_URL_SOURCE_READY_ID.toString(), (data: emitter.EventData) => {
           return resolve()
         })
       })

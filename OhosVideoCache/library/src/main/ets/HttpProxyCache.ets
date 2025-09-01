@@ -55,6 +55,14 @@ export default class HttpProxyCache extends ProxyCache {
     this.listener = cacheListener;
   }
 
+  /**
+   * 获取当前活跃的 HttpUrlSource 实例
+   * @returns HttpUrlSource 实例或 null
+   */
+  public getCurrentSource(): HttpUrlSource | null {
+    return this.source;
+  }
+
   public async processRequest(request: GetRequest, serverConnect: socket.TCPSocketConnection): Promise<void> {
     if (!request) {
       return Promise.reject(new Error('request can not be null'))

@@ -69,6 +69,8 @@ struct HttpPlayer {
   // 界面销毁监听
   async aboutToDisappear(): Promise<void> {
     Logger.info(TAG, 'aboutToDisappear success');
+    this.destroyCurrentConnect();
+    
     GlobalProxyServer?.getInstance()?.getServer()?.shutdown()
     this.setOffCallback();
     await this.avPlayer?.stop();
@@ -407,8 +409,22 @@ struct HttpPlayer {
     this.setSourceInfo();
   }
 
+  // 在切换视频前，先销毁当前的连接
+  destroyCurrentConnect() {
+    try {
+      const currentUrl = this.SRC_LIST[this.index];
+      if (currentUrl) {
+        GlobalProxyServer?.getInstance()?.getServer()?.destroyCurrentSource(currentUrl);
+        Logger.info(TAG, `已销毁当前视频连接: ${currentUrl}`);
+      }
+    } catch (err) {
+      Logger.error(TAG, `销毁当前视频连接失败: ${err}`);
+    }
+  }
+
   // 切换下个视频的接口
   async nextVideo(): Promise<void> {
+    this.destroyCurrentConnect();
     // 调用reset函数，重置播放器状态至idle
     await this.avPlayer?.reset();
     this.currentCachePercent = 0;
@@ -455,6 +471,8 @@ struct HttpPlayer {
 
   // 切换上个视频的接口
   async preVideo(): Promise<void> {
+    this.destroyCurrentConnect();
+
     this.currentCachePercent = 0;
     await this.avPlayer?.reset();
     this.isLoop = false;

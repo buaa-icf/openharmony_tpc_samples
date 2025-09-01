@@ -102,6 +102,23 @@ export default class HttpProxyCacheServerClients {
     this.listeners.remove(cacheListener);
   }
 
+  /**
+   * 获取当前活跃的 HttpUrlSource 实例
+   * @returns HttpUrlSource 实例或 null
+   */
+  public getCurrentSource(): HttpUrlSource | null {
+    try {
+      if (this.proxyCache) {
+        // 通过 HttpProxyCache 获取 HttpUrlSource 实例
+        return this.proxyCache.getCurrentSource();
+      }
+      return null;
+    } catch (err) {
+      console.error('getCurrentSource error: ' + JSON.stringify(err));
+      return null;
+    }
+  }
+
   public async shutdown(): Promise<void> {
     this.listeners.clear();
     if (this.proxyCache != null) {
