@@ -208,16 +208,53 @@ export default class ProxyCache {
 
 
   private async waitForSourceData(): Promise<void> {
-    let self = this;
     return new Promise<void>((resolve, reject) => {
-      self.timeoutId = setTimeout(() => {
-        if (self.timeoutId != (0 - Number.MAX_VALUE)) {
-          clearTimeout(self.timeoutId)
-          self.timeoutId = (0 - Number.MAX_VALUE)
-          return resolve()
+      const startCacheSize = this.cache?.available() ?? 0;
+
+      let isResolved = false;
+
+      // 检查缓存增量的函数
+      const checkCacheIncrement = () => {
+        if (isResolved) {
+          return;
         }
-      }, 200)
-    })
+
+        const currentCacheSize = this.cache?.available() ?? 0;
+        const increment = currentCacheSize - startCacheSize;
+
+        if (increment > 1024 * 1024) {
+          isResolved = true;
+          clearTimeout(this.timeoutId);
+          return resolve();
+        }
+      };
+
+      const checkInterval = setInterval(() => {
+        if (isResolved) {
+          clearInterval(checkInterval);
+          return;
+        }
+        checkCacheIncrement();
+      }, 100); // 每100ms检查一次
+
+      // 设置最大等待时间作为兜底（参考的1000ms）
+      this.timeoutId = setTimeout(() => {
+        if (isResolved) {
+          return;
+        }
+
+        isResolved = true;
+        clearInterval(checkInterval);
+        return resolve();
+      }, 1000);
+
+      // 立即检查一次，避免错过快速到达的数据
+      setTimeout(() => {
+        if (!isResolved) {
+          checkCacheIncrement();
+        }
+      }, 50);
+    });
   }
 
   private notifyNewCacheDataAvailable(cacheAvailable: number, sourceAvailable: number): void {
