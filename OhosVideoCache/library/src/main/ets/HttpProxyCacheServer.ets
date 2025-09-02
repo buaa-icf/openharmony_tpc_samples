@@ -33,13 +33,24 @@ import buffer from '@ohos.buffer';
 import { Context } from '@ohos.abilityAccessCtrl';
 import emitter from '@ohos.events.emitter';
 import { VideoCacheConstant } from './constant/VideoCacheConstant';
+import { LogUtil } from './LogUtil';
+import HttpUrlSource from './HttpUrlSource';
 
 const BASE_COUNT = 1
+
+interface clientAccessTime {
+  url: string,
+  accessTime: number
+}
 
 export default class HttpProxyCacheServer {
   private static libraryVersion: string = '1.0.0'
   private PROXY_HOST: string = "127.0.0.1";
   private clientsMap: HashMap<String, HttpProxyCacheServerClients> = new HashMap<string, HttpProxyCacheServerClients>();
+  // LRU 清理相关字段
+  private clientsAccessTime: HashMap<String, number> = new HashMap<string, number>();
+  private maxClientsCount: number = 50; // 最大客户端数量
+  private cleanupRatio: number = 0.2;   // 清理比例：每次清理20%的客户端
   private port: number = 0;
   private config: Config | null = null;
   private pinger: Pinger | null = null;
@@ -106,11 +117,7 @@ export default class HttpProxyCacheServer {
       })
       self.pinger = new Pinger(self.PROXY_HOST, self.port)
       self.isServerReady = true;
-      let event: emitter.InnerEvent = {
-        eventId: VideoCacheConstant.SERVER_READY_ID,
-        priority: emitter.EventPriority.IMMEDIATE
-      }
-      emitter.emit(event)
+      emitter.emit(VideoCacheConstant.SERVER_READY_ID.toString())
       return Promise.resolve()
     } catch (err) {
       return Promise.reject(err)
@@ -149,29 +156,50 @@ export default class HttpProxyCacheServer {
    * @return a wrapped by proxy url if file is not fully cached or url pointed to cache file otherwise (if {@code allowCachedFileUri} is {@code true}).
    */
   public async getProxyUrl(url: string, allowCachedFileUri: boolean = true): Promise<string> {
-    let self = this;
-    if (allowCachedFileUri && self.isCached(url)) {
-      let cacheFile = self.getCacheFile(url);
-      self.touchFileSafely(cacheFile);
-      return cacheFile;
-    }
-    // 以下代码是为了确保服务器准备好了 不加这里的逻辑 很可能服务器没初始化，导致下面的isAlive直接返回false，逻辑就不走代理了
-    await new Promise<void>((resolve, reject) => {
-      if (self.isServerReady) {
-        resolve()
-      } else {
-        let event: emitter.InnerEvent = {
-          eventId: VideoCacheConstant.SERVER_READY_ID
-        }
-        emitter.on(event, (data: emitter.EventData) => {
-          resolve()
-        })
+    try {
+      if (allowCachedFileUri && this.isCached(url)) {
+        let cacheFile = this.getCacheFile(url);
+        this.touchFileSafely(cacheFile);
+        return cacheFile;
       }
-    })
-    let result = await this.isAlive()
-    return new Promise((resolve, reject) => {
-      resolve(result ? this.appendToProxyUrl(url) : url)
-    });
+      
+      // 创建超时Promise，3秒后超时
+      const timeoutPromise = new Promise<string>((resolve) => {
+        setTimeout(() => {
+          LogUtil.warn("getProxyUrl timeout after 3 seconds, returning original URL");
+          resolve(url);
+        }, 3000);
+      });
+      
+      // 创建实际执行逻辑的Promise
+      const executePromise = new Promise<string>(async (resolve) => {
+        try {
+          // 以下代码是为了确保服务器准备好了 不加这里的逻辑 很可能服务器没初始化，导致下面的isAlive直接返回false，逻辑就不走代理了
+          await new Promise<void>((resolveServer) => {
+            if (this.isServerReady) {
+              resolveServer()
+            } else {
+              emitter.on(VideoCacheConstant.SERVER_READY_ID.toString(), (data: emitter.EventData) => {
+                resolveServer()
+              })
+            }
+          })
+
+          let result = await this.isAlive();
+          resolve(result ? this.appendToProxyUrl(url) : url);
+        } catch (error) {
+          LogUtil.error("Error in getProxyUrl execution: " + error.message);
+          resolve(url);
+        }
+      });
+      
+      // 使用Promise.race实现超时机制，先完成的Promise会返回结果
+      return Promise.race([executePromise, timeoutPromise]);
+      
+    } catch (error) {
+      LogUtil.error("Error in getProxyUrl: " + error.message);
+      return url; // 返回原始URL
+    }
   }
 
   /**
@@ -267,29 +295,23 @@ export default class HttpProxyCacheServer {
   }
 
   public shutdown(): void {
-    console.info("Shutdown proxy server");
-    let event: emitter.InnerEvent = {
-      eventId: VideoCacheConstant.SHUT_DOWN_TASKPOOL,
-      priority: emitter.EventPriority.IMMEDIATE
-    }
-    emitter.emit(event);
+    LogUtil.info("Shutdown proxy server");
+    emitter.emit(VideoCacheConstant.SHUT_DOWN_TASKPOOL.toString());
     this.shutdownClients();
     if (this.config && this.config.sourceInfoStorage) {
       this.config.sourceInfoStorage.release();
     }
-    this.serverSocket?.off('connect')
-    emitter.off(VideoCacheConstant.PING_EVENT_ID)
-    emitter.off(VideoCacheConstant.SEND_TOTAL_SIZE_ID)
-    emitter.off(VideoCacheConstant.SEND_ACCEPT_ID)
-    emitter.off(VideoCacheConstant.COUNT_TOTAL_SIZE_ID)
-    emitter.off(VideoCacheConstant.COUNT_TOTAL_SIZE_START_ID)
-    emitter.off(VideoCacheConstant.COUNT_TOTAL_SIZE_END_ID)
-    emitter.off(VideoCacheConstant.GET_ACCEPT_ID)
-    emitter.off(VideoCacheConstant.HTTP_URL_SOURCE_READY_ID)
-    emitter.off(VideoCacheConstant.SERVER_READY_ID)
-    emitter.off(VideoCacheConstant.RENAME_FINISH_ID)
-    emitter.off(VideoCacheConstant.SHUT_DOWN_TASKPOOL)
-    this.serverSocket = null;
+    emitter.off(VideoCacheConstant.PING_EVENT_ID.toString())
+    emitter.off(VideoCacheConstant.SEND_TOTAL_SIZE_ID.toString())
+    emitter.off(VideoCacheConstant.SEND_ACCEPT_ID.toString())
+    emitter.off(VideoCacheConstant.COUNT_TOTAL_SIZE_ID.toString())
+    emitter.off(VideoCacheConstant.COUNT_TOTAL_SIZE_START_ID.toString())
+    emitter.off(VideoCacheConstant.COUNT_TOTAL_SIZE_END_ID.toString())
+    emitter.off(VideoCacheConstant.GET_ACCEPT_ID.toString())
+    emitter.off(VideoCacheConstant.HTTP_URL_SOURCE_READY_ID.toString())
+    emitter.off(VideoCacheConstant.SERVER_READY_ID.toString())
+    emitter.off(VideoCacheConstant.RENAME_FINISH_ID.toString())
+    emitter.off(VideoCacheConstant.SHUT_DOWN_TASKPOOL.toString())
   }
 
   private onError(e: Error | ProxyCacheException): void {
@@ -301,6 +323,43 @@ export default class HttpProxyCacheServer {
       await clients?.shutdown();
     })
     this.clientsMap.clear();
+    // 清理访问时间记录
+    this.clientsAccessTime.clear();
+  }
+
+  /**
+   * 获取当前活跃的 HttpUrlSource 实例
+   * 用于外部调用 destroy 方法来关闭连接
+   * @param url 视频URL
+   * @returns HttpUrlSource 实例或 null
+   */
+  public getCurrentSource(url: string): HttpUrlSource | null {
+    try {
+      const clients = this.clientsMap.get(url);
+      if (clients) {
+        return clients.getCurrentSource();
+      }
+      return null;
+    } catch (err) {
+      LogUtil.error('getCurrentSource error: ' + JSON.stringify(err));
+      return null;
+    }
+  }
+
+  /**
+   * 销毁指定URL的当前连接
+   * @param url 视频URL
+   */
+  public destroyCurrentSource(url: string): void {
+    try {
+      const source = this.getCurrentSource(url);
+      if (source) {
+        source.destroy();
+        LogUtil.info(`已销毁连接: ${url}`);
+      }
+    } catch (err) {
+      LogUtil.error('destroyCurrentSource error: ' + JSON.stringify(err));
+    }
   }
 
   private getClients(url: string | null): HttpProxyCacheServerClients {
@@ -318,16 +377,58 @@ export default class HttpProxyCacheServer {
       clients = new HttpProxyCacheServerClients(url, this.config);
       this.clientsMap.set(url, clients);
     }
+    // 更新访问时间
+    this.clientsAccessTime.set(url, Date.now());
+
+    // 检查是否需要执行 LRU 清理
+    if (this.clientsMap.length > this.maxClientsCount) {
+      LogUtil.info(`客户端数量 ${this.clientsMap.length} 超过阈值 ${this.maxClientsCount}，自动触发 LRU 清理`);
+      this.performLRUCleanup();
+    }
+
     return clients;
   }
 
+  /**
+   * 执行 LRU 清理操作
+   */
+  private performLRUCleanup(): void {
+    LogUtil.info(`开始 LRU 清理 clientsMap，当前大小: ${this.clientsMap.length}`);
 
-  private getClientsCount(): number {
-    let count = 0;
-    this.clientsMap.forEach((clients: HttpProxyCacheServerClients, key, map) => {
-      count += clients.getClientsCount();
-    })
-    return count;
+    // 按访问时间排序，找出最久未使用的客户端
+    const entries: Array<clientAccessTime> = [];
+    this.clientsAccessTime.forEach((accessTime: number, url: string) => {
+      entries.push({url, accessTime});
+    });
+
+    // 按访问时间升序排序（最旧的在前）
+    entries.sort((a, b) => a.accessTime - b.accessTime);
+
+    // 计算需要清理的数量 - 每次清理更多，减少清理频率
+    const needCleanupCount = Math.max(
+      this.clientsMap.length - this.maxClientsCount,  // 基础清理数量
+      Math.floor(this.clientsMap.length * this.cleanupRatio)        // 额外清理比例的客户端
+    );
+
+    // 清理最久未使用的客户端
+    for (let i = 0; i < needCleanupCount && i < entries.length; i++) {
+      const url = entries[i].url;
+      const clients = this.clientsMap.get(url);
+
+      if (clients) {
+        LogUtil.info(`LRU 清理客户端: ${url}`);
+        // 异步关闭客户端
+        clients.shutdown().then(() => {
+          LogUtil.info(`客户端已关闭: ${url}`);
+        }).catch((err: Error) => {
+          console.error(`关闭客户端失败: ${url}, 错误: ${err.message}`);
+        });
+
+        // 从 map 中移除
+        this.clientsMap.remove(url);
+        this.clientsAccessTime.remove(url);
+      }
+    }
   }
 
   private releaseSocket(severConnect: socket.TCPSocketConnection, isCloseByClient: boolean): void {

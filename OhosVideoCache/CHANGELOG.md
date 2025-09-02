@@ -1,3 +1,6 @@
+## 1.0.4-rc.1
+1. Fix the issue where getProxyUrl does not return
+
 ## 1.0.4-rc.0
 1. Fix the issue where the LAN cannot play videos
 
