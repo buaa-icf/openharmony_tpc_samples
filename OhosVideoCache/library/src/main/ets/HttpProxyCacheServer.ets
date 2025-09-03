@@ -76,14 +76,14 @@ export default class HttpProxyCacheServer {
     if (!param) {
       throw new Error('params can not be null')
     }
-    let self = this;
     if (param instanceof Config) {
-      self.config = Preconditions.checkNotNull((param as Config));
+      this.config = Preconditions.checkNotNull((param as Config));
     } else {
-      self.config = new HttpProxyCacheServerBuilder((param as Context)).buildConfig()
+      this.config = new HttpProxyCacheServerBuilder((param as Context)).buildConfig()
     }
     try {
-      IgnoreHostProxySelector.install(self.PROXY_HOST, this.port);
+      this.port = Math.round((Math.random() * (65535 - 1024)) + 1024);
+      IgnoreHostProxySelector.install(this.PROXY_HOST, this.port);
       this.waitForRequest();
     } catch (err) {
       throw new Error("Error starting local proxy server " + err.message);
@@ -95,6 +95,7 @@ export default class HttpProxyCacheServer {
     try {
       let requestArg: socket.NetAddress = {
         address: this.PROXY_HOST,
+        port: this.port,
         family: 1
       }
       await this.serverSocket?.listen(requestArg);
