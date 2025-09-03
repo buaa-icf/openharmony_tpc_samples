@@ -1,3 +1,6 @@
+## 1.0.4
+1. Fix possible port number conflicts
+
 ## 1.0.4-rc.1
 1. Fix the issue where getProxyUrl does not return
 

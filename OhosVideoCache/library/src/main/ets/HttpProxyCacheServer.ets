@@ -83,10 +83,8 @@ export default class HttpProxyCacheServer {
       self.config = new HttpProxyCacheServerBuilder((param as Context)).buildConfig()
     }
     try {
-      self.port = Math.round((Math.random() * (65535 - 1024)) + 1024);
       IgnoreHostProxySelector.install(self.PROXY_HOST, this.port);
       this.waitForRequest();
-
     } catch (err) {
       throw new Error("Error starting local proxy server " + err.message);
     }
@@ -94,29 +92,32 @@ export default class HttpProxyCacheServer {
   }
 
   async waitForRequest(): Promise<void> {
-    let self = this;
     try {
       let requestArg: socket.NetAddress = {
-        address: self.PROXY_HOST,
-        port: self.port,
+        address: this.PROXY_HOST,
         family: 1
       }
       await this.serverSocket?.listen(requestArg);
+      //服务端使用listen方法完成bind，listen，accept操作，bind方法失败会由系统随机分配端口号,所以此处需要获取端口号
+      const netAddress = await this.serverSocket?.getLocalAddress();
+      if (netAddress?.port !== null && netAddress?.port !== undefined) {
+        this.port = netAddress?.port;
+      }
       this.serverSocket?.on("connect", async (clientSocket: socket.TCPSocketConnection) => {
         clientSocket?.on("message", (data: MessageCallBackBean) => {
           if (data && data.message) {
-            self.processSocket(data.message, clientSocket)
+            this.processSocket(data.message, clientSocket)
           }
         })
         clientSocket?.on("error", (err: Error) => {
-          self.closeSocket(clientSocket, false)
+          this.closeSocket(clientSocket, false)
         })
         clientSocket?.on("close", () => {
-          self.closeSocket(clientSocket, true)
+          this.closeSocket(clientSocket, true)
         })
       })
-      self.pinger = new Pinger(self.PROXY_HOST, self.port)
-      self.isServerReady = true;
+      this.pinger = new Pinger(this.PROXY_HOST, this.port)
+      this.isServerReady = true;
       emitter.emit(VideoCacheConstant.SERVER_READY_ID.toString())
       return Promise.resolve()
     } catch (err) {
