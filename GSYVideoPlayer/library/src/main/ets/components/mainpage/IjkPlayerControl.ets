@@ -138,8 +138,8 @@ export class IjkPlayerControl extends BaseVideoPlayer {
       // 这个和第三个参数packet-buffering无关。
       this.mIjkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "max_cached_duration", "3000");
 
-      // 无限制收流
-      this.mIjkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "infbuf", "1");
+      // 关闭无限收流，避免内存持续增长导致OOM。
+      this.mIjkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "infbuf", "0");
 
       // 屏幕常亮
       this.mIjkMediaPlayer.setScreenOnWhilePlaying(true);
