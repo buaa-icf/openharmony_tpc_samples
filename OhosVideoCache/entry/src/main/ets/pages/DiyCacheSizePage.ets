@@ -23,6 +23,7 @@ import fs from '@ohos.file.fs';
 import promptAction from '@ohos.promptAction';
 import photoAccessHelper from '@ohos.file.photoAccessHelper';
 import { display } from '@kit.ArkUI';
+import GlobalProxyServer from '../GlobalProxyServer';
 
 const TAG: string = 'MediaDemo HttpPlayer:';
 
@@ -60,6 +61,7 @@ struct DiyCacheSizePage {
   private SRC_LIST: Array<string> = new Array();
   private controller: TextInputController = new TextInputController();
   private server: HttpProxyCacheServer | null = null;
+  private currentCacheListener: CacheListener | null = null;
 
   // 界面初始化函数
   async aboutToAppear() {
@@ -71,7 +73,12 @@ struct DiyCacheSizePage {
 
   // 界面销毁监听
   async aboutToDisappear(): Promise<void> {
+    this.destroyCurrentConnect();
     Logger.info(TAG, 'aboutToDisappear success');
+    // 清理所有缓存监听器
+    if (this.server && this.currentCacheListener) {
+      this.server.unregisterCacheListener(this.currentCacheListener, this.videoName);
+    }
     this.server?.shutdown()
     this.setOffCallback();
     await this.avPlayer?.stop();
@@ -306,6 +313,22 @@ struct DiyCacheSizePage {
     }
   }
 
+  // 在切换视频前，先销毁当前的连接和监听器
+  destroyCurrentConnect() {
+    try {
+      const currentUrl = this.SRC_LIST[this.index];
+      if (currentUrl && this.server) {
+        // 先注销当前视频的缓存监听器
+        this.currentCacheListener && this.server.unregisterCacheListener(this.currentCacheListener, currentUrl);
+        // 再销毁当前视频的连接
+        GlobalProxyServer?.getInstance()?.getServer()?.destroyCurrentSource(currentUrl);
+        Logger.info(TAG, `已销毁当前视频连接和监听器: ${currentUrl}`);
+      }
+    } catch (err) {
+      Logger.error(TAG, `销毁当前视频连接失败: ${err}`);
+    }
+  }
+
   // 设置视频缩放接口
   setScaleType(sacleValue: number): void {
     Logger.info(TAG, 'set videoScaleType value is:' + sacleValue);
@@ -355,10 +378,13 @@ struct DiyCacheSizePage {
       }
     }
 
+    // 保存缓存监听器引用，用于后续注销
+    this.currentCacheListener = new MyCacheListener();
+
     this.server = new HttpProxyCacheServerBuilder(getContext())
       .maxCacheSize(Number.parseInt(this.currentCacheSize) * 1024 * 1024)
       .build();
-    this.server?.registerCacheListener(new MyCacheListener(), this.videoName);
+    this.server?.registerCacheListener(this.currentCacheListener, this.videoName);
     let proxyUrl: string | undefined = await this.server?.getProxyUrl(this.videoName)
     let newUrl = proxyUrl ? proxyUrl : this.videoName;
     // 由于avplayer不支持直接加载本地文件路径 这里需要转化为fd的路径
@@ -411,6 +437,7 @@ struct DiyCacheSizePage {
 
   // 切换下个视频的接口
   async nextVideo(): Promise<void> {
+    this.destroyCurrentConnect();
     // 调用reset函数，重置播放器状态至idle
     this.currentCachePercent = 0;
     await this.avPlayer?.reset();
@@ -433,7 +460,9 @@ struct DiyCacheSizePage {
       }
     }
 
-    this.server?.registerCacheListener(new MyCacheListener(), this.fdPath)
+    // 创建新的缓存监听器并保存引用
+    this.currentCacheListener = new MyCacheListener();
+    this.server?.registerCacheListener(this.currentCacheListener, this.fdPath)
     let proxyUrl: string | undefined = await this.server?.getProxyUrl(this.fdPath)
     let newUrl = proxyUrl ? proxyUrl : this.fdPath;
     if (newUrl.startsWith(getContext().cacheDir)) {
@@ -457,6 +486,7 @@ struct DiyCacheSizePage {
 
   // 切换上个视频的接口
   async preVideo(): Promise<void> {
+    this.destroyCurrentConnect();
     this.currentCachePercent = 0;
     await this.avPlayer?.reset();
     this.isLoop = false;
@@ -477,7 +507,9 @@ struct DiyCacheSizePage {
       }
     }
 
-    this.server?.registerCacheListener(new MyCacheListener(), this.fdPath)
+    // 创建新的缓存监听器并保存引用
+    this.currentCacheListener = new MyCacheListener();
+    this.server?.registerCacheListener(this.currentCacheListener, this.fdPath)
     let proxyUrl: string | undefined = await this.server?.getProxyUrl(this.fdPath)
     let newUrl = proxyUrl ? proxyUrl : this.fdPath;
     if (newUrl.startsWith(getContext().cacheDir)) {
@@ -598,7 +630,7 @@ struct DiyCacheSizePage {
             .showTips(false)
             .width('65%')
             .onChange((value: number, mode: SliderChangeMode) => {
-              if (mode !== SliderChangeMode.Begin) {
+              if (mode === SliderChangeMode.End) {
                 this.avPlayer?.seek((value / 100) * this.duration, 0);
               }
             })

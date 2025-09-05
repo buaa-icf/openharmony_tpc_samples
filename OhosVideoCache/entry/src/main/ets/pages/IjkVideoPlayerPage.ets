@@ -160,7 +160,7 @@ struct IjkVideoPlayerPage {
           .showTips(true)
           .enabled(this.slideEnable)
           .onChange((value: number, mode: SliderChangeMode) => {
-            if (mode == 2) {
+            if (mode === SliderChangeMode.End) {
               this.isSeekTo = true;
               this.mDestroyPage = false;
               this.showLoadIng();
