@@ -1,3 +1,6 @@
+## 1.0.3-rc.1
+1. Fix the issue of unlimited memory growth when using ijkplayer
+
 ## 1.0.3-rc.0
 1. fix(library): replace deprecated interfaces with new ones to resolve warnings
 2. fix(demo): migrate old interfaces to new implementations eliminating warnings

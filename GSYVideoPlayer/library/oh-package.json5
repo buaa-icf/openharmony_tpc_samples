@@ -13,7 +13,7 @@
   "main": "Index.ets",
   "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/GSYVideoPlayer",
   "type": "module",
-  "version": "1.0.3-rc.0",
+  "version": "1.0.3-rc.1",
   "dependencies": {
     "@ohos/mp4parser": "^2.0.3-rc.0",
     "@ohos/ijkplayer": "^2.0.6-rc.5",
