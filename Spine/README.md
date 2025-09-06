@@ -1,21 +1,21 @@
-# SpineArkTS
+# Spine
 
-## 简介
+## Overview
 
-SpineArkTS是一个 Spine 2D 骨骼动画运行时库，其核心目标是提供轻量、高性能且开发者友好的 API，满足游戏开发、动态内容展示等场景对骨骼动画的需求。
+SpineAr is a Spine 2D skeletal animation runtime library, whose core goal is to provide lightweight, high-performance, and developer-friendly APIs to meet the needs of skeletal animations in scenarios such as game development and dynamic content display.
 
-![showlottie](./screenshot/spine.gif)
+![showlottie](./screenshot/Spine_screenshot_spine.gif)
 
 
-## 下载安裝
+## How to Install
 
 ```
  ohpm install @ohos/spine
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)。
+For details about the OpenHarmony ohpm environment configuration, see [OpenHarmony HAR](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.en.md).
 
-## 使用示例
-### 完整示例
+## Sample Code
+### Example
 ```
 import {
   AssetManager,
@@ -34,7 +34,7 @@ import {
 @Entry
 @Component
 struct Index {
-  // 构建上下文
+  // Build the context.
   private renderingSettings: RenderingContextSettings = new RenderingContextSettings(true);
   private canvasRenderingContext: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.renderingSettings);
   private _animator: AnimatorResult | undefined; 
@@ -43,7 +43,7 @@ struct Index {
   private currentIndex: number = 0;
   private animationName: string = "walk";
 
-  // 页面销毁时停止动画清空画布
+  // Stop animation and clear canvas when the page is destroyed
   aboutToDisappear(): void {
     this._animator?.finish();
     this.canvasRenderingContext.clearRect(0, 0, this.canvasRenderingContext.width, this.canvasRenderingContext.height);
@@ -51,79 +51,79 @@ struct Index {
 
   build() {
     Row() {
-      // 关联画布
+      // Associate with canvas.
       Canvas(this.canvasRenderingContext)
         .width(200)
         .height(200)
         .backgroundColor(Color.Gray)
         .onReady(() => {
-          // 加载动画
+          // Load the animation.
           this.loadAnimation();
         })
     }
   }
 
- async loadAnimation() {  // json格式资源文件加载
-    // 1. 初始化 SkeletonRenderer
-    let skeletonRenderer = new SkeletonRenderer(this.canvasRenderingContext); // 创建一个 SkeletonRenderer 实例，用于在画布上渲染骨骼动画 传入当前类的 canvasRenderingContext 作为渲染上下文
+ async loadAnimation() {  // Load the JSON resource file.
+    // 1. Initialize SkeletonRenderer.
+    let skeletonRenderer = new SkeletonRenderer(this.canvasRenderingContext); // Create a SkeletonRenderer instance to render skeleton animation on the canvas. The canvasRenderingContext of the current class is passed as the rendering context.
 
-    // 2. 创建资源管理器并加载资源
-    let assetManager = new AssetManager("animation/"); // 创建 AssetManager 实例，设置资源基础路径为 "animation/"
-    assetManager.loadText("spineboy-ess.json"); // 加载 Spine 动画所需的 JSON 数据文件 ("spineboy-ess.json")
-    assetManager.loadTextureAtlas("spineboy.atlas"); // 加载纹理图集文件 ("spineboy.atlas")
-    await assetManager.loadAll(); // 等待所有资源加载完成
+    // 2. Create an asset manager and load resources.
+    let assetManager = new AssetManager("animation/"); // Create an AssetManager instance and set the base path of resources to animation/.
+    assetManager.loadText("spineboy-ess.json"); // Load the JSON data file ("spineboy-ess.json") required by Spine animation.
+    assetManager.loadTextureAtlas("spineboy.atlas"); // Load the texture atlas file ("spineboy.atlas").
+    await assetManager.loadAll(); // Wait until all resources are loaded.
 
-    // 3. 创建纹理图集和骨骼数据
-    let atlas: TextureAtlas = assetManager.require("spineboy.atlas"); // 从资源管理器获取纹理图集
-    let atlasLoader = new AtlasAttachmentLoader(atlas); // 创建 AtlasAttachmentLoader 用于加载附件
-    let skeletonJson = new SkeletonJson(atlasLoader); // 创建 SkeletonJson 解析器
-    let skeletonData = skeletonJson.readSkeletonData(assetManager.require("spineboy-ess.json")); // 读取并解析骨骼动画数据文件，生成 skeletonData
+    // 3. Create the texture atlas and skeleton data.
+    let atlas: TextureAtlas = assetManager.require("spineboy.atlas"); // Obtain the texture atlas from the resource manager.
+    let atlasLoader = new AtlasAttachmentLoader(atlas); // Create an AtlasAttachmentLoader to load attachments.
+    let skeletonJson = new SkeletonJson(atlasLoader); // Create a SkeletonJson parser.
+    let skeletonData = skeletonJson.readSkeletonData(assetManager.require("spineboy-ess.json")); // Read and parse the skeletal animation data file to generate skeletonData.
 
-    // 4. 创建骨骼实例
-    let skeleton = new Skeleton(skeletonData); // 基于骨骼数据创建新的骨骼实例
-    skeleton.setToSetupPose(); // 将骨骼设置为初始姿势
-    skeleton.updateWorldTransform(Physics.update); // 更新骨骼的世界变换
-    let bounds = skeleton.getBoundsRect(); // 获取骨骼的边界矩形
+    // 4. Create a skeleton instance.
+    let skeleton = new Skeleton(skeletonData); // Create a skeleton instance based on skeletonData.
+    skeleton.setToSetupPose(); // Set the skeleton to the initial posture.
+    skeleton.updateWorldTransform(Physics.update); // Update the world transformation of the skeleton.
+    let bounds = skeleton.getBoundsRect(); // Obtain the boundary rectangle of the skeleton.
 
-    // 5. 设置动画状态
-    let animationStateData = new AnimationStateData(skeleton.data); // 创建动画状态数据，传入骨骼数据
-    animationStateData.defaultMix = 0.2; // 设置默认动画混合时间为 0.2 秒
-    this.animationState = new AnimationState(animationStateData); // 创建动画状态实例并存储在类的 animationState 属性中
+    // 5. Set the animation state.
+    let animationStateData = new AnimationStateData(skeleton.data); // Create animation state data and pass the skeleton data.
+    animationStateData.defaultMix = 0.2; // Set the default animation blending time to 0.2s.
+    this.animationState = new AnimationState(animationStateData); // Create an animation state instance and store it in the animationState attribute of the class.
 
-    let lastFrameTime = Date.now() / 1000; // 初始化动画计时器
+    let lastFrameTime = Date.now() / 1000; // Initialize the animation timer.
 
-    // 清理现有动画器
+    // Clear the existing animation.
     if (this._animator) {
       this._animator.finish();
     }
 
-    // 设置动画选项
+    // Set animation options
     let options: AnimatorOptions = {
-      duration: 20000,       // 动画持续时间 20 秒
-      easing: 'linear',      // 线性缓动
-      delay: 0,              // 无延迟
-      fill: 'forwards',      // 动画完成后保持最后一帧状态
-      direction: 'normal',   // 正常方向播放
-      iterations: -1,        // 无限循环
-      begin: 0,              // 从第 0 帧开始
-      end: 1                 // 到第 1 帧结束
+      duration: 20000,       // The animation duration is 20 seconds.
+      easing: 'linear',      // Linear easing.
+      delay: 0,              // No delay.
+      fill: 'forwards',      // Retain the last frame after the animation is complete.
+      direction: 'normal',   // Play in the normal direction.
+      iterations: -1,        // Infinite loop.
+      begin: 0,              // Start from frame 0.
+      end: 1                 // End at frame 1.
     };
 
-    // 设置预期帧率  定义动画的预期帧率范围：最小 0，最大 120，期望 60
+    // Set the expected frame rate range (minimum: 0, maximum: 120, expected: 60).
     let expectedFrameRate: ExpectedFrameRateRange = {
       min: 0,
       max: 120,
       expected: 60
     };
 
-    // 创建动画器
+    // Create an animation.
     this._animator = animator.create(options);
     this._animator.setExpectedFrameRateRange(expectedFrameRate);
 
-    // 初始化渲染结果对象 创建延迟对象，包含初始时间和完成状态标志
+    // Initialize the rendering result object. Create a delay object, which contains the initial time and completion status flag.
     let result: Delay = { time: lastFrameTime, isFinish: true };
 
-    // 设置动画器的每帧回调
+    // Set the callback for each frame of the animation.
     this._animator.onFrame = (value: number) => {
       if (result.isFinish) {
         result.isFinish = false;
@@ -131,72 +131,72 @@ struct Index {
           bounds);
       }
     };
-    // 播放动画
+    // Play the animation.
     this._animator.play();
   }
   
-  async loadAnimation() {  //skel格式资源文件加载
-    // 1. 初始化 SkeletonRenderer
-    let skeletonRenderer = new SkeletonRenderer(this.canvasRenderingContext); // 创建一个 SkeletonRenderer 实例，用于在画布上渲染骨骼动画 传入当前类的 canvasRenderingContext 作为渲染上下文
-    skeletonRenderer.triangleRendering = true; // true是使用drawTriangle方式渲染 false是使用drawImages方式渲染
+  async loadAnimation() {  // Load the skeleton resource file.
+    // 1. Initialize SkeletonRenderer.
+    let skeletonRenderer = new SkeletonRenderer(this.canvasRenderingContext); // Create a SkeletonRenderer instance to render skeleton animation on the canvas. The canvasRenderingContext of the current class is passed as the rendering context.
+    skeletonRenderer.triangleRendering = true; // true indicates that the drawTriangle mode is used for rendering. false indicates that the drawImages mode is used for rendering.
 
-    // 2. 创建资源管理器并加载资源
-    let assetManager = new AssetManager("animation5/"); // 创建 AssetManager 实例，设置资源基础路径为 "animation/"
-    assetManager.loadBinary("dragon-ess.skel");; // 加载 Spine 动画所需的 skel 数据文件
-    assetManager.loadTextureAtlas("dragon-pma.atlas"); // 加载纹理图集文件 ("spineboy.atlas")
-    await assetManager.loadAll(); // 等待所有资源加载完成
+    // 2. Create an asset manager and load resources.
+    let assetManager = new AssetManager("animation5/"); // Create an AssetManager instance and set the base path of resources to animation/.
+    assetManager.loadBinary("dragon-ess.skel");; // Load the skeleton data file required by Spine animation.
+    assetManager.loadTextureAtlas("dragon-pma.atlas"); // Load the texture atlas file ("spineboy.atlas").
+    await assetManager.loadAll(); // Wait until all resources are loaded.
 
-    // 3. 创建纹理图集和骨骼数据
-    let atlas: TextureAtlas = assetManager.require("dragon-pma.atlas"); // 从资源管理器获取纹理图集
-    let atlasLoader = new AtlasAttachmentLoader(atlas); // 创建 AtlasAttachmentLoader 用于加载附件
-    let skeletonBinary = new SkeletonBinary(atlasLoader);; // 创建 SkeletonBinary 解析器
-    let skeletonData = skeletonBinary.readSkeletonData(assetManager.require("dragon-ess.skel")); // 读取并解析骨骼动画数据文件，生成 skeletonData
+    // 3. Create the texture atlas and skeleton data.
+    let atlas: TextureAtlas = assetManager.require("dragon-pma.atlas"); // Obtain the texture atlas from the resource manager.
+    let atlasLoader = new AtlasAttachmentLoader(atlas); // Create an AtlasAttachmentLoader to load attachments.
+    let skeletonBinary = new SkeletonBinary(atlasLoader);; // Create a SkeletonBinary parser.
+    let skeletonData = skeletonBinary.readSkeletonData(assetManager.require("dragon-ess.skel")); // Read and parse the skeletal animation data file to generate skeletonData
 
-    // 4. 创建骨骼实例
-    let skeleton = new Skeleton(skeletonData); // 基于骨骼数据创建新的骨骼实例
-    skeleton.setToSetupPose(); // 将骨骼设置为初始姿势
-    skeleton.updateWorldTransform(Physics.update); // 更新骨骼的世界变换
-    let bounds = skeleton.getBoundsRect(); // 获取骨骼的边界矩形
+    // 4. Create a skeleton instance.
+    let skeleton = new Skeleton(skeletonData); // Create a skeleton instance based on skeletonData.
+    skeleton.setToSetupPose(); // Set the skeleton to the initial posture.
+    skeleton.updateWorldTransform(Physics.update); // Update the world transformation of the skeleton.
+    let bounds = skeleton.getBoundsRect(); // Obtain the boundary rectangle of the skeleton.
 
-    // 5. 设置动画状态
-    let animationStateData = new AnimationStateData(skeleton.data); // 创建动画状态数据，传入骨骼数据
-    animationStateData.defaultMix = 0.2; // 设置默认动画混合时间为 0.2 秒
-    this.animationState = new AnimationState(animationStateData); // 创建动画状态实例并存储在类的 animationState 属性中
+    // 5. Set the animation state.
+    let animationStateData = new AnimationStateData(skeleton.data); // Create animation state data and pass the skeleton data.
+    animationStateData.defaultMix = 0.2; // Set the default animation blending time to 0.2s.
+    this.animationState = new AnimationState(animationStateData); // Create an animation state instance and store it in the animationState attribute of the class.
 
-    let lastFrameTime = Date.now() / 1000; // 初始化动画计时器
+    let lastFrameTime = Date.now() / 1000; // Initialize the animation timer.
 
-    // 清理现有动画器
+    // Clear the existing animation.
     if (this._animator) {
       this._animator.finish();
     }
 
-    // 设置动画选项
+    // Set animation options
     let options: AnimatorOptions = {
-      duration: 20000,       // 动画持续时间 20 秒
-      easing: 'linear',      // 线性缓动
-      delay: 0,              // 无延迟
-      fill: 'forwards',      // 动画完成后保持最后一帧状态
-      direction: 'normal',   // 正常方向播放
-      iterations: -1,        // 无限循环
-      begin: 0,              // 从第 0 帧开始
-      end: 1                 // 到第 1 帧结束
+      duration: 20000,       // The animation duration is 20 seconds.
+      easing: 'linear',      // Linear easing.
+      delay: 0,              // No delay.
+      fill: 'forwards',      // Retain the last frame after the animation is complete.
+      direction: 'normal',   // Play in the normal direction.
+      iterations: -1,        // Infinite loop.
+      begin: 0,              // Start from frame 0.
+      end: 1                 // End at frame 1.
     };
 
-    // 设置预期帧率  定义动画的预期帧率范围：最小 0，最大 120，期望 60
+    // Set the expected frame rate range (minimum: 0, maximum: 120, expected: 60).
     let expectedFrameRate: ExpectedFrameRateRange = {
       min: 0,
       max: 120,
       expected: 60
     };
 
-    // 创建动画器
+    // Create an animation.
     this._animator = animator.create(options);
     this._animator.setExpectedFrameRateRange(expectedFrameRate);
 
-    // 初始化渲染结果对象 创建延迟对象，包含初始时间和完成状态标志
+    // Initialize the rendering result object. Create a delay object, which contains the initial time and completion status flag.
     let result: Delay = { time: lastFrameTime, isFinish: true };
 
-    // 设置动画器的每帧回调
+    // Set the callback for each frame of the animation.
     this._animator.onFrame = (value: number) => {
       if (result.isFinish) {
         result.isFinish = false;
@@ -204,40 +204,40 @@ struct Index {
           bounds);
       }
     };
-    // 播放动画
+    // Play the animation.
     this._animator.play();
   }
 
    render(
-     context: CanvasRenderingContext2D,  // Canvas 2D 渲染上下文
-     lastFrameTime: number,             // 上一帧的时间戳（秒）
-     skeleton: Skeleton,                // Spine 骨骼对象
-     animationState: AnimationState,    // 动画状态机
-     skeletonRenderer: SkeletonRenderer, // 骨骼渲染器
-     bounds: Bound                      // 动画的边界框（用于缩放计算）
+     context: CanvasRenderingContext2D,  // Canvas 2D rendering context
+     lastFrameTime: number,             // Timestamp of the previous frame (second)
+     skeleton: Skeleton,                // Spine skeleton object
+     animationState: AnimationState,    // Animation state machine
+     skeletonRenderer: SkeletonRenderer, // Skeleton renderer
+     bounds: Bound                      // Bounding box of the animation (used for scaling calculation)
      ): Delay {
     // Calculate the delta time between this and the last frame in seconds.
-    let now = Date.now() / 1000; // 获取当前时间（秒）
-    let delta = now - lastFrameTime; // 计算与上一帧的时间差（秒）
-    lastFrameTime = now;   // 更新上一帧时间为当前时间
+    let now = Date.now() / 1000; // Obtain the current time (in seconds).
+    let delta = now - lastFrameTime; // Calculate the time difference (in seconds) with the previous frame.
+    lastFrameTime = now;   // Update the time of the previous frame to the current time.
 
-    // 清空画布.
+    // Clear the canvas.
 
     context.clearRect(0, 0, context.width, context.height);
 
     // Center the skeleton and resize it so it fits inside the canvas.
-    skeleton.x = context.width / 2;  // 将骨骼水平居中（Canvas 宽度的一半）
-    skeleton.y = context.height - context.height * 0.1; // 垂直位置：靠近 Canvas 底部（留 10% 边距）
-    let scale = context.height / bounds.height * 0.8; // 计算缩放比例（基于 Canvas 高度和动画边界框高度）
-    skeleton.scaleX = scale; // 水平缩放
-    skeleton.scaleY = -scale; // 垂直缩放（负值表示 Y 轴翻转，使动画朝上）
+    skeleton.x = context.width / 2;  // Center the skeleton horizontally (half of the canvas width).
+    skeleton.y = context.height - context.height * 0.1; // Vertical position: close to the bottom of the canvas (with a 10% margin)
+    let scale = context.height / bounds.height * 0.8; // Calculate the scale (based on the canvas height and animation bounding box height).
+    skeleton.scaleX = scale; // Horizontal scaling
+    skeleton.scaleY = -scale; // Vertical scaling (a negative value indicates that the Y axis is flipped, making the animation upward.)
 
     // Update and apply the animation state, update the skeleton's
     // world transforms and render the skeleton.
-    animationState.update(delta);  // 更新动画状态（根据时间差推进动画）
-    animationState.apply(skeleton);  // 将动画状态应用到骨骼（更新骨骼的骨骼变换）
-    skeleton.updateWorldTransform(Physics.update);  // 更新骨骼的全局变换
-    skeletonRenderer.draw(skeleton); //渲染骨骼到 Canvas
+    animationState.update(delta);  // Update the animation status (drive-in animation based on the time difference).
+    animationState.apply(skeleton);  // Apply the animation status to the skeleton (update the skeleton transformation).
+    skeleton.updateWorldTransform(Physics.update);  // Update the global transformation of the skeleton.
+    skeletonRenderer.draw(skeleton); // Render the skeleton to the canvas.
 
     let result: Delay = { time: lastFrameTime, isFinish: true };
     return result;
@@ -245,19 +245,19 @@ struct Index {
 }
 
 ```
-### 渲染流程
-- 1.animationState.update(delta)：推进动画时间线。
-- 2.animationState.apply(skeleton)：将动画数据应用到骨骼。
-- 3.skeleton.updateWorldTransform：计算骨骼的全局变换矩阵（如位置、旋转、缩放）。
-- 4.skeletonRenderer.draw：最终将骨骼绘制到 Canvas 上。
+### Rendering Process
+- 1. **animationState.update(delta)**: advances the animation timeline.
+- 2. **animationState.apply(skeleton)**: applies animation data to the skeleton.
+- 3. **skeleton.updateWorldTransform**: calculates the global transformation matrix of the skeleton (such as the position, rotation, and scale).
+- 4. **skeletonRenderer.draw**: draws the skeleton on the canvas.
 
-## 使用说明
+## How to Use
 
-### 前提：数据准备
+### To start off, get required data prepared.
 
 
 
-### 1.在相应的类中引入组件：
+### 1. Importing Component to the Corresponding Class
 
 ```
 import {
@@ -275,7 +275,7 @@ import {
 } from '@ohos/spine';
 ```
 
-### 2.构建渲染上下文
+### 2. Building a Rendering Context
 
 ```
   private mainRenderingSettings: RenderingContextSettings = new RenderingContextSettings(true);
@@ -283,7 +283,7 @@ import {
 ```
 
 
-### 3.关联画布
+### 3. Associating with the Canvas
 
 ```
        Canvas(this.mainCanvasRenderingContext)
@@ -295,18 +295,18 @@ import {
         })
 ```
 
-### 5.加载数据
+### 4. Loading Data
 
-#### 1. 初始化骨骼渲染器
+#### 1. Initializing the Skeleton Renderer
 ```
       let skeletonRenderer = new SkeletonRenderer(this.canvasRenderingContext);
 
 ```
 
-- 作用：创建一个 SkeletonRenderer 实例，用于将 Spine 骨骼动画渲染到 Canvas 上。
-- 参数：this.canvasRenderingContext 是 Canvas 的 2D 渲染上下文。
+- Function: Create a SkeletonRenderer instance to render the Spine skeleton animation on the canvas.
+- Parameter: **this.canvasRenderingContext** is the 2D rendering context of the canvas.
 
-#### 2. 加载动画资源
+#### 2. Loading Animation Resources
 
 ```
       let assetManager = new AssetManager("animation/");
@@ -315,13 +315,13 @@ import {
       await assetManager.loadAll();
 
 ```
-- 流程：
-- 1. 创建 AssetManager 实例，指定资源根路径为 "animation/"。
-- 2. 加载 Spine 动画数据文件（spineboy-ess.json）和纹理图集（spineboy.atlas）。
-- 3. await assetManager.loadAll() 等待所有资源异步加载完成。
+- Process:
+- 1. Create an AssetManager instance and set the resource root path to **animation/**.
+- 2. Load the spine animation data file **spineboy-ess.json** and texture atlas **spineboy.atlas**.
+- 3. Call **await assetManager.loadAll()** to wait until all resources are loaded asynchronously.
 
 
-#### 3. 创建纹理图集和骨骼数据
+#### 3. Creating a Texture Set and Skeletal Data
 ```
       let atlas: TextureAtlas = assetManager.require("spineboy.atlas");
       let atlasLoader = new AtlasAttachmentLoader(atlas);
@@ -330,14 +330,14 @@ import {
 
 ```
 
-- 流程：
-- 1. 从 AssetManager 获取已加载的纹理图集（TextureAtlas）。
-- 2. 创建 AtlasAttachmentLoader，用于从图集中加载附件（如纹理、区域）。
-- 3. 创建 SkeletonJson 解析器，用于读取 Spine JSON 数据。
-- 4. 解析 spineboy-ess.json 文件，生成 skeletonData（骨骼动画数据）。
+- Process:
+- 1. Call **AssetManager** to obtain the loaded texture atlas (**TextureAtlas**).
+- 2. Create an AtlasAttachmentLoader to load attachments (such as textures and regions) from the graph set.
+- 3. Create a SkeletonJson parser to read Spine JSON data.
+- 4. Parse the **spineboy-ess.json** file to generate skeletonData (skeleton animation data).
 
 
-#### 4. 初始化骨骼实例
+#### 4. Initializing a Skeleton Instance
 ```
       let skeleton = new Skeleton(skeletonData);
       skeleton.setToSetupPose();
@@ -345,24 +345,24 @@ import {
       let bounds = skeleton.getBoundsRect();
 
 ```
-- 流程：
-- 1. 根据 skeletonData 创建 Skeleton 实例。
-- 2. setToSetupPose() 将骨骼重置为初始姿势。
-- 3. updateWorldTransform(Physics.update) 更新骨骼的全局变换。
-- 4. getBoundsRect() 获取动画的边界框（用于后续缩放和居中）。
+- Process:
+- 1. Create a Skeleton instance based on skeletonData.
+- 2. Call **setToSetupPose()** to reset the skeleton to the initial posture.
+- 3. Call **updateWorldTransform(Physics.update)** to update the global transformation of the skeleton.
+- 4. Call **getBoundsRect()** to obtain the bounding box of the animation (for subsequent scaling and centering).
 
-#### 5. 配置动画状态
+#### 5. Configuring the Animation State
 ```
       let animationStateData = new AnimationStateData(skeleton.data);
       animationStateData.defaultMix = 0.2;
       this.animationState = new AnimationState(animationStateData);
 ```
-- 流程：
-- 1. 创建 AnimationStateData，绑定骨骼数据。
-- 2. 设置默认动画混合时间为 0.2 秒（用于动画过渡）。
-- 3. 创建 AnimationState 实例，管理动画播放状态。
+- Process:
+- 1. Create an AnimationStateData object and bind the skeleton data.
+- 2. Set the default animation blending time to 0.2s (for animation transition).
+- 3. Create an AnimationState instance to manage the animation playback state.
 
-#### 6. 初始化动画控制器
+#### 6. Initializing the Animation Controller
 ```
       let lastFrameTime = Date.now() / 1000;
       if (this._animator) {
@@ -384,14 +384,14 @@ import {
         expected: 60
       };
 ```
-- 流程：
-- 1. 记录当前时间戳（用于计算帧间隔）。
-- 2. 如果已有动画控制器（this._animator），先停止它。
-- 3. 定义动画控制器的配置选项（AnimatorOptions）：duration: 20000：动画总时长（20 秒）；iterations: -1：无限循环；其他选项（缓动、延迟、填充模式等）。
-- 4. 定义期望的帧率范围（ExpectedFrameRateRange）。
+- Process:
+- 1. Record the current timestamp (used to calculate the frame interval).
+- 2. If **this._animator** already exists, stop it.
+- 3. Define the configuration options (**AnimatorOptions**): If the value of **duration** is **20000**, the total duration of the animation is 20 seconds; if the value of **iterations** is **-1**, the loop is infinite; other options include slow movement, delay, and fill mode.
+- 4. Define the expected frame rate range (**ExpectedFrameRateRange**).
 
 
-#### 4. 创建并启动动画控制器
+#### 4. Creating and Starting the Animation Controller
 ```
       this._animator = animator.create(options);
       this._animator.setExpectedFrameRateRange(expectedFrameRate);
@@ -405,18 +405,18 @@ import {
       this._animator.play();
 
 ```
-- 流程：
-- 1. 创建动画控制器实例（animator.create），传入配置选项。
-- 2. 设置期望的帧率范围。
-- 3. 初始化 result 对象，记录时间戳和完成状态。
-- 4. 绑定 onFrame 回调函数：当动画控制器触发新帧时，调用 this.render 方法渲染动画。 result.isFinish 防止重复渲染同一帧。
-- 5. this._animator.play() 启动动画控制器。
+- Process:
+- 1. Create an animation controller instance (animator.create) and pass the configuration options.
+- 2. Set the expected frame rate range.
+- 3. Initialize the result object and record the timestamp and completion status.
+- 4. Bind the **onFrame** callback function. When the animation controller triggers a new frame, the **this.render** method is called to render the animation. Call **result.isFinish** to prevent repeated rendering of the same frame.
+- 5. Call **this._animator.play()** to start the animation controller.
 
     
 
-### 9.关于混淆
-- 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
-- 如果希望spine库在代码混淆过程中不会被混淆，需要在混淆规则配置文件obfuscation-rules.txt中添加相应的排除规则：
+### 9. About Obfuscation
+- For details, see [Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/en/application-dev/arkts-utils/source-obfuscation.md).
+- To prevent the spine library from being obfuscated, add exclusion rules to the **obfuscation-rules.txt** configuration file.
 ```
 -keep
 ./oh_modules/@ohos/spine
@@ -424,64 +424,64 @@ import {
 
 
 
-## 接口说明
+## Available APIs
 | class | Name             | Parameter  | Description             |
 |------------------|----------------------|----------------------------------------|-------------------------------------------|
-|  AssetManager     | loadText         | path       | 加载 Spine 动画所需的 文本 数据文件  |
-|  AssetManager     | loadBinary       | path       | 加载 Spine 动画所需的 二进制 数据文件 |
-| AssetManager     | loadJson             | path                                   | 加载 Spine 动画所需的 JSON 数据文件                  |
-| AssetManager     | loadTexture          | path                                   | 加载 Spine 动画所需的 数据文件                       |
-|  AssetManager     | loadTextureAltas | path       | 加载纹理图集文件                |
-|  AssetManager     | require          | path       | 从assets数组中获取数据          |
-| AssetManager     | loadAll              | 无                                      | 等待所有资源加载完成                                |
-| AssetManager     | get                  | path                                   | 获取已加载的资源                                  |
-| AssetManager     | remove               | path                                   | 移除单个缓存资源                                  |
-| AssetManager     | removeAll            | 无                                      | 清空所有缓存资源                                  |
-|  AnimationState   | update           | delta      | 更新动画状态                  |
-|  AnimationState   | apply            | skeleton   | 将动画状态应用到骨骼              |
-| AnimationState   | addListener          | AnimationStateListener                 | 添加监听                                      |
-| AnimationState   | removeListener       | AnimationStateListener                 | 移除单个监听                                    |
-| AnimationState   | clearListeners       | 无                                      | 移除所有监听                                    |
-| AnimationState   | getCurrent           | trackIndex                             | 返回当前在轨道上播放的动画的轨道条目                        |
-| AnimationState   | setAnimation         | trackIndex, animation, loop            | 通过名字设置动画                                  |
-| AnimationState   | setAnimationWith     | trackIndex, animationName, loop        | 设置轨迹的当前动画，丢弃任何排队的动画                       |
-| AnimationState   | addAnimation         | trackIndex, animationName, loop, delay | 按名称给队列中添加动画                               |
-| AnimationState   | addAnimationWith     | trackIndex, animationName, loop, delay | 在曲目的当前或最后一个排队的动画之后添加要播放的动画                |
-| AnimationState   | clearTrack           | trackIndex                             | 从轨迹中删除所有动画，使骨架保持其当前姿势                     |
-| AnimationState   | clearTracks          | 无                                      | 从所有轨迹中删除所有动画，使骨架保持其当前姿势                   |
-| AnimationState   | setEmptyAnimations   | mixDuration                            | 为每个轨迹设置一个空动画，丢弃任何排队的动画，并在指定的混合持续时间内对其进行混合 |
-| AnimationState   | clearNext            | TrackEntry                             | 清除指定动画条目的后续动画队列                           |
-| AnimationState   | setEmptyAnimation    | trackIndex, mixDuration                | 强制设置空动画到指定轨道                              |
-| AnimationState   | addEmptyAnimation    | trackIndex, mixDuration, delay         | 在动画队列末尾添加空动画                              |
-|  SkeletonRenderer | draw             | 无         | 动画渲染                    |
-| Skeleton  | setToSetupPose            | 无         | 将骨骼、约束和插槽设置为其设置姿势值      |
-| Skeleton  | updateWorldTransform      |  physics      | 更新每个骨骼的世界变换并应用所有约束      |
-| Skeleton  | getBoundsRect             | clipper       | 将当前姿势的区域和网格附件的轴对齐边界框并返回 |
-| SkeletonJson  | readSkeletonData      | json         | 读取并解析骨骼动画数据文件，生成 skeletonData     |
+|  AssetManager     | loadText         | path       | Loads the text data file required for Spine animation. |
+|  AssetManager     | loadBinary       | path       | Loads the binary data file required for Spine animation.|
+| AssetManager     | loadJson             | path                                   | Loads the JSON data file required for Spine animation.                 |
+| AssetManager     | loadTexture          | path                                   | Loads the data file required for Spine animation.                      |
+|  AssetManager     | loadTextureAltas | path       | Loads the texture atlas file.               |
+|  AssetManager     | require          | path       | Obtains data from the assets array.         |
+| AssetManager     | loadAll              | N/A                                     | Waits for all resources to be loaded.                               |
+| AssetManager     | get                  | path                                   | Obtains the loaded resources.                                 |
+| AssetManager     | remove               | path                                   | Removes a single cached resource.                                 |
+| AssetManager     | removeAll            | N/A                                     | Clears all cached resources.                                 |
+|  AnimationState   | update           | delta      | Updates the animation state.                 |
+|  AnimationState   | apply            | skeleton   | Applies the animation state to the skeleton.             |
+| AnimationState   | addListener          | AnimationStateListener                 | Adds a listener.                                     |
+| AnimationState   | removeListener       | AnimationStateListener                 | Removes a listener.                                   |
+| AnimationState   | clearListeners       | N/A                                     | Removes all listeners.                                   |
+| AnimationState   | getCurrent           | trackIndex                             | Returns the track item of the animation that is currently playing on the track.                       |
+| AnimationState   | setAnimation         | trackIndex, animation, loop            | Sets an animation by name.                                 |
+| AnimationState   | setAnimationWith     | trackIndex, animationName, loop        | Sets the current animation of the track, discarding any queued animations.                      |
+| AnimationState   | addAnimation         | trackIndex, animationName, loop, delay | Adds an animation to the queue by name.                              |
+| AnimationState   | addAnimationWith     | trackIndex, animationName, loop, delay | Adds an animation to the track after the current or last queued animation.               |
+| AnimationState   | clearTrack           | trackIndex                             | Removes all animations from the track, keeping the skeleton in its current pose.                    |
+| AnimationState   | clearTracks          | N/A                                     | Removes all animations from the track, keeping the skeleton in its current pose.                  |
+| AnimationState   | setEmptyAnimations   | mixDuration                            | Sets an empty animation for each track, discards any queued animations, and blends them within the specified blend duration.|
+| AnimationState   | clearNext            | TrackEntry                             | Clears the subsequent animation queue of a specified animation entry.                          |
+| AnimationState   | setEmptyAnimation    | trackIndex, mixDuration                | Forcibly sets an empty animation to a specified track.                             |
+| AnimationState   | addEmptyAnimation    | trackIndex, mixDuration, delay         | Adds an empty animation to the end of the animation queue.                             |
+|  SkeletonRenderer | draw             | N/A        | Renders animations.                   |
+| Skeleton  | setToSetupPose            | N/A        | Sets the skeleton, constraint, and slot to their set posture values.     |
+| Skeleton  | updateWorldTransform      |  physics      | Updates the world transformation of each skeleton and applies all constraints.     |
+| Skeleton  | getBoundsRect             | clipper       | Aligns the bounding box of the region and mesh attachment with the current posture and returns the result.|
+| SkeletonJson  | readSkeletonData      | json         | Reads and parses the skeleton animation data file, and generates skeletonData.    |
 
-## 约束与限制
+## Constraints
 
-在下述版本验证通过：
-- DevEco Studio: NEXT Developer Beta3(5.0.3.524), SDK: API12(5.0.0.25)
-- DevEco Studio: NEXT Developer Beta1(5.0.3.122), SDK: API12(5.0.0.18)
+This project has been verified in the following versions:
+- DevEco Studio: NEXT Developer Beta3 (5.0.3.524), SDK: API 12 (5.0.0.25)
+- DevEco Studio: NEXT Developer Beta1 (5.0.3.122), SDK: API 12 (5.0.0.18)
 
-## 目录结构
+## Directory Structure
 
 ````
-/SpineArkTS        # 项目根目录
-├── entry      # 示例代码文件夹
-├── library    # lottie库文件夹
-│    └─ src/main/ets   # 核心代码，包含json解析，动画绘制，操作动画
-│          └─ spine-canvas    #是 Spine 动画系统在 Canvas 2D 渲染环境下的实现库
-│          └─ spine-core  # 负责处理 Spine 动画的基本数据结构和逻辑，包含了骨骼动画的核心算法、数据解析、状态管理等功能                 
-├── README.md     # 安装使用方法    
+/Spine        # Project root directory
+├── entry      # Sample code
+├── library    # Lottie library
+│    └─ src/main/ets   # Core code, including JSON parsing, animation drawing, and animation manipulation
+│          └─ spine-canvas    # Implementation library of the Spine animation system in the Canvas 2D rendering environment
+│          └─ spine-core  # Data structures and logic for processing Spine animations, including the core algorithms, data parsing, and state management of skeleton animations                
+├── README.md     # Readme   
                    
 ````
 
-## 贡献代码
+## How to Contribute
 
-使用过程中发现任何问题都可以提交 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues)，当然，也非常欢迎提交 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+If you find any problem when using the project, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
-## 开源协议
+## License
 
-本项目遵循 [Spine Runtimes License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Spine/LICENSE)。
+This project complies with [Spine Runtimes License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/Spine/LICENSE).

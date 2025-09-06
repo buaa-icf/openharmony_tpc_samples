@@ -59,7 +59,7 @@ struct Example3 {
       Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
         Row({ space: 10 }) {
           // 关联画布
-          Text('加载沙箱路径下的资源：'+this.context.filesDir)
+          Text(this.getResourceString($r("app.string.sandbox_path"))+this.context.filesDir)
             .fontSize('20fp')
             .fontWeight(FontWeight.Bold)
 
@@ -89,11 +89,11 @@ struct Example3 {
 
         // 加载网络Img
         Row() {
-          Button('存储沙箱动画')
+          Button($r('app.string.Store_sandbox_animations'))
             .onClick(() => {
               this.copyBundledRealmFiles();
             });
-          Button('加载沙箱动画')
+          Button($r('app.string.Load_sandbox_animation'))
             .onClick(() => {
               this.loadAnimation();
             });
@@ -281,5 +281,13 @@ struct Example3 {
 
   onBackPress(): boolean | void {
     return false;
+  }
+  getResourceString(res: Resource) {
+    try {
+      return this.getUIContext()?.getHostContext()?.resourceManager.getStringSync(res.id) || '';
+    } catch (e) {
+      console.error(`getResourceString error, message: ${e}`);
+      return '';
+    }
   }
 }

@@ -90,19 +90,19 @@ struct SingleExample {
 
         // 加载网络Img
         Row() {
-          Button('加载')
+          Button($r('app.string.Load_animation'))
             .onClick(async () => {
               await this.load();
             });
-          Button('停止动画')
+          Button($r('app.string.Pause_animation'))
             .onClick(() => {
               this._animator?.pause();
             });
-          Button('播放动画')
+          Button($r('app.string.Play_animation'))
             .onClick(() => {
               this._animator?.play();
             });
-          Button('清空画布')
+          Button($r('app.string.Clear_canvas'))
             .onClick(() => {
               this._animator?.finish();
               this.animationState?.setEmptyAnimations(0);
@@ -112,7 +112,7 @@ struct SingleExample {
         }.margin({ top: 5 })
 
         Row() {
-          Button('添加监听')
+          Button($r('app.string.Add_listener'))
             .onClick(() => {
               // 监听添加方式一
               this.animationState?.addListener({
@@ -153,14 +153,14 @@ struct SingleExample {
               this.animationState?.addListener(new MyAnimationStateListener1());
             });
 
-          Button('移除监听')
+          Button($r('app.string.Remove_the_listener'))
             .onClick(() => {
               if (this.listener1) {
                 this.animationState?.removeListener(this.listener1);
               }
             });
 
-          Button('移除所有监听')
+          Button($r('app.string.Remove_all_listeners'))
             .onClick(() => {
               this.animationState?.clearListeners();
             });

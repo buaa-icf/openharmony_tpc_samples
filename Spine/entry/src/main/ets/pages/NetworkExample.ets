@@ -76,19 +76,19 @@ struct NetWorkExample {
 
         // 加载网络Img
         Row() {
-          Button('加载动画')
+          Button($r('app.string.Load_animation'))
             .onClick(() => {
               this.loadAnimation();
             });
-          Button('播放动画')
+          Button($r('app.string.Play_animation'))
             .onClick(() => {
               this._animator?.play();
             });
-          Button('停止动画')
+          Button($r('app.string.Pause_animation'))
             .onClick(() => {
               this._animator?.pause();
             });
-          Button('清空画布')
+          Button($r('app.string.Clear_canvas'))
             .onClick(() => {
               this._animator?.finish();
               this.animationState?.setEmptyAnimations(0);
@@ -99,32 +99,32 @@ struct NetWorkExample {
         }.margin({ top: 5 })
 
         Row() {
-          Button('站')
+          Button($r('app.string.aim'))
             .onClick(() => {
               this.animationState?.setAnimation(0, 'aim', true);
             });
-          Button('躺')
+          Button($r('app.string.death'))
             .onClick(() => {
               this.animationState?.setAnimation(0, 'death', true);
             });
-          Button('悠闲')
+          Button($r('app.string.idle'))
             .onClick(() => {
               this.animationState?.setAnimation(0, 'idle', true);
             });
-          Button('跳')
+          Button($r('app.string.jump'))
             .onClick(() => {
               this.animationState?.setAnimation(0, 'jump', true);
             });
-          Button('跑')
+          Button($r('app.string.run'))
             .onClick(() => {
               this.animationState?.setAnimation(0, 'run', true);
             });
-          Button('射击')
+          Button($r('app.string.shoot'))
             .onClick(() => {
               this.animationState?.setAnimation(0, 'shoot', true);
             });
 
-          Button('走')
+          Button($r('app.string.walk'))
             .onClick(() => {
               this.animationState?.setAnimation(0, 'walk', true);
             });
