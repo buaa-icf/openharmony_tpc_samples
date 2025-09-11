@@ -577,6 +577,7 @@ struct HttpPlayer {
               Logger.info(TAG, 'onActionStart  Vertical moving end');
             }))
       )
+      .visibility(this.videoName.endsWith('.mp3') ? Visibility.Hidden : Visibility.Visible)
 
       Column() {
         Row() {
@@ -585,7 +586,10 @@ struct HttpPlayer {
             .height('80px')
             .visibility(this.isBuffering ? Visibility.Hidden : Visibility.Visible)
             .color(Color.Blue)
-          Text(this.videoName).fontSize(15).width('80%').textAlign(TextAlign.Center)
+          Text(this.videoName.endsWith('.mp3') ? this.videoName + "(纯音频)" : this.videoName)
+            .fontSize(15)
+            .width('80%')
+            .textAlign(TextAlign.Center)
           Image($r('app.media.icon_info'))
             .width('60px')
             .height('60px')
@@ -609,7 +613,7 @@ struct HttpPlayer {
             .showTips(false)
             .width('65%')
             .onChange((value: number, mode: SliderChangeMode) => {
-              if (mode !== SliderChangeMode.Begin) {
+              if (mode === SliderChangeMode.End) {
                 this.avPlayer?.seek((value / 100) * this.duration, 0);
               }
             })

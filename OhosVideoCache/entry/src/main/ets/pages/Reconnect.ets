@@ -77,7 +77,7 @@ struct Index {
   @State audioTrackValue: string = '';
   @State subtitleState: number = 0;
   @State subtitleStateValue: string = '';
-  @StorageLink('videoName') videoName: Resource = $r('app.string.video_res_1');
+  @StorageLink('videoName') videoName: string = 'test1.mp4';
   @StorageLink('videoIndex') videoIndex: number = 0; // 视频索引
   @State isBuffering: boolean = false;
   @State scaleTag: number = 0;
@@ -134,7 +134,10 @@ struct Index {
 
   aboutToDisappear() {
     this.avPlayManage.videoRelease();
+    // 注销所有事件监听器
     emitter.off(innerEventFalse.eventId);
+    emitter.off(innerEventTrue.eventId);
+    emitter.off(innerEventWH.eventId);
   }
 
   onPageHide() {
@@ -143,14 +146,19 @@ struct Index {
   }
 
   onPageShow() {
+    // 先注销之前的事件监听器，避免重复注册
+    emitter.off(innerEventTrue.eventId);
+    emitter.off(innerEventFalse.eventId);
+    emitter.off(innerEventWH.eventId);
+    
     emitter.on(innerEventTrue, (res: emitter.EventData) => {
-      if (res.data) {
+      if (res.data && res.data.flag !== undefined) {
         this.flag = res.data.flag;
         this.XComponentFlag = res.data.flag;
       }
     });
     emitter.on(innerEventFalse, (res: emitter.EventData) => {
-      if (res.data) {
+      if (res.data && res.data.flag !== undefined) {
         this.flag = res.data.flag;
       }
     });
@@ -193,7 +201,6 @@ struct Index {
         type: 'surface',
         controller: this.xComponentController
       })
-        .visibility(this.XComponentFlag ? Visibility.Visible : Visibility.Hidden)
         .onLoad(() => {
           this.surfaceId = this.xComponentController.getXComponentSurfaceId();
           this.avPlayManage.initPlayer(getContext(this) as common.UIAbilityContext, this.surfaceId,

@@ -75,7 +75,7 @@ export struct VideoOperate {
           .selectedColor($r('app.color.slider_selected'))
           .showTips(false)
           .onChange((value: number, mode: SliderChangeMode) => {
-            if (this.seekTime !== value) {
+            if (mode === SliderChangeMode.End) {
               this.seekTime = value;
               this.avPlayManage.videoSeek(value);
             }

@@ -588,7 +588,7 @@ struct DiyFileNameGeneratorPage {
             .showTips(false)
             .width('65%')
             .onChange((value: number, mode: SliderChangeMode) => {
-              if (mode !== SliderChangeMode.Begin) {
+              if (mode === SliderChangeMode.End) {
                 this.avPlayer?.seek((value / 100) * this.duration, 0);
               }
             })
