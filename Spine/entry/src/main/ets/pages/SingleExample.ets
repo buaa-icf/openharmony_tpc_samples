@@ -77,15 +77,15 @@ struct SingleExample {
 
         // 加载网络Img
         Row() {
-          Button('停止动画')
+          Button($r('app.string.Pause_animation'))
             .onClick(() => {
               this._animator?.pause();
             });
-          Button('播放动画')
+          Button($r('app.string.Play_animation'))
             .onClick(() => {
               this._animator?.play();
             });
-          Button('清空画布')
+          Button($r('app.string.Clear_canvas'))
             .onClick(() => {
               this._animator?.finish();
               this.animationState?.setEmptyAnimations(0);
@@ -93,7 +93,7 @@ struct SingleExample {
                 this.canvasRenderingContext.height);
             });
 
-          Button('资源6')
+          Button($r('app.string.Resource_6'))
             .onClick(() => {
               this.rawfilePath = 'animation6/';
               this.sourcesData.json = 'stretchyman-pro.json';
@@ -108,7 +108,7 @@ struct SingleExample {
         }.margin({ top: 5 })
 
         Row() {
-          Button('资源1')
+          Button($r('app.string.Resource_1'))
             .onClick(() => {
               this.rawfilePath = 'animation/';
               this.sourcesData.json = 'spineboy-ess.json';
@@ -120,7 +120,7 @@ struct SingleExample {
               this.animationState?.setAnimation(0, this.animationName, true);
             });
 
-          Button('资源2')
+          Button($r('app.string.Resource_2'))
             .onClick(() => {
               this.rawfilePath = 'animation2/';
               this.sourcesData.json = 'snowglobe-pro.json';
@@ -131,7 +131,7 @@ struct SingleExample {
               this.animationName = 'eyeblink';
               this.animationState?.setAnimation(0, this.animationName, true);
             });
-          Button('资源3')
+          Button($r('app.string.Resource_3'))
             .onClick(() => {
               this.rawfilePath = 'animation3/';
               this.sourcesData.json = 'cloud-pot.json';
@@ -143,7 +143,7 @@ struct SingleExample {
               this.animationState?.setAnimation(0, this.animationName, true);
             });
 
-          Button('资源4')
+          Button($r('app.string.Resource_4'))
             .onClick(() => {
               this.rawfilePath = 'animation4/';
               this.sourcesData.json = 'owl-pro.json';
@@ -155,7 +155,7 @@ struct SingleExample {
               this.animationState?.setAnimation(0, this.animationName, true);
             });
 
-          Button('资源5')
+          Button($r('app.string.Resource_5'))
             .onClick(() => {
               this.rawfilePath = 'animation5/';
               this.sourcesData.json = 'dragon-ess.json';

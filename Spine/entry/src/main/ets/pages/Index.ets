@@ -24,35 +24,35 @@ struct Index {
   build() {
     Column() {
       Column() {
-        Button('加载一个动画')
+        Button($r('app.string.Load_animation'))
           .margin({ top: 10 })
           .onClick(() => {
 
             this.getUIContext()?.getRouter()?.pushUrl({ url: "pages/Example1" });
           })
 
-        Button('加载网络动画')
+        Button($r('app.string.Load_network_animation'))
           .margin({ top: 10 })
           .onClick(() => {
             this.getUIContext()?.getRouter()?.pushUrl({ url: "pages/NetworkExample" });
           })
 
-        Button('加载动画')
+        Button($r('app.string.Load_JSON_animation'))
           .margin({ top: 10 })
           .onClick(() => {
             this.getUIContext()?.getRouter()?.pushUrl({ url: "pages/SingleExample" });
           })
-        Button('加载skel格式的动画')
+        Button($r('app.string.Load_skeletal_animation'))
           .margin({ top: 10 })
           .onClick(() => {
             this.getUIContext()?.getRouter()?.pushUrl({ url: "pages/Example2" });
           })
-        Button('加载沙箱的动画')
+        Button($r('app.string.Load_sandbox_animation'))
           .margin({ top: 10 })
           .onClick(() => {
             this.getUIContext()?.getRouter()?.pushUrl({ url: "pages/Example3" });
           })
-        Button('其它接口')
+        Button($r('app.string.other'))
           .margin({ top: 10 })
           .onClick(() => {
             this.getUIContext()?.getRouter()?.pushUrl({ url: "pages/Example4" });

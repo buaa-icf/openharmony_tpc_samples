@@ -1,0 +1,124 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "模块描述"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Spine"
+    },
+    {
+      "name": "Load_animation",
+      "value": "加载一个动画"
+    },
+    {
+      "name": "Load_network_animation",
+      "value": "加载网络动画"
+    },
+    {
+      "name": "Load_JSON_animation",
+      "value": "加载动画"
+    },
+    {
+      "name": "Load_skeletal_animation",
+      "value": "加载skel格式的动画"
+    },
+    {
+      "name": "Load_sandbox_animation",
+      "value": "加载沙箱动画"
+    },
+    {
+      "name": "Pause_animation",
+      "value": "停止动画"
+    },
+    {
+      "name": "Play_animation",
+      "value": "播放动画"
+    },
+    {
+      "name": "Clear_canvas",
+      "value": "清空画布"
+    },
+    {
+      "name": "Resource_6",
+      "value": "资源6"
+    },
+    {
+      "name": "Resource_1",
+      "value": "资源1"
+    },
+    {
+      "name": "Resource_2",
+      "value": "资源2"
+    },
+    {
+      "name": "Resource_3",
+      "value": "资源3"
+    },
+    {
+      "name": "Resource_4",
+      "value": "资源4"
+    },
+    {
+      "name": "Resource_5",
+      "value": "资源5"
+    },
+    {
+      "name": "other",
+      "value": "其他接口"
+    },
+    {
+      "name": "aim",
+      "value": "站"
+    },
+    {
+      "name": "death",
+      "value": "躺"
+    },
+    {
+      "name": "idle",
+      "value": "悠闲"
+    },
+    {
+      "name": "jump",
+      "value": "跳"
+    },
+    {
+      "name": "run",
+      "value": "跑"
+    },
+    {
+      "name": "shoot",
+      "value": "射击"
+    },
+    {
+      "name": "walk",
+      "value": "走"
+    },
+    {
+      "name": "Add_listener",
+      "value": "添加监听"
+    },
+    {
+      "name": "Remove_the_listener",
+      "value": "移除监听"
+    },
+    {
+      "name": "Remove_all_listeners",
+      "value": "移除所有监听"
+    },
+    {
+      "name": "sandbox_path",
+      "value": "加载沙箱路径下的资源："
+    },
+    {
+      "name": "Store_sandbox_animations",
+      "value": "存储沙箱动画"
+    }
+  ]
+}
