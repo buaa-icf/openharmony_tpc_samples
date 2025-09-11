@@ -208,10 +208,17 @@ export default class FileCache implements Cache {
 
   available(): number {
     try {
-      let size = fs.statSync(this.tempFilePath).size;
-      return size;
+      // 检查文件是否存在
+      if (!fs.accessSync(this.tempFilePath)) {
+        LogUtil.warn(`File does not exist: ${this.tempFilePath}`);
+        return 0;
+      }
+      
+      let stat = fs.statSync(this.tempFilePath);
+      return stat.size || 0;
     } catch (e) {
-      throw new Error("Error reading length of file " + this.tempFilePath + ",reason is :    " + e.message);
+      LogUtil.warn(`Error reading length of file ${this.tempFilePath}, reason: ${e.message}`);
+      return 0;
     }
   }
 
