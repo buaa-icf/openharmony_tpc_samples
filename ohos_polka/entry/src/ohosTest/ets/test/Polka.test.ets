@@ -29,6 +29,8 @@ import { common } from '@kit.AbilityKit';
 import polka, { createFile, IncomingMessage, NextFunction, Request, ServerResponse } from '@ohos/polka';
 import { Methods } from '../../../../../library/src/main/ets/polka/trouter/index.js';
 import buffer from '@ohos.buffer';
+import fs from '@ohos.file.fs';
+import abilityDelegatorRegistry from '@ohos.app.ability.abilityDelegatorRegistry';
 
 interface SelfRequest extends Request {
   foo: string | number;
@@ -543,5 +545,48 @@ export default function polkaTest() {
       app.server?.stop();
       done();
     })
+
+    it('polka_download_file', 0, async (done: Function) => {
+
+      let startTime1: number = new Date().getTime();
+      let app = polka<SelfRequest>({ onError }).use(foo, bar)
+      let endTime1 = new Date().getTime();
+      let averageTime1 = ((endTime1 - startTime1) * 1000) / BASE_COUNT;
+      console.log("BasicUseTest : use averageTime : " + averageTime1 + "us");
+
+      let startTime2 = new Date().getTime();
+      const delegator = abilityDelegatorRegistry.getAbilityDelegator();
+      const uiAbilityContext = (await delegator.getCurrentTopAbility()).context;
+
+      app.get('/download', async (req: IncomingMessage, res: ServerResponse) => {
+        res.end(`${uiAbilityContext.filesDir}/${req.getParms().get('file')}`, req.getParms().get('file'),
+          req.getHeaders());
+        let fileName = req.getParms().get('file');
+        expect(FILE_NAME).assertEqual(fileName);
+        expect(res.getHeader('Content-Type')).assertEqual('application/octet-stream');
+      })
+        .listen(9996, (e) => {
+          console.error('Server startup error:', e);
+        });
+
+      // 计算服务器启动耗时
+      let endTime2 = new Date().getTime();
+      let setupTime2 = ((endTime2 - startTime2) * 1000) / BASE_COUNT;
+      console.log(`DownloadTest: server setup average time: ${setupTime2}us`);
+      let httpRequest = http.createHttp();
+      // 发送http请求
+      let res = await httpRequest.request(`http://0.0.0.0:9996/download?file=${FILE_NAME}`, {
+        method: http.RequestMethod.GET,
+        connectTimeout: 60000,
+        readTimeout: 60000,
+      })
+      const filePath = uiAbilityContext.filesDir + '/' + FILE_NAME;
+      const fileStat = fs.statSync(filePath);
+      const fileSize = fileStat.size;
+      expect(res.responseCode).assertEqual(200);
+      expect(res.header["x-file-size"]).assertEqual(fileSize.toString());
+      app.server?.stop();
+      done();
+    });
   })
 };

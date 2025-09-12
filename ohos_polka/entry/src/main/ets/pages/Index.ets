@@ -65,6 +65,11 @@ struct Index {
             .onClick(() => {
               router.pushUrl({ url: 'pages/demo/Upload' })
             })
+          Button($r('app.string.downloadFile'))
+            .commonStyle()
+            .onClick(() => {
+              router.pushUrl({ url: 'pages/demo/Download' })
+            })
           Button($r('app.string.foldrRedirect'))
             .commonStyle()
             .onClick(() => {

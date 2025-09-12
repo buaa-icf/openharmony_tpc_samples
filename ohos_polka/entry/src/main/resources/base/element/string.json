@@ -69,6 +69,10 @@
       "value": "Local machine"
     },
     {
+      "name": "localBtn",
+      "value": "Local"
+    },
+    {
       "name": "pleaseVisit2",
       "value": "If index.html exists in the folder, add / to the redirection URL and access the index.html file. If the directory does not exist, Not Found is returned."
     },
@@ -291,6 +295,18 @@
     {
       "name": "uploadFile",
       "value": "uploadFile"
+    },
+    {
+      "name": "downloadFile",
+      "value": "downloadFile"
+    },
+    {
+      "name": "downloadTitle",
+      "value": "Please enter the name of the file to download in the input box, and click the \"Local\" button to trigger the browser download."
+    },
+    {
+      "name": "downloadPlaceholder",
+      "value": "Please enter the name of the file to download, for example: file.zip"
     },
     {
       "name": "foldrRedirect",

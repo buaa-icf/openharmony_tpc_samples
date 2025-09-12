@@ -108,6 +108,10 @@ export async function start(context): Promise<String> {
         });
         res.end('hello' + name);
       })
+      .get('/download', (req: SelfRequest, res: ServerResponse) => {
+        // 下载文件中间件，参数包含文件沙箱路径、下载名称、request请求头
+        res.end(`${context.filesDir}/${req.getParms().get('file')}`, req.getParms().get('file'), req.getHeaders());
+      })
       .get('/get-cookie', (req: IncomingMessage, res: ServerResponse) => {
         res.writeHead(200, {
           'Content-Type': statik.mime.getType('.html') + '; charset=utf-8',
