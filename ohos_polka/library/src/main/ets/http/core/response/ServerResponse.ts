@@ -31,6 +31,8 @@ import ContentType from '../content/ContentType';
 import { http } from '../../index';
 import type { Logger } from '../../../common/util/log';
 import { getLogger } from '../../../common/util/log';
+import fs from '@ohos.file.fs';
+
 const logger: Logger = getLogger('ServerResponse');
 
 const NUM_ONE: number = 1;
@@ -97,6 +99,12 @@ export class ServerResponse {
     const length: number = rest.length;
     if (length === NUM_TWO) {
       this.statusMessage = rest[0] || '';
+      if (rest[1] instanceof Array) {
+        for (let e of rest[1]) {
+          this.headers.set(e.split('=')[0].toLowerCase(), e.split('=')[1]);
+        }
+        return;
+      }
       if (rest[1] instanceof Object) {
         for (let i in rest[1]) {
           if (Object.prototype.hasOwnProperty.call(rest[1], i)) {
@@ -104,26 +112,22 @@ export class ServerResponse {
           }
         }
       }
-      if (rest[1] instanceof Array) {
-        for (let e of rest[1]) {
-          this.headers.set(e.split('=')[0].toLowerCase(), e.split('=')[1]);
-        }
-      }
     } else if (length === NUM_ONE) {
       if (rest[0] && typeof rest[0] === 'string') {
         this.statusMessage = rest[0] || '';
       } else {
         this.statusMessage = http.STATUS_CODES[this.statusCode] as string;
+        if (rest[0] instanceof Array) {
+          for (let e of rest[0]) {
+            this.headers.set(e.split('=')[0].toLowerCase(), e.split('=')[1]);
+          }
+          return;
+        }
         if (rest[0] instanceof Object) {
           for (let i in rest[0]) {
             if (Object.prototype.hasOwnProperty.call(rest[0], i)) {
               this.headers.set(i.toLowerCase(), rest[0][i] as string);
             }
-          }
-        }
-        if (rest[0] instanceof Array) {
-          for (let e of rest[0]) {
-            this.headers.set(e.split('=')[0].toLowerCase(), e.split('=')[1]);
           }
         }
       }
@@ -218,39 +222,44 @@ export class ServerResponse {
 
   /**
    * 发送所有响应标头和正文
-   *
+   * 发送大文件时（大于10MB），可以利用重载，传入fullPath, attachName, reqHeaders参数
+   * 大文件发送使用分块传输Transfer-Encoding: chunked
    * @param data 发送内容
    * @param totalBytes 发送内容的大小
+   * @param fullPath 文件的完整沙箱路径
+   * @param attachName 客户端显示的下载文件名称
+   * @param reqHeaders request请求头
    **/
-  public end(data?: string | ArrayBuffer, totalBytes?: number): void {
+  public end(data?: string | ArrayBuffer, totalBytes?: number): void
+
+  public end(fullPath: string, attachName: string, reqHeaders: object): void
+
+  public end(firstParam?: string | ArrayBuffer, secondParam?: number | string,
+    thirdParam?: Record<string, string>): void {
     this.finished = true;
     this.writableEnded = true;
-    let contentType: ContentType = new ContentType(this.getHeader('content-type'));
-    if (data) {
-      if (typeof data === 'string') {
-        contentType = contentType.tryUTF8();
-        if (data == null) {
-          this.data = data;
-          this.contentLength = 0;
-        } else {
+    if (typeof thirdParam === 'object' && typeof secondParam === 'string') {
+      this.chunkedTransfer(firstParam, secondParam, thirdParam);
+    } else {
+      let data = firstParam;
+      let totalBytes = secondParam as number | undefined;
+      let contentType: ContentType = new ContentType(this.getHeader('content-type'));
+      if (data) {
+        if (typeof data === 'string') {
+          contentType = contentType.tryUTF8();
           this.data = data;
           let tempEncoding: buffer.BufferEncoding = contentType.getEncoding() as buffer.BufferEncoding;
           this.contentLength = totalBytes ? totalBytes : buffer.byteLength(data, tempEncoding);
-        }
-      } else {
-        if (data == null) {
-          this.data = data;
-          this.contentLength = 0;
         } else {
           this.data = data;
           this.contentLength = totalBytes ? totalBytes : data.byteLength;
         }
+      } else {
+        this.data = '';
+        this.contentLength = 0;
       }
-    } else {
-      this.data = '';
-      this.contentLength = 0;
+      this.sendBody(this.client, this.bufferPool);
     }
-    this.sendBody(this.client, this.bufferPool);
   }
 
   /**
@@ -274,8 +283,158 @@ export class ServerResponse {
       this.headersSent = true;
       this.writableFinished = true;
       bufferPool.reset();
-      logger.error(`send fail ${err}`);
+      logger.error(`send fail ${err.code}, ${err.message}`);
     });
+  }
+
+  /**
+   * 分块传输函数
+   *
+   * @param fullPath 文件的完整沙箱路径
+   * @param attachName 客户端显示的下载文件名称
+   * @param reqHeaders request请求头
+   **/
+  private chunkedTransfer(fullPath: string | ArrayBuffer, attachName: string, reqHeaders: object): void {
+    if (typeof fullPath !== 'string') {
+      logger.error(`chunkedTransfer typeof fullPath is not string`);
+      this.endErrorResponse(500);
+      return;
+    }
+    if (!fs.accessSync(fullPath, fs.AccessModeType.EXIST) || !fs.accessSync(fullPath, fs.AccessModeType.READ)) {
+      logger.error(`chunkedTransfer failed '${fullPath}' file does not exist or read permission is denied`);
+      this.endErrorResponse(404);
+      return;
+    }
+    try {
+      const stat: fs.Stat = fs.statSync(fullPath);
+      if (!stat.isFile()) {
+        logger.error(`chunkedTransfer failed '${fullPath}' isFile function return false`);
+        this.endErrorResponse(404);
+        return;
+      }
+      let fileSize = stat.size;
+
+      const rangeHeader = reqHeaders?.['range'];
+      let start = 0;
+      let end = fileSize - 1;
+      let statusCode = 200;
+      // 处理范围请求，实现断点续传
+      if (rangeHeader) {
+        const rangeMatch = rangeHeader.match(/bytes=(\d+)-(\d*)/);
+        if (rangeMatch) {
+          start = parseInt(rangeMatch[1]);
+          if (rangeMatch[2]) {
+            end = parseInt(rangeMatch[2]);
+          }
+          // 验证范围有效性
+          if (start >= fileSize || end >= fileSize || start > end) {
+            this.setHeader(
+              'Content-Range', `bytes */${fileSize}`
+            );
+            this.endErrorResponse(416)
+            return;
+          }
+          statusCode = 206;
+        }
+      }
+      if (statusCode === 206) {
+        this.setHeader('Content-Range', `bytes ${start}-${end}/${fileSize}`);
+        this.contentLength = end - start + 1;
+      }
+      this.setHeader('Content-Disposition',
+        `attachment; filename="${attachName}"; filename*=UTF-8''${encodeURIComponent(attachName)}`);
+      this.writeHead(statusCode,
+        ['Transfer-Encoding=chunked', 'Content-Type=application/octet-stream', 'Accept-Ranges=bytes',
+          'Cache-Control=no-cache, no-store, must-revalidate', 'Pragma=no-cache', `X-File-Size=${fileSize}`,
+          ]);
+      let tcpSendOption: socket.TCPSendOptions = {
+        data: this.outHeader()
+      };
+
+      // 发送HTTP响应头
+      this.client.send(tcpSendOption).then(() => {
+        logger.info('chunkedTransfer header send success');
+        this.sendStream(fullPath, start, end);
+      }).catch((err: BusinessError) => {
+        this.headersSent = true;
+        this.writableFinished = true;
+        this.bufferPool.reset();
+        logger.error(`chunkedTransfer send header failwith error message: ${err.message}, error code: ${err.code}`);
+      });
+    } catch (err) {
+      this.headersSent = true;
+      this.writableFinished = true;
+      this.bufferPool.reset();
+      logger.error(`chunkedTransfer failed with error message: ${err.message}, error code: ${err.code}`);
+      this.endErrorResponse(500);
+    }
+  }
+
+  /**
+   * 文件发送
+   *
+   * @param fullPath 文件的完整沙箱路径
+   * @param start 数据起始索引
+   * @param end 数据结束索引
+   **/
+  private async sendStream(fullPath: string, start: number, end: number) {
+    let stream: fs.Stream | null = null;
+    try {
+      const MAX_CHUNK_SIZE = 1024 * 1024;
+      let offset: number = start;
+      let currentChunkSize = 0;
+      let chunkBuffer: ArrayBuffer | null = null;
+      let bytesRead: number = 0;
+      let chunkHeader: string = '';
+      const chunkFooter = '\r\n';
+
+      // 创建文件读取流
+      stream = await fs.createStream(fullPath, 'r');
+      logger.info('chunkedTransfer sendStream started');
+      while (offset <= end) {
+        // 计算当前块大小
+        currentChunkSize = Math.min(MAX_CHUNK_SIZE, end + 1 - offset);
+        // 读取文件块
+        chunkBuffer = new ArrayBuffer(currentChunkSize);
+        bytesRead = await stream.read(chunkBuffer, { offset, length: currentChunkSize });
+        if (bytesRead !== currentChunkSize) {
+          logger.error(`chunkedTransfer sendStream failed with error message: bytesRead is wrong`);
+          stream?.close();
+          return;
+        }
+        offset += currentChunkSize;
+        chunkHeader = currentChunkSize.toString(16) + '\r\n';
+        await this.client.send({ data: chunkHeader });
+        await this.client.send({ data: chunkBuffer });
+        await this.client.send({ data: chunkFooter });
+        // 添加短暂延迟以避免阻塞事件循环
+        await new Promise(resolve => setTimeout(resolve, 0));
+      }
+      // 发送结束块 (0长度块)
+      await this.client.send({ data: '0\r\n' });
+      // 发送空行表示分块传输结束
+      await this.client.send({ data: '\r\n' });
+      await this.client.send({ data: 'X-Transfer-Complete: true\r\n' });
+      await this.client.send({ data: '\r\n' });
+      logger.info('chunkedTransfer sendStream finished.');
+      stream?.close();
+    } catch (err) {
+      logger.error(`chunkedTransfer sendStream failed with error message: ${err.message}, error code: ${err.code}`);
+      stream?.close();
+    }
+  }
+
+  private async endErrorResponse(code: number) {
+    this.data = buffer.from(JSON.stringify({
+      error: {
+        code: code,
+        message: http.STATUS_CODES[code] || '',
+      }
+    })).buffer;
+    this.contentLength = this.data.byteLength;
+    this.mimeType = 'application/json; charset=utf-8';
+    this.writeHead(code, http.STATUS_CODES[code]);
+    this.sendBody(this.client, this.bufferPool);
   }
 
   /**
@@ -324,8 +483,8 @@ export class ServerResponse {
   private printHeader(originHeader: string, headerKey: string, headerValue: string | number | boolean): string {
     let tempOriginHeader: string = originHeader;
     let arr: string[] = headerKey.split('-');
-    arr.forEach((i) => {
-      i.toLowerCase().replace(/( |^)[a-z]/g, (l) => l.toUpperCase());
+    arr.forEach((i,index) => {
+      arr[index] = i.toLowerCase().replace(/( |^)[a-z]/g, (l) => l.toUpperCase());
     });
     tempOriginHeader += `${arr.join('-')}: ${headerValue}\r\n`;
     if (!['set-cookie'].includes(headerKey)) {

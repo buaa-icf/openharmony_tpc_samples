@@ -69,6 +69,10 @@
       "value": "本机"
     },
     {
+      "name": "localBtn",
+      "value": "本机"
+    },
+    {
       "name": "pleaseVisit2",
       "value": "在浏览器访问后，若该文件夹下存在index.html，则重定向url中添加/，并访问index.html文件。目录不存在则返回 Not Found。"
     },
@@ -291,6 +295,18 @@
     {
       "name": "uploadFile",
       "value": "文件上传"
+    },
+    {
+      "name": "downloadFile",
+      "value": "文件下载"
+    },
+    {
+      "name": "downloadTitle",
+      "value": "请在输入框中输入下载文件的名称，点击“本机”按钮拉起浏览器下载"
+    },
+    {
+      "name": "downloadPlaceholder",
+      "value": "请输入要下载的文件名称，如：file.zip"
     },
     {
       "name": "foldrRedirect",
