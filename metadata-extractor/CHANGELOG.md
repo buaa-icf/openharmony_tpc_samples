@@ -1,3 +1,7 @@
+## 2.0.2
+- Change the repository address to gitcode
+- Release the official version 2.0.2
+
 ## 2.0.1
 - 发布2.0.1正式版
 
