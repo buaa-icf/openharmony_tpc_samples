@@ -147,6 +147,10 @@
     {
       "name": "subtitle_off",
       "value": "关"
+    },
+    {
+      "name": "cache_size_demo",
+      "value": "查看视频缓存大小"
     }
   ]
 }

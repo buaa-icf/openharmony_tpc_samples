@@ -183,6 +183,10 @@
     {
       "name": "subtitle_off",
       "value": "off"
+    },
+    {
+      "name": "cache_size_demo",
+      "value": "Video cache size"
     }
   ]
 }

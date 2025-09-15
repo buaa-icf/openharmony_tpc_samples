@@ -107,6 +107,10 @@
     {
       "name": "conventions",
       "value": "Example of using custom naming conventions"
+    },
+    {
+      "name": "cache_size_demo",
+      "value": "Video cache size"
     }
   ]
 }

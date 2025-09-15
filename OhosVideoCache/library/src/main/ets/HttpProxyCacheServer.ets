@@ -35,6 +35,7 @@ import emitter from '@ohos.events.emitter';
 import { VideoCacheConstant } from './constant/VideoCacheConstant';
 import { LogUtil } from './LogUtil';
 import HttpUrlSource from './HttpUrlSource';
+import StorageUtils from './StorageUtils';
 
 const BASE_COUNT = 1
 
@@ -361,6 +362,53 @@ export default class HttpProxyCacheServer {
       }
     } catch (err) {
       LogUtil.error('destroyCurrentSource error: ' + JSON.stringify(err));
+    }
+  }
+
+  /**
+   * 获取缓存目录的总大小（字节）
+   * @returns 缓存总大小（字节）
+   */
+  public getCacheSize(): number {
+    if (!this.config) {
+      LogUtil.error('Config is null, cannot get cache size');
+      return 0;
+    }
+
+    const cacheDir = StorageUtils.DEFAULT_DIR;
+    if (!cacheDir) {
+      LogUtil.error('Cache root directory is not configured');
+      return 0;
+    }
+
+    try {
+      if (!fs.accessSync(cacheDir)) {
+        LogUtil.log(`Cache directory ${cacheDir} does not exist`);
+        return 0;
+      }
+
+      let totalSize = 0;
+      const files = fs.listFileSync(cacheDir);
+      
+      if (files && files.length > 0) {
+        for (let i = 0; i < files.length; i++) {
+          const filePath = cacheDir + '/' + files[i];
+          try {
+            const stat = fs.statSync(filePath);
+            if (stat.isFile()) {
+              totalSize += stat.size;
+            }
+          } catch (err) {
+            LogUtil.error(`Error getting file size for ${filePath}: ${JSON.stringify(err)}`);
+          }
+        }
+      }
+
+      LogUtil.info(`Cache size calculated: ${totalSize} bytes`);
+      return totalSize;
+    } catch (err) {
+      LogUtil.error('getCacheSize error: ' + JSON.stringify(err));
+      return 0;
     }
   }
 

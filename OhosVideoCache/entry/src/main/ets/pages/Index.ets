@@ -33,7 +33,7 @@ struct Index {
   @State message: string = 'Hello World'
   private arrStr: Resource[] =
     [$r("app.string.reconnect"),$r("app.string.AvPlayer"), $r("app.string.IjkPlayer"), $r("app.string.Example_of_custom_cache"),
-      $r("app.string.quantity_strategy"), $r("app.string.injector"), $r("app.string.conventions")]
+      $r("app.string.quantity_strategy"), $r("app.string.injector"), $r("app.string.conventions"), $r("app.string.cache_size_demo")]
   private arrIndex: number[] = JumpPathConfig.getIndex();
 
   build() {
