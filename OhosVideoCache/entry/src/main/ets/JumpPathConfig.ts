@@ -71,6 +71,9 @@ export default class JumpPathConfig {
       let bean5 = new JumpBean('pages/DiyFileNameGeneratorPage');
       this.dataList.push(bean5)
 
+      let cacheSizeBean = new JumpBean('pages/CacheSizeDemo');
+      this.dataList.push(cacheSizeBean)
+
     }
   }
 }

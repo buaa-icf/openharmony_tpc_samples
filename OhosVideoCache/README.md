@@ -276,6 +276,7 @@ During the playback process of OhosVideoCache, if the network is disconnected, t
 | setDiskUsage            | diskUsage: DiskUsage                                         | HttpProxyCacheServerBuilder | Sets the custom logic for clearing cache files.                          |
 | setHeaderInjector       | headerInjector: HeaderInjector                               | HttpProxyCacheServerBuilder | Sets a custom request header injector.                                  |
 | build()                 | N/A                                                          | HttpProxyCacheServer        | Constructor used to construct a proxy server.                              |
+| getCacheSize()          | N/A                                                          | Total cache size (in bytes) | Get the total size (in bytes) of the cache directory.                        |
 
 
 
