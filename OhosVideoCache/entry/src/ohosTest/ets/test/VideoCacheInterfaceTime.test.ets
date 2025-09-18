@@ -319,6 +319,17 @@ async function shutdownTest(index: number, callback: () => void, done: Function)
   }
 }
 
+function getCacheSize(server: HttpProxyCacheServer) {
+  let startTime = new Date().getTime();
+  for (let index = 0; index < 2000; index++) {
+    server.getCacheSize();
+  }
+  let endTime = new Date().getTime();
+  let averageTime = ((endTime - startTime) * 1000) / 2000;
+  let isBaseline = averageTime < 2000;
+  return isBaseline;
+}
+
 export default function VideoCacheInterfaceTime() {
   describe('VideoCacheInterfaceTime', () => {
     beforeAll(() => {
@@ -411,6 +422,11 @@ export default function VideoCacheInterfaceTime() {
       shutdownTest(0, () => {
         expect(1).assertEqual(1);
       }, done)
+    })
+
+    it('getCacheSize', 0, () => {
+      const server = new HttpProxyCacheServerBuilder(context).build()
+      expect(getCacheSize(server)).assertTrue();
     })
   })
 }
