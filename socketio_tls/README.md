@@ -234,7 +234,7 @@ this.client.on("ping_pong", data: string => {
 ## Source Code Download
 1. This project depends on the **socket.io-client-cpp** library, which is introduced through `git submodule`. You need to add the `--recursive` parameter when downloading code.
   ```
-  git clone --recursive https://gitee.com/openharmony-tpc/openharmony_tpc_samples.git
+  git clone --recursive https://gitcode.com/openharmony-tpc/openharmony_tpc_samples.git
   ```
 2. Skip this step in the Linux environment. In the Windows environment, after the code is downloaded, integrate the OpenHarmony adaptation code. Run the cd command to go to the **socketio/library/src/main/cpp/thirdModule** directory and run the modify.sh script, integrate the patch file in this directory into the** socket.io-client-cpp** source code.
 3. Start building the project.
@@ -265,6 +265,6 @@ This project has been verified in the following versions:
 If you find any problem when using the project, submit an [issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or a [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls).
 
 ## License
-This project is licensed under [MIT LICENSE](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/socketio/LICENSE).
+This project is licensed under [MIT LICENSE](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/socketio_tls/LICENSE).
 
   
