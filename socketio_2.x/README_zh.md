@@ -19,7 +19,7 @@
 ```shell
 ohpm install @ohos/socketio_2.x
 ```
-OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
 
 
 ## X86模拟器配置
@@ -232,7 +232,7 @@ this.client.on("ping_pong", data: string => {
 ## 源码下载
 1. 本项目依赖 socket.io-client-cpp 库，通过`git submodule`引入，下载代码时需加上`--recursive`参数。
   ```
-  git clone --recursive https://gitee.com/openharmony-tpc/openharmony_tpc_samples.git
+  git clone --recursive https://gitcode.com/openharmony-tpc/openharmony_tpc_samples.git
   ```
 2. Linux环境无需执行该步骤，如果是windows环境下，代码下载完成后合入OHOS适配的代码，cd 进入到socketio_2.x/library/src/main/cpp/thirdModule 目录下，执行 modify.sh 脚本，将本目录下的 patch 文件合入到 socket.io-client-cpp 源码中。
 3. 开始编译项目。
@@ -260,11 +260,11 @@ this.client.on("ping_pong", data: string => {
 ````
 
 ## 贡献代码
-使用过程中发现任何问题都可以提 [Issue](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎
-发 [PR](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/pulls) 共建。
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎
+发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 共建。
 
 ## 开源协议
-本项目基于 [MIT LICENSE](https://gitee.com/openharmony-tpc/openharmony_tpc_samples/tree/master/socketio/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [MIT LICENSE](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/socketio_2.x/LICENSE) ，请自由地享受和参与开源。
 
   
 

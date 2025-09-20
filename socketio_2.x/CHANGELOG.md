@@ -1,3 +1,7 @@
+## v1.0.5
+
+- Fix repository from gitee to gitcode in oh-packaage.json5
+
 ## v1.0.4
 
 - Fixed the issue where the dependent c++ static library caused conflicts with the dynamic libraries of other modules, leading to program crashes
