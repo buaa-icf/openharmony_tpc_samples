@@ -15,7 +15,9 @@
 
 import abilityTest from './Ability.test';
 import OhosVideoCacheTest from './OhosVideoCacheTest.test';
+import VideoCacheInterfaceTime from './VideoCacheInterfaceTime.test';
 
 export default function testsuite() {
   OhosVideoCacheTest();
+  VideoCacheInterfaceTime()
 }

@@ -1,3 +1,6 @@
+## 1.0.6-rc.0
+1. Support obtaining cache data size
+
 ## 1.0.5
 1. Fix available method error
 
