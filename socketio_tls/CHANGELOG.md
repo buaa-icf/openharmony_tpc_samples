@@ -1,6 +1,6 @@
 ## v1.0.2
 
-- Fix repository from gitee to gitcode in oh-packaage.json5
+- Fix repository from gitee to gitcode in oh-package.json5
 
 ## v1.0.2-rc.0
 
