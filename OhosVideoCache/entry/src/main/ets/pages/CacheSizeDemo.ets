@@ -14,8 +14,9 @@
  */
 
 import router from '@ohos.router';
-import { HttpProxyCacheServer, StorageUtils } from '@ohos/video-cache';
+import fs from '@ohos.file.fs';
 import Logger from '../Logger';
+import { HttpProxyCacheServer, StorageUtils } from '@ohos/video-cache';
 
 @Entry
 @Component
@@ -48,13 +49,16 @@ struct CacheSizeDemo {
   private calculateCacheSize() {
     this.isLoading = true;
     this.cacheSize = '计算中...';
-    
+
     try {
       if (this.proxyServer) {
-        // 使用 HttpProxyCacheServer 获取缓存大小和文件数量
+        // 使用 HttpProxyCacheServer 获取缓存大小
         this.totalBytes = this.proxyServer.getCacheSize();
         this.cacheSize = this.formatFileSize(this.totalBytes);
-        
+
+        // 获取文件数量
+        this.fileCount = this.getFileCount();
+
         this.isLoading = false;
         Logger.info(`Cache size calculated: ${this.cacheSize}, Files: ${this.fileCount}`);
       } else {
@@ -68,6 +72,34 @@ struct CacheSizeDemo {
     }
   }
 
+  private getFileCount(): number {
+    try {
+      if (!fs.accessSync(this.cacheDirectory)) {
+        return 0;
+      }
+
+      let files = fs.listFileSync(this.cacheDirectory);
+      if (files !== null) {
+        let count = 0;
+        for (let i = 0; i < files.length; i++) {
+          let filePath = this.cacheDirectory + '/' + files[i];
+          try {
+            let stat = fs.statSync(filePath);
+            if (stat.isFile()) {
+              count++;
+            }
+          } catch (err) {
+            Logger.error(`Error checking file: ${filePath}`);
+          }
+        }
+        return count;
+      }
+      return 0;
+    } catch (err) {
+      Logger.error(`Error getting file count: ${JSON.stringify(err)}`);
+      return 0;
+    }
+  }
 
   private refreshCacheSize() {
     this.calculateCacheSize();
@@ -80,12 +112,42 @@ struct CacheSizeDemo {
    */
   private formatFileSize(bytes: number): string {
     if (bytes === 0) return '0 B';
-    
+
     const units = ['B', 'KB', 'MB', 'GB', 'TB'];
     const k = 1024;
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    
+
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + units[i];
+  }
+
+  private clearCache() {
+    try {
+      if (!fs.accessSync(this.cacheDirectory)) {
+        Logger.info('Cache directory does not exist');
+        return;
+      }
+
+      let files = fs.listFileSync(this.cacheDirectory);
+      if (files !== null) {
+        let deletedCount = 0;
+        for (let i = 0; i < files.length; i++) {
+          let filePath = this.cacheDirectory + '/' + files[i];
+          try {
+            let stat = fs.statSync(filePath);
+            if (stat.isFile()) {
+              fs.unlinkSync(filePath);
+              deletedCount++;
+            }
+          } catch (err) {
+            Logger.error(`Error deleting file: ${filePath}, ${JSON.stringify(err)}`);
+          }
+        }
+        Logger.info(`Deleted ${deletedCount} files`);
+        this.refreshCacheSize();
+      }
+    } catch (err) {
+      Logger.error(`Error clearing cache: ${JSON.stringify(err)}`);
+    }
   }
 
   build() {
@@ -99,12 +161,12 @@ struct CacheSizeDemo {
           .onClick(() => {
             router.back();
           })
-        
+
         Text('视频缓存大小')
           .fontSize(18)
           .fontWeight(FontWeight.Bold)
           .margin({ left: 16 })
-        
+
         Blank()
       }
       .width('100%')
@@ -127,7 +189,7 @@ struct CacheSizeDemo {
               .fontWeight(FontWeight.Bold)
               .fontColor('#007DFF')
           }
-          
+
           Text('总缓存大小')
             .fontSize(16)
             .fontColor('#666666')
@@ -158,6 +220,18 @@ struct CacheSizeDemo {
           .margin({ bottom: 12 })
 
           Row() {
+            Text('文件数量')
+              .fontSize(14)
+              .fontColor('#666666')
+            Blank()
+            Text(`${this.fileCount} 个文件`)
+              .fontSize(14)
+              .fontColor('#333333')
+          }
+          .width('100%')
+          .margin({ bottom: 12 })
+
+          Row() {
             Text('字节大小')
               .fontSize(14)
               .fontColor('#666666')
@@ -173,6 +247,33 @@ struct CacheSizeDemo {
         .backgroundColor('#FFFFFF')
         .borderRadius(12)
         .margin({ bottom: 24 })
+
+        // 操作按钮
+        Row() {
+          Button('刷新')
+            .width('45%')
+            .height(44)
+            .fontSize(16)
+            .backgroundColor('#F0F0F0')
+            .fontColor('#333333')
+            .onClick(() => {
+              this.refreshCacheSize();
+            })
+
+          Button('清空缓存')
+            .width('45%')
+            .height(44)
+            .fontSize(16)
+            .backgroundColor('#FF4444')
+            .fontColor('#FFFFFF')
+            .onClick(() => {
+              this.clearCache();
+            })
+        }
+        .width('100%')
+        .justifyContent(FlexAlign.SpaceBetween)
+
+        Blank()
       }
       .width('100%')
       .padding(16)
