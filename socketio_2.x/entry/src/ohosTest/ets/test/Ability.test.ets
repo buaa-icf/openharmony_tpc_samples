@@ -399,6 +399,7 @@ export default function abilityTest() {
     client.connect(uri);
     state = client.get_current_state();
     expect(state).assertEqual(2); // CONNECTING
+    done();
   })
 })
 }
