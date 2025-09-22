@@ -1,0 +1,9 @@
+{
+  "module": {
+    "name": "pdl",
+    "type": "har",
+    "deviceTypes": [
+      "default"
+    ]
+  }
+}

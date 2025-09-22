@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "jipp",
+        "License": "MIT License",
+        "License File": " LICENSE ",
+        "Version Number": "0.7.17",
+        "Owner" : "xiafeng@huawei.com",
+        "Upstream URL": "https://github.com/HPInc/jipp",
+        "Description": "converts rasterized documents into common page description languages PCLm."
+    }
+]
