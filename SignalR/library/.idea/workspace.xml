@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="53ec22d7-06b2-4132-8cc9-5e274a832786" name="更改" comment="">
+      <change beforePath="$PROJECT_DIR$/../build-profile.json5" beforeDir="false" afterPath="$PROJECT_DIR$/../build-profile.json5" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../entry/src/main/ets/pages/Index.ets" beforeDir="false" afterPath="$PROJECT_DIR$/../entry/src/main/ets/pages/Index.ets" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BuildProfile.ets" beforeDir="false" afterPath="$PROJECT_DIR$/BuildProfile.ets" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/ets/src/HttpConnection.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/ets/src/HttpConnection.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/ets/src/ServerSentEventsTransport.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../oh-package-lock.json5" beforeDir="false" afterPath="$PROJECT_DIR$/../oh-package-lock.json5" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../oh-package.json5" beforeDir="false" afterPath="$PROJECT_DIR$/../oh-package.json5" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 5
+}]]></component>
+  <component name="ProjectId" id="32ckd39IKZBIadWx9eJx9NWWaXj" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "D:/testp/SigRpj/backup/backup/signal-r"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用级" UseSingleDictionary="true" transferred="true" />
+</project>

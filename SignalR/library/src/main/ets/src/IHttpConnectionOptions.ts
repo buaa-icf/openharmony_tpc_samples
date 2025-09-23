@@ -1,3 +1,14 @@
+/**
+ * Copyright (C) 2025 Huawei Device Co., Ltd.
+ *
+ * This software is distributed under a license. The full license
+ * agreement can be found in the file LICENSE in this distribution.
+ * This software may not be copied, modified, sold or distributed
+ * other than expressed in the named license agreement.
+ *
+ * This software is distributed without any warranty.
+ */
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
@@ -5,7 +16,6 @@ import { HttpClient } from "./HttpClient";
 import { MessageHeaders } from "./IHubProtocol";
 import { ILogger, LogLevel } from "./ILogger";
 import { HttpTransportType, ITransport } from "./ITransport";
-import { EventSourceConstructor, WebSocketConstructor } from "./Polyfills";
 
 /** Options provided to the 'withUrl' method on {@link @microsoft/signalr.HubConnectionBuilder} to configure options for the HTTP-based transports. */
 export interface IHttpConnectionOptions {
@@ -44,19 +54,19 @@ export interface IHttpConnectionOptions {
      */
     skipNegotiation?: boolean;
 
-    // Used for unit testing and code spelunkers
+    // Used for unit testing and code spelunkers - 鸿蒙环境下已内置支持，保留接口兼容性
     /** A constructor that can be used to create a WebSocket.
      *
      * @internal
      */
-    WebSocket?: WebSocketConstructor;
+    WebSocket?: any;
 
     // Used for unit testing and code spelunkers
     /** A constructor that can be used to create an EventSource.
      *
      * @internal
      */
-    EventSource?: EventSourceConstructor;
+    EventSource?: any;
 
     /**
      * Default value is 'true'.

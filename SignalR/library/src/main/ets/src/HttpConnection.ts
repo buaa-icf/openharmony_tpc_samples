@@ -1,3 +1,14 @@
+/**
+ * Copyright (C) 2025 Huawei Device Co., Ltd.
+ *
+ * This software is distributed under a license. The full license
+ * agreement can be found in the file LICENSE in this distribution.
+ * This software may not be copied, modified, sold or distributed
+ * other than expressed in the named license agreement.
+ *
+ * This software is distributed without any warranty.
+ */
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
@@ -11,7 +22,8 @@ import { HttpTransportType, ITransport, TransferFormat } from "./ITransport";
 import { LongPollingTransport } from "./LongPollingTransport";
 import { ServerSentEventsTransport } from "./ServerSentEventsTransport";
 import { Arg, createLogger, getUserAgentHeader, Platform } from "./Utils";
-import { WebSocketTransport } from "./WebSocketTransport";
+import { HarmonyWebSocketTransport } from "./HarmonyWebSocketTransport";
+import { url } from '@kit.ArkTS';
 
 /** @private */
 const enum ConnectionState {
@@ -83,33 +95,8 @@ export class HttpConnection implements IConnection {
         }
         options.timeout = options.timeout === undefined ? 100 * 1000 : options.timeout;
 
-        let webSocketModule: any = null;
-        let eventSourceModule: any = null;
-
-        if (Platform.isNode && typeof require !== "undefined") {
-            // In order to ignore the dynamic require in webpack builds we need to do this magic
-            // @ts-ignore: TS doesn't know about these names
-            const requireFunc = typeof __webpack_require__ === "function" ? __non_webpack_require__ : require;
-            webSocketModule = requireFunc("ws");
-            eventSourceModule = requireFunc("eventsource");
-        }
-
-        if (!Platform.isNode && typeof WebSocket !== "undefined" && !options.WebSocket) {
-            options.WebSocket = WebSocket;
-        } else if (Platform.isNode && !options.WebSocket) {
-            if (webSocketModule) {
-                options.WebSocket = webSocketModule;
-            }
-        }
-
-        if (!Platform.isNode && typeof EventSource !== "undefined" && !options.EventSource) {
-            options.EventSource = EventSource;
-        } else if (Platform.isNode && !options.EventSource) {
-            if (typeof eventSourceModule !== "undefined") {
-                options.EventSource = eventSourceModule;
-            }
-        }
-
+        // 鸿蒙环境下不需要动态检查WebSocket和EventSource的支持
+        // 直接设置为鸿蒙原生实现
         this._httpClient = new AccessTokenHttpClient(options.httpClient || new DefaultHttpClient(this._logger), options.accessTokenFactory);
         this._connectionState = ConnectionState.Disconnected;
         this._connectionStarted = false;
@@ -288,6 +275,10 @@ export class HttpConnection implements IConnection {
                 this.features.inherentKeepAlive = true;
             }
 
+            if (this.transport instanceof ServerSentEventsTransport) {
+                this.features.inherentKeepAlive = true;
+            }
+
             if (this._connectionState === ConnectionState.Connecting) {
                 // Ensure the connection transitions to the connected state prior to completing this.startInternalPromise.
                 // start() will handle the case when stop was called and startInternal exits still in the disconnecting state.
@@ -419,11 +410,9 @@ export class HttpConnection implements IConnection {
     private _constructTransport(transport: HttpTransportType): ITransport {
         switch (transport) {
             case HttpTransportType.WebSockets:
-                if (!this._options.WebSocket) {
-                    throw new Error("'WebSocket' is not supported in your environment.");
-                }
-                return new WebSocketTransport(this._httpClient, this._accessTokenFactory, this._logger, this._options.logMessageContent!,
-                    this._options.WebSocket, this._options.headers || {});
+                // 鸿蒙环境下直接使用HarmonyWebSocketTransport
+                return new HarmonyWebSocketTransport(this._httpClient, this._accessTokenFactory, this._logger, this._options.logMessageContent!,
+                    this._options.headers || {});
             case HttpTransportType.ServerSentEvents:
                 if (!this._options.EventSource) {
                     throw new Error("'EventSource' is not supported in your environment.");
@@ -474,8 +463,7 @@ export class HttpConnection implements IConnection {
             if (transportMatches(requestedTransport, transport)) {
                 const transferFormats = endpoint.transferFormats.map((s) => TransferFormat[s]);
                 if (transferFormats.indexOf(requestedTransferFormat) >= 0) {
-                    if ((transport === HttpTransportType.WebSockets && !this._options.WebSocket) ||
-                        (transport === HttpTransportType.ServerSentEvents && !this._options.EventSource)) {
+                    if (transport === HttpTransportType.ServerSentEvents && !this._options.EventSource) {
                         this._logger.log(LogLevel.Debug, `Skipping transport '${HttpTransportType[transport]}' because it is not supported in your environment.'`);
                         return new UnsupportedTransportError(`'${HttpTransportType[transport]}' is not supported in your environment.`, transport);
                     } else {
@@ -561,36 +549,32 @@ export class HttpConnection implements IConnection {
             return url;
         }
 
-        if (!Platform.isBrowser) {
-            throw new Error(`Cannot resolve '${url}'.`);
-        }
-
-        // Setting the url to the href propery of an anchor tag handles normalization
-        // for us. There are 3 main cases.
-        // 1. Relative path normalization e.g "b" -> "http://localhost:5000/a/b"
-        // 2. Absolute path normalization e.g "/a/b" -> "http://localhost:5000/a/b"
-        // 3. Networkpath reference normalization e.g "//localhost:5000/a/b" -> "http://localhost:5000/a/b"
-        const aTag = window.document.createElement("a");
-        aTag.href = url;
-
-        this._logger.log(LogLevel.Information, `Normalizing '${url}' to '${aTag.href}'.`);
-        return aTag.href;
+        // 鸿蒙环境下的URL处理
+        // 如果不是完整URL，要求用户提供完整URL
+        this._logger.log(LogLevel.Warning, `Relative URL '${url}' provided. Please use complete URL with protocol (http:// or https://).`);
+        throw new Error(`Cannot resolve relative URL '${url}' in HarmonyOS environment. Please provide complete URL.`);
     }
 
-    private _resolveNegotiateUrl(url: string): string {
-        const negotiateUrl = new URL(url);
-
+    private _resolveNegotiateUrl(url_string: string): string {
+        // 使用鸿蒙原生URL API
+        const negotiateUrl = url.URL.parseURL(url_string);
+        
+        // 添加negotiate路径
         if (negotiateUrl.pathname.endsWith('/')) {
             negotiateUrl.pathname += "negotiate";
         } else {
             negotiateUrl.pathname += "/negotiate";
         }
-        const searchParams = new URLSearchParams(negotiateUrl.searchParams);
-
+        
+        // 使用URLParams处理查询参数
+        const searchParams = new url.URLParams(negotiateUrl.search);
+        
+        // 添加negotiateVersion参数
         if (!searchParams.has("negotiateVersion")) {
             searchParams.append("negotiateVersion", this._negotiateVersion.toString());
         }
-
+        
+        // 处理useStatefulReconnect参数
         if (searchParams.has("useStatefulReconnect")) {
             if (searchParams.get("useStatefulReconnect") === "true") {
                 this._options._useStatefulReconnect = true;
@@ -598,9 +582,10 @@ export class HttpConnection implements IConnection {
         } else if (this._options._useStatefulReconnect === true) {
             searchParams.append("useStatefulReconnect", "true");
         }
-
+        
+        // 更新URL的查询参数
         negotiateUrl.search = searchParams.toString();
-
+        
         return negotiateUrl.toString();
     }
 }

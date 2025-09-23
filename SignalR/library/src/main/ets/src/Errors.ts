@@ -1,4 +1,15 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿/**
+ * Copyright (C) 2025 Huawei Device Co., Ltd.
+ *
+ * This software is distributed under a license. The full license
+ * agreement can be found in the file LICENSE in this distribution.
+ * This software may not be copied, modified, sold or distributed
+ * other than expressed in the named license agreement.
+ *
+ * This software is distributed without any warranty.
+ */
+
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
 import { HttpTransportType } from "./ITransport";
@@ -21,6 +32,7 @@ export class HttpError extends Error {
         const trueProto = new.target.prototype;
         super(`${errorMessage}: Status code '${statusCode}'`);
         this.statusCode = statusCode;
+        this.name = 'HttpError';
 
         // Workaround issue in Typescript compiler
         // https://github.com/Microsoft/TypeScript/issues/13965#issuecomment-278570200
@@ -41,6 +53,7 @@ export class TimeoutError extends Error {
     constructor(errorMessage: string = "A timeout occurred.") {
         const trueProto = new.target.prototype;
         super(errorMessage);
+        this.name = 'TimeoutError';
 
         // Workaround issue in Typescript compiler
         // https://github.com/Microsoft/TypeScript/issues/13965#issuecomment-278570200
@@ -61,6 +74,7 @@ export class AbortError extends Error {
     constructor(errorMessage: string = "An abort occurred.") {
         const trueProto = new.target.prototype;
         super(errorMessage);
+        this.name = 'AbortError';
 
         // Workaround issue in Typescript compiler
         // https://github.com/Microsoft/TypeScript/issues/13965#issuecomment-278570200

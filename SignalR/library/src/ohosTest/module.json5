@@ -3,10 +3,7 @@
     "name": "library_test",
     "type": "feature",
     "deviceTypes": [
-      "default",
-      "tablet",
-      "2in1",
-      "wearable"
+      "default"
     ],
     "deliveryWithInstall": true,
     "installationFree": false

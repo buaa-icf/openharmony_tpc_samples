@@ -5,6 +5,9 @@
   "main": "",
   "author": "",
   "license": "",
-  "dependencies": {}
+  "dependencies": {
+    "@ohos/signalr": "file:../library",
+    "@ohos/eventsource": "^2.0.3"
+  }
 }
 

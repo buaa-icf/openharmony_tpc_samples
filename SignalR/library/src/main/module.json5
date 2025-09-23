@@ -3,10 +3,7 @@
     "name": "library",
     "type": "har",
     "deviceTypes": [
-      "default",
-      "tablet",
-      "2in1",
-      "wearable"
+      "default"
     ]
   }
 }

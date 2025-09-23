@@ -1,3 +1,14 @@
+/**
+ * Copyright (C) 2025 Huawei Device Co., Ltd.
+ *
+ * This software is distributed under a license. The full license
+ * agreement can be found in the file LICENSE in this distribution.
+ * This software may not be copied, modified, sold or distributed
+ * other than expressed in the named license agreement.
+ *
+ * This software is distributed without any warranty.
+ */
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
@@ -7,6 +18,7 @@ import { ILogger, LogLevel } from "./ILogger";
 import { ITransport, TransferFormat } from "./ITransport";
 import { Arg, getDataDetail, getUserAgentHeader, Platform, sendMessage } from "./Utils";
 import { IHttpConnectionOptions } from "./IHttpConnectionOptions";
+import { RobustEventSource } from './RobustEventSource';
 
 /** @private */
 export class ServerSentEventsTransport implements ITransport {
@@ -14,14 +26,14 @@ export class ServerSentEventsTransport implements ITransport {
     private readonly _accessToken: string | undefined;
     private readonly _logger: ILogger;
     private readonly _options: IHttpConnectionOptions;
-    private _eventSource?: EventSource;
+    private _eventSource?: RobustEventSource;
     private _url?: string;
 
     public onreceive: ((data: string | ArrayBuffer) => void) | null;
     public onclose: ((error?: Error | unknown) => void) | null;
 
     constructor(httpClient: HttpClient, accessToken: string | undefined, logger: ILogger,
-                options: IHttpConnectionOptions) {
+        options: IHttpConnectionOptions) {
         this._httpClient = httpClient;
         this._accessToken = accessToken;
         this._logger = logger;
@@ -52,51 +64,50 @@ export class ServerSentEventsTransport implements ITransport {
                 return;
             }
 
-            let eventSource: EventSource;
-            if (Platform.isBrowser || Platform.isWebWorker) {
-                eventSource = new this._options.EventSource!(url, { withCredentials: this._options.withCredentials });
-            } else {
-                // Non-browser passes cookies via the dictionary
-                const cookies = this._httpClient.getCookieString(url);
-                const headers: MessageHeaders = {};
-                headers.Cookie = cookies;
-                const [name, value] = getUserAgentHeader();
-                headers[name] = value;
-
-                eventSource = new this._options.EventSource!(url, { withCredentials: this._options.withCredentials, headers: { ...headers, ...this._options.headers} } as EventSourceInit);
-            }
-
             try {
-                eventSource.onmessage = (e: MessageEvent) => {
+                this._eventSource = new RobustEventSource(url, {
+                    headers: {
+                        'Accept': 'text/event-stream',
+                        'Cache-Control': 'no-cache',
+                        'Connection': 'keep-alive'
+                    }
+                });
+
+                // 连接打开事件
+                this._eventSource.onopen = () => {
+                    this._logger.log(LogLevel.Information, "SSE connection opened");
+
+                    if (!opened) {
+                        opened = true;
+                        resolve();
+                    }
+                };
+
+                // 消息接收事件
+                this._eventSource.onmessage = (e: any) => {
+                    this._logger.log(LogLevel.Trace, `(SSE transport) data received. ${getDataDetail(e.data, this._options.logMessageContent!)}.`);
+
                     if (this.onreceive) {
                         try {
-                            this._logger.log(LogLevel.Trace, `(SSE transport) data received. ${getDataDetail(e.data, this._options.logMessageContent!)}.`);
                             this.onreceive(e.data);
                         } catch (error) {
+                            this._logger.log(LogLevel.Error, `onreceive error: ${error}`);
                             this._close(error);
-                            return;
                         }
                     }
                 };
 
-                // @ts-ignore: not using event on purpose
-                eventSource.onerror = (e: Event) => {
-                    // EventSource doesn't give any useful information about server side closes.
-                    if (opened) {
-                        this._close();
+                // 错误处理事件
+                this._eventSource.onerror = (error?: Error) => {
+                    this._logger.log(LogLevel.Error, `SSE connection error: ${error?.message || 'Unknown error'}`);
+
+                    if (!opened) {
+                        reject(error || new Error("EventSource failed to connect"));
                     } else {
-                        reject(new Error("EventSource failed to connect. The connection could not be found on the server,"
-                        + " either the connection ID is not present on the server, or a proxy is refusing/buffering the connection."
-                        + " If you have multiple servers check that sticky sessions are enabled."));
+                        this._close(error);
                     }
                 };
 
-                eventSource.onopen = () => {
-                    this._logger.log(LogLevel.Information, `SSE connected to ${this._url}`);
-                    this._eventSource = eventSource;
-                    opened = true;
-                    resolve();
-                };
             } catch (e) {
                 reject(e);
                 return;

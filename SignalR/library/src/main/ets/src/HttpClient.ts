@@ -1,8 +1,22 @@
+/**
+ * Copyright (C) 2025 Huawei Device Co., Ltd.
+ *
+ * This software is distributed under a license. The full license
+ * agreement can be found in the file LICENSE in this distribution.
+ * This software may not be copied, modified, sold or distributed
+ * other than expressed in the named license agreement.
+ *
+ * This software is distributed without any warranty.
+ */
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
 import { AbortSignal } from "./AbortController";
 import { MessageHeaders } from "./IHubProtocol";
+
+/** 鸿蒙环境下的响应类型定义 */
+export type HarmonyResponseType = "text" | "arraybuffer" | "json";
 
 /** Represents an HTTP request. */
 export interface HttpRequest {
@@ -18,8 +32,8 @@ export interface HttpRequest {
     /** An object describing headers to apply to the request. */
     headers?: MessageHeaders;
 
-    /** The XMLHttpRequestResponseType to apply to the request. */
-    responseType?: XMLHttpRequestResponseType;
+    /** The response type to apply to the request. */
+    responseType?: HarmonyResponseType;
 
     /** An AbortSignal that can be monitored for cancellation. */
     abortSignal?: AbortSignal;

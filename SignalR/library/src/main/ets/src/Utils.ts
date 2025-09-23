@@ -1,3 +1,14 @@
+/**
+ * Copyright (C) 2025 Huawei Device Co., Ltd.
+ *
+ * This software is distributed under a license. The full license
+ * agreement can be found in the file LICENSE in this distribution.
+ * This software may not be copied, modified, sold or distributed
+ * other than expressed in the named license agreement.
+ *
+ * This software is distributed without any warranty.
+ */
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
@@ -36,25 +47,26 @@ export class Arg {
 
 /** @private */
 export class Platform {
-    // react-native has a window but no document so we should check both
+    // HarmonyOS专用平台类
+    public static get isHarmonyOS(): boolean {
+        return true; // 库专用于鸿蒙，始终返回true
+    }
+    
+    // 为兼容性保留的属性，但在鸿蒙环境下都返回false
     public static get isBrowser(): boolean {
-        return !Platform.isNode && typeof window === "object" && typeof window.document === "object";
+        return false;
     }
-
-    // WebWorkers don't have a window object so the isBrowser check would fail
+    
     public static get isWebWorker(): boolean {
-        return !Platform.isNode && typeof self === "object" && "importScripts" in self;
+        return false;
     }
-
-    // react-native has a window but no document
-    static get isReactNative(): boolean {
-        return !Platform.isNode && typeof window === "object" && typeof window.document === "undefined";
+    
+    public static get isReactNative(): boolean {
+        return false;
     }
-
-    // Node apps shouldn't have a window object, but WebWorkers don't either
-    // so we need to check for both WebWorker and window
+    
     public static get isNode(): boolean {
-        return typeof process !== "undefined" && process.release && process.release.name === "node";
+        return false;
     }
 }
 
@@ -115,7 +127,6 @@ export async function sendMessage(logger: ILogger, transportName: string, httpCl
         headers: { ...headers, ...options.headers},
         responseType,
         timeout: options.timeout,
-        withCredentials: options.withCredentials,
     });
 
     logger.log(LogLevel.Trace, `(${transportName} transport) request complete. Response status: ${response.statusCode}.`);
@@ -202,10 +213,8 @@ export class ConsoleLogger implements ILogger {
 
 /** @private */
 export function getUserAgentHeader(): [string, string] {
+    // 鸿蒙环境下使用X-SignalR-User-Agent
     let userAgentHeaderName = "X-SignalR-User-Agent";
-    if (Platform.isNode) {
-        userAgentHeaderName = "User-Agent";
-    }
     return [ userAgentHeaderName, constructUserAgent(VERSION, getOsName(), getRuntime(), getRuntimeVersion()) ];
 }
 
@@ -238,36 +247,19 @@ export function constructUserAgent(version: string, os: string, runtime: string,
 
 // eslint-disable-next-line spaced-comment
 /*#__PURE__*/ function getOsName(): string {
-    if (Platform.isNode) {
-        switch (process.platform) {
-            case "win32":
-                return "Windows NT";
-            case "darwin":
-                return "macOS";
-            case "linux":
-                return "Linux";
-            default:
-                return process.platform;
-        }
-    } else {
-        return "";
-    }
+    // 鸿蒙环境下返回HarmonyOS
+    return "HarmonyOS";
 }
 
 // eslint-disable-next-line spaced-comment
 /*#__PURE__*/ function getRuntimeVersion(): string | undefined {
-    if (Platform.isNode) {
-        return process.versions.node;
-    }
+    // 鸿蒙环境下可以返回undefined或获取系统版本
     return undefined;
 }
 
 function getRuntime(): string {
-    if (Platform.isNode) {
-        return "NodeJS";
-    } else {
-        return "Browser";
-    }
+    // 鸿蒙环境下返回HarmonyOS
+    return "HarmonyOS";
 }
 
 /** @private */
@@ -282,18 +274,11 @@ export function getErrorString(e: any): string {
 
 /** @private */
 export function getGlobalThis(): unknown {
-    // globalThis is semi-new and not available in Node until v12
+    // 鸿蒙环境下使用globalThis
     if (typeof globalThis !== "undefined") {
         return globalThis;
     }
-    if (typeof self !== "undefined") {
-        return self;
-    }
-    if (typeof window !== "undefined") {
-        return window;
-    }
-    if (typeof global !== "undefined") {
-        return global;
-    }
-    throw new Error("could not find global");
+    
+    // 如果globalThis不可用，创建一个空对象作为fallback
+    return {};
 }

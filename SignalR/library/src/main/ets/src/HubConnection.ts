@@ -1,3 +1,14 @@
+/**
+ * Copyright (C) 2025 Huawei Device Co., Ltd.
+ *
+ * This software is distributed under a license. The full license
+ * agreement can be found in the file LICENSE in this distribution.
+ * This software may not be copied, modified, sold or distributed
+ * other than expressed in the named license agreement.
+ *
+ * This software is distributed without any warranty.
+ */
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
@@ -12,8 +23,12 @@ import { Subject } from "./Subject";
 import { Arg, getErrorString, Platform } from "./Utils";
 import { MessageBuffer } from "./MessageBuffer";
 
-const DEFAULT_TIMEOUT_IN_MS: number = 30 * 1000;
-const DEFAULT_PING_INTERVAL_IN_MS: number = 15 * 1000;
+// 增加默认超时时间以适应网络设备的连接学习时间
+const DEFAULT_TIMEOUT_IN_MS: number = 45 * 1000;  // 从30秒增加到45秒
+// 首次连接使用更长的超时时间，以应对网络设备的连接学习过程
+const FIRST_CONNECTION_TIMEOUT_IN_MS: number = 60 * 1000;  // 首次连接60秒超时
+// 缩短心跳间隔以更频繁地与网络设备交互
+const DEFAULT_PING_INTERVAL_IN_MS: number = 10 * 1000;  // 从15秒缩短到10秒
 const DEFAULT_STATEFUL_RECONNECT_BUFFER_SIZE = 100_000;
 
 /** Describes the current state of the {@link HubConnection} to the server. */
@@ -70,21 +85,18 @@ export class HubConnection {
     private _timeoutHandle?: any;
     private _pingServerHandle?: any;
 
-    private _freezeEventListener = () =>
-    {
-        this._logger.log(LogLevel.Warning, "The page is being frozen, this will likely lead to the connection being closed and messages being lost. For more information see the docs at https://learn.microsoft.com/aspnet/core/signalr/javascript-client#bsleep");
-    };
 
     /** The server timeout in milliseconds.
      *
      * If this timeout elapses without receiving any messages from the server, the connection will be terminated with an error.
-     * The default timeout value is 30,000 milliseconds (30 seconds).
+     * The default timeout value is 45,000 milliseconds (45 seconds).
+     * For first-time connections, a longer timeout of 60 seconds is used to accommodate network device learning time.
      */
     public serverTimeoutInMilliseconds: number;
 
     /** Default interval at which to ping the server.
      *
-     * The default value is 15,000 milliseconds (15 seconds).
+     * The default value is 10,000 milliseconds (10 seconds), reduced from 15 seconds for better network device interaction.
      * Allows the server to detect hard disconnects (like when a client unplugs their computer).
      * The ping will happen at most as often as the server pings.
      * If the server pings every 5 seconds, a value lower than 5 will ping every 5 seconds.
@@ -201,10 +213,6 @@ export class HubConnection {
         try {
             await this._startInternal();
 
-            if (Platform.isBrowser) {
-                // Log when the browser freezes the tab so users know why their connection unexpectedly stopped working
-                window.document.addEventListener("freeze", this._freezeEventListener);
-            }
 
             this._connectionState = HubConnectionState.Connected;
             this._connectionStarted = true;
@@ -717,10 +725,11 @@ export class HubConnection {
     }
 
     private _resetTimeoutPeriod() {
+        // 首次连接使用更长的超时时间，以应对网络设备的连接学习过程
+        const timeoutToUse = !this._connectionStarted ? FIRST_CONNECTION_TIMEOUT_IN_MS : this.serverTimeoutInMilliseconds;
         if (!this.connection.features || !this.connection.features.inherentKeepAlive) {
             // Set the timeout timer
-            this._timeoutHandle = setTimeout(() => this.serverTimeout(), this.serverTimeoutInMilliseconds);
-
+            this._timeoutHandle = setTimeout(() => this.serverTimeout(), timeoutToUse);
             // Set keepAlive timer if there isn't one
             if (this._pingServerHandle === undefined)
             {
@@ -747,6 +756,7 @@ export class HubConnection {
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
     private serverTimeout() {
+        const timeoutUsed = !this._connectionStarted ? FIRST_CONNECTION_TIMEOUT_IN_MS : this.serverTimeoutInMilliseconds;
         // The server hasn't talked to us in a while. It doesn't like us anymore ... :(
         // Terminate the connection, but we don't need to wait on the promise. This could trigger reconnecting.
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -813,6 +823,7 @@ export class HubConnection {
     }
 
     private _connectionClosed(error?: Error) {
+        const closeTime = Date.now();
         this._logger.log(LogLevel.Debug, `HubConnection.connectionClosed(${error}) called while in state ${this._connectionState}.`);
 
         // Triggering this.handshakeRejecter is insufficient because it could already be resolved without the continuation having run yet.
@@ -836,6 +847,8 @@ export class HubConnection {
             this._reconnect(error);
         } else if (this._connectionState === HubConnectionState.Connected) {
             this._completeClose(error);
+        } else {
+            // console.log(`[DEBUG] 当前状态: ${this._connectionState}, 无需特殊处理 - 时间戳: ${Date.now()}`);
         }
 
         // If none of the above if conditions were true were called the HubConnection must be in either:
@@ -846,16 +859,14 @@ export class HubConnection {
     }
 
     private _completeClose(error?: Error) {
+        const closeTime = Date.now();
         if (this._connectionStarted) {
             this._connectionState = HubConnectionState.Disconnected;
             this._connectionStarted = false;
+
             if (this._messageBuffer) {
                 this._messageBuffer._dispose(error ?? new Error("Connection closed."));
                 this._messageBuffer = undefined;
-            }
-
-            if (Platform.isBrowser) {
-                window.document.removeEventListener("freeze", this._freezeEventListener);
             }
 
             try {
@@ -863,7 +874,10 @@ export class HubConnection {
             } catch (e) {
                 this._logger.log(LogLevel.Error, `An onclose callback called with error '${error}' threw error '${e}'.`);
             }
+        } else {
+            // console.log(`[DEBUG] 连接未启动，无需关闭处理 - 时间戳: ${Date.now()}`);
         }
+        // console.log(`[DEBUG] _completeClose完成 - 时间戳: ${Date.now()}, 耗时: ${Date.now() - closeTime}ms`);
     }
 
     private async _reconnect(error?: Error) {
@@ -908,7 +922,6 @@ export class HubConnection {
                 this._reconnectDelayHandle = setTimeout(resolve, nextRetryDelay!);
             });
             this._reconnectDelayHandle = undefined;
-
             if (this._connectionState !== HubConnectionState.Reconnecting) {
                 this._logger.log(LogLevel.Debug, "Connection left the reconnecting state during reconnect delay. Done reconnecting.");
                 return;
@@ -916,7 +929,6 @@ export class HubConnection {
 
             try {
                 await this._startInternal();
-
                 this._connectionState = HubConnectionState.Connected;
                 this._logger.log(LogLevel.Information, "HubConnection reconnected successfully.");
 
@@ -987,8 +999,11 @@ export class HubConnection {
     }
 
     private _cleanupTimeout(): void {
-        if (this._timeoutHandle) {
+        if (this._timeoutHandle !== undefined) {
             clearTimeout(this._timeoutHandle);
+            this._timeoutHandle = undefined;
+        } else {
+            // console.log(`[DEBUG] 无需清理超时计时器 - 时间戳: ${Date.now()}`);
         }
     }
 

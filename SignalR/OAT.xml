@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF8"?>
+<configuration>
+    <oatconfig>
+        <policylist>
+            <policy name="projectPolicy" desc="项目默认许可证策略">
+                <policyitem type="license" name="MIT" path=".*" rule="may" desc="项目默认许可证为MIT"/>
+            </policy>
+        </policylist>
+        <filefilterlist>
+            <filefilter name="binaryFileTypePolicyFilter" desc="过滤二进制、图片、归档及JSON配置文件">
+                <filteritem type="filename" name="*.png" desc="过滤 PNG 图片"/>
+                <filteritem type="filename" name="*.gif" desc="过滤 GIF 图片"/>
+                <filteritem type="filename" name="*.har" desc="过滤 HAR 归档文件"/>
+                <filteritem type="filename" name="*.json5" desc="过滤所有JSON5文件"/>
+            </filefilter>
+
+            <filefilter name="defaultPolicyFilter" desc="过滤无需许可证头的文件">
+                <filteritem type="filename" name="*.json5" desc="豁免所有json5配置文件"/>
+                <filteritem type="filename" name="hvigorfile.ts" desc="豁免所有hvigor构建脚本"/>
+            </filefilter>
+
+            <filefilter name="copyrightPolicyFilter" desc="过滤无需版权头的文件">
+                <filteritem type="filename" name="*.json5" desc="豁免所有json5配置文件"/>
+                <filteritem type="filename" name="hvigorfile.ts" desc="豁免所有hvigor构建脚本"/>
+                <filteritem type="filename" name="LICENSE" desc="豁免LICENSE文件的版权检查"/>
+            </filefilter>
+        </filefilterlist>
+
+        <licensematcherlist>
+            <licensematcher name="MIT" desc="识别项目中使用的自定义MIT许可证头">
+                <licensetext name="
+ * This software is distributed under a license. The full license
+ * agreement can be found in the file LICENSE in this distribution.
+ * This software may not be copied, modified, sold or distributed
+ * other than expressed in the named license agreement.
+ *
+ * This software is distributed without any warranty.
+                " desc="自定义的MIT许可证引用文本" />
+            </licensematcher>
+        </licensematcherlist>
+    </oatconfig>
+</configuration>

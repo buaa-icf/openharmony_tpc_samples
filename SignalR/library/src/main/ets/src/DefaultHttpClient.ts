@@ -1,28 +1,32 @@
+/**
+ * Copyright (C) 2025 Huawei Device Co., Ltd.
+ *
+ * This software is distributed under a license. The full license
+ * agreement can be found in the file LICENSE in this distribution.
+ * This software may not be copied, modified, sold or distributed
+ * other than expressed in the named license agreement.
+ *
+ * This software is distributed without any warranty.
+ */
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
 import { AbortError } from "./Errors";
-import { FetchHttpClient } from "./FetchHttpClient";
+import { HarmonyHttpClient } from "./HarmonyHttpClient";
 import { HttpClient, HttpRequest, HttpResponse } from "./HttpClient";
 import { ILogger } from "./ILogger";
-import { Platform } from "./Utils";
-import { XhrHttpClient } from "./XhrHttpClient";
 
-/** Default implementation of {@link @microsoft/signalr.HttpClient}. */
+/** Default implementation of {@link @microsoft/signalr.HttpClient} for HarmonyOS. */
 export class DefaultHttpClient extends HttpClient {
     private readonly _httpClient: HttpClient;
 
     /** Creates a new instance of the {@link @microsoft/signalr.DefaultHttpClient}, using the provided {@link @microsoft/signalr.ILogger} to log messages. */
     public constructor(logger: ILogger) {
         super();
-
-        if (typeof fetch !== "undefined" || Platform.isNode) {
-            this._httpClient = new FetchHttpClient(logger);
-        } else if (typeof XMLHttpRequest !== "undefined") {
-            this._httpClient = new XhrHttpClient(logger);
-        } else {
-            throw new Error("No usable HttpClient found.");
-        }
+        
+        // 鸿蒙环境下直接使用HarmonyHttpClient
+        this._httpClient = new HarmonyHttpClient(logger);
     }
 
     /** @inheritDoc */
