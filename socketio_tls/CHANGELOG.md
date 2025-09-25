@@ -1,3 +1,7 @@
+## v1.0.3-rc.0
+
+- Fixed the issue where emit callbacks could be overwritten across same or different event names
+
 ## v1.0.2
 
 - Fix repository from gitee to gitcode in oh-package.json5
