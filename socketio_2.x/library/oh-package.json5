@@ -14,7 +14,7 @@
   "main": "index.ets",
   "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/socketio_2.x",
   "type": "module",
-  "version": "1.0.5",
+  "version": "1.0.6-rc.0",
   "dependencies": {
     "libclient_socket_c.so": "file:./src/main/cpp/types/libentry"
   },
