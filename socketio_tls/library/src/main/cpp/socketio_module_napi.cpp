@@ -10,6 +10,7 @@
  */
 
 #include <cstring>
+#include <deque>
 #include <js_native_api.h>
 #include <js_native_api_types.h>
 #include <node_api.h>
@@ -38,6 +39,8 @@ static std::map<std::string, napi_ref> on_event_listener_call_aux_ref_map;
 static napi_ref on_error_listener_call_ref;
 // 根据eventname筛选ack回调方法
 static std::map<std::string, napi_ref> on_emit_listener_call_ref_map;
+// 每个事件名对应一个独立 TSFN 队列
+static std::map<std::string, std::deque<napi_threadsafe_function>> on_emit_tsfn_map;
 // 全局result
 static size_t result = 0;
 
@@ -358,14 +361,27 @@ public:
         OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> 1 on_emit_callback %{public}s",
                      message_json.c_str());
 
+        auto it = on_emit_tsfn_map.find(ack_name);
+        if (it == on_emit_tsfn_map.end() || it->second.empty()) {
+            OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "TSFN queue empty for event %{public}s",
+                         ack_name.c_str());
+            return;
+        }
+        napi_threadsafe_function tsfn = it->second.front();
+        it->second.pop_front();
+        if (it->second.empty()) {
+            on_emit_tsfn_map.erase(it);
+        }
+
         std::unique_ptr<ThreadSafeInfo> localThreadSafeInfo = std::make_unique<ThreadSafeInfo>();
         if (localThreadSafeInfo == nullptr) {
             OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[on_emit_callback]localThreadSafeInfo is null");
             return;
         }
         localThreadSafeInfo->result = message_json;
-        napi_acquire_threadsafe_function(g_tsfnEmitCall);
-        napi_call_threadsafe_function(g_tsfnEmitCall, localThreadSafeInfo.release(), napi_tsfn_blocking);
+        napi_acquire_threadsafe_function(tsfn);
+        napi_call_threadsafe_function(tsfn, localThreadSafeInfo.release(), napi_tsfn_blocking);
+        napi_release_threadsafe_function(tsfn, napi_tsfn_release);
     }
 
     void on_emit_callback_binary(std::string const &ack_name, sio::message::list const &list)
@@ -1297,7 +1313,8 @@ napi_value SocketIOClient::emit(napi_env env, napi_callback_info info)
     napi_value on_emit_listener_call = args[2];
     napi_ref on_emit_listener_call_ref;
     napi_create_reference(env, on_emit_listener_call, 1, &on_emit_listener_call_ref);
-    on_emit_listener_call_ref_map.insert({eventName, on_emit_listener_call_ref});
+    // 使用赋值，避免键存在时 insert 不覆盖
+    on_emit_listener_call_ref_map[std::string(eventName)] = on_emit_listener_call_ref;
 
     sio::message::list *messageList = new sio::message::list();
 
@@ -1342,8 +1359,10 @@ napi_value SocketIOClient::emit(napi_env env, napi_callback_info info)
     napi_get_value_string_utf8(env, args[3], classId, CLASSID_BUF_SIZE, &charLen);
     std::string classIdStr = classId;
 
-    // 创建线程安全回调
-    NapiCreateThreadsafe(env, on_emit_listener_call, CallJsEmit, &g_tsfnEmitCall);
+    // 为本次 emit 创建独立 TSFN，并按事件名入队
+    napi_threadsafe_function tsfn_this_emit = nullptr;
+    NapiCreateThreadsafe(env, on_emit_listener_call, CallJsEmit, &tsfn_this_emit);
+    on_emit_tsfn_map[std::string(eventName)].push_back(tsfn_this_emit);
 
     // 通过classId获取socket并发送消息
     get_socket(classIdStr)->emit(
@@ -1369,8 +1388,7 @@ napi_value SocketIOClient::emitAckBinary(napi_env env, napi_callback_info info)
     napi_value on_emit_listener_call = args[3];
     napi_ref on_emit_listener_call_ref;
     napi_create_reference(env, on_emit_listener_call, 1, &on_emit_listener_call_ref);
-    on_emit_listener_call_ref_map.insert(
-        {eventName, on_emit_listener_call_ref});
+    on_emit_listener_call_ref_map[std::string(eventName)] = on_emit_listener_call_ref;
     sio::message::list *messageList = new sio::message::list();
     if (messageType == napi_string) {
         char message[MAX_MESSAGE_SIZE];
