@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "SignalR/clients",
+        "License": "MIT license",
+        "License File": " LICENSE ",
+        "Version Number": "9.1.6",
+        "Owner" : "xiafeng@huawei.com",
+        "Upstream URL": "https://github.com/dotnet/aspnetcore/tree/main/src/SignalR/clients/ts",
+        "Description": "an open-source client library that simplifies adding real-time web functionality to applications, enabling servers to push content instantly to clients."
+    }
+]
