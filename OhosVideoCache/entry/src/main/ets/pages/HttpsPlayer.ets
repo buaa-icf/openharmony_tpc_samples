@@ -45,6 +45,7 @@ struct HttpPlayer {
   @State scaleTag: number = 0;
   @State currentCachePercent: number = 0;
   private avPlayer: media.AVPlayer | undefined = undefined;
+  private currentCacheListener: CacheListener | null = null;
   private duration: number = -1;
   private fdPath: string = '';
   private surfaceID: string = '';
@@ -70,6 +71,8 @@ struct HttpPlayer {
   async aboutToDisappear(): Promise<void> {
     Logger.info(TAG, 'aboutToDisappear success');
     this.destroyCurrentConnect();
+    // 清理缓存监听器
+    this.clearCacheListener();
     
     GlobalProxyServer?.getInstance()?.getServer()?.shutdown()
     this.setOffCallback();
@@ -269,15 +272,24 @@ struct HttpPlayer {
       ret = true;
     }
 
+    // 清理之前的监听器
+    this.clearCacheListener();
+
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-        self.currentCachePercent = percentsAvailable;
+        // 只更新当前视频的缓存进度
+        if (url === self.videoName) {
+          self.currentCachePercent = percentsAvailable;
+          Logger.info(TAG, `当前视频缓存进度: ${percentsAvailable}%`);
+        }
       }
     }
 
+    // 创建新的缓存监听器并保存引用
+    this.currentCacheListener = new MyCacheListener();
     let server: HttpProxyCacheServer = new HttpProxyCacheServerBuilder(getContext())
       .build();
-    server.registerCacheListener(new MyCacheListener(), this.videoName);
+    server.registerCacheListener(this.currentCacheListener, this.videoName);
     GlobalProxyServer?.getInstance()?.setServer(server)
     let proxyUrl: string | undefined = await GlobalProxyServer?.getInstance()?.getServer()?.getProxyUrl(this.videoName)
     let newUrl = proxyUrl ? proxyUrl : this.videoName;
@@ -422,9 +434,25 @@ struct HttpPlayer {
     }
   }
 
+  // 清理缓存监听器
+  private clearCacheListener() {
+    try {
+      if (this.currentCacheListener) {
+        // 注销当前的缓存监听器，需要传入URL参数
+        GlobalProxyServer?.getInstance()?.getServer()?.unregisterCacheListener(this.currentCacheListener, this.videoName);
+        this.currentCacheListener = null;
+        Logger.info(TAG, '已清理缓存监听器');
+      }
+    } catch (err) {
+      Logger.error(TAG, `清理缓存监听器失败: ${err}`);
+    }
+  }
+
   // 切换下个视频的接口
   async nextVideo(): Promise<void> {
     this.destroyCurrentConnect();
+    // 清理之前的缓存监听器
+    this.clearCacheListener();
     // 调用reset函数，重置播放器状态至idle
     await this.avPlayer?.reset();
     this.currentCachePercent = 0;
@@ -443,11 +471,16 @@ struct HttpPlayer {
 
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-        self.currentCachePercent = percentsAvailable;
+        // 只更新当前视频的缓存进度
+        if (url === self.videoName) {
+          self.currentCachePercent = percentsAvailable;
+        }
       }
     }
 
-    GlobalProxyServer?.getInstance()?.getServer()?.registerCacheListener(new MyCacheListener(), this.fdPath)
+    // 创建新的缓存监听器并保存引用
+    this.currentCacheListener = new MyCacheListener();
+    GlobalProxyServer?.getInstance()?.getServer()?.registerCacheListener(this.currentCacheListener, this.fdPath)
     let proxyUrl: string | undefined = await GlobalProxyServer?.getInstance()?.getServer()?.getProxyUrl(this.fdPath)
     let newUrl = proxyUrl ? proxyUrl : this.fdPath;
     if (newUrl.startsWith(getContext().cacheDir)) {
@@ -472,6 +505,8 @@ struct HttpPlayer {
   // 切换上个视频的接口
   async preVideo(): Promise<void> {
     this.destroyCurrentConnect();
+    // 清理之前的缓存监听器
+    this.clearCacheListener();
 
     this.currentCachePercent = 0;
     await this.avPlayer?.reset();
@@ -489,11 +524,17 @@ struct HttpPlayer {
 
     class MyCacheListener implements CacheListener {
       onCacheAvailable(cacheFilePath: string, url: string, percentsAvailable: number) {
-        self.currentCachePercent = percentsAvailable;
+        // 只更新当前视频的缓存进度
+        if (url === self.videoName) {
+          self.currentCachePercent = percentsAvailable;
+          Logger.info(TAG, `切换后视频缓存进度: ${percentsAvailable}%`);
+        }
       }
     }
 
-    GlobalProxyServer?.getInstance()?.getServer()?.registerCacheListener(new MyCacheListener(), this.fdPath)
+    // 创建新的缓存监听器并保存引用
+    this.currentCacheListener = new MyCacheListener();
+    GlobalProxyServer?.getInstance()?.getServer()?.registerCacheListener(this.currentCacheListener, this.fdPath)
     let proxyUrl: string | undefined = await GlobalProxyServer?.getInstance()?.getServer()?.getProxyUrl(this.fdPath)
     let newUrl = proxyUrl ? proxyUrl : this.fdPath;
     if (newUrl.startsWith(getContext().cacheDir)) {
@@ -629,7 +670,7 @@ struct HttpPlayer {
             .value(this.currentCachePercent)
             .width('65%')
 
-          Text('').fontSize(15).width('15%').textAlign(TextAlign.Center)
+          Text(`${Math.round(this.currentCachePercent)}%`).fontSize(15).width('15%').textAlign(TextAlign.Center)
         }
         .alignItems(VerticalAlign.Center)
 

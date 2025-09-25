@@ -645,7 +645,7 @@ struct DiyCacheCountPage {
             .fontSize(14)
             .width('65%')
 
-          Text('Mb').fontSize(15).width('15%').textAlign(TextAlign.Center)
+          Text('').fontSize(15).width('15%').textAlign(TextAlign.Center)
         }
         .alignItems(VerticalAlign.Center)
 

@@ -1,3 +1,6 @@
+## 1.0.6-rc.1
+1. Optimize video cache cleaning
+
 ## 1.0.6-rc.0
 1. Support obtaining cache data size
 

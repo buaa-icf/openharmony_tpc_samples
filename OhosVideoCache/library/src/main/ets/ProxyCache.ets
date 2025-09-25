@@ -206,59 +206,43 @@ export default class ProxyCache {
     }
   }
 
+  private waitForDataResolve: (() => void) | null = null;
+  private isWaitingForData: boolean = false;
 
+  /**
+   * 最多等待1秒，但数据到达时立即唤醒
+   */
   private async waitForSourceData(): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      const startCacheSize = this.cache?.available() ?? 0;
+    return new Promise<void>((resolve) => {
+      this.waitForDataResolve = resolve;
+      this.isWaitingForData = true;
 
-      let isResolved = false;
-
-      // 检查缓存增量的函数
-      const checkCacheIncrement = () => {
-        if (isResolved) {
-          return;
-        }
-
-        const currentCacheSize = this.cache?.available() ?? 0;
-        const increment = currentCacheSize - startCacheSize;
-
-        if (increment > 1024 * 1024) {
-          isResolved = true;
-          clearTimeout(this.timeoutId);
-          return resolve();
-        }
-      };
-
-      const checkInterval = setInterval(() => {
-        if (isResolved) {
-          clearInterval(checkInterval);
-          return;
-        }
-        checkCacheIncrement();
-      }, 100); // 每100ms检查一次
-
-      // 设置最大等待时间作为兜底（参考的1000ms）
+      // 设置1秒超时（最大等待时间）
       this.timeoutId = setTimeout(() => {
-        if (isResolved) {
-          return;
+        if (this.isWaitingForData) {
+          this.isWaitingForData = false;
+          this.waitForDataResolve = null;
+          resolve();
         }
-
-        isResolved = true;
-        clearInterval(checkInterval);
-        return resolve();
       }, 1000);
-
-      // 立即检查一次，避免错过快速到达的数据
-      setTimeout(() => {
-        if (!isResolved) {
-          checkCacheIncrement();
-        }
-      }, 50);
     });
   }
 
   private notifyNewCacheDataAvailable(cacheAvailable: number, sourceAvailable: number): void {
     this.onCacheAvailable(cacheAvailable, sourceAvailable);
+
+    if (this.isWaitingForData && this.waitForDataResolve) {
+      this.isWaitingForData = false;
+      const resolve = this.waitForDataResolve;
+      this.waitForDataResolve = null;
+      
+      // 清除超时，立即唤醒
+      if (this.timeoutId !== (0 - Number.MAX_VALUE)) {
+        clearTimeout(this.timeoutId);
+        this.timeoutId = (0 - Number.MAX_VALUE);
+      }
+      resolve();
+    }
   }
 
   protected onCacheAvailable(cacheAvailable: number, sourceLength: number): void {

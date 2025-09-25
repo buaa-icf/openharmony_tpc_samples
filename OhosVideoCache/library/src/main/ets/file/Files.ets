@@ -36,6 +36,27 @@ export class Files {
     }
   }
 
+  /**
+   * 获取指定目录下的文件列表并按最近最少使用(LRU)策略排序
+   * @param directory 要扫描的目录路径
+   * @returns 返回排序后的文件路径数组，按修改时间升序排列(旧→新)
+   */
+  static getLruListFilesArray(directory: string): string[] {
+    try {
+      const files = fs.listFileSync(directory) || [];
+      return files
+        .map(file => `${directory}/${file}`)
+        .sort((a, b) => {
+          const aTime = fs.statSync(a).mtime;
+          const bTime = fs.statSync(b).mtime;
+          return aTime - bTime; // 升序排列（旧→新）
+        });
+    } catch (err) {
+      LogUtil.error('getLruListFiles error: ' + JSON.stringify(err));
+      return [];
+    }
+  }
+
   static getLruListFiles(directory: string): LinkedList<string> {
     let result = new LinkedList<string>();
     try {
