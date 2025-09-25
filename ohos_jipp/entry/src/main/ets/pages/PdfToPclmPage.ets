@@ -14,9 +14,9 @@
   * limitations under the License.
   */
 
-// import  pdfService  from '@hms.officeservice.pdfservice';
 import { image } from '@kit.ImageKit';
 import { fileIo, fileUri, picker } from '@kit.CoreFileKit';
+import { Pdfium, PdfiumPage } from 'libentry.so';
 import {
   ColorSpace,
   ImageType,
@@ -35,77 +35,69 @@ async function pdfToPclm(pdfPath: string, outputPath: string, DPI: number,
   RED_COEFFICIENT: number,
   GREEN_COEFFICIENT: number,
   BLUE_COEFFICIENT: number) {
-  // let pix: ArrayBuffer | undefined = undefined
-  // let colorSpace: ColorSpace = ColorSpace.Rgb;
-  // let outputSettings: OutputSettings =
-  //   new OutputSettings(colorSpace, Sides.oneSided, MediaSource.auto, null, false);
-  // let setting: PclmSettings = new PclmSettings(outputSettings, 16);
-  // let writeStream = fileIo.createStreamSync(outputPath, 'w+');
-  // let writer = new PclmWriter(writeStream, setting);
-  //
-  // let renderablePages: RenderablePage[] = new Array<RenderablePage>();
-  // let pdfDocument: pdfService.PdfDocument = new pdfService.PdfDocument();
-  // let loadResult: pdfService.ParseResult = pdfDocument.loadDocument(new fileUri.FileUri(pdfPath).path, '');
-  // if (pdfService.ParseResult.PARSE_SUCCESS === loadResult) {
-  //   let pageCount: number = pdfDocument.getPageCount();
-  //   for (let i = 0; i < pageCount; i++) {
-  //     let page: pdfService.PdfPage = pdfDocument.getPage(i);
-  //     let pixelMap: image.PixelMap = page.getPagePixelMap();
-  //     pixelMap.scaleSync(DPI / 72, DPI / 72)
-  //     let size: image.Size = pixelMap.getImageInfoSync().size;
-  //     let renderablePage = new RenderablePage(size.width, size.height, DPI,
-  //       (yOffset: number, swathHeight: number, colorSpace: ColorSpace, byteArray: Uint8Array) => {
-  //         if (pix == undefined || pix.byteLength != size.width * swathHeight) {
-  //           pix = new ArrayBuffer(size.width * swathHeight * 4)
-  //         }
-  //         const area: image.PositionArea = {
-  //           pixels: pix,
-  //           offset: 0,
-  //           stride: size.width * 4,
-  //           region: { size: { width: size.width, height: swathHeight, }, x: 0, y: yOffset }
-  //         };
-  //         //BGRA_8888格式
-  //         pixelMap.readPixelsSync(area);
-  //
-  //         let uint8Data = new Uint8Array(pix);
-  //         let red: number;
-  //         let green: number;
-  //         let blue: number;
-  //
-  //         let byteIndex: number = 0;
-  //         for (let y = 0; y < swathHeight; y++) {
-  //           for (let x = 0; x < size.width; x++) {
-  //             const pixelIndex = (y * size.width + x) * 4;
-  //             blue = uint8Data[pixelIndex]; // Blue通道
-  //             green = uint8Data[pixelIndex + 1]; // Green通道
-  //             red = uint8Data[pixelIndex + 2]; // Red通道
-  //
-  //             if (colorSpace == ColorSpace.Grayscale) {
-  //               const grayValue = RED_COEFFICIENT * red +
-  //                 GREEN_COEFFICIENT * green +
-  //                 BLUE_COEFFICIENT * blue;
-  //               byteArray[byteIndex++] = grayValue;
-  //             } else {
-  //               byteArray[byteIndex++] =
-  //                 red;
-  //               byteArray[byteIndex++] =
-  //                 green;
-  //               byteArray[byteIndex++] =
-  //                 blue;
-  //             }
-  //           }
-  //         }
-  //       })
-  //     renderablePages.push(renderablePage)
-  //   }
-  //   await writer.write(renderablePages);
-  //   writer.close()
-  //   pdfDocument.releaseDocument();
-  //   console.info('PCLm conversion completed successfully!');
-  // } else {
-  //   console.info('test--> load pdf fail:' + JSON.stringify(loadResult));
-  // }
+  let pix: ArrayBuffer | undefined = undefined
+  let colorSpace: ColorSpace = ColorSpace.Rgb;
+  let outputSettings: OutputSettings =
+    new OutputSettings(colorSpace, Sides.oneSided, MediaSource.auto, null, false);
+  let setting: PclmSettings = new PclmSettings(outputSettings, 16);
+  let writeStream = fileIo.createStreamSync(outputPath, 'w+');
+  let writer = new PclmWriter(writeStream, setting);
+  let renderablePages: RenderablePage[] = new Array<RenderablePage>();
+  let pdf: Pdfium = new Pdfium(pdfPath)
+  let pageCount = pdf.GetPageCount()
+  for (let i = 0; i < pageCount; i++) {
+    let page: PdfiumPage = pdf.LoadPage(i);
+    let size: image.Size = { width: page.GetWidth(), height: page.GetHeight() }
+    let pixelMap = page.Render(Math.ceil(size.width * DPI / 72), Math.ceil(size.height * DPI / 72));
+    size = pixelMap.getImageInfoSync().size
+    console.info('ohos_jipp--> page size: ' + size.width + ' x ' + size.height);
+    let renderablePage = new RenderablePage(size.width, size.height, DPI,
+      (yOffset: number, swathHeight: number, colorSpace: ColorSpace, byteArray: Uint8Array) => {
+        if (pix == undefined || pix.byteLength != size.width * swathHeight) {
+          pix = new ArrayBuffer(size.width * swathHeight * 4)
+        }
+        const area: image.PositionArea = {
+          pixels: pix,
+          offset: 0,
+          stride: size.width * 4,
+          region: { size: { width: size.width, height: swathHeight, }, x: 0, y: yOffset }
+        };
+        //BGRA_8888格式
+        pixelMap.readPixelsSync(area);
+        let uint8Data = new Uint8Array(pix);
+        let red: number;
+        let green: number;
+        let blue: number;
 
+        let byteIndex: number = 0;
+        for (let y = 0; y < swathHeight; y++) {
+          for (let x = 0; x < size.width; x++) {
+            const pixelIndex = (y * size.width + x) * 4;
+            blue = uint8Data[pixelIndex]; // Blue通道
+            green = uint8Data[pixelIndex + 1]; // Green通道
+            red = uint8Data[pixelIndex + 2]; // Red通道
+
+            if (colorSpace == ColorSpace.Grayscale) {
+              const grayValue = RED_COEFFICIENT * red +
+                GREEN_COEFFICIENT * green +
+                BLUE_COEFFICIENT * blue;
+              byteArray[byteIndex++] = grayValue;
+            } else {
+              byteArray[byteIndex++] =
+                red;
+              byteArray[byteIndex++] =
+                green;
+              byteArray[byteIndex++] =
+                blue;
+            }
+          }
+        }
+      })
+    renderablePages.push(renderablePage)
+  }
+  await writer.write(renderablePages);
+  writer.close()
+  console.info('ohos_jipp--> PCLm conversion completed successfully!');
 }
 
 
@@ -120,6 +112,7 @@ struct PdfToPclmPage {
   BLUE_COEFFICIENT: number = 0.0722;
   DPI: number = 300;
   @State resizePixelMap: image.PixelMap | undefined = undefined
+  @State status: string = ''
 
   aboutToAppear(): void {
     this.context = this.getUIContext().getHostContext() as Context;
@@ -154,9 +147,12 @@ struct PdfToPclmPage {
               if (DocumentSelectResult !== null && DocumentSelectResult !== undefined) {
                 DocumentSelectResult.forEach(async (value: string) => {
                   let task =
-                    new taskpool.Task(pdfToPclm, value, this.outputPath, this.DPI, this.RED_COEFFICIENT,
+                    new taskpool.Task(pdfToPclm, new fileUri.FileUri(value).path, this.outputPath, this.DPI,
+                      this.RED_COEFFICIENT,
                       this.GREEN_COEFFICIENT, this.BLUE_COEFFICIENT);
+                  this.status = '正在转换...'
                   await taskpool.execute(task)
+                  this.status = '转换完成'
                 })
               }
             }).catch((err: BusinessError) => {
@@ -167,11 +163,11 @@ struct PdfToPclmPage {
           }
         });
 
-      Image(this.resizePixelMap)
+      Text(this.status)
+        .textAlign(TextAlign.Center)
         .width('100%')
         .margin({ top: 10 })
         .height('50%')
-
     }
     .height('100%')
     .width('100%');
