@@ -529,6 +529,11 @@ renderSize(swathHeight: Int, colorSpace: ColorSpace)：number
 |     |---- CHANGELOG.md  # 更新日志
 ```
 
+## 遗留问题
+   
+1. 不支持ipp打印功能,此功能可使用 https://ohpm.openharmony.cn/#/cn/detail/jsipp 库代替。
+2. 不支持pdf转pwg。
+
 ## 贡献代码
 
 使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建 。
