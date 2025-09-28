@@ -20,9 +20,9 @@ import { util } from '@kit.ArkTS';
 import { RenderablePage } from '../RenderablePage';
 import { PdlUtil } from '../PdlUtil';
 import { ColorSpace } from '../OhColorSpace';
-import pako from 'pako';
 import { Sides } from '../model/Sides';
 import { PclmRasterBackSide } from '../model/PclmRasterBackSide';
+import { deflate } from '@ohos/flate2';
 
 // 条带数据结构（）
 class Swath {
@@ -187,7 +187,7 @@ export class PclmWriter {
         let rawBytes: Uint8Array | undefined = undefined
         let curBytes: Uint8Array = this.getBytes(page, swath, first, widthPixels, rawBytes)
         rawBytes = curBytes
-        context.byteStream = pako.deflate(rawBytes).buffer as ArrayBuffer
+        context.byteStream= deflate(rawBytes).buffer as ArrayBuffer;
         this.writeData(`/Width ${widthPixels}\n`)
         let colorSpace = this.settings.output.colorSpace
         if (colorSpace === ColorSpace.Rgb) {
