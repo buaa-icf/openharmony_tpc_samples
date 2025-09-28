@@ -14,7 +14,7 @@
   "main": "index.ets",
   "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/socketio_tls",
   "type": "module",
-  "version": "1.0.2",
+  "version": "1.0.3-rc.0",
   "dependencies": {},
   "tags": [
     "OpenHarmony",
