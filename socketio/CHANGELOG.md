@@ -1,3 +1,7 @@
+## v2.1.3-rc.1
+
+- Fixed the issue where emit callbacks could be overwritten across same or different event names
+
 ## v2.1.3-rc.0
 
 - Fixed the issue where the dependent c++ static library caused conflicts with the dynamic libraries of other modules, leading to program crashes
