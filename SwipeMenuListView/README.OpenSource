@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "SwipeMenuListView",
+        "License": "MIT license",
+        "License File": " LICENSE ",
+        "Version Number": "1.1.0",
+        "Owner" : "xiafeng@huawei.com",
+        "Upstream URL": "https://github.com/baoyongzhang/SwipeMenuListView",
+        "Description": "A powerful and highly customizable HarmonyOS swipe menu list component, offering a smooth swiping experience and rich customization options."
+    }
+]

@@ -1,0 +1,32 @@
+{
+  "types": "",
+  "keywords": [
+    "OpenHarmony",
+    "HarmonyOS",
+    "SwipeMenuListView",
+    "UI Component",
+    "List View",
+    "Swipe Menu"
+  ],
+  "author": "ohos_tpc",
+  "description": "滑动菜单列表视图组件，支持左右滑动显示操作菜单，提供丰富的自定义选项和流畅的用户交互体验",
+  "ohos": {
+    "org": "opensource"
+  },
+  "main": "Index.ets",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/SwipeMenuListView",
+  "type": "module",
+  "version": "1.0.0",
+  "dependencies": {},
+  "tags": [
+    "OpenHarmony",
+    "HarmonyOS",
+    "SwipeMenuListView",
+    "UI Component",
+    "List View",
+    "Swipe Menu"
+  ],
+  "license": "MIT License",
+  "devDependencies": {},
+  "name": "@ohos/swipemenulistview"
+}
