@@ -17,6 +17,7 @@ import { AnimConfig, FitType, MixData,
   VapState, VideoInfo, VideoMode, XComponentContext, DownloadData } from './DataDeclare';
 
 import { downloadFile } from './HttpReq';
+import { image } from '@kit.ImageKit';
 
 export class VAPPlayer implements XComponentContext {
   private vapContext: XComponentContext | null = null;
@@ -44,6 +45,14 @@ export class VAPPlayer implements XComponentContext {
     return undefined
   }
 
+  async getVideoInfoAsync(uri: string): Promise<VideoInfo | undefined> {
+    if (!this.vapContext) {
+      return;
+    }
+    uri = await downloadFile(uri, this.downloadTimeout, this.sandDir, this.downloadCallback)
+    return this.vapContext.getVideoInfo(uri, this.id);
+  }
+
   doneFn = () => {
     console.log('enter doneFn loops ' + this.loops)
     this.loops--;
@@ -67,7 +76,7 @@ export class VAPPlayer implements XComponentContext {
     if (mixData) {
       this.mixData = []
       for (let element of mixData) {
-        if (element.imgUri) {
+        if (typeof element.imgUri === 'string') {
           element.imgUri = await downloadFile(element.imgUri, this.downloadTimeout, this.sandDir, this.downloadCallback)
         }
         this.mixData.push(element)

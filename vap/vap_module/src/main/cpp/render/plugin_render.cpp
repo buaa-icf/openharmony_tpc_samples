@@ -202,9 +202,15 @@ std::string PluginRender::GetXComponentId(napi_env env, napi_callback_info info)
     OH_NativeXComponent *nativeXComponent = nullptr;
     std::string id = "";
 
-    napi_get_cb_info(env, info, NULL, NULL, &thisArg, NULL);
+    napi_status status = napi_get_cb_info(env, info, NULL, NULL, &thisArg, NULL);
+    if (status != napi_ok) {
+        return id;
+    }
     bool isExit = false;
-    napi_has_named_property(env, thisArg, OH_NATIVE_XCOMPONENT_OBJ, &isExit);
+    status = napi_has_named_property(env, thisArg, OH_NATIVE_XCOMPONENT_OBJ, &isExit);
+    if (status != napi_ok) {
+        return id;
+    }
     if (!isExit || (napi_ok != napi_get_named_property(env, thisArg, OH_NATIVE_XCOMPONENT_OBJ, &exportInstance))) {
         LOGE("Play: napi_get_named_property fail");
         return id;
@@ -303,10 +309,21 @@ napi_value PluginRender::SetLoop(napi_env env, napi_callback_info info)
     return nullptr;
 }
 
-static void GenSrcInfo(napi_env env, std::map<std::string, Src> &src, napi_value &srcInfos)
+static napi_value GenSrcInfo(napi_env env, AnimConfig& animConfig)
 {
+    std::map<std::string, Src> src;
+    animConfig.GetSrc(src);
+    if (src.empty()) {
+        return nullptr;
+    }
+
+    napi_value srcInfos = nullptr;
+    napi_status status = napi_create_array(env, &srcInfos);
+    if (status != napi_ok) {
+        return nullptr;
+    }
     size_t i = 0;
-    for (auto ele: src) {
+    for (const auto& ele: src) {
         auto srcInfo = NVal::CreateObject(env);
         auto srcId = NVal::CreateInt64(env, atoi(ele.first.c_str()));
         auto tag = NVal::CreateUTF8String(env, ele.second.srcTag);
@@ -314,12 +331,30 @@ static void GenSrcInfo(napi_env env, std::map<std::string, Src> &src, napi_value
         srcInfo.AddProp("srcId", srcId.val_);
         srcInfo.AddProp("tag", tag.val_);
         srcInfo.AddProp("type", type.val_);
-        napi_status status = napi_set_element(env, srcInfos, i, srcInfo.val_);
+
+        if (animConfig.frameAllPtr != nullptr && !animConfig.frameAllPtr->frameAll.empty()) {
+            for (const auto& item : animConfig.frameAllPtr->frameAll.begin()->second.frames) {
+                if (item.srcId == ele.first) {
+                    auto x = NVal::CreateInt64(env, static_cast<int>(item.frame.x));
+                    auto y = NVal::CreateInt64(env, static_cast<int>(item.frame.y));
+                    auto w = NVal::CreateInt64(env, static_cast<int>(item.frame.w));
+                    auto h = NVal::CreateInt64(env, static_cast<int>(item.frame.h));
+                    srcInfo.AddProp("x", x.val_);
+                    srcInfo.AddProp("y", y.val_);
+                    srcInfo.AddProp("w", w.val_);
+                    srcInfo.AddProp("h", h.val_);
+                    break;
+                }
+            }
+        }
+
+        status = napi_set_element(env, srcInfos, i, srcInfo.val_);
         if (status != napi_ok) {
             LOGE("Failed to create srcInfos with napi wrapper object.");
         }
         i++;
     }
+    return srcInfos;
 }
 
 napi_value PluginRender::GetVideoInfo(napi_env env, napi_callback_info info)
@@ -348,24 +383,18 @@ napi_value PluginRender::GetVideoInfo(napi_env env, napi_callback_info info)
         return nullptr;
     }
     AnimConfig animConfig;
-    animConfig.ParseJson(resStr.get(), false);
-    
-    std::map<std::string, Src> src;
-    animConfig.GetSrc(src);
-    napi_value srcInfos = nullptr;
-    
-    if (!src.empty()) {
-        napi_status status = napi_create_array(env, &srcInfos);
-        if (status == napi_ok) {
-            GenSrcInfo(env, src, srcInfos);
-        }
-    }
-    
+    animConfig.ParseJson(resStr.get());
+    napi_value srcInfos = GenSrcInfo(env, animConfig);
+
     auto videoInfo = NVal::CreateObject(env);
     auto width = NVal::CreateInt64(env, animConfig.width);
     auto height = NVal::CreateInt64(env, animConfig.height);
+    auto totalFrames = NVal::CreateInt64(env, animConfig.totalFrames);
+    auto fps = NVal::CreateInt64(env, animConfig.fps);
     videoInfo.AddProp("width", width.val_);
     videoInfo.AddProp("height", height.val_);
+    videoInfo.AddProp("totalFrames", totalFrames.val_);
+    videoInfo.AddProp("fps", fps.val_);
     videoInfo.AddProp("srcInfos", srcInfos);
     return videoInfo.val_;
 }
@@ -576,12 +605,41 @@ static void ParseMixParamTxt(NVal &nValOneOpt, MixInputData &mixInputData)
 
 static void ParseMixParamImg(NVal &nValOneOpt, MixInputData &mixInputData)
 {
-    if (nValOneOpt.HasProp(PROP_IMAGE)) {
-        LOGD("parse mix img");
-        auto [imgSucc, resData, length] = nValOneOpt.GetProp(PROP_IMAGE).ToUTF8String();
+    if (!nValOneOpt.HasProp(PROP_IMAGE)) {
+        return;
+    }
+    
+    LOGD("parse mix img");
+    NVal param =  nValOneOpt.GetProp(PROP_IMAGE);
+    napi_valuetype valueType;
+    napi_status status = napi_typeof(nValOneOpt.env_, param.val_, &valueType);
+    if (status != napi_ok) {
+        return;
+    }
+    if (valueType == napi_string) {
+        auto [imgSucc, resData, length] = param.ToUTF8String();
         if (imgSucc) {
-            mixInputData.imgUri = resData.get();
+            mixInputData.imgSrc.type = MixImgSourceType::FILE_SOURCE;
+            mixInputData.imgSrc.buffer = resData.get();
         }
+    } else if (valueType == napi_object) {
+        napi_typedarray_type type;
+        size_t length;
+        void* data;
+        napi_value arraybuffer;
+        size_t offset;
+        status = napi_get_typedarray_info(nValOneOpt.env_, param.GetProp("buffer").val_, &type, &length, &data, &arraybuffer, &offset);
+        if (status != napi_ok) {
+            return;
+        }
+        mixInputData.imgSrc.type = MixImgSourceType::UINT8_SOURCE;
+        mixInputData.imgSrc.buffer = std::string(static_cast<char*>(data), length);
+        auto [ret, pixType] = param.GetProp("type").ToInt32();
+        mixInputData.imgSrc.pixelFormat = pixType;
+        auto [wRet, w] = param.GetProp("w").ToInt32();
+        mixInputData.imgSrc.w = w;
+        auto [hRet, h] = param.GetProp("h").ToInt32();
+        mixInputData.imgSrc.h = h;
     }
 }
 
@@ -650,15 +708,18 @@ static void ParseMixParam(std::map<std::string, MixInputData> &mixData, napi_env
         return;
     }
     uint32_t len = ZERO;
-    napi_get_array_length(env, v2, &len);
-    if (len == ZERO) {
+    napi_status status = napi_get_array_length(env, v2, &len);
+    if (len == ZERO || status != napi_ok) {
         LOGE("the array is empty");
         return;
     }
     
     for (uint32_t i = 0; i < len; i++) {
         napi_value element;
-        napi_get_element(env, v2, i, &element);
+        status = napi_get_element(env, v2, i, &element);
+        if (status != napi_ok) {
+            return;
+        }
         NVal nValOneOpt(env, element);
         MixInputData mixInputData;
         
@@ -741,42 +802,64 @@ void Callback(void *asyncContext)
     uv_work_t *work = new uv_work_t;
     work->data = context;
     uv_queue_work(loop, work, [](uv_work_t *work) { LOGD("enter uv_work_t Callback"); },
-        [](uv_work_t *work, int status) {
+        [](uv_work_t *work, int state) {
             LOGD("enter complete Callback");
-            CallbackContext *context = (CallbackContext *)work->data;
+            std::unique_ptr<uv_work_t> workTmp(work);
+            std::unique_ptr<CallbackContext> context((CallbackContext *)work->data);
             napi_handle_scope scope = nullptr;
-            napi_status ret = napi_open_handle_scope(context->env, &scope);
+            napi_status status = napi_open_handle_scope(context->env, &scope);
+            if (status != napi_ok) {
+                LOGE("callback napi_open_handle_scope error %{public}d", status);
+                return;
+            }
+
+            struct ScopeGuard {
+                napi_env env;
+                napi_handle_scope scope;
+                ~ScopeGuard() {
+                    napi_status status = napi_close_handle_scope(env, scope);
+                    if (status != napi_ok) {
+                        LOGE("callback napi_close_handle_scope error %{public}d", status);
+                    }
+                }
+            };
+            ScopeGuard scopeGuard {context->env, scope};
+                    
             napi_value callback = nullptr;
-            ret = napi_get_reference_value(context->env, context->callbackRef, &callback);
-            if (ret != napi_ok) {
-                LOGE("callback napi_get_reference_value error %{public}d", ret);
+            status = napi_get_reference_value(context->env, context->callbackRef, &callback);
+            if (status != napi_ok) {
+                LOGE("callback napi_get_reference_value error %{public}d", status);
+                return;
             } else if (context && context->vapState == VapState::FAILED) {
                 napi_value ret[2];
-                napi_create_int32(context->env, context->vapState, &ret[0]);
-                napi_create_int32(context->env, context->err, &ret[1]);
+                ret[0] = NVal::CreateInt64(context->env, context->vapState).val_;
+                ret[1] = NVal::CreateInt64(context->env, context->vapState).val_;
                 napi_value res = nullptr;
-                napi_call_function(context->env, nullptr, callback, 2, ret, &res);
+                status = napi_call_function(context->env, nullptr, callback, 2, ret, &res);
             } else if (context && (context->vapState == VapState::RENDER || context->vapState == VapState::START)) {
                 auto animConfig = NVal::CreateObject(context->env);
                 CreateAnimConfig(context->env, context->jsAnimConfig, animConfig);
                 napi_value ret[2];
-                napi_create_int32(context->env, context->vapState, &ret[0]);
+                ret[0] = NVal::CreateInt64(context->env, context->vapState).val_;
                 ret[1] = animConfig.val_;
                 napi_value res = nullptr;
-                napi_call_function(context->env, nullptr, callback, 2, ret, &res);
+                status = napi_call_function(context->env, nullptr, callback, 2, ret, &res);
             } else if (context) {
-                napi_value rev = nullptr;
-                napi_create_int32(context->env, context->vapState, &rev);
+                napi_value rev = NVal::CreateInt64(context->env, context->vapState).val_;
                 napi_value res = nullptr;
-                napi_call_function(context->env, nullptr, callback, 1, &rev, &res);
+                status = napi_call_function(context->env, nullptr, callback, 1, &rev, &res);
+            }
+            if (status != napi_ok) {
+                LOGE("callback napi_call_function error %{public}d", status);
+                return;
             }
 
             if (context->vapState == VapState::UNKNOWN) {
-                napi_delete_reference(context->env, context->callbackRef);
+                status = napi_delete_reference(context->env, context->callbackRef);
+                if (status != napi_ok) {
+                    LOGE("callback napi_delete_reference error %{public}d", status);
+                }
             }
-            napi_close_handle_scope(context->env, scope);
-            delete context;
-            delete work;
         });
 }
 

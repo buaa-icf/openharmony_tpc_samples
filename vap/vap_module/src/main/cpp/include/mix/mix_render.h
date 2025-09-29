@@ -39,10 +39,22 @@ struct MixConfigSize {
 #define SET_TEXT_ALIGN 0x02
 #define SET_FONT_WEIGHT 0x04
 
+enum MixImgSourceType {
+    FILE_SOURCE,
+    UINT8_SOURCE,
+};
+
+struct MixImgSource {
+    MixImgSourceType type = MixImgSourceType::FILE_SOURCE;
+    std::string buffer = "DEFAULT_URI";
+    int32_t pixelFormat = 0;
+    int32_t w = 0;
+    int32_t h = 0;
+};
+
 struct MixInputData {
     std::string txt = "DEFAULT_TEXT";
-    std::string imgUri = "DEFAULT_URI";
-    
+    MixImgSource imgSrc;
     uint8_t isSet = 0;
     ColorARGB color;
     OH_Drawing_TextAlign textAlign;

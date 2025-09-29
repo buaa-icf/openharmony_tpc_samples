@@ -54,6 +54,8 @@ export class VideoInfoBean implements VideoInfo {
   srcInfos: SrcInfo[] = [];
   width: number = 0;
   height: number = 0;
+  totalFrames: number = 0;
+  fps: number = 0;
 }
 ;
 
@@ -116,7 +118,7 @@ export struct VAPComponent {
     this.uri = await downloadFile(uri, this.downloadTimeout ,this.sandDir, this.downloadCallback)
     if (mixData) {
       for (let element of mixData) {
-        if (element.imgUri) {
+        if (element.imgUri && (typeof element.imgUri === "string")) {
           element.imgUri = await downloadFile(element.imgUri, this.downloadTimeout, this.sandDir, this.downloadCallback)
         }
         this.mixData.push(element)

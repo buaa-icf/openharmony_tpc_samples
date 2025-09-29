@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import { MixData, VAPPlayer, VAPColor } from '@ohos/vap';
+import { MixData, VAPPlayer, VAPColor, MixUint8Img } from '@ohos/vap';
 import { systemDateTime } from '@kit.BasicServicesKit';
 import { LogUtil } from '../common/LogUtil';
 import { util } from '@kit.ArkTS';
@@ -21,7 +21,7 @@ import { FitType } from '@ohos/vap';
 import { VAPFontWeight } from '@ohos/vap';
 import { VAPTextAlign } from '@ohos/vap';
 import { SrcInfo, SrcType } from '@ohos/vap';
-import text from '@ohos.graphics.text';
+import { image } from '@kit.ImageKit';
 
 class ColorBean implements VAPColor {
   a: number = 255;
@@ -47,6 +47,7 @@ struct VAPXAnimation {
   private colorIdx: number = 0;
   private xComponentId: string = 'xcomponentId_' + util.generateRandomUUID()
   private videoPath: string = getContext(this).filesDir + "/123.mp4";
+  private opts: Array<MixData> = []
 
   @Styles tipTxt() {
     .backgroundColor('#fff')
@@ -69,49 +70,15 @@ struct VAPXAnimation {
 
   play() {
     if (this.vapPlayer === undefined) {
-      LogUtil.error('plz create XComponent first')
+      LogUtil.error('create XComponent first')
       return
     }
     this.vapPlayer?.setFitType(this.fitType)
     try {
-      if (this.srcInfo) {
-        let mixData: Array<MixData> = []
-        this.srcInfo.map((ele, idx) => {
-          if (ele.type == SrcType.IMG) {
-            mixData.push({ tag: ele.tag, imgUri: '图片地址' })
-          } else if (ele.type == SrcType.TXT) {
-            mixData.push({ tag: ele.tag, txt: '文本信息', color: this.color })
-          }
-        })
-        console.log('config mixData: ' + JSON.stringify(mixData))
-      } else {
-        console.log('error not get srcInfo')
-      }
-
-      let opts: Array<MixData> = [];
-      if (this.srcInfo != undefined) {
-        for (let s of this.srcInfo) {
-          if (s.type == SrcType.IMG) {
-            opts.push({
-              tag: s.tag,
-              imgUri: getContext(this).filesDir + '/head1.png'
-            })
-          } else if (s.type == SrcType.TXT) {
-            opts.push({
-              tag: s.tag,
-              txt: "星河Harmony NEXT 星河Harmony NEXT",
-              textAlign: this.textAlign, // VAPTextAlign.TEXT_ALIGN_JUSTIFY对齐方式规格见 https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/ts-basic-components-text-V5#textalign
-              fontWeight: this.fontWeight,
-              color: this.color
-            })
-          }
-        }
-      }
       this.buttonEnabled = false;
-
       let startTime = systemDateTime.getTime(true)
 
-      this.vapPlayer?.play(this.videoPath, opts, () => {
+      this.vapPlayer?.play(this.videoPath, this.opts, () => {
         LogUtil.info("js get callback")
         this.buttonEnabled = true;
       });
@@ -159,9 +126,6 @@ struct VAPXAnimation {
             if (context) {
               this.vapPlayer = new VAPPlayer(this.xComponentId);
               this.vapPlayer.setContext(context);
-              let info = this.vapPlayer.getVideoInfo(this.videoPath)
-              console.log('getVideoInfo info ' + JSON.stringify(info))
-              this.srcInfo = info?.srcInfos
             }
           })
           .backgroundColor(Color.Transparent)
@@ -183,11 +147,11 @@ struct VAPXAnimation {
               .width(80)
               .maxLength(3)
               .onChange((value: string) => {
-                if (this.colorIdx == 0) {
+                if (this.colorIdx === 0) {
                   this.color.r = Number(value) & 0xff
-                } else if (this.colorIdx == 1) {
+                } else if (this.colorIdx === 1) {
                   this.color.g = Number(value) & 0xff
-                } else if (this.colorIdx == 2) {
+                } else if (this.colorIdx === 2) {
                   this.color.b = Number(value) & 0xff
                 }
                 this.showColor =
@@ -242,12 +206,80 @@ struct VAPXAnimation {
       .alignContent(Alignment.Bottom)
 
       Row() {
-        Button('Play')
+        Button('PlayNative')
           .fontWeight(500)
           .onClick(() => {
+            this.videoPath = getContext(this).filesDir + "/123.mp4";
+            let info = this.vapPlayer?.getVideoInfo(this.videoPath)
+            console.log('getVideoInfo info ' + JSON.stringify(info))
+            this.srcInfo = info?.srcInfos
+            if (this.srcInfo !== undefined) {
+              this.opts = [];
+              for (let s of this.srcInfo) {
+                if (s.type === SrcType.IMG) {
+                  this.opts.push({
+                    tag: s.tag,
+                    imgUri: getContext(this).filesDir + '/head1.png'
+                  })
+                } else if (s.type === SrcType.TXT) {
+                  this.opts.push({
+                    tag: s.tag,
+                    txt: "星河Harmony NEXT 星河Harmony NEXT",
+                    textAlign: this.textAlign, // VAPTextAlign.TEXT_ALIGN_JUSTIFY对齐方式规格见 https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/ts-basic-components-text-V5#textalign
+                    fontWeight: this.fontWeight,
+                    color: this.color
+                  })
+                }
+              }
+            }
             this.play()
           })
-          .width('200')
+          .enabled(this.buttonEnabled)
+        Button('PlayOnline')
+          .fontWeight(500)
+          .onClick(async () => {
+            this.videoPath = "https://static.mszmapp.com/files/20250530/8d7032c2665096d51ca1736c74753998.mp4";
+            let info = await this.vapPlayer?.getVideoInfoAsync(this.videoPath)
+            console.log('getVideoInfo info ' + JSON.stringify(info))
+            this.srcInfo = info?.srcInfos
+            this.opts = [];
+            const pixels = new Uint8Array([
+            // 第一行
+              0, 255, 0, 255,    // 左 (绿色)
+              0, 255, 255, 255,  // 右 (黄色)
+
+              // 第二行
+              0, 255, 0, 255,    // 左 (绿色)
+              0, 255, 255, 255   // 右 (黄色)
+            ]);
+
+            let imgObj: MixUint8Img = {
+              buffer: pixels,
+              pixelFormat: image.PixelMapFormat.BGRA_8888,
+              h: 2,
+              w: 2
+            }
+
+            if (this.srcInfo !== undefined) {
+              for (let s of this.srcInfo) {
+                if (s.type === SrcType.IMG) {
+                  this.opts.push({
+                    tag: s.tag,
+                    imgUri: imgObj
+                  })
+                } else if (s.type === SrcType.TXT) {
+                  this.opts.push({
+                    tag: s.tag,
+                    txt: "星河Harmony NEXT 星河Harmony NEXT",
+                    textAlign: this.textAlign, // VAPTextAlign.TEXT_ALIGN_JUSTIFY对齐方式规格见 https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/ts-basic-components-text-V5#textalign
+                    fontWeight: this.fontWeight,
+                    color: this.color
+                  })
+                }
+              }
+            }
+            this.play()
+          })
           .enabled(this.buttonEnabled)
         Button('pause')
           .onClick(() => {
