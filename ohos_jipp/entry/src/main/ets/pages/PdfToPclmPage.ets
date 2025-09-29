@@ -50,7 +50,6 @@ async function pdfToPclm(pdfPath: string, outputPath: string, DPI: number,
     let size: image.Size = { width: page.GetWidth(), height: page.GetHeight() }
     let pixelMap = page.Render(Math.ceil(size.width * DPI / 72), Math.ceil(size.height * DPI / 72));
     size = pixelMap.getImageInfoSync().size
-    console.info('ohos_jipp--> page size: ' + size.width + ' x ' + size.height);
     let renderablePage = new RenderablePage(size.width, size.height, DPI,
       (yOffset: number, swathHeight: number, colorSpace: ColorSpace, byteArray: Uint8Array) => {
         if (pix == undefined || pix.byteLength != size.width * swathHeight) {
@@ -64,32 +63,26 @@ async function pdfToPclm(pdfPath: string, outputPath: string, DPI: number,
         };
         //BGRA_8888格式
         pixelMap.readPixelsSync(area);
-        let uint8Data = new Uint8Array(pix);
-        let red: number;
-        let green: number;
-        let blue: number;
-
-        let byteIndex: number = 0;
-        for (let y = 0; y < swathHeight; y++) {
-          for (let x = 0; x < size.width; x++) {
-            const pixelIndex = (y * size.width + x) * 4;
-            blue = uint8Data[pixelIndex]; // Blue通道
-            green = uint8Data[pixelIndex + 1]; // Green通道
-            red = uint8Data[pixelIndex + 2]; // Red通道
-
-            if (colorSpace == ColorSpace.Grayscale) {
-              const grayValue = RED_COEFFICIENT * red +
-                GREEN_COEFFICIENT * green +
-                BLUE_COEFFICIENT * blue;
-              byteArray[byteIndex++] = grayValue;
-            } else {
-              byteArray[byteIndex++] =
-                red;
-              byteArray[byteIndex++] =
-                green;
-              byteArray[byteIndex++] =
-                blue;
-            }
+        let pixels = new Uint32Array(pix);
+        if (colorSpace == ColorSpace.Grayscale) {
+          for (let i = 0; i < pixels.length; i++) {
+            let pixel = pixels[i];
+            let red = (pixel >> 16) & 0xFF;
+            let green = (pixel >> 8) & 0xFF;
+            let blue = pixel & 0xFF;
+            let grayValue = RED_COEFFICIENT * red + GREEN_COEFFICIENT * green + BLUE_COEFFICIENT * blue;
+            byteArray[i] = grayValue;
+          }
+        } else {
+          let byteIndex = 0;
+          for (let i = 0; i < pixels.length; i++) {
+            let pixel = pixels[i];
+            let red = (pixel >> 16) & 0xFF;
+            let green = (pixel >> 8) & 0xFF;
+            let blue = pixel & 0xFF;
+            byteArray[byteIndex++] = red;
+            byteArray[byteIndex++] = green;
+            byteArray[byteIndex++] = blue;
           }
         }
       })
