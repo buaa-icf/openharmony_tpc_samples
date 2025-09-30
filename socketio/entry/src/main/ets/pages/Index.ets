@@ -39,7 +39,122 @@ struct Index {
           .divider({ strokeWidth: 2, color: "#f3f3f3" })
           .height('80%')
           .width('100%')
-
+          Row() {
+            Button('exit')
+              .onClick(() => {
+                socketManager.close()
+                this.login_finish = socketManager.login_finish
+                chatDetailData.delData()
+              })
+              .width('20%')
+            Button('null')
+              .onClick(() => {
+                socketManager.sendNullMessage(null)
+                let clientMessage: ESObject = { username: socketManager.username, message: null, id: 2 }
+                chatDetailData.pushData(clientMessage)
+              })
+              .width('20%')
+            Button('string')
+              .onClick(() => {
+                if (this.message == "") {
+                  prompt.showToast({ message: $r('app.string.Enter_messages') });
+                  return
+                }
+                socketManager.sendStringMessage(this.message)
+                let clientMessage: ESObject = { username: socketManager.username, message:this.message, id: 2 }
+                chatDetailData.pushData(clientMessage)
+              })
+              .width('20%')
+            Button('number')
+              .onClick(() => {
+                if (this.message == "") {
+                  prompt.showToast({ message: $r('app.string.Enter_messages') });
+                  return
+                }
+                socketManager.sendNumberMessage(this.message)
+                let clientMessage: ESObject = { username: socketManager.username, message:this.message, id: 2 }
+                chatDetailData.pushData(clientMessage)
+              })
+              .width('20%')
+            Button('object')
+              .onClick(() => {
+                if (this.message == "") {
+                  prompt.showToast({ message: $r('app.string.Enter_messages') });
+                  return
+                }
+                socketManager.sendObjectMessage(this.message)
+                let clientMessage: ESObject = { username: socketManager.username, message:this.message, id: 2 }
+                chatDetailData.pushData(clientMessage)
+              })
+              .width('20%')
+            Button('multiple')
+              .onClick(() => {
+                if (this.message == "") {
+                  prompt.showToast({ message: $r('app.string.Enter_messages') });
+                  return
+                }
+                socketManager.sendMessage([this.message, 123, '你是哦大家', [123,34343]])
+                let clientMessage: ESObject = { username: socketManager.username, message:this.message, id: 2 }
+                chatDetailData.pushData(clientMessage)
+                this.message = ""
+              })
+              .width('20%')
+          }
+          .width('100%')
+          Row() {
+            Button('float')
+              .onClick(() => {
+                if (this.message == "") {
+                  prompt.showToast({ message: $r('app.string.Enter_messages') });
+                  return
+                }
+                socketManager.sendNumberMessage(this.message)
+                let clientMessage: ESObject = { username: socketManager.username, message:this.message, id: 2 }
+                chatDetailData.pushData(clientMessage)
+              })
+              .width('20%')
+            Button('array')
+              .onClick(() => {
+                if (this.message == "") {
+                  prompt.showToast({ message: $r('app.string.Enter_messages') });
+                  return
+                }
+                socketManager.sendArrayMessage(this.message)
+                let clientMessage: ESObject = { username: socketManager.username, message:this.message, id: 2 }
+                chatDetailData.pushData(clientMessage)
+              })
+              .width('20%')
+            Button('boolean')
+              .onClick(() => {
+                socketManager.sendBooleanMessage(true)
+                let clientMessage: ESObject = { username: socketManager.username, message:true, id: 2 }
+                chatDetailData.pushData(clientMessage)
+              })
+              .width('20%')
+            Button('buff')
+              .onClick(() => {
+                if (this.message == "") {
+                  prompt.showToast({ message: $r('app.string.Enter_messages') });
+                  return
+                }
+                socketManager.sendBufferMessage(this.message)
+                let clientMessage: ESObject = { username: socketManager.username, message:this.message, id: 2 }
+                chatDetailData.pushData(clientMessage)
+              })
+              .width('20%')
+            Button('multi')
+              .onClick(() => {
+                if (this.message == "") {
+                  prompt.showToast({ message: $r('app.string.Enter_messages') });
+                  return
+                }
+                socketManager.sendMultiParameterCallbackMessage(this.message)
+                let clientMessage: ESObject = { username: socketManager.username, message:this.message, id: 2 }
+                chatDetailData.pushData(clientMessage)
+              })
+              .width('20%')
+          }
+          .width('100%')
           Row() {
             TextInput({ placeholder: $r('app.string.Enter_message'), text: this.message })
               .width('80%')
@@ -64,6 +179,7 @@ struct Index {
           }
           .height('10%')
           .width('100%')
+
         } else {
           TextInput({ placeholder: $r('app.string.Server_address'), text: this.uri })
             .onChange((uri) => {

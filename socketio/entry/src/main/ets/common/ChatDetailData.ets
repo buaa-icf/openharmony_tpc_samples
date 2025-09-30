@@ -31,6 +31,10 @@ class ChatDetailData extends BasicDataSource {
     this.msgList.push(data);
     this.notifyDataAdd(this.msgList.length - 1);
   }
+
+  public delData(): void {
+    this.msgList=[];
+  }
 }
 
 export const chatDetailData = new ChatDetailData()

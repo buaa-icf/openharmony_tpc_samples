@@ -29,7 +29,7 @@ static constexpr const int MAX_MESSAGE_SIZE = 100000;
 static constexpr const int ODD_NUMBER = 1;
 static constexpr const int EXPECT_NUMBER = 2;
 
-static std::unordered_map<std::string, SocketIOClient*> g_clientMap;
+static std::unordered_map<std::string, SocketIOClient *> g_clientMap;
 // client相关回调
 static napi_ref on_open_call_ref, on_fail_call_ref, on_reconnecting_call_ref, on_reconnect_call_ref;
 static napi_ref on_socket_open_call_ref, on_socket_close_call_ref, on_close_call_ref;
@@ -54,42 +54,40 @@ static constexpr const int ARG_INDEX_4 = 4;
 static bool g_isOnce = false;
 
 // 处理带有转义字符的字符串
-static std::string transfer_characters(const std::string &str)
-{
+static std::string transfer_characters(const std::string &str) {
     std::string transChar;
     for (auto ch : str) {
         switch (ch) {
-            case '\"':
-                transChar += "\\\"";
-                break;
-            case '\\':
-                transChar += "\\\\";
-                break;
-            case '\b':
-                transChar += "\\b";
-                break; // 退格
-            case '\f':
-                transChar += "\\f";
-                break; // 换页
-            case '\n':
-                transChar += "\\n";
-                break;
-            case '\r':
-                transChar += "\\r";
-                break;
-            case '\t':
-                transChar += "\\t";
-                break;
-            default:
-                transChar += ch;
-                break; // 其他字符直接添加
+        case '\"':
+            transChar += "\\\"";
+            break;
+        case '\\':
+            transChar += "\\\\";
+            break;
+        case '\b':
+            transChar += "\\b";
+            break; // 退格
+        case '\f':
+            transChar += "\\f";
+            break; // 换页
+        case '\n':
+            transChar += "\\n";
+            break;
+        case '\r':
+            transChar += "\\r";
+            break;
+        case '\t':
+            transChar += "\\t";
+            break;
+        default:
+            transChar += ch;
+            break; // 其他字符直接添加
         }
     }
     return transChar;
 }
 
-static std::string extract_string_from_message(sio::message::ptr const &message)
-{
+static std::string extract_string_from_message(sio::message::ptr const &message) {
     // 当服务端返回的是json字符串的情况下，无需拼接转义符 \",直接将数据返回拼接即可
     if (message->get_string().size() > 0 && message->get_string()[0] == '{') {
         return message->get_string();
@@ -98,102 +96,105 @@ static std::string extract_string_from_message(sio::message::ptr const &message)
     return std::string("\"") + transfer_characters(message->get_string()) + "\"";
 }
 
-static std::string get_message_value(sio::message::ptr const &message)
-{
+static std::string get_message_value(sio::message::ptr const &message) {
     std::string message_json;
     std::map<std::string, sio::message::ptr> messageMap;
     std::vector<sio::message::ptr> messageArray;
-    
+
     switch (message->get_flag()) {
-        case sio::message::flag_integer:
-            return std::to_string(message->get_int());
-        case sio::message::flag_double:
-            return std::to_string(message->get_double());
-        case sio::message::flag_string:
-            return extract_string_from_message(message);
-        case sio::message::flag_binary:
-            return std::string("\"") + *message->get_binary() + "\"" + ",\"binary\":true";
-        case sio::message::flag_object:
-            message_json = "{";
-            messageMap = message->get_map();
-            for (auto it : messageMap) {
-                if (messageMap.begin()->first != it.first) {
-                    message_json += std::string(",");
-                }
-                message_json += std::string("\"") + it.first.c_str() + "\":" + get_message_value(it.second);
+    case sio::message::flag_integer:
+        return std::to_string(message->get_int());
+    case sio::message::flag_double:
+        return std::to_string(message->get_double());
+    case sio::message::flag_string:
+        return extract_string_from_message(message);
+    case sio::message::flag_binary:
+        return std::string("\"") + *message->get_binary() + "\"" + ",\"binary\":true";
+    case sio::message::flag_object:
+        message_json = "{";
+        messageMap = message->get_map();
+        for (auto it : messageMap) {
+            if (messageMap.begin()->first != it.first) {
+                message_json += std::string(",");
             }
-            message_json += "}";
-            return message_json;
-        case sio::message::flag_array:
-            message_json = "[";
-            messageArray = message->get_vector();
-            for (int i = 0; i < messageArray.size(); i++) {
-                message_json += get_message_value(messageArray[i]);
-                if (i != (messageArray.size() - 1)) {
-                    message_json += std::string(",");
-                }
+            message_json += std::string("\"") + it.first.c_str() + "\":" + get_message_value(it.second);
+        }
+        message_json += "}";
+        return message_json;
+    case sio::message::flag_array:
+        message_json = "[";
+        messageArray = message->get_vector();
+        for (int i = 0; i < messageArray.size(); i++) {
+            message_json += get_message_value(messageArray[i]);
+            if (i != (messageArray.size() - 1)) {
+                message_json += std::string(",");
             }
-            message_json += "]";
-            return message_json;
-        case sio::message::flag_boolean:
-            return std::to_string(message->get_bool());
-        case sio::message::flag_null:
-            return std::string("\"\"");
-        default:
-            return std::string("\"\"");
+        }
+        message_json += "]";
+        return message_json;
+    case sio::message::flag_boolean:
+        return message->get_bool() ? "true" : "false";
+    case sio::message::flag_null:
+//         return std::string("\"\"");
+        return "null";
+    default:
+        return std::string("\"\"");
     }
 }
 
 static void handler_event_listener_aux(OHOS::SocketIO::SocketIOContext context, const std::string &name,
                                        sio::message::ptr const &message, bool needAck,
-                                       sio::message::list &ack_message)
-{
+                                       sio::message::list &ack_message) {
     napi_ref on_event_listener_call_aux_ref = on_event_listener_call_aux_ref_map[name.c_str()];
     if (on_event_listener_call_aux_ref != nullptr) {
         std::string message_json = std::string("{") + "\"eventName\":\"" + name + "\"";
+        OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, "LOG_TAG", "SOCKETIO_TAG_NAPI------>flag %{public}d",
+                     message->get_flag());
         if (message->get_flag() == sio::message::flag_object) {
             std::map<std::string, sio::message::ptr> messageMap = message->get_map();
             for (auto it : messageMap) {
                 message_json += std::string(",\"") + it.first.c_str() + "\":" + get_message_value(it.second);
+                std::string message_content =
+                    std::string(",\"") + it.first.c_str() + "\":" + get_message_value(it.second);
+                OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, "LOG_TAG", "SOCKETIO_TAG_NAPI------>it %{public}s",
+                             message_content.c_str());
             }
         } else {
             message_json += std::string(",\"") + "message" + "\":" + get_message_value(message);
         }
         message_json += "}";
-        
+        OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, "LOG_TAG", "SOCKETIO_TAG_NAPI------>message_json %{public}s",
+                     message_json.c_str());
         std::unique_ptr<ThreadSafeInfo> localThreadSafeInfo = std::make_unique<ThreadSafeInfo>();
         if (localThreadSafeInfo == nullptr) {
             OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[event_listener]localThreadSafeInfo is null");
             return;
         }
         localThreadSafeInfo->result = message_json;
-        context.CallTsFunction(static_cast<void*>(localThreadSafeInfo.release()));
-        
+        context.CallTsFunction(static_cast<void *>(localThreadSafeInfo.release()));
+
         if (g_isOnce) {
             on_event_listener_call_aux_ref_map[name.c_str()] = nullptr;
         }
     }
 }
 
-static void handler_binary_event_listener_aux(OHOS::SocketIO::SocketIOContext context,
-                                              const std::string &name,
-                                              sio::message::ptr const &message,
-                                              bool needAck,
-                                              sio::message::list &ack_message)
-{
+static void handler_binary_event_listener_aux(OHOS::SocketIO::SocketIOContext context, const std::string &name,
+                                              sio::message::ptr const &message, bool needAck,
+                                              sio::message::list &ack_message) {
     napi_ref on_event_listener_call_aux_ref = on_event_listener_call_aux_ref_map[name.c_str()];
     if (on_event_listener_call_aux_ref != nullptr) {
         if (message->get_flag() == sio::message::flag_binary) {
             auto binary_str = *message->get_binary();
-            
+
             std::unique_ptr<BinaryInfo> localBinaryInfo = std::make_unique<BinaryInfo>();
             if (localBinaryInfo == nullptr) {
                 OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[event_listener]localBinaryInfo is null");
                 return;
             }
             localBinaryInfo->result = binary_str;
-            context.CallTsFunction(static_cast<void*>(localBinaryInfo.release()));
-            
+            context.CallTsFunction(static_cast<void *>(localBinaryInfo.release()));
+
             if (g_isOnce) {
                 on_event_listener_call_aux_ref_map[name.c_str()] = nullptr;
             }
@@ -205,45 +206,40 @@ class ClientSocket {
 public:
     ClientSocket() noexcept {}
 
-    void OnOpen()
-    {
+    void OnOpen() {
         OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, "LOG_TAG", "SOCKETIO_TAG_NAPI------> OnOpen 连接成功");
-            
+
         napi_acquire_threadsafe_function(g_tsfnOnOpenCall);
         // 调用主线程函数，传入 Data
         napi_call_threadsafe_function(g_tsfnOnOpenCall, nullptr, napi_tsfn_blocking);
     }
 
-    void OnFail()
-    {
+    void OnFail() {
         OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> OnFail ");
-            
+
         napi_acquire_threadsafe_function(g_tsfnFailCall);
         // 调用主线程函数，传入 Data
         napi_call_threadsafe_function(g_tsfnFailCall, nullptr, napi_tsfn_blocking);
     }
 
-    void OnReconnecting()
-    {
+    void OnReconnecting() {
         OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> OnReconnecting ");
-            
+
         napi_acquire_threadsafe_function(g_tsfnReconnectingCall);
         // 调用主线程函数，传入 Data
         napi_call_threadsafe_function(g_tsfnReconnectingCall, nullptr, napi_tsfn_blocking);
     }
 
     // 待回传unsigned两个参数
-    void OnReconnect(unsigned, unsigned)
-    {
+    void OnReconnect(unsigned, unsigned) {
         OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> OnReconnect ");
-            
+
         napi_acquire_threadsafe_function(g_tsfnReconnectCall);
         // 调用主线程函数，传入 Data
         napi_call_threadsafe_function(g_tsfnReconnectCall, nullptr, napi_tsfn_blocking);
     }
 
-    void on_close(sio::client::close_reason const &reason)
-    {
+    void on_close(sio::client::close_reason const &reason) {
         std::string reasonString = "";
         if (reason == sio::client::close_reason_normal) {
             reasonString = "close_reason_normal";
@@ -251,7 +247,7 @@ public:
             reasonString = "close_reason_drop";
         }
         OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> on_close ");
-        
+
         std::unique_ptr<ThreadSafeInfo> localThreadSafeInfo = std::make_unique<ThreadSafeInfo>();
         if (localThreadSafeInfo == nullptr) {
             OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[on_close]localThreadSafeInfo is null");
@@ -262,11 +258,10 @@ public:
         napi_call_threadsafe_function(g_tsfnCloseCall, localThreadSafeInfo.release(), napi_tsfn_blocking);
     }
 
-    void on_socket_open(std::string const &nsp)
-    {
+    void on_socket_open(std::string const &nsp) {
         OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------>0 on_socket_open %{public}s",
                      nsp.c_str());
-        
+
         std::unique_ptr<ThreadSafeInfo> localThreadSafeInfo = std::make_unique<ThreadSafeInfo>();
         if (localThreadSafeInfo == nullptr) {
             OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[on_socket_open]localThreadSafeInfo is null");
@@ -277,8 +272,7 @@ public:
         napi_call_threadsafe_function(g_tsfnOnSocketioOpenCall, localThreadSafeInfo.release(), napi_tsfn_blocking);
     }
 
-    void on_socket_close(std::string const &nsp)
-    {
+    void on_socket_close(std::string const &nsp) {
         OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> on_socket_close ");
         std::unique_ptr<ThreadSafeInfo> localThreadSafeInfo = std::make_unique<ThreadSafeInfo>();
         if (localThreadSafeInfo == nullptr) {
@@ -291,33 +285,26 @@ public:
     }
 
     void on_event_listener_aux(const OHOS::SocketIO::SocketIOContext &context, const std::string &name,
-                               sio::message::ptr const &message, bool needAck, sio::message::list &ack_message)
-    {
+                               sio::message::ptr const &message, bool needAck, sio::message::list &ack_message) {
         g_isOnce = false;
-        handler_event_listener_aux(context, name, message, needAck,
-            ack_message);
+        handler_event_listener_aux(context, name, message, needAck, ack_message);
     }
-    
+
     void on_binary_event_listener_aux(const OHOS::SocketIO::SocketIOContext &context, const std::string &name,
-                               sio::message::ptr const &message, bool needAck, sio::message::list &ack_message)
-    {
+                                      sio::message::ptr const &message, bool needAck, sio::message::list &ack_message) {
         g_isOnce = false;
-        handler_binary_event_listener_aux(context, name, message, needAck,
-            ack_message);
+        handler_binary_event_listener_aux(context, name, message, needAck, ack_message);
     }
 
     void once_event_listener_aux(const OHOS::SocketIO::SocketIOContext &context, const std::string &name,
-                                 sio::message::ptr const &message, bool needAck, sio::message::list &ack_message)
-    {
+                                 sio::message::ptr const &message, bool needAck, sio::message::list &ack_message) {
         g_isOnce = true;
-        handler_event_listener_aux(context, name, message, needAck,
-            ack_message);
+        handler_event_listener_aux(context, name, message, needAck, ack_message);
     }
 
-    void on_error_listener(sio::message::ptr const &message)
-    {
+    void on_error_listener(sio::message::ptr const &message) {
         std::string error_string = "on error";
-        
+
         std::unique_ptr<ThreadSafeInfo> localThreadSafeInfo = std::make_unique<ThreadSafeInfo>();
         if (localThreadSafeInfo == nullptr) {
             OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[on_error_listener]localThreadSafeInfo is null");
@@ -327,39 +314,55 @@ public:
         napi_acquire_threadsafe_function(g_tsfnOnErrorCall);
         napi_call_threadsafe_function(g_tsfnOnErrorCall, localThreadSafeInfo.release(), napi_tsfn_blocking);
     }
-    
-    std::string handler_message_json(sio::message::list const &list)
-    {
+
+    std::string handler_message_json(sio::message::list const &list) {
         std::string str;
-        if (list.at(0)->get_flag() == sio::message::flag_object) {
-            std::map<std::string, sio::message::ptr> messageMap = list.at(0)->get_map();
-            for (auto it : messageMap) {
-                if (messageMap.begin()->first != it.first) {
-                    str += std::string(",");
+        OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, "LOG_TAG", "SOCKETIO_TAG_NAPI------>handler_message_json list.size = %{public}d", list.size());
+        if (list.size() == 1) {
+            str += "{";
+            if (list.at(0)->get_flag() == sio::message::flag_object) {
+                std::map<std::string, sio::message::ptr> messageMap = list.at(0)->get_map();
+                for (auto it : messageMap) {
+                    if (messageMap.begin()->first != it.first) {
+                        str += std::string(",");
+                    }
+                    str += std::string("\"") + it.first.c_str() + "\":" + get_message_value(it.second);
                 }
-                str += std::string("\"") + it.first.c_str() + "\":" + get_message_value(it.second);
+            } else {
+                str += std::string("\"") + "message" + "\":" + get_message_value(list.at(0));
             }
+            str += "}";
         } else {
-            str += std::string("\"") + "message" + "\":" + get_message_value(list.at(0));
+            str += "[";
+            for (int16_t index = 0; index < list.size(); index++) {
+                OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, "LOG_TAG",
+                            "SOCKETIO_TAG_NAPI------>list[%{public}d].flag = %{public}d", index, list.at(index)->get_flag());
+                std::string tmp = get_message_value(list.at(index));
+                OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, "LOG_TAG",
+                             "SOCKETIO_TAG_NAPI------>get_message_value[%{public}d] = %{public}s", index, tmp.c_str());
+                str += tmp;
+                if (index < list.size() - 1) {
+                    str += ",";
+                }
+            }
+            str += "]";
         }
         return str;
     }
 
-    void on_emit_callback(std::string const &ack_name, sio::message::list const &list)
-    {
-        OH_LOG_Print(LOG_APP,   LOG_INFO,   LOG_DOMAIN,   LOG_TAG, "SOCKETIO_TAG------> 0 on_emit_callback -------");
+    void on_emit_callback(std::string const &ack_name, sio::message::list const &list) {
+        OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, "LOG_TAG", "SOCKETIO_TAG_NAPI------>on_emit_callback -------");
         napi_ref on_emit_listener_call_ref = on_emit_listener_call_ref_map[ack_name.c_str()];
         if (on_emit_listener_call_ref == nullptr) {
             OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "on_emit_listener_call_ref is null");
             return;
         }
-        std::string message_json = std::string("{");
+        std::string message_json;
         if (list.size() > 0) {
             message_json += handler_message_json(list);
         }
-        message_json += "}";
-        OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> 1 on_emit_callback %{public}s",
-                     message_json.c_str());
+        OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, "LOG_TAG",
+                     "SOCKETIO_TAG_NAPI------>on_emit_callback message_json = %{public}s", message_json.c_str());
 
         auto it = on_emit_tsfn_map.find(ack_name);
         if (it == on_emit_tsfn_map.end() || it->second.empty()) {
@@ -383,9 +386,8 @@ public:
         napi_call_threadsafe_function(tsfn, localThreadSafeInfo.release(), napi_tsfn_blocking);
         napi_release_threadsafe_function(tsfn, napi_tsfn_release);
     }
-    
-    void on_emit_callback_binary(std::string const &ack_name, sio::message::list const &list)
-    {
+
+    void on_emit_callback_binary(std::string const &ack_name, sio::message::list const &list) {
         napi_ref on_emit_listener_call_ref = on_emit_listener_call_ref_map[ack_name.c_str()];
         if (on_emit_listener_call_ref == nullptr) {
             OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "on_emit_listener_call_ref is null");
@@ -425,8 +427,7 @@ struct ParseState {
 };
 
 // 处理嵌套的对象和数组
-void parseNested(const std::string& jsonString, size_t& i, std::string& value, char openChar, char closeChar)
-{
+void parseNested(const std::string &jsonString, size_t &i, std::string &value, char openChar, char closeChar) {
     size_t bracketCount = 1;
     value += jsonString[i];
     for (++i; i < jsonString.length(); ++i) {
@@ -444,33 +445,31 @@ void parseNested(const std::string& jsonString, size_t& i, std::string& value, c
 }
 
 // 处理转义字符
-void handleEscapeCharacter(char currentChar, std::string& value)
-{
+void handleEscapeCharacter(char currentChar, std::string &value) {
     switch (currentChar) {
-        case '"':
-            value += '"';
-            break;
-        case '\\':
-            value += '\\';
-            break;
-        case 'n':
-            value += '\n';
-            break;
-        case 'r':
-            value += '\r';
-            break;
-        case 't':
-            value += '\t';
-            break;
-        default:
-            value += currentChar;
-            break;
+    case '"':
+        value += '"';
+        break;
+    case '\\':
+        value += '\\';
+        break;
+    case 'n':
+        value += '\n';
+        break;
+    case 'r':
+        value += '\r';
+        break;
+    case 't':
+        value += '\t';
+        break;
+    default:
+        value += currentChar;
+        break;
     }
 }
 
 // 处理键值对
-void processKeyValuePair(std::map<std::string, std::string>& result, std::string& key, std::string& value)
-{
+void processKeyValuePair(std::map<std::string, std::string> &result, std::string &key, std::string &value) {
     if (!key.empty() && !value.empty()) {
         result[key] = value;
     }
@@ -479,8 +478,8 @@ void processKeyValuePair(std::map<std::string, std::string>& result, std::string
 }
 
 // 处理当前字符并处理键值对
-bool processCurrentCharAndKeyValuePair(char currentChar, ParseState& state, std::map<std::string, std::string>& result)
-{
+bool processCurrentCharAndKeyValuePair(char currentChar, ParseState &state,
+                                       std::map<std::string, std::string> &result) {
     if (state.inQuotes) {
         (state.readingKey ? state.key : state.value) += currentChar;
     } else {
@@ -501,8 +500,7 @@ bool processCurrentCharAndKeyValuePair(char currentChar, ParseState& state, std:
 }
 
 // 标准与非标准的json字符串转map
-void stringToMap(const std::string& jsonString, std::map<std::string, std::string>& result)
-{
+void stringToMap(const std::string &jsonString, std::map<std::string, std::string> &result) {
     ParseState state;
     for (size_t i = (jsonString[0] == '{') ? 1 : 0; i < jsonString.length(); i++) {
         char currentChar = jsonString[i];
@@ -522,8 +520,7 @@ void stringToMap(const std::string& jsonString, std::map<std::string, std::strin
             continue;
         }
         if ((currentChar == '{' || currentChar == '[') && !state.inQuotes) {
-            parseNested(jsonString, i, state.value, currentChar,
-                        currentChar == '{' ? '}' : ']');
+            parseNested(jsonString, i, state.value, currentChar, currentChar == '{' ? '}' : ']');
             continue;
         }
 
@@ -535,18 +532,16 @@ void stringToMap(const std::string& jsonString, std::map<std::string, std::strin
 }
 
 // 标准与非标准的json字符串转map
-static std::map<std::string, std::string> parseConfigString(const std::string& jsonString)
-{
+static std::map<std::string, std::string> parseConfigString(const std::string &jsonString) {
     // 定义一个 map 来存储结果
     std::map<std::string, std::string> map;
-    
+
     // 处理 JSON 对象
     stringToMap(jsonString, map);
     return map;
 }
 
-SocketIOClient* getClient(std::string classIdStr)
-{
+SocketIOClient *getClient(std::string classIdStr) {
     SocketIOClient *client = nullptr;
     auto iter = g_clientMap.find(classIdStr);
     if (iter != g_clientMap.end()) {
@@ -555,29 +550,29 @@ SocketIOClient* getClient(std::string classIdStr)
     return client;
 }
 
-napi_value SocketIOClient::set_headers(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::set_headers(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value args[2] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     char headers[MAX_BUF_SIZE];
     napi_get_value_string_utf8(env, args[0], headers, MAX_BUF_SIZE, &result);
-    
+
     size_t charLen = 0;
     char classId[CLASSID_BUF_SIZE] = {0};
     napi_get_value_string_utf8(env, args[1], classId, CLASSID_BUF_SIZE, &charLen);
     std::string classIdStr = classId;
     SocketIOClient *client = getClient(classIdStr);
-    if (!client) { return nullptr; }
-    
+    if (!client) {
+        return nullptr;
+    }
+
     std::string myString(headers);
     client->g_headerMap = parseConfigString(myString);
-    
+
     return 0;
 }
 
-napi_value SocketIOClient::get_current_state(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::get_current_state(napi_env env, napi_callback_info info) {
     size_t argc = 1;
     napi_value args[1] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
@@ -587,7 +582,7 @@ napi_value SocketIOClient::get_current_state(napi_env env, napi_callback_info in
     napi_get_value_string_utf8(env, args[0], classId, CLASSID_BUF_SIZE, &charLen);
     std::string classIdStr = classId;
 
-    SocketIOClient* client = getClient(classIdStr);
+    SocketIOClient *client = getClient(classIdStr);
     if (!client) {
         return nullptr;
     }
@@ -597,115 +592,119 @@ napi_value SocketIOClient::get_current_state(napi_env env, napi_callback_info in
     return state;
 }
 
-napi_value SocketIOClient::set_option(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::set_option(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value args[2] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     // option 有时候可能设置的内容比较长
     char option[OPTION_BUF_SIZE];
     napi_get_value_string_utf8(env, args[0], option, OPTION_BUF_SIZE, &result);
-    
+
     size_t charLen = 0;
     char classId[CLASSID_BUF_SIZE] = {0};
     napi_get_value_string_utf8(env, args[1], classId, CLASSID_BUF_SIZE, &charLen);
     std::string classIdStr = classId;
     SocketIOClient *client = getClient(classIdStr);
-    if (!client) { return nullptr; }
-    
+    if (!client) {
+        return nullptr;
+    }
+
     std::string myString(option);
     client->g_optionMap = parseConfigString(myString);
-    
+
     return 0;
 }
 
-napi_value SocketIOClient::connect(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::connect(napi_env env, napi_callback_info info) {
     size_t charLen = 0;
     size_t argc = 2;
     napi_value args[2] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     char uri[MAX_BUF_SIZE];
     napi_get_value_string_utf8(env, args[0], uri, MAX_BUF_SIZE, &result);
-    
+
     char classId[CLASSID_BUF_SIZE] = {0};
     napi_get_value_string_utf8(env, args[1], classId, CLASSID_BUF_SIZE, &charLen);
     std::string classIdStr = classId;
     SocketIOClient *client = getClient(classIdStr);
-    if (!client) { return nullptr; }
+    if (!client) {
+        return nullptr;
+    }
     client->clientInstance.connect(uri, client->g_optionMap, client->g_headerMap);
     return 0;
 }
-napi_value SocketIOClient::set_open_listener(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::set_open_listener(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value args[2] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     napi_value on_open_call = args[0];
     napi_create_reference(env, on_open_call, 1, &on_open_call_ref);
-    
+
     NapiCreateThreadsafe(env, on_open_call, CallJsNoParames, &g_tsfnOnOpenCall);
-    
+
     size_t charLen = 0;
     char classId[CLASSID_BUF_SIZE] = {0};
     napi_get_value_string_utf8(env, args[1], classId, CLASSID_BUF_SIZE, &charLen);
     std::string classIdStr = classId;
     SocketIOClient *client = getClient(classIdStr);
-    if (!client) { return nullptr; }
+    if (!client) {
+        return nullptr;
+    }
     client->clientInstance.set_open_listener(std::bind(&ClientSocket::OnOpen, &g_clientSocket));
-    
+
     return 0;
 }
 
-napi_value SocketIOClient::set_fail_listener(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::set_fail_listener(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value args[2] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     napi_value on_fail_call = args[0];
     napi_create_reference(env, on_fail_call, 1, &on_fail_call_ref);
-    
+
     NapiCreateThreadsafe(env, on_fail_call, CallJsNoParames, &g_tsfnFailCall);
-    
+
     size_t charLen = 0;
     char classId[CLASSID_BUF_SIZE] = {0};
     napi_get_value_string_utf8(env, args[1], classId, CLASSID_BUF_SIZE, &charLen);
     std::string classIdStr = classId;
     SocketIOClient *client = getClient(classIdStr);
-    if (!client) { return nullptr; }
+    if (!client) {
+        return nullptr;
+    }
     client->clientInstance.set_fail_listener(std::bind(&ClientSocket::OnFail, &g_clientSocket));
     return 0;
 }
 
-napi_value SocketIOClient::set_reconnecting_listener(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::set_reconnecting_listener(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value args[2] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     napi_value on_reconnecting_call = args[0];
     napi_create_reference(env, on_reconnecting_call, 1, &on_reconnecting_call_ref);
-    
+
     NapiCreateThreadsafe(env, on_reconnecting_call, CallJsNoParames, &g_tsfnReconnectingCall);
     OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> set_reconnecting_listener ");
-    
+
     size_t charLen = 0;
     char classId[CLASSID_BUF_SIZE] = {0};
     napi_get_value_string_utf8(env, args[1], classId, CLASSID_BUF_SIZE, &charLen);
     std::string classIdStr = classId;
     SocketIOClient *client = getClient(classIdStr);
-    if (!client) { return nullptr; }
+    if (!client) {
+        return nullptr;
+    }
     client->clientInstance.set_reconnecting_listener(std::bind(&ClientSocket::OnReconnecting, &g_clientSocket));
     return 0;
 }
 
-napi_value SocketIOClient::set_reconnect_listener(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::set_reconnect_listener(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value args[2] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     napi_value on_reconnect_call = args[0];
     napi_create_reference(env, on_reconnect_call, 1, &on_reconnect_call_ref);
-    
+
     NapiCreateThreadsafe(env, on_reconnect_call, CallJsNoParames, &g_tsfnReconnectCall);
     OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> set_reconnect_listener ");
 
@@ -717,19 +716,18 @@ napi_value SocketIOClient::set_reconnect_listener(napi_env env, napi_callback_in
     if (!client) {
         return nullptr;
     }
-    client->clientInstance.set_reconnect_listener(std::bind(&ClientSocket::OnReconnect, &g_clientSocket,
-        std::placeholders::_1, std::placeholders::_2));
+    client->clientInstance.set_reconnect_listener(
+        std::bind(&ClientSocket::OnReconnect, &g_clientSocket, std::placeholders::_1, std::placeholders::_2));
     return 0;
 }
 
-napi_value SocketIOClient::set_close_listener(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::set_close_listener(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value args[2] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     napi_value on_close_call = args[0];
     napi_create_reference(env, on_close_call, 1, &on_close_call_ref);
-    
+
     NapiCreateThreadsafe(env, on_close_call, CallJsEmit, &g_tsfnCloseCall);
     OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> set_close_listener ");
 
@@ -738,22 +736,23 @@ napi_value SocketIOClient::set_close_listener(napi_env env, napi_callback_info i
     napi_get_value_string_utf8(env, args[1], classId, CLASSID_BUF_SIZE, &charLen);
     std::string classIdStr = classId;
     SocketIOClient *client = getClient(classIdStr);
-    if (!client) { return nullptr; }
+    if (!client) {
+        return nullptr;
+    }
     client->clientInstance.set_close_listener(
         std::bind(&ClientSocket::on_close, &g_clientSocket, std::placeholders::_1));
     return 0;
 }
 
-napi_value SocketIOClient::set_socket_open_listener(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::set_socket_open_listener(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value args[2] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     napi_value on_socket_open_call = args[0];
-    
+
     NapiCreateThreadsafe(env, on_socket_open_call, CallJsEmit, &g_tsfnOnSocketioOpenCall);
     OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> set_socket_open_listener ");
-        
+
     size_t charLen = 0;
     char classId[CLASSID_BUF_SIZE] = {0};
     napi_get_value_string_utf8(env, args[1], classId, CLASSID_BUF_SIZE, &charLen);
@@ -762,22 +761,21 @@ napi_value SocketIOClient::set_socket_open_listener(napi_env env, napi_callback_
     if (!client) {
         return nullptr;
     }
-    client->clientInstance.set_socket_open_listener(std::bind(&ClientSocket::on_socket_open, &g_clientSocket,
-        std::placeholders::_1));
+    client->clientInstance.set_socket_open_listener(
+        std::bind(&ClientSocket::on_socket_open, &g_clientSocket, std::placeholders::_1));
     return 0;
 }
 
-napi_value SocketIOClient::set_socket_close_listener(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::set_socket_close_listener(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value args[2] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     napi_value on_socket_close_call = args[0];
     napi_create_reference(env, on_socket_close_call, 1, &on_socket_close_call_ref);
-    
+
     NapiCreateThreadsafe(env, on_socket_close_call, CallJsEmit, &g_tsfnOnCloseCall);
     OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> set_socket_close_listener ");
-         
+
     size_t charLen = 0;
     char classId[CLASSID_BUF_SIZE] = {0};
     napi_get_value_string_utf8(env, args[1], classId, CLASSID_BUF_SIZE, &charLen);
@@ -786,13 +784,12 @@ napi_value SocketIOClient::set_socket_close_listener(napi_env env, napi_callback
     if (!client) {
         return nullptr;
     }
-    client->clientInstance.set_socket_close_listener(std::bind(&ClientSocket::on_socket_close, &g_clientSocket,
-        std::placeholders::_1));
+    client->clientInstance.set_socket_close_listener(
+        std::bind(&ClientSocket::on_socket_close, &g_clientSocket, std::placeholders::_1));
     return 0;
 }
 
-napi_value SocketIOClient::clear_con_listeners(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::clear_con_listeners(napi_env env, napi_callback_info info) {
     size_t charLen = 0;
     size_t argc = 1;
     napi_value args[1] = {nullptr};
@@ -808,8 +805,7 @@ napi_value SocketIOClient::clear_con_listeners(napi_env env, napi_callback_info 
     return 0;
 }
 
-napi_value SocketIOClient::clear_socket_listeners(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::clear_socket_listeners(napi_env env, napi_callback_info info) {
     size_t charLen = 0;
     size_t argc = 1;
     napi_value args[1] = {nullptr};
@@ -825,8 +821,7 @@ napi_value SocketIOClient::clear_socket_listeners(napi_env env, napi_callback_in
     return 0;
 }
 
-napi_value SocketIOClient::set_reconnect_attempts(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::set_reconnect_attempts(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value args[2] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
@@ -844,14 +839,13 @@ napi_value SocketIOClient::set_reconnect_attempts(napi_env env, napi_callback_in
     return 0;
 }
 
-napi_value SocketIOClient::set_reconnect_delay(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::set_reconnect_delay(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value args[2] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     double millis;
     napi_get_value_double(env, args[0], &millis);
-    
+
     size_t charLen = 0;
     char classId[CLASSID_BUF_SIZE] = {0};
     napi_get_value_string_utf8(env, args[1], classId, CLASSID_BUF_SIZE, &charLen);
@@ -864,14 +858,13 @@ napi_value SocketIOClient::set_reconnect_delay(napi_env env, napi_callback_info 
     return 0;
 }
 
-napi_value SocketIOClient::set_reconnect_delay_max(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::set_reconnect_delay_max(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value args[2] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     double millis;
     napi_get_value_double(env, args[0], &millis);
-    
+
     size_t charLen = 0;
     char classId[CLASSID_BUF_SIZE] = {0};
     napi_get_value_string_utf8(env, args[1], classId, CLASSID_BUF_SIZE, &charLen);
@@ -884,8 +877,7 @@ napi_value SocketIOClient::set_reconnect_delay_max(napi_env env, napi_callback_i
     return 0;
 }
 
-napi_value SocketIOClient::set_logs_default(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::set_logs_default(napi_env env, napi_callback_info info) {
     size_t charLen = 0;
     size_t argc = 1;
     napi_value args[1] = {nullptr};
@@ -901,8 +893,7 @@ napi_value SocketIOClient::set_logs_default(napi_env env, napi_callback_info inf
     return 0;
 }
 
-napi_value SocketIOClient::set_logs_quiet(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::set_logs_quiet(napi_env env, napi_callback_info info) {
     size_t charLen = 0;
     size_t argc = 1;
     napi_value args[1] = {nullptr};
@@ -918,8 +909,7 @@ napi_value SocketIOClient::set_logs_quiet(napi_env env, napi_callback_info info)
     return 0;
 }
 
-napi_value SocketIOClient::set_logs_verbose(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::set_logs_verbose(napi_env env, napi_callback_info info) {
     size_t charLen = 0;
     size_t argc = 1;
     napi_value args[1] = {nullptr};
@@ -935,8 +925,7 @@ napi_value SocketIOClient::set_logs_verbose(napi_env env, napi_callback_info inf
     return 0;
 }
 
-napi_value SocketIOClient::close(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::close(napi_env env, napi_callback_info info) {
     size_t charLen = 0;
     size_t argc = 1;
     napi_value args[1] = {nullptr};
@@ -952,8 +941,7 @@ napi_value SocketIOClient::close(napi_env env, napi_callback_info info)
     return 0;
 }
 
-napi_value SocketIOClient::sync_close(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::sync_close(napi_env env, napi_callback_info info) {
     size_t charLen = 0;
     size_t argc = 1;
     napi_value args[1] = {nullptr};
@@ -969,8 +957,7 @@ napi_value SocketIOClient::sync_close(napi_env env, napi_callback_info info)
     return 0;
 }
 
-napi_value SocketIOClient::set_proxy_basic_auth(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::set_proxy_basic_auth(napi_env env, napi_callback_info info) {
     size_t argc = 4;
     napi_value args[4] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
@@ -980,7 +967,7 @@ napi_value SocketIOClient::set_proxy_basic_auth(napi_env env, napi_callback_info
     napi_get_value_string_utf8(env, args[ARG_INDEX_0], uri, MAX_BUF_SIZE, &result);
     napi_get_value_string_utf8(env, args[ARG_INDEX_1], username, MAX_BUF_SIZE, &result);
     napi_get_value_string_utf8(env, args[ARG_INDEX_2], keywords, MAX_BUF_SIZE, &result);
-    
+
     size_t charLen = 0;
     char classId[CLASSID_BUF_SIZE] = {0};
     napi_get_value_string_utf8(env, args[ARG_INDEX_3], classId, CLASSID_BUF_SIZE, &charLen);
@@ -993,8 +980,7 @@ napi_value SocketIOClient::set_proxy_basic_auth(napi_env env, napi_callback_info
     return 0;
 }
 
-napi_value SocketIOClient::opened(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::opened(napi_env env, napi_callback_info info) {
     size_t charLen = 0;
     size_t argc = 1;
     napi_value args[1] = {nullptr};
@@ -1003,15 +989,16 @@ napi_value SocketIOClient::opened(napi_env env, napi_callback_info info)
     napi_get_value_string_utf8(env, args[0], classId, CLASSID_BUF_SIZE, &charLen);
     std::string classIdStr = classId;
     SocketIOClient *client = getClient(classIdStr);
-    if (!client) { return nullptr; }
+    if (!client) {
+        return nullptr;
+    }
     bool opened = client->clientInstance.opened();
     napi_value napi_opened;
     napi_get_boolean(env, opened, &napi_opened);
     return napi_opened;
 }
 
-napi_value SocketIOClient::get_sessionid(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::get_sessionid(napi_env env, napi_callback_info info) {
     size_t charLen = 0;
     size_t argc = 1;
     napi_value args[1] = {nullptr};
@@ -1020,7 +1007,9 @@ napi_value SocketIOClient::get_sessionid(napi_env env, napi_callback_info info)
     napi_get_value_string_utf8(env, args[0], classId, CLASSID_BUF_SIZE, &charLen);
     std::string classIdStr = classId;
     SocketIOClient *client = getClient(classIdStr);
-    if (!client) { return nullptr; }
+    if (!client) {
+        return nullptr;
+    }
     std::string sessionid = client->clientInstance.get_sessionid();
     napi_value napi_sessionid;
     napi_create_string_utf8(env, sessionid.c_str(), MAX_BUF_SIZE, &napi_sessionid);
@@ -1028,11 +1017,12 @@ napi_value SocketIOClient::get_sessionid(napi_env env, napi_callback_info info)
 }
 
 // socket相关napi接口
-static sio::socket::ptr get_socket(std::string classIdStr)
-{
+static sio::socket::ptr get_socket(std::string classIdStr) {
     SocketIOClient *client = getClient(classIdStr);
-    if (!client) { return nullptr; }
-    
+    if (!client) {
+        return nullptr;
+    }
+
     if (client->nsp == "") {
         return client->clientInstance.socket();
     } else {
@@ -1040,26 +1030,27 @@ static sio::socket::ptr get_socket(std::string classIdStr)
     }
 }
 
-napi_value SocketIOClient::set_nsp(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::set_nsp(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value args[2] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     char charNsp[MAX_BUF_SIZE];
     napi_get_value_string_utf8(env, args[0], charNsp, MAX_BUF_SIZE, &result);
-    
+
     size_t charLen = 0;
     char classId[CLASSID_BUF_SIZE] = {0};
     napi_get_value_string_utf8(env, args[1], classId, CLASSID_BUF_SIZE, &charLen);
     std::string classIdStr = classId;
     SocketIOClient *client = getClient(classIdStr);
-    if (!client) { return nullptr; }
+    if (!client) {
+        return nullptr;
+    }
     client->nsp = charNsp;
     return 0;
 }
 
-napi_value SocketIOClient::on(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::on(napi_env env, napi_callback_info info) {
+    OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, "LOG_TAG", "SOCKETIO_TAG_NAPI------>on");
     size_t argc = 3;
     napi_value args[3] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
@@ -1068,16 +1059,15 @@ napi_value SocketIOClient::on(napi_env env, napi_callback_info info)
     napi_value on_event_listener_call_aux = args[1];
     napi_ref on_event_listener_call_aux_ref;
     napi_create_reference(env, on_event_listener_call_aux, 1, &on_event_listener_call_aux_ref);
-    on_event_listener_call_aux_ref_map.insert(
-        {eventName, on_event_listener_call_aux_ref});
-    
+    on_event_listener_call_aux_ref_map.insert({eventName, on_event_listener_call_aux_ref});
+
     size_t charLen = 0;
     char classId[CLASSID_BUF_SIZE] = {0};
     napi_get_value_string_utf8(env, args[ARG_INDEX_2], classId, CLASSID_BUF_SIZE, &charLen);
     std::string classIdStr = classId;
-    
+
     auto tsfunc_context = new OHOS::SocketIO::SocketIOContext(env);
-    
+
     tsfunc_context->CreateTsFunction(on_event_listener_call_aux, "on", tsfunc_context, CallJsEmit);
 
     get_socket(classIdStr)
@@ -1087,8 +1077,8 @@ napi_value SocketIOClient::on(napi_env env, napi_callback_info info)
     return 0;
 }
 
-napi_value SocketIOClient::on_binary(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::on_binary(napi_env env, napi_callback_info info) {
+
     size_t argc = 3;
     napi_value args[3] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
@@ -1097,16 +1087,15 @@ napi_value SocketIOClient::on_binary(napi_env env, napi_callback_info info)
     napi_value on_event_listener_call_aux = args[1];
     napi_ref on_event_listener_call_aux_ref;
     napi_create_reference(env, on_event_listener_call_aux, 1, &on_event_listener_call_aux_ref);
-    on_event_listener_call_aux_ref_map.insert(
-        {eventName, on_event_listener_call_aux_ref});
-    
+    on_event_listener_call_aux_ref_map.insert({eventName, on_event_listener_call_aux_ref});
+
     size_t charLen = 0;
     char classId[CLASSID_BUF_SIZE] = {0};
     napi_get_value_string_utf8(env, args[ARG_INDEX_2], classId, CLASSID_BUF_SIZE, &charLen);
     std::string classIdStr = classId;
-    
+
     auto tsfunc_context = new OHOS::SocketIO::SocketIOContext(env);
-    
+
     tsfunc_context->CreateTsFunction(on_event_listener_call_aux, "on_binary", tsfunc_context, CallJsBinary);
 
     get_socket(classIdStr)
@@ -1116,8 +1105,7 @@ napi_value SocketIOClient::on_binary(napi_env env, napi_callback_info info)
     return 0;
 }
 
-napi_value SocketIOClient::once(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::once(napi_env env, napi_callback_info info) {
     size_t argc = 3;
     napi_value args[3] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
@@ -1126,16 +1114,15 @@ napi_value SocketIOClient::once(napi_env env, napi_callback_info info)
     napi_value on_event_listener_call_aux = args[1];
     napi_ref on_event_listener_call_aux_ref;
     napi_create_reference(env, on_event_listener_call_aux, 1, &on_event_listener_call_aux_ref);
-    on_event_listener_call_aux_ref_map.insert(
-        {eventName, on_event_listener_call_aux_ref});
-    
+    on_event_listener_call_aux_ref_map.insert({eventName, on_event_listener_call_aux_ref});
+
     size_t charLen = 0;
     char classId[CLASSID_BUF_SIZE] = {0};
     napi_get_value_string_utf8(env, args[ARG_INDEX_2], classId, CLASSID_BUF_SIZE, &charLen);
     std::string classIdStr = classId;
-    
+
     auto tsfunc_context = new OHOS::SocketIO::SocketIOContext(env);
-    
+
     tsfunc_context->CreateTsFunction(on_event_listener_call_aux, "once", tsfunc_context, CallJsEmit);
 
     get_socket(classIdStr)
@@ -1145,8 +1132,7 @@ napi_value SocketIOClient::once(napi_env env, napi_callback_info info)
     return 0;
 }
 
-napi_value SocketIOClient::off(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::off(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value args[2] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
@@ -1161,8 +1147,7 @@ napi_value SocketIOClient::off(napi_env env, napi_callback_info info)
     return 0;
 }
 
-napi_value SocketIOClient::off_all(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::off_all(napi_env env, napi_callback_info info) {
     size_t argc = 1;
     napi_value args[1] = {nullptr};
     size_t charLen = 0;
@@ -1174,8 +1159,7 @@ napi_value SocketIOClient::off_all(napi_env env, napi_callback_info info)
     return 0;
 }
 
-napi_value SocketIOClient::socket_close(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::socket_close(napi_env env, napi_callback_info info) {
     size_t argc = 1;
     napi_value args[1] = {nullptr};
     size_t charLen = 0;
@@ -1186,19 +1170,18 @@ napi_value SocketIOClient::socket_close(napi_env env, napi_callback_info info)
     get_socket(classIdStr)->close();
     return 0;
 }
-napi_value SocketIOClient::on_error(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::on_error(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value args[2] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
     napi_value on_error_listener_call = args[0];
     napi_create_reference(env, on_error_listener_call, 1, &on_error_listener_call_ref);
-    
+
     size_t charLen = 0;
     char classId[CLASSID_BUF_SIZE] = {0};
     napi_get_value_string_utf8(env, args[1], classId, CLASSID_BUF_SIZE, &charLen);
     std::string classIdStr = classId;
-    
+
     NapiCreateThreadsafe(env, on_error_listener_call, CallJsEmit, &g_tsfnOnErrorCall);
 
     get_socket(classIdStr)
@@ -1206,8 +1189,7 @@ napi_value SocketIOClient::on_error(napi_env env, napi_callback_info info)
     return 0;
 }
 
-napi_value SocketIOClient::off_error(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::off_error(napi_env env, napi_callback_info info) {
     size_t argc = 1;
     napi_value args[1] = {nullptr};
     size_t charLen = 0;
@@ -1219,22 +1201,19 @@ napi_value SocketIOClient::off_error(napi_env env, napi_callback_info info)
     return 0;
 }
 
-uint32_t get_length(napi_env env, napi_value value)
-{
+uint32_t get_length(napi_env env, napi_value value) {
     uint32_t length;
     napi_get_array_length(env, value, &length);
     return length;
 }
 
-napi_value get_property(napi_env env, napi_value value)
-{
+napi_value get_property(napi_env env, napi_value value) {
     napi_value keys;
     napi_get_property_names(env, value, &keys);
     return keys;
 }
 
-napi_value get_element(napi_env env, napi_value value, uint32_t index)
-{
+napi_value get_element(napi_env env, napi_value value, uint32_t index) {
     napi_value key;
     napi_get_element(env, value, index, &key);
     return key;
@@ -1242,8 +1221,7 @@ napi_value get_element(napi_env env, napi_value value, uint32_t index)
 
 sio::message::ptr handle_array_value(napi_env env, napi_value value);
 
-static sio::object_message::ptr get_object_message(napi_env env, napi_value napi_object_value)
-{
+static sio::object_message::ptr get_object_message(napi_env env, napi_value napi_object_value) {
     napi_value keys = get_property(env, napi_object_value);
     uint32_t key_length = get_length(env, keys);
     sio::object_message::ptr message_item = sio::object_message::create();
@@ -1258,41 +1236,40 @@ static sio::object_message::ptr get_object_message(napi_env env, napi_value napi
         napi_valuetype valueType;
         napi_typeof(env, value, &valueType);
         switch (valueType) {
-            case napi_string:
-                char char_value[MAX_MESSAGE_SIZE];
-                napi_get_value_string_utf8(env, value, char_value, MAX_MESSAGE_SIZE, &result);
-                ((sio::object_message *)message_item.get())->insert(char_key, std::string(char_value));
+        case napi_string:
+            char char_value[MAX_MESSAGE_SIZE];
+            napi_get_value_string_utf8(env, value, char_value, MAX_MESSAGE_SIZE, &result);
+            ((sio::object_message *)message_item.get())->insert(char_key, std::string(char_value));
+            break;
+        case napi_number:
+            double num_value;
+            napi_get_value_double(env, value, &num_value);
+            ((sio::object_message *)message_item.get())->insert(char_key, (int64_t)num_value);
+            break;
+        case napi_boolean:
+            bool bool_value;
+            napi_get_value_bool(env, value, &bool_value);
+            ((sio::object_message *)message_item.get())->insert(char_key, bool_value);
+            break;
+        case napi_object:
+            bool isArray;
+            napi_is_array(env, value, &isArray);
+            if (!isArray) {
+                sio::object_message::ptr message_object = get_object_message(env, value);
+                ((sio::object_message *)message_item.get())->insert(char_key, message_object);
+                message_object = nullptr;
                 break;
-            case napi_number:
-                double num_value;
-                napi_get_value_double(env, value, &num_value);
-                ((sio::object_message *)message_item.get())->insert(char_key, (int64_t)num_value);
-                break;
-            case napi_boolean:
-                bool bool_value;
-                napi_get_value_bool(env, value, &bool_value);
-                ((sio::object_message *)message_item.get())->insert(char_key, bool_value);
-                break;
-            case napi_object:
-                bool isArray;
-                napi_is_array(env, value, &isArray);
-                if (!isArray) {
-                    sio::object_message::ptr message_object = get_object_message(env, value);
-                    ((sio::object_message *)message_item.get())->insert(char_key, message_object);
-                    message_object = nullptr;
-                    break;
-                }
+            }
 
-                sio::message::ptr array = handle_array_value(env, value);
-                ((sio::object_message *)message_item.get())->insert(char_key, array);
-                break;
+            sio::message::ptr array = handle_array_value(env, value);
+            ((sio::object_message *)message_item.get())->insert(char_key, array);
+            break;
         }
     }
     return message_item;
 }
 
-sio::message::ptr handle_array_value(napi_env env, napi_value value)
-{
+sio::message::ptr handle_array_value(napi_env env, napi_value value) {
     sio::message::ptr array = sio::array_message::create();
     // 获取数组的长度
     uint32_t length = get_length(env, value);
@@ -1301,27 +1278,27 @@ sio::message::ptr handle_array_value(napi_env env, napi_value value)
         napi_valuetype valueType;
         napi_typeof(env, element, &valueType);
         switch (valueType) {
-            case napi_number:
-                double num_value;
-                napi_get_value_double(env, element, &num_value);
-                array->get_vector().push_back(sio::double_message::create(num_value));
-                break;
-            case napi_string:
-                char char_value[MAX_BUF_SIZE];
-                napi_get_value_string_utf8(env, element, char_value, MAX_BUF_SIZE, &result);
-                array->get_vector().push_back(sio::string_message::create(char_value));
-                break;
-            case napi_object:
-                sio::object_message::ptr message_object = get_object_message(env, element);
-                array->get_vector().push_back(message_object);
-                break;
+        case napi_number:
+            double num_value;
+            napi_get_value_double(env, element, &num_value);
+            array->get_vector().push_back(sio::double_message::create(num_value));
+            break;
+        case napi_string:
+            char char_value[MAX_BUF_SIZE];
+            napi_get_value_string_utf8(env, element, char_value, MAX_BUF_SIZE, &result);
+            array->get_vector().push_back(sio::string_message::create(char_value));
+            break;
+        case napi_object:
+            sio::object_message::ptr message_object = get_object_message(env, element);
+            array->get_vector().push_back(message_object);
+            break;
         }
     }
     return array;
 }
 
-napi_value SocketIOClient::emit(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::emit(napi_env env, napi_callback_info info) {
+    OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, "LOG_TAG", "SOCKETIO_TAG_NAPI------>emit");
     // 四个参数: eventName, message, callback, classId
     size_t argc = 4;
     napi_value args[4] = {nullptr};
@@ -1347,7 +1324,7 @@ napi_value SocketIOClient::emit(napi_env env, napi_callback_info info)
     // 处理消息数据
     if (is_arraybuffer) {
         // TypedArray二进制数据处理
-        void* data;
+        void *data;
         size_t byte_length;
         napi_typedarray_type type;
         napi_value array_buffer;
@@ -1355,7 +1332,7 @@ napi_value SocketIOClient::emit(napi_env env, napi_callback_info info)
         napi_get_typedarray_info(env, args[1], &type, &byte_length, &data, &array_buffer, &offset);
 
         // 将TypedArray数据转换为std::string
-        std::string uint8Array_str(static_cast<char*>(data), byte_length);
+        std::string uint8Array_str(static_cast<char *>(data), byte_length);
         std::shared_ptr<std::string> message_binary = std::make_shared<std::string>(uint8Array_str);
         messageList->push(message_binary);
         message_binary = nullptr;
@@ -1387,19 +1364,17 @@ napi_value SocketIOClient::emit(napi_env env, napi_callback_info info)
     on_emit_tsfn_map[std::string(eventName)].push_back(tsfn_this_emit);
 
     // 通过classId获取socket并发送消息
-    get_socket(classIdStr)->emit(
-        eventName,
-        *messageList,
-        std::bind(&ClientSocket::on_emit_callback, &g_clientSocket, std::placeholders::_1, std::placeholders::_2)
-    );
+    get_socket(classIdStr)
+        ->emit(
+            eventName, *messageList,
+            std::bind(&ClientSocket::on_emit_callback, &g_clientSocket, std::placeholders::_1, std::placeholders::_2));
 
     delete messageList;
     messageList = nullptr;
     return 0;
 }
 
-napi_value SocketIOClient::emitAckBinary(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::emitAckBinary(napi_env env, napi_callback_info info) {
     size_t argc = 5;
     napi_value args[5] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
@@ -1429,9 +1404,9 @@ napi_value SocketIOClient::emitAckBinary(napi_env env, napi_callback_info info)
         messageList->push(message_item);
         message_item = nullptr;
     }
-    
+
     NapiCreateThreadsafe(env, on_emit_listener_call, CallJsAckBinary, &g_tsfnEmitBinaryCall);
-    
+
     size_t charLen = 0;
     char classId[CLASSID_BUF_SIZE] = {0};
     napi_get_value_string_utf8(env, args[ARG_INDEX_4], classId, CLASSID_BUF_SIZE, &charLen);
@@ -1446,8 +1421,7 @@ napi_value SocketIOClient::emitAckBinary(napi_env env, napi_callback_info info)
     return 0;
 }
 
-napi_value SocketIOClient::JsConstructor(napi_env env, napi_callback_info info)
-{
+napi_value SocketIOClient::JsConstructor(napi_env env, napi_callback_info info) {
     napi_value targetObj = nullptr;
     void *data = nullptr;
     size_t argsNum = 0;
