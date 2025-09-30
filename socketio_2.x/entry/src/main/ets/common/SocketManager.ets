@@ -46,7 +46,8 @@ class SocketManager {
   }
 
   setUri(uri:string) {
-    this.uri = uri;
+    // 统一去除首尾空格，避免 URI 解析异常
+    this.uri = (uri ?? '').trim();
   }
 
   destroyCurrentClient(): void {
@@ -60,6 +61,13 @@ class SocketManager {
   commonInit() {
     // 销毁当前连接
     this.destroyCurrentClient();
+    // 校验 URL
+    this.uri = (this.uri ?? '').trim();
+    if (!this.checkUrl(this.uri)) {
+      hilog.error(0x0000, 'testTag', '%{public}s', `commonInit abort: invalid uri -> ${this.uri}`);
+      prompt.showToast({ message: '服务器地址异常，请检查url信息' });
+      return;
+    }
     // 创建新连接
     this.client = new client_socket(this.uri);
     if(this.client) {
