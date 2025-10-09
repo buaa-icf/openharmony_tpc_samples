@@ -1,3 +1,7 @@
+## v1.0.6-rc.1
+
+- Added support for multiple client instances in socketio_2.x
+
 ## v1.0.6-rc.0
 
 - Fixed the issue where emit callbacks could be overwritten across same or different event names
