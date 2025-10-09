@@ -209,12 +209,16 @@ export class NanoHTTPD extends EventEmitter {
     this.myServerSocket?.off('connect');
     const tcpConnectArrayLength: number = this.serverConnectArray.length;
     for (let i = 0; i < tcpConnectArrayLength; i++) {
+      this.serverConnectArray[i]?.close(()=>{
+        logger.info('close ok')
+      })
       this.serverConnectArray[i]?.off('message');
       this.serverConnectArray[i]?.off('close');
     }
     this.bufferPoolArray = [];
     this.serverConnectArray = [];
     this.serverIsStarted = false;
+    this.myServerSocket.close();
   }
 
   /**
