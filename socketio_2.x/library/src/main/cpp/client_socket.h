@@ -12,23 +12,16 @@
 #ifndef OHOSXMPPCLIENT_ROOM_H
 #define OHOSXMPPCLIENT_ROOM_H
 
+#include <deque>
+#include <map>
 #include <node_api.h>
 #include <string>
 #include "boundscheck/third_party_bounds_checking_function/include/securec.h"
 #include "hilog/log.h"
+#include "sio_client.h"
 
 // 全局无参回调
 napi_value napi_result_void;
-
-napi_threadsafe_function g_tsfnOnOpenCall;
-napi_threadsafe_function g_tsfnOnCloseCall;
-napi_threadsafe_function g_tsfnOnSocketioOpenCall;
-napi_threadsafe_function g_tsfnEmitCall;
-napi_threadsafe_function g_tsfnOnErrorCall;
-napi_threadsafe_function g_tsfnFailCall;
-napi_threadsafe_function g_tsfnReconnectingCall;
-napi_threadsafe_function g_tsfnReconnectCall;
-napi_threadsafe_function g_tsfnCloseCall;
 
 napi_value workName = nullptr;
 
@@ -91,7 +84,7 @@ void CallJsEmit(napi_env env, napi_value jsCb, void *context, void *data)
     
     // 调用 js 回调函数
     napi_status status = napi_call_function(env, undefined, jsCb, 1, &argv, &ret);
-    OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, "LOG_TAG", "SOCKETIO_TAG------> 2 CallJsEmit %{public}d", status);
+    OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> 2 CallJsEmit %{public}d", status);
 }
 
 void CallJsBinary(napi_env env, napi_value jsCb, void *context, void *data)
@@ -130,4 +123,90 @@ void CallJsBinary(napi_env env, napi_value jsCb, void *context, void *data)
     OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> 2 CallJsBinary %{public}d", status);
 }
 
+typedef void (*Finalizer)(napi_env, void *data, void *);
+class SocketIOClient {
+public:
+    SocketIOClient(): clientInstance(nullptr) {};
+    ~SocketIOClient() {
+        if (clientInstance) {
+            delete clientInstance;
+            clientInstance = nullptr;
+        }
+    }
+    static napi_value JsConstructor(napi_env env, napi_callback_info info);
+    static napi_value set_headers(napi_env env, napi_callback_info info);
+    static napi_value set_option(napi_env env, napi_callback_info info);
+    static napi_value set_path(napi_env env, napi_callback_info info);
+    static napi_value connect(napi_env env, napi_callback_info info);
+    static napi_value set_open_listener(napi_env env, napi_callback_info info);
+    static napi_value set_fail_listener(napi_env env, napi_callback_info info);
+    static napi_value set_reconnecting_listener(napi_env env, napi_callback_info info);
+    static napi_value set_reconnect_listener(napi_env env, napi_callback_info info);
+    static napi_value set_close_listener(napi_env env, napi_callback_info info);
+    static napi_value set_socket_open_listener(napi_env env, napi_callback_info info);
+    static napi_value set_socket_close_listener(napi_env env, napi_callback_info info);
+    static napi_value clear_con_listeners(napi_env env, napi_callback_info info);
+    static napi_value clear_socket_listeners(napi_env env, napi_callback_info info);
+    static napi_value set_reconnect_attempts(napi_env env, napi_callback_info info);
+    static napi_value set_reconnect_delay(napi_env env, napi_callback_info info);
+    static napi_value set_reconnect_delay_max(napi_env env, napi_callback_info info);
+    static napi_value set_logs_default(napi_env env, napi_callback_info info);
+    static napi_value set_logs_quiet(napi_env env, napi_callback_info info);
+    static napi_value set_logs_verbose(napi_env env, napi_callback_info info);
+    static napi_value close(napi_env env, napi_callback_info info);
+    static napi_value sync_close(napi_env env, napi_callback_info info);
+    static napi_value set_proxy_basic_auth(napi_env env, napi_callback_info info);
+    static napi_value opened(napi_env env, napi_callback_info info);
+    static napi_value get_sessionid(napi_env env, napi_callback_info info);
+    static napi_value set_nsp(napi_env env, napi_callback_info info);
+    static napi_value on(napi_env env, napi_callback_info info);
+    static napi_value on_binary(napi_env env, napi_callback_info info);
+    static napi_value once(napi_env env, napi_callback_info info);
+    static napi_value off(napi_env env, napi_callback_info info);
+    static napi_value off_all(napi_env env, napi_callback_info info);
+    static napi_value socket_close(napi_env env, napi_callback_info info);
+    static napi_value on_error(napi_env env, napi_callback_info info);
+    static napi_value off_error(napi_env env, napi_callback_info info);
+    static napi_value emit(napi_env env, napi_callback_info info);
+    static napi_value set_connection_mode(napi_env env, napi_callback_info info);
+    static napi_value get_current_state(napi_env env, napi_callback_info info);
+
+
+    sio::socket::ptr get_socket(const std::string& classIdStr) const;
+
+    std::string classIdStr;
+    std::string nsp = "";
+    std::string path = "";
+    std::map<std::string, std::string> headerMap = {};
+    std::map<std::string, std::string> optionMap = {};
+    sio::client* clientInstance;
+
+    // 实例级别的回调引用
+    napi_ref on_open_call_ref = nullptr;
+    napi_ref on_fail_call_ref = nullptr; 
+    napi_ref on_reconnecting_call_ref = nullptr;
+    napi_ref on_reconnect_call_ref = nullptr;
+    napi_ref on_socket_open_call_ref = nullptr;
+    napi_ref on_socket_close_call_ref = nullptr;
+    napi_ref on_close_call_ref = nullptr;
+    napi_ref on_error_listener_call_ref = nullptr;
+
+    // 实例级别的TSFN，避免全局TSFN被覆盖
+    napi_threadsafe_function tsfnOnOpenCall = nullptr;
+    napi_threadsafe_function tsfnFailCall = nullptr;
+    napi_threadsafe_function tsfnReconnectingCall = nullptr;
+    napi_threadsafe_function tsfnReconnectCall = nullptr;
+    napi_threadsafe_function tsfnCloseCall = nullptr;
+    napi_threadsafe_function tsfnOnSocketioOpenCall = nullptr;
+    napi_threadsafe_function tsfnOnCloseCall = nullptr;
+    napi_threadsafe_function tsfnOnErrorCall = nullptr;
+
+    // 实例级别的事件回调映射
+    std::map<std::string, napi_ref> on_event_listener_call_aux_ref_map;
+    std::map<std::string, napi_ref> on_emit_listener_call_ref_map;
+    std::map<std::string, std::deque<napi_threadsafe_function>> on_emit_tsfn_map;
+
+    // 实例级别的once标志
+    bool isOnce = false;
+};
 #endif // ohosXmppClient_room_H
