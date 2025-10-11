@@ -57,6 +57,7 @@ struct IjkVideoPlayerPage {
   @State currentCachePercent: number = 10;
   xcomponentController: XComponentController = new XComponentController()
   private videoUrl: string = '';
+  private delayPlayTimer: number = 0; // 延迟播放定时器ID
 
   async aboutToAppear() {
     LogUtils.getInstance().LOGI("aboutToAppear");
@@ -84,6 +85,11 @@ struct IjkVideoPlayerPage {
     LogUtils.getInstance().LOGI("aboutToDisappear");
     this.mDestroyPage = true;
     mIjkMediaPlayer.setScreenOnWhilePlaying(false);
+    // 清理延迟播放定时器，避免内存泄漏
+    if (this.delayPlayTimer !== 0) {
+      clearTimeout(this.delayPlayTimer);
+      this.delayPlayTimer = 0;
+    }
     if (CONTROL_PlayStatus != PlayStatus.INIT) {
       this.stop();
     }
@@ -250,7 +256,8 @@ struct IjkVideoPlayerPage {
   private initDelayPlay(context: object) {
     this.mContext = context;
     let that = this;
-    setTimeout(() => {
+    // 保存定时器ID以便后续清理
+    this.delayPlayTimer = setTimeout(() => {
       that.startPlayOrResumePlay();
       that.mFirst = false;
     }, 300)

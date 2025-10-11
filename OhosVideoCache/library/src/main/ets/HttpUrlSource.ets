@@ -40,15 +40,9 @@ export default class HttpUrlSource implements Source {
   private connection: http.HttpRequest | null = null;
   private callBack: DataBackListener | null = null;
   private isInitFinish: boolean = false;
-  private interId: number = (0 - Number.MAX_VALUE);
   private lastLocation: string = '';
-  private isHeaderDealFinish: boolean = false;
-  private isDataFinish: boolean = false;
-  private cacheData: Queue<ArrayBuffer> = new Queue();
-  // private inputStream: InputStream;
-  private useInterVal: boolean = false;
 
-  constructor(args: string | Array<string | SourceInfoStorage| HeaderInjector |HttpUrlSource>, useInterVal?: boolean) {
+  constructor(args: string | Array<string | SourceInfoStorage| HeaderInjector |HttpUrlSource>) {
     if (!args || args.length < 1) {
       throw new Error('params can not be null')
     }
@@ -125,29 +119,6 @@ export default class HttpUrlSource implements Source {
       self.isInitFinish = true;
       self.notifyInitFinish()
     }
-
-    if (useInterVal) {
-      this.useInterVal = true;
-      self.interId = setInterval(() => {
-        if (!self.callBack) {
-          return;
-        }
-        if (!self.isHeaderDealFinish) {
-          return
-        }
-        if (self?.sourceInfo?.url?.indexOf('ping') != -1) {
-          return;
-        }
-        if (self?.cacheData?.length > 0) {
-          self?.callBack?.onDataReceive(self?.cacheData?.pop())
-        } else {
-          if (self.isDataFinish) {
-            self.isHeaderDealFinish = false;
-            self.callBack?.onDataEnd()
-          }
-        }
-      }, 20)
-    }
   }
 
   notifyInitFinish() {
@@ -168,17 +139,9 @@ export default class HttpUrlSource implements Source {
         this.connection.destroy();
         this.connection = null;
       }
-      // 清理其他资源
-      if (this.useInterVal) {
-        this.cacheData = new Queue();
-        this.isHeaderDealFinish = false;
-        this.isDataFinish = false;
-      }
-      if (this.interId !== 0 - Number.MAX_VALUE) {
-        clearInterval(this.interId);
-        this.interId = 0 - Number.MAX_VALUE;
-      }
       emitter.off(VideoCacheConstant.HTTP_URL_SOURCE_READY_ID.toString());
+      // 释放回调引用，避免持有外部对象导致泄漏
+      this.callBack = null;
     } catch (err) {
       LogUtil.error('destroy connection error: ' + JSON.stringify(err));
     }
@@ -186,21 +149,14 @@ export default class HttpUrlSource implements Source {
 
   close(): void {
     try {
-      if(this.useInterVal){
-        this.cacheData = new Queue();
-      }
-      if (this.interId != 0 - Number.MAX_VALUE) {
-        clearInterval(this.interId)
-      }
       emitter.off(VideoCacheConstant.HTTP_URL_SOURCE_READY_ID.toString())
-      if(this.useInterVal){
-        this.isHeaderDealFinish = false;
-      }
       this.connection?.off('headersReceive');
       this.connection?.off('dataReceive');
       this.connection?.off('dataReceiveProgress');
       this.connection?.off('dataEnd');
       this.connection?.destroy();
+      // 释放回调引用，避免持有外部对象导致泄漏
+      this.callBack = null;
     } catch (err) {
       let message = "Wait... but why? WTF!? " +
         "Really shouldn't happen any more after fixing https://github.com/danikula/AndroidVideoCache/issues/43. " +
@@ -210,7 +166,7 @@ export default class HttpUrlSource implements Source {
     }
   }
 
-  setDataListener(listener: DataBackListener) {
+  setDataListener(listener: DataBackListener | null) {
     this.callBack = listener;
   }
 
@@ -248,10 +204,6 @@ export default class HttpUrlSource implements Source {
 
   async open(offset: number): Promise<void> {
     const self = this
-    if (this.useInterVal) {
-      self.isHeaderDealFinish = false;
-      self.isDataFinish = false;
-    }
     await self.checkInit()
     try {
       return new Promise<void>(async (resolve, reject) => {
@@ -260,6 +212,16 @@ export default class HttpUrlSource implements Source {
         }
         let mime: string = '';
         let receiveHeader: object | null = null;
+
+        // 先清理旧连接的事件监听器，避免重复注册
+        if (self.connection) {
+          self.connection.off('headersReceive');
+          self.connection.off('dataReceive');
+          self.connection.off('dataReceiveProgress');
+          self.connection.off('dataEnd');
+          self.connection.destroy();
+        }
+
         self.connection = self.openConnection();
         if (!self.connection) {
           return new Promise<void>((resolve, reject) => {
@@ -278,46 +240,23 @@ export default class HttpUrlSource implements Source {
               await self.sourceInfoStorage?.put(self.sourceInfo!.url, self.sourceInfo);
               self?.callBack?.onDataStart();
             }
-            if (this.useInterVal) {
-              self.isHeaderDealFinish = true;
-            }
           }
         })
         self.connection?.on('dataReceive', (data: ArrayBuffer) => {
-          if (self?.sourceInfo?.url?.indexOf('ping') != -1) {
-            self?.callBack?.onDataReceive(data);
-          } else {
-            if (this.useInterVal) {
-              self?.cacheData?.add(data);
-            } else {
-              self?.callBack?.onDataReceive(data);
-            }
-          }
+          self?.callBack?.onDataReceive(data);
         })
         self.connection?.on('dataReceiveProgress', (progress: ProgressValue) => {
           self.callBack?.onDataProgress(progress)
         })
         self.connection!!.on('dataEnd', () => {
-          if (self?.sourceInfo?.url?.indexOf('ping') != -1) {
-            self?.callBack?.onDataEnd();
-          } else {
-            if (this.useInterVal) {
-              if (self?.cacheData?.length > 1) {
-                self.isDataFinish = true;
-              }
-            } else {
-              self.callBack?.onDataEnd();
-            }
-          }
+          self?.callBack?.onDataEnd();
         })
         let option: http.HttpRequestOptions = self.initRequestParam(offset, -1)
-        if (this.useInterVal) {
-          self.cacheData = new Queue();
-        }
         self.connection?.requestInStream(self.sourceInfo!!.url, option).then(() => {
           return resolve()
         }).catch((err: BusinessError) => {
           try {
+            // 确保在异常情况下也清理事件监听器
             if (self.connection) {
               self.connection.off('headersReceive');
               self.connection.off('dataReceive');
@@ -326,6 +265,8 @@ export default class HttpUrlSource implements Source {
               self.connection.destroy();
               self.connection = null;
             }
+            // 清理回调引用，避免内存泄漏
+            self.callBack = null;
           } catch (cleanupErr) {
             LogUtil.error('连接清理失败: ' + JSON.stringify(cleanupErr));
           }
@@ -335,10 +276,17 @@ export default class HttpUrlSource implements Source {
 
 
     } catch (err) {
-      if (this.useInterVal) {
-        self.isHeaderDealFinish = false;
+      // 在异常情况下也要清理连接和事件监听器
+      if (self.connection) {
+        self.connection.off('headersReceive');
+        self.connection.off('dataReceive');
+        self.connection.off('dataReceiveProgress');
+        self.connection.off('dataEnd');
+        self.connection.destroy();
+        self.connection = null;
       }
-      self.connection?.destroy()
+      // 清理回调引用，避免内存泄漏
+      self.callBack = null;
       return new Promise<void>((resolve, reject) => {
         return reject(new ProxyCacheException("Error opening connection for " + self.sourceInfo!!.url + " with offset " + offset + err.message))
       })

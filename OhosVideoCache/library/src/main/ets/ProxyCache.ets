@@ -185,7 +185,16 @@ export default class ProxyCache {
       this.stopped = true;
       if (this.timeoutId != (0 - Number.MAX_VALUE)) {
         clearTimeout((this.timeoutId));
+        this.timeoutId = (0 - Number.MAX_VALUE);
       }
+      // 清理异步状态，避免内存泄漏
+      if (this.judgeHasNetTimeoutId) {
+        clearTimeout(this.judgeHasNetTimeoutId);
+        this.judgeHasNetTimeoutId = null;
+      }
+      this.waitForDataResolve = null;
+      this.isWaitingForData = false;
+      this.readingInProgress = false;
       this.closeSource();
     } catch (err) {
       this.onError(err);
@@ -276,7 +285,9 @@ export default class ProxyCache {
             self.onSourceRead();
           } finally {
             self.closeSource();
-            self.notifyNewCacheDataAvailable(offset, sourceAvailable)
+            self.notifyNewCacheDataAvailable(offset, sourceAvailable);
+            // 清理监听器引用，避免内存泄漏
+            self.source?.setDataListener(null);
           }
         }
 
