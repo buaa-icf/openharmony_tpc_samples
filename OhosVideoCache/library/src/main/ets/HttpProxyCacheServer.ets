@@ -167,8 +167,9 @@ export default class HttpProxyCacheServer {
       }
       
       // 创建超时Promise，3秒后超时
+      let timeoutId: number | null = null;
       const timeoutPromise = new Promise<string>((resolve) => {
-        setTimeout(() => {
+        timeoutId = setTimeout(() => {
           LogUtil.warn("getProxyUrl timeout after 3 seconds, returning original URL");
           resolve(url);
         }, 3000);
@@ -189,9 +190,19 @@ export default class HttpProxyCacheServer {
           })
 
           let result = await this.isAlive();
+          // 清理超时定时器
+          if (timeoutId !== null) {
+            clearTimeout(timeoutId);
+            timeoutId = null;
+          }
           resolve(result ? this.appendToProxyUrl(url) : url);
         } catch (error) {
           LogUtil.error("Error in getProxyUrl execution: " + error.message);
+          // 清理超时定时器
+          if (timeoutId !== null) {
+            clearTimeout(timeoutId);
+            timeoutId = null;
+          }
           resolve(url);
         }
       });
@@ -410,6 +421,13 @@ export default class HttpProxyCacheServer {
       LogUtil.error('getCacheSize error: ' + JSON.stringify(err));
       return 0;
     }
+  }
+
+  /**
+   * 清理clientsMap
+   */
+  public clearClientsMap() {
+    this.clientsMap.clear();
   }
 
   private getClients(url: string | null): HttpProxyCacheServerClients {

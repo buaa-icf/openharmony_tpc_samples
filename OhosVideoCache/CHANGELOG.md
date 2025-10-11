@@ -1,3 +1,6 @@
+## 1.0.6-rc.2
+1. Fix the memory leak issue.
+
 ## 1.0.6-rc.1
 1. Optimize video cache cleaning
 
