@@ -1,10 +1,25 @@
 {
   "name": "@ohos/jipp_pdl",
+  "keywords": [
+    "OpenHarmony",
+    "HarmonyOS",
+    "jipp",
+  ],
   "version": "1.0.0",
-  "description": "Please describe the basic information.",
+  "type": "module",
+  "description": "ÊµÏÖpdf×ªpclm.",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_jipp",
   "main": "Index.ets",
-  "author": "",
-  "license": "Apache-2.0",
+  "author": "ohos_tpc",
+  "license": "MIT License",
+    "ohos": {
+    "org": "opensource"
+  },
+   "tags": [
+    "OpenHarmony",
+    "HarmonyOS",
+    "jipp",
+  ],
   "dependencies": {
     "@ohos/flate2": "^1.0.0"
   }
