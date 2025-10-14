@@ -44,7 +44,14 @@ export default class HttpProxyCache extends ProxyCache {
     try {
       this.stopped = true;
       await super.shutdown();
-      await this.serverConnect?.close();
+      // 完全清理 TCP 连接，避免内存泄漏
+      if (this.serverConnect) {
+        this.serverConnect.off('message');
+        this.serverConnect.off('error');
+        this.serverConnect.off('close');
+        await this.serverConnect.close();
+        this.serverConnect = null;
+      }
     } catch (err) {
       LogUtil.error('shutdown error: ' + JSON.stringify(err));
     }
@@ -132,13 +139,45 @@ export default class HttpProxyCache extends ProxyCache {
       return Promise.reject(new Error("source is null"));
     }
     const ctx = this;
-    let newSourceNoCache = new HttpUrlSource([this.source], true);
+    let newSourceNoCache = new HttpUrlSource([this.source]);
     await new Promise<void>((resolve, reject) => {
+      // 发送串行队列，避免高频并发 send 造成错误
+      const pendingChunks: Array<ArrayBuffer> = [];
+      let sending: boolean = false;
+      let ended: boolean = false;
+
+      const sendNext = () => {
+        if (sending) {
+          return;
+        }
+        const next = pendingChunks.shift();
+        if (!next) {
+          maybeFinish();
+          return;
+        }
+        sending = true;
+        const msg: socket.TCPSendOptions = { data: next };
+        serverConnect?.send(msg).then(() => {
+          sending = false;
+          sendNext();
+        }).catch((err: Error) => {
+          sending = false;
+          return reject(err);
+        });
+      };
+
+      const maybeFinish = () => {
+        if (ended && !sending && pendingChunks.length === 0) {
+          newSourceNoCache.close();
+          newSourceNoCache.setDataListener(null);
+          return resolve();
+        }
+      };
       try {
         class TempDataBackListener implements DataBackListener {
           onDataEnd() {
-            newSourceNoCache.close();
-            return resolve();
+            ended = true;
+            maybeFinish();
           }
 
           onDataStart() {
@@ -147,12 +186,8 @@ export default class HttpProxyCache extends ProxyCache {
 
           onDataReceive(data: ArrayBuffer) {
             ctx.receiveSize += data.byteLength;
-            let msg: socket.TCPSendOptions = {
-              data: data
-            }
-            serverConnect?.send(msg).catch((err: Error) => {
-              return reject(err);
-            })
+            pendingChunks.push(data);
+            sendNext();
           }
 
           onDataProgress() {

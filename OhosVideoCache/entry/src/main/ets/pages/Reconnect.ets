@@ -56,6 +56,7 @@ const TAG: string = 'VideoPlayer : ';
 struct Index {
   private surfaceId: string = '';
   private timeout: number = 0; // 定时器编号
+  private progressTimer: number = 0; // 进度更新定时器编号
   private xComponentController: XComponentController = new XComponentController();
   @State avPlayManage: avPlayManage = new avPlayManage();
   @State isSwiping: boolean = false; // 用户滑动过程中
@@ -134,6 +135,12 @@ struct Index {
 
   aboutToDisappear() {
     this.avPlayManage.videoRelease();
+    // 清理所有定时器，避免内存泄漏
+    this.clearTimer();
+    if (this.progressTimer !== 0) {
+      clearInterval(this.progressTimer);
+      this.progressTimer = 0;
+    }
     // 注销所有事件监听器
     emitter.off(innerEventFalse.eventId);
     emitter.off(innerEventTrue.eventId);
@@ -208,7 +215,12 @@ struct Index {
               this.percent = avPlayer.width / avPlayer.height;
               this.setVideoWH();
               this.durationTime = this.avPlayManage.getDurationTime();
-              setInterval(() => { // 更新当前时间
+              // 保存定时器ID以便后续清理（先清理旧定时器，避免重复定时器累积）
+              if (this.progressTimer) {
+                clearInterval(this.progressTimer);
+                this.progressTimer = 0;
+              }
+              this.progressTimer = setInterval(() => { // 更新当前时间
                 if (!this.isSwiping) {
                   this.currentTime = this.avPlayManage.getCurrentTime();
                 }

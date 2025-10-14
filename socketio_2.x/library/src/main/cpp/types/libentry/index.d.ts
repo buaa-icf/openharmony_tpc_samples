@@ -8,68 +8,79 @@
  *
  * This software is distributed without any warranty.
  */
+export class newSocketIOClient {
+  classId: number;
 
-export const set_connection_mode: (uri: string) => void;
-export const set_headers: (headers: string) => void;
-export const set_option: (opts: string) => void;
-export const set_path: (path: string) => void;
-export const connect: (uri: string) => void;
-export const set_nsp: (set_nsp: string) => void;
-export const set_open_listener: (open: any) => void;
+  set_connection_mode: (uri: string, classId: number) => void;
 
-export const set_fail_listener: (fail: any) => void;
+  set_headers: (headers: string, classId: number) => void;
 
-export const set_reconnecting_listener: (reconnecting: any) => void;
+  set_option: (opts: string, classId: number) => void;
 
-export const set_reconnect_listener: (reconnect: any) => void;
+  set_path: (path: string, classId: number) => void;
 
-export const set_close_listener: (closeListener: any) => void;
+  connect: (uri: string, classId: number) => void;
 
-export const set_socket_open_listener: (socket_open_listener: any) => void;
+  set_nsp: (set_nsp: string, classId: number) => void;
 
-export const set_socket_close_listener: (socket_close_listener: any) => void;
+  set_open_listener: (open: any, classId: number) => void;
 
-export const clear_con_listeners: () => void;
+  set_fail_listener: (fail: any, classId: number) => void;
 
-export const clear_socket_listeners: () => void;
+  set_reconnecting_listener: (reconnecting: any, classId: number) => void;
 
-export const set_reconnect_attempts: (reconnect_attempts: any) => void;
+  set_reconnect_listener: (reconnect: any, classId: number) => void;
 
-export const set_reconnect_delay: (reconnect_delay: any) => void;
+  set_close_listener: (closeListener: any, classId: number) => void;
 
-export const set_reconnect_delay_max: (reconnect_delay_max: any) => void;
+  set_socket_open_listener: (socket_open_listener: any, classId: number) => void;
 
-export const set_logs_default: () => void;
+  set_socket_close_listener: (socket_close_listener: any, classId: number) => void;
 
+  clear_con_listeners: (classId: number) => void;
 
-export const set_logs_quiet: () => void;
-export const set_logs_verbose: () => void;
+  clear_socket_listeners: (classId: number) => void;
 
-export const close: () => void;
+  set_reconnect_attempts: (reconnect_attempts: any, classId: number) => void;
 
-export const sync_close: () => void;
+  set_reconnect_delay: (reconnect_delay: any, classId: number) => void;
 
-export const set_proxy_basic_auth: (uri: string, username: string, password: string) => void;
+  set_reconnect_delay_max: (reconnect_delay_max: any, classId: number) => void;
 
-export const opened: () => boolean;
+  set_logs_default: (classId: number) => void;
 
-export const get_sessionid: () => string;
+  set_logs_quiet: (classId: number) => void;
 
-export const on: (event_name: string, on_event_listener: (event_json: string) => void) => void;
+  set_logs_verbose: (classId: number) => void;
 
-export const once: (event_name: string, on_event_listener: (event_json: string) => void) => void;
+  close: (classId: number) => void;
 
-export const on_binary: (event_name: string, on_event_listener: (event_data: Uint8Array) => void) => void;
+  sync_close: (classId: number) => void;
 
-export const off: (close: any) => void;
+  set_proxy_basic_auth: (uri: string, username: string, password: string, classId: number) => void;
 
-export const off_all: () => void;
+  opened: (classId: number) => boolean;
 
-export const socket_close: () => void;
+  get_sessionid: (classId: number) => string;
 
-export const off_error: () => void;
-export const on_error: (on_error_listener: (message: string) => void) => void;
+  on: (event_name: string, on_event_listener: (event_json: string) => void, classId: number) => void;
 
-export const emit: (name: string, message: any, on_emit_callback: (emit_callback_json: string) => void) => void;
+  once: (event_name: string, on_event_listener: (event_json: string) => void, classId: number) => void;
 
-export const get_current_state: () => number;
+  on_binary: (event_name: string, on_event_listener: (event_data: Uint8Array) => void, classId: number) => void;
+
+  off: (close: any, classId: number) => void;
+
+  off_all: (classId: number) => void;
+
+  socket_close: (classId: number) => void;
+
+  off_error: (classId: number) => void;
+
+  on_error: (on_error_listener: (message: string) => void, classId: number) => void;
+
+  emit: (name: string, message: any,
+    on_emit_callback: (emit_callback_json: string) => void, classId: number) => void;
+
+  get_current_state: (classId: number) => number;
+}
