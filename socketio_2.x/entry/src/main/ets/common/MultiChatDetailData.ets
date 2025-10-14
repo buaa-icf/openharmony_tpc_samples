@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2023 Huawei Device Co., Ltd.
+ * Copyright (C) 2025 Huawei Device Co., Ltd.
  *
  * This software is distributed under a license. The full license
  * agreement can be found in the file LICENSE in this distribution.
@@ -8,19 +8,16 @@
  *
  * This software is distributed without any warranty.
  */
-
 import { BasicDataSource } from '../common/BasicDataSource';
-// 最大聊天消息数（防止内存溢出）
-const MAX_CHAT_MESSAGES = 50;
 
-class ChatDetailData extends BasicDataSource {
+class MultiChatDetailData extends BasicDataSource<ESObject> {
   private msgList: Array<ESObject> = [];
 
   public totalCount(): number {
     return this.msgList.length;
   }
 
-  public getData(index: number): number {
+  public getData(index: number): ESObject {
     return this.msgList[index];
   }
 
@@ -32,15 +29,18 @@ class ChatDetailData extends BasicDataSource {
   public pushData(data: ESObject): void {
     this.msgList.push(data);
     this.notifyDataAdd(this.msgList.length - 1);
-    // 控制最大数量，防止内存溢出
-    if (this.msgList.length > MAX_CHAT_MESSAGES) {
-      this.msgList.splice(0, this.msgList.length - MAX_CHAT_MESSAGES);
-    }
   }
 
-  public delData(): void {
-    this.msgList=[];
+  public clearData(): void {
+    this.msgList = [];
+    this.notifyDataReload();
+  }
+
+  public getMessageList(): Array<ESObject> {
+    return this.msgList;
   }
 }
 
-export const chatDetailData = new ChatDetailData()
+// 为客户端A和B分别创建聊天数据管理实例
+export const multiChatDetailDataA = new MultiChatDetailData()
+export const multiChatDetailDataB = new MultiChatDetailData()

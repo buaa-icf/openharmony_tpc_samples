@@ -21,7 +21,7 @@ export default interface Source {
    * @param offset offset in bytes for source.
    * @throws ProxyCacheException if error occur while opening source.
    */
-  setDataListener(listener: DataBackListener): void;
+  setDataListener(listener: DataBackListener | null): void;
 
 
   /**

@@ -169,11 +169,15 @@ export default class Pinger {
           LogUtil.info(`[PING] 发送ping请求到: ${url}`);
           
           let runningTask: taskpool.Task = new taskpool.Task(pingCallable, self.host, self.port);
-          taskpool.execute(runningTask, taskpool.Priority.HIGH);
-          // 清理超时定时器
-          setTimeout(() => {
+          taskpool.execute(runningTask, taskpool.Priority.HIGH).then(() => {
+            // ping完成后清理超时定时器
             clearTimeout(timeoutId);
-          }, timeout + 100);
+          }).catch((error: Error) => {
+            LogUtil.error(`[PING] ping执行失败: ${error.message}`);
+            clearTimeout(timeoutId);
+            emitter.off(VideoCacheConstant.PING_EVENT_ID.toString(), eventListener);
+            resolve(false);
+          });
         });
         
         if (pingData) {
