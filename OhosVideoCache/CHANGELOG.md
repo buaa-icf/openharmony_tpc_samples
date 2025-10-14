@@ -1,3 +1,6 @@
+## 1.0.6
+1. Release the official version
+
 ## 1.0.6-rc.2
 1. Fix the memory leak issue.
 
