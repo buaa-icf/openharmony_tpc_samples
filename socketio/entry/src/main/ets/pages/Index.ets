@@ -217,7 +217,7 @@ struct ChatItemView {
 
   build() {
     Column() {
-      if (this.type == '0') {
+      if (this.type === '0') {
         Row() {
           Text(this.message)
         }
@@ -225,7 +225,7 @@ struct ChatItemView {
         .justifyContent(FlexAlign.Center)
         .margin({ top: 15 })
       }
-      else if (this.type == '1') {
+      else if (this.type === '1') {
         // 聊天页面对方的消息
         Row() {
           Text(this.username + ":" + this.message)
