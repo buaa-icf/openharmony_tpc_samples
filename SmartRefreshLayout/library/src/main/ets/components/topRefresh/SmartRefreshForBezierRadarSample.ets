@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 import { LOCATION } from "./SmartRefreshEnum"
+import { LogUtil } from '../util/LogUtil'
 
 @ComponentV2
 struct SmartRefreshForBezierRadarSample {
@@ -123,7 +124,10 @@ struct SmartRefreshForBezierRadarSample {
           this.scrollerEventFunction()
         }
       })
-      .onTouch((event: TouchEvent) => this.contentEnableScroll(event))
+      .onTouch((event: TouchEvent) =>{
+        this.contentEnableScroll(event)
+        LogUtil.info(`SmartRefreshForBezierRadarSample onTouch,event: ${JSON.stringify(event)}`)
+      })
 
       if (this.footer && this.modelBezierRadar.footerIsRefresh) {
         Flex({ alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {

@@ -80,10 +80,10 @@ static void OnSurfaceChangedCB(OH_NativeXComponent *component, void *window)
         uint64_t width = 0;
         uint64_t height = 0;
         OH_NativeXComponent_GetXComponentSize(render->m_component, render->m_window, &width, &height);
-        if (render->player_->eglCore_) {
+        render->m_width = width;
+        render->m_height = height;
+        if (render->player_ != nullptr && render->player_->eglCore_ != nullptr) {
             render->player_->eglCore_->UpdateSize(width, height);
-            render->m_width = width;
-            render->m_height = height;
         }
     }
 }

@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 import { LOCATION } from "./SmartRefreshEnum"
+import { LogUtil } from '../util/LogUtil'
 
 @ComponentV2
 struct SmartRefreshForStoreHouseSample {
@@ -123,7 +124,10 @@ struct SmartRefreshForStoreHouseSample {
           this.scrollerEventFunction()
         }
       })
-      .onTouch((event: TouchEvent) => this.contentEnableScroll(event))
+      .onTouch((event: TouchEvent) => {
+        this.contentEnableScroll(event)
+        LogUtil.info(`SmartRefreshForStoreHouseSample onTouch,event: ${JSON.stringify(event)}`)
+      })
 
       if (this.footer && this.modelStoreHouse.footerIsRefresh) {
         Flex({ alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
@@ -412,6 +416,7 @@ struct SmartRefreshForStoreHouseSample {
 
   //滚动结束，关闭刷新
   closeHeaderRefresh() {
+    LogUtil.info('closeHeaderRefresh')
     this.headerHeight = 0
     this.modelStoreHouse.headerHeight = 0
     this.modelStoreHouse.refreshHeaderCallbackState = true
@@ -422,6 +427,7 @@ struct SmartRefreshForStoreHouseSample {
   }
 
   closeFooterRefresh() {
+    LogUtil.info('closeFooterRefresh')
     this.footerHeight = 0
     this.modelStoreHouse.footerHeight =  this.footerHeight
     this.footerHeightPercentage = "0%"
