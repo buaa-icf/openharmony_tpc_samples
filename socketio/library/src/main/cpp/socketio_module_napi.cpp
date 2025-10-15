@@ -133,10 +133,9 @@ static std::string get_message_value(sio::message::ptr const &message) {
         message_json += "]";
         return message_json;
     case sio::message::flag_boolean:
-        return message->get_bool() ? "true" : "false";
+        return std::to_string(message->get_bool());
     case sio::message::flag_null:
-//         return std::string("\"\"");
-        return "null";
+         return "null";
     default:
         return std::string("\"\"");
     }
@@ -549,7 +548,8 @@ SocketIOClient *getClient(std::string classIdStr) {
     }
     return client;
 }
-
+// 标记函数为“被使用”
+__attribute__((used))
 napi_value SocketIOClient::set_headers(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value args[2] = {nullptr};
@@ -591,7 +591,8 @@ napi_value SocketIOClient::get_current_state(napi_env env, napi_callback_info in
     napi_create_int32(env, static_cast<int32_t>(client->clientInstance.get_current_state()), &state);
     return state;
 }
-
+// 标记函数为“被使用”
+__attribute__((used))
 napi_value SocketIOClient::set_option(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value args[2] = {nullptr};
@@ -1017,7 +1018,7 @@ napi_value SocketIOClient::get_sessionid(napi_env env, napi_callback_info info) 
 }
 
 // socket相关napi接口
-static sio::socket::ptr get_socket(std::string classIdStr) {
+static sio::socket::ptr get_socket(const std::string classIdStr) {
     SocketIOClient *client = getClient(classIdStr);
     if (!client) {
         return nullptr;
@@ -1029,7 +1030,8 @@ static sio::socket::ptr get_socket(std::string classIdStr) {
         return client->clientInstance.socket(client->nsp);
     }
 }
-
+// 标记函数为“被使用”
+__attribute__((used))
 napi_value SocketIOClient::set_nsp(napi_env env, napi_callback_info info) {
     size_t argc = 2;
     napi_value args[2] = {nullptr};
@@ -1076,7 +1078,8 @@ napi_value SocketIOClient::on(napi_env env, napi_callback_info info) {
                        std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5));
     return 0;
 }
-
+// 标记函数为“被使用”
+__attribute__((used))
 napi_value SocketIOClient::on_binary(napi_env env, napi_callback_info info) {
 
     size_t argc = 3;
@@ -1104,7 +1107,8 @@ napi_value SocketIOClient::on_binary(napi_env env, napi_callback_info info) {
                        std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5));
     return 0;
 }
-
+// 标记函数为“被使用”
+__attribute__((used))
 napi_value SocketIOClient::once(napi_env env, napi_callback_info info) {
     size_t argc = 3;
     napi_value args[3] = {nullptr};
@@ -1158,7 +1162,8 @@ napi_value SocketIOClient::off_all(napi_env env, napi_callback_info info) {
     get_socket(classIdStr)->off_all();
     return 0;
 }
-
+// 标记函数为“被使用”
+__attribute__((used))
 napi_value SocketIOClient::socket_close(napi_env env, napi_callback_info info) {
     size_t argc = 1;
     napi_value args[1] = {nullptr};
@@ -1373,7 +1378,8 @@ napi_value SocketIOClient::emit(napi_env env, napi_callback_info info) {
     messageList = nullptr;
     return 0;
 }
-
+// 标记函数为“被使用”
+__attribute__((used))
 napi_value SocketIOClient::emitAckBinary(napi_env env, napi_callback_info info) {
     size_t argc = 5;
     napi_value args[5] = {nullptr};
@@ -1420,7 +1426,8 @@ napi_value SocketIOClient::emitAckBinary(napi_env env, napi_callback_info info) 
     messageList = nullptr;
     return 0;
 }
-
+// 标记函数为“被使用”
+__attribute__((used))
 napi_value SocketIOClient::JsConstructor(napi_env env, napi_callback_info info) {
     napi_value targetObj = nullptr;
     void *data = nullptr;
