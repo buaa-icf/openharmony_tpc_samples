@@ -1030,6 +1030,7 @@ static sio::socket::ptr get_socket(const std::string classIdStr) {
         return client->clientInstance.socket(client->nsp);
     }
 }
+
 // 标记函数为“被使用”
 __attribute__((used))
 napi_value SocketIOClient::set_nsp(napi_env env, napi_callback_info info) {
