@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 import { LOCATION } from "./SmartRefreshEnum"
+import { LogUtil } from '../util/LogUtil'
 
 @ComponentV2
 struct SmartRefreshForDropBoxSample {
@@ -123,7 +124,10 @@ struct SmartRefreshForDropBoxSample {
           this.scrollerEventFunction()
         }
       })
-      .onTouch((event: TouchEvent) => this.contentEnableScroll(event))
+      .onTouch((event: TouchEvent) =>{
+        this.contentEnableScroll(event)
+        LogUtil.info(`SmartRefreshForDropBoxSample onTouch,event: ${JSON.stringify(event)}`)
+      })
 
       if (this.footer && this.modelDropBox.footerIsRefresh) {
         Flex({ alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {

@@ -13,6 +13,8 @@
  * limitations under the License.
  */
 
+import { LogUtil } from '../util/LogUtil'
+
 @ComponentV2
 struct SmartRefreshSecond {
   @Param @Require model: SmartRefreshSecond.Model
@@ -128,7 +130,10 @@ struct SmartRefreshSecond {
             }
             this.model.latestYOffset = this.model.scroller.currentOffset().yOffset
           })
-          .onTouch((event: TouchEvent) => this.touchEventFunction(event))
+          .onTouch((event: TouchEvent) =>{
+            this.touchEventFunction(event)
+            LogUtil.info(`SmartRefreshSecond onTouch, event: ${JSON.stringify(event)}`)
+          })
         }
 
       }.width('100%')

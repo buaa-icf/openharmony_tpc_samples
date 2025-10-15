@@ -463,10 +463,9 @@ void Player::DecOutputThread()
             break;
         }
         
-        signal_->outputFrameCount++;
         LOGD("Out buffer count: %{public}d, size: %{public}d, flag: %{public}u, pts: %{public}ld",
             signal_->outputFrameCount, bufferInfo.attr.size, bufferInfo.attr.flags, bufferInfo.attr.pts);
-        frameCurIdx_ = signal_->outputFrameCount;
+        frameCurIdx_ = signal_->outputFrameCount++;
         lock.unlock();
         GetBufferData(bufferInfo);
 

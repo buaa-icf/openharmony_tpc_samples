@@ -13,6 +13,8 @@
  * limitations under the License.
  */
 
+import { LogUtil } from '../util/LogUtil'
+
 @ComponentV2
 struct SmartRefreshForTaurus {
   @Param @Require model: SmartRefreshForTaurus.Model
@@ -51,7 +53,7 @@ struct SmartRefreshForTaurus {
               .height(this.model.tempTitleHeight)
               .backgroundColor(this.model.backgroundColor)
             }
-            if (this.needScroller) { //重置Scroller
+            if (this.needScroller) { //重置Scroller 
               Text("0").visibility(Visibility.None)
             } else {
               Text("1").visibility(Visibility.None)
@@ -115,7 +117,10 @@ struct SmartRefreshForTaurus {
             })
           }
         })
-        .onTouch((event: TouchEvent) => this.touchEventFunction(event))
+        .onTouch((event: TouchEvent) =>{
+          this.touchEventFunction(event)
+          LogUtil.info(`SmartRefreshForTaurus onTouch,event: ${JSON.stringify(event)}`)
+        })
       }
     }
   }
