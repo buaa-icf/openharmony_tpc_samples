@@ -1,5 +1,13 @@
 # 版本记录
 
+## 1.1.6-rc.1
+
+---
+
+1. Fixed the issue of incorrect rendering when starting to play the animation after rotating the screen.
+2. Supports obtaining online video information and filling vap videos with byte streams.
+3. Fixed the issue where the video fill element ended prematurely.
+
 ## 1.1.5
 
 ---
