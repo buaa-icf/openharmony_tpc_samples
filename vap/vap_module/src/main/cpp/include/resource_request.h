@@ -24,6 +24,7 @@
 
 #include "src.h"
 
+struct MixInputData;
 struct ColorARGB {
     uint32_t alpha = 0xff;
     uint32_t red = 0xff;
@@ -58,7 +59,7 @@ public:
     void Release();
     
     void FetchText(std::vector<uint8_t> &data, TextOption &txtOpt);
-    void FetchImg(std::vector<uint8_t> &data, ImageOption &imgOpt);
+    void FetchImg(std::vector<uint8_t> &data, ImageOption &imgOpt, const MixInputData& mixData);
 private:
     uint64_t width_ = 300;
     uint64_t height_ = 50;

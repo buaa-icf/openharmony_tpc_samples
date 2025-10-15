@@ -26,6 +26,7 @@
 
 #include "log.h"
 #include "common_const.h"
+#include "mix_render.h"
 
 using namespace CommonConst;
 
@@ -173,42 +174,54 @@ static void GetPixelMapInfo(OH_PixelmapNative *resPixMap, uint32_t &height, uint
          width, height, rowStride, pixelFormat);
 }
 
-void ResourceRequest::FetchImg(std::vector<uint8_t> &data, ImageOption &imgOpt)
+void ResourceRequest::FetchImg(std::vector<uint8_t> &data, ImageOption &imgOpt, const MixInputData& mixData)
 {
-    std::string uri = imgOpt.uri;
-    if (uri.empty()) {
-        LOGE("FetchImg uri empty");
-        return;
+    Image_ErrorCode errCode;
+    float scaleX = 0;
+    float scaleY = 0;
+    if (mixData.imgSrc.type == MixImgSourceType::FILE_SOURCE) {
+        errCode = OH_ImageSourceNative_CreateFromUri(const_cast<char *>(mixData.imgSrc.buffer.c_str()), mixData.imgSrc.buffer.size(), &source_);
+        if (errCode != IMAGE_SUCCESS) {
+            LOGE("FetchImg OH_ImageSourceNative_CreateFromUri failed, errCode: %{public}d.", errCode);
+            return;
+        }
+        uint32_t width = 0;
+        uint32_t height = 0;
+        GetSourceInfo(source_, width, height);
+        // 通过图片解码参数创建PixelMap列表
+        OH_DecodingOptions *opts = nullptr;
+        OH_DecodingOptions_Create(&opts);
+        int32_t pixelFormat = PIXEL_FORMAT_RGBA_8888;
+        OH_DecodingOptions_SetPixelFormat(opts, pixelFormat);
+    
+         errCode = OH_ImageSourceNative_CreatePixelmap(source_, opts, &resPixMap_);
+         OH_DecodingOptions_Release(opts);
+         if (errCode != IMAGE_SUCCESS) {
+             LOGE("FetchImg OH_ImageSourceNative_CreatePixelmap failed, errCode: %{public}d.", errCode);
+             return;
+         }
+        if (width == 0 || height == 0) {
+            LOGE("FetchImg failed, source width: %u, height: %u", width, height);
+            return;
+        }
+        scaleX = imgOpt.width / static_cast<float>(width);
+        scaleY = imgOpt.height / static_cast<float>(height);
+    } else if (mixData.imgSrc.type == MixImgSourceType::UINT8_SOURCE) {
+        OH_Pixelmap_InitializationOptions *options = NULL;
+        OH_PixelmapInitializationOptions_Create(&options);
+        OH_PixelmapInitializationOptions_SetWidth(options, mixData.imgSrc.w);
+        OH_PixelmapInitializationOptions_SetHeight(options, mixData.imgSrc.h);
+        OH_PixelmapInitializationOptions_SetSrcPixelFormat(options, mixData.imgSrc.pixelFormat);
+
+        errCode = OH_PixelmapNative_CreatePixelmap((uint8_t*)mixData.imgSrc.buffer.c_str(), mixData.imgSrc.buffer.size(), options, &resPixMap_);
+        if (errCode != IMAGE_SUCCESS) {
+            LOGE("FetchImg OH_PixelmapNative_CreatePixelmap failed, errCode: %{public}d.", errCode);
+            return;
+        }
+        scaleX = imgOpt.width / static_cast<float>(mixData.imgSrc.w);
+        scaleY = imgOpt.height / static_cast<float>(mixData.imgSrc.h);
     }
-
-    LOGD("FetchImg OH_ImageSourceNative_CreateFromUri,: %{public}s. %{public}p", uri.c_str(), source_);
-    Image_ErrorCode errCode = OH_ImageSourceNative_CreateFromUri(const_cast<char *>(uri.c_str()), uri.size(), &source_);
-    if (errCode != IMAGE_SUCCESS) {
-        LOGE("FetchImg OH_ImageSourceNative_CreateFromUri failed, errCode: %{public}d.", errCode);
-        return;
-    }
-
-    uint32_t width;
-    uint32_t height;
-    GetSourceInfo(source_, width, height);
-
-    // 通过图片解码参数创建PixelMap列表
-    OH_DecodingOptions *opts = nullptr;
-    OH_DecodingOptions_Create(&opts);
-    int32_t pixelFormat = PIXEL_FORMAT_RGBA_8888;
-    OH_DecodingOptions_SetPixelFormat(opts, pixelFormat);
-
-    errCode = OH_ImageSourceNative_CreatePixelmap(source_, opts, &resPixMap_);
-    OH_DecodingOptions_Release(opts);
-    if (errCode != IMAGE_SUCCESS) {
-        LOGE("FetchImg OH_ImageSourceNative_CreatePixelmap failed, errCode: %{public}d.", errCode);
-        return;
-    }
-
-    float scaleX = imgOpt.width / static_cast<float>(width);
-    float scaleY = imgOpt.height / static_cast<float>(height);
     errCode = OH_PixelmapNative_Scale(resPixMap_, scaleX, scaleY);
-
     OH_Pixelmap_ImageInfo *imgInfo = nullptr;
     OH_PixelmapImageInfo_Create(&imgInfo);
     errCode = OH_PixelmapNative_GetImageInfo(resPixMap_, imgInfo);
@@ -226,7 +239,6 @@ void ResourceRequest::FetchImg(std::vector<uint8_t> &data, ImageOption &imgOpt)
     errCode = OH_PixelmapNative_ReadPixels(resPixMap_, buffer.data(), &bufferSize);
     data.assign(buffer.data(), buffer.data() + bufferSize);
     LOGD("OH_PixelmapNative_ReadPixels %{public}lu --- %{public}lu", data.size(), buffer.size());
-    
     OH_PixelmapNative_Release(resPixMap_);
     OH_ImageSourceNative_Release(source_);
     source_ = nullptr;

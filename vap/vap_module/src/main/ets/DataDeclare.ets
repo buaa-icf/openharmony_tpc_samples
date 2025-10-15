@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { image } from "@kit.ImageKit"
 
 export enum VAPFontWeight {
   // 100-900
@@ -45,10 +46,17 @@ export enum VAPTextAlign {
 }
 ;
 
+export interface MixUint8Img {
+  buffer: Uint8Array
+  pixelFormat: image.PixelMapFormat
+  h: number
+  w: number
+};
+
 export interface MixData {
   tag: string
   txt?: string
-  imgUri?: string
+  imgUri?: string | MixUint8Img
   color?: VAPColor
   fontWeight?: VAPFontWeight
   textAlign?: VAPTextAlign
@@ -113,12 +121,18 @@ export enum SrcType {
 export interface SrcInfo {
   tag: string;
   type: SrcType;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
 }
 ;
 
 export interface VideoInfo {
   width: number;
   height: number;
+  totalFrames: number;
+  fps: number;
   srcInfos: Array<SrcInfo>
 }
 ;
@@ -152,6 +166,7 @@ export interface XComponentContext {
   setLoop(loops: number, id?: string): void
 
   getVideoInfo(uri: string, id?: string): VideoInfo | undefined
+  getVideoInfoAsync(uri: string, id?: string): Promise<VideoInfo | undefined>
 
   setFitType(fitType: FitType, id?: string): void
 

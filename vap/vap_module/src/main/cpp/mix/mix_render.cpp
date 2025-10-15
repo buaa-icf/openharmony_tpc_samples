@@ -73,11 +73,10 @@ void MixRender::GenSrcTexture(Src src, BitMap &bitmap, const MixInputData mixDat
         reqPtr->FetchText(bitmap.pixelsData, txtOpt);
     } else if (src.srcType == SrcType::IMG) {
         ImageOption imgOpt;
-        imgOpt.uri = mixData.imgUri.c_str();
         imgOpt.width = src.w;
         imgOpt.height = src.h;
         imgOpt.fixType = src.fitType;
-        reqPtr->FetchImg(bitmap.pixelsData, imgOpt);
+        reqPtr->FetchImg(bitmap.pixelsData, imgOpt, mixData);
         if (bitmap.pixelsData.empty()) {
             LOGD("MixRender FetchImg error");
             bitmap.pixelsData.resize(src.w * src.h * FOUR);
