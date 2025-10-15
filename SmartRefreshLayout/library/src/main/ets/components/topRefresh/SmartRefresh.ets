@@ -13,6 +13,8 @@
  * limitations under the License.
  */
 
+import { LogUtil } from '../util/LogUtil'
+
 @ComponentV2
 struct SmartRefresh {
   @Param @Require model: SmartRefresh.Model
@@ -120,7 +122,10 @@ struct SmartRefresh {
           this.scrollerEventFunction()
         }
       })
-      .onTouch((event: TouchEvent) => this.contentEnableScroll(event))
+      .onTouch((event: TouchEvent) =>{
+        this.contentEnableScroll(event)
+        LogUtil.info(`SmartRefresh onTouch,event: ${JSON.stringify(event)}`)
+      })
 
       if (this.footer && this.model.footerIsRefresh) {
         Flex({ alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
