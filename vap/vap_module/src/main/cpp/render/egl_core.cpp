@@ -18,14 +18,12 @@
 #include <cstddef>
 #include <cstdint>
 #include <memory>
-#include <misc/fastrpc.h>
 #include <cstdio>
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
 #include <EGL/eglplatform.h>
 #include <GLES3/gl3.h>
-#include <hilog/log.h>
-#include <fstream>
+#include <unistd.h>
 #include <vector>
 
 #include "mask_config.h"
@@ -412,6 +410,9 @@ void EGLCore::Release()
     m_render->ClearFrame();
     FinishLoad();
     m_render->ReleaseTexture();
+
+    usleep(50 * 1000); // 等待屏幕清理完成
+
     if ((nullptr == m_eglDisplay) || (nullptr == m_eglSurface) || (!eglDestroySurface(m_eglDisplay, m_eglSurface))) {
         LOGE("Release eglDestroySurface failed");
     }
