@@ -1419,32 +1419,32 @@ napi_value SocketIOClient::emitAckBinary(napi_env env, napi_callback_info info) 
     messageList = nullptr;
     return 0;
 }
-// 注释 JsConstructor / 先保留代码
-// napi_value SocketIOClient::JsConstructor(napi_env env, napi_callback_info info) {
-//     napi_value targetObj = nullptr;
-//     void *data = nullptr;
-//     size_t argsNum = 0;
-//     napi_value args[2] = {nullptr};
-//     napi_get_cb_info(env, info, &argsNum, args, &targetObj, &data);
-//
-//     SocketIOClient *classBind = new SocketIOClient();
-//     uintptr_t classId = reinterpret_cast<uintptr_t>(classBind);
-//     std::string classIdStrTemp = std::to_string(classId);
-//     classBind->classIdStr = classIdStrTemp;
-//
-//     napi_value napiClassId;
-//     napi_create_string_utf8(env, classIdStrTemp.c_str(), classIdStrTemp.length(), &napiClassId);
-//     napi_set_named_property(env, targetObj, "classId", napiClassId);
-//     g_clientMap.insert(std::pair<std::string, SocketIOClient *>(classIdStrTemp, classBind));
-//
-//     napi_wrap(
-//         env, nullptr, classBind,
-//         [](napi_env env, void *data, void *hint) {
-//             SocketIOClient *bind = (SocketIOClient *)data;
-//             delete bind;
-//             bind = nullptr;
-//             g_clientMap.erase(bind->classIdStr);
-//         },
-//         nullptr, nullptr);
-//     return targetObj;
-// }
+
+napi_value SocketIOClient::JsConstructor(napi_env env, napi_callback_info info) {
+    napi_value targetObj = nullptr;
+    void *data = nullptr;
+    size_t argsNum = 0;
+    napi_value args[2] = {nullptr};
+    napi_get_cb_info(env, info, &argsNum, args, &targetObj, &data);
+
+    SocketIOClient *classBind = new SocketIOClient();
+    uintptr_t classId = reinterpret_cast<uintptr_t>(classBind);
+    std::string classIdStrTemp = std::to_string(classId);
+    classBind->classIdStr = classIdStrTemp;
+
+    napi_value napiClassId;
+    napi_create_string_utf8(env, classIdStrTemp.c_str(), classIdStrTemp.length(), &napiClassId);
+    napi_set_named_property(env, targetObj, "classId", napiClassId);
+    g_clientMap.insert(std::pair<std::string, SocketIOClient *>(classIdStrTemp, classBind));
+
+    napi_wrap(
+        env, nullptr, classBind,
+        [](napi_env env, void *data, void *hint) {
+            SocketIOClient *bind = (SocketIOClient *)data;
+            delete bind;
+            bind = nullptr;
+            g_clientMap.erase(bind->classIdStr);
+        },
+        nullptr, nullptr);
+    return targetObj;
+}
