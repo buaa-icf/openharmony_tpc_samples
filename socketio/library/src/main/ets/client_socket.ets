@@ -103,7 +103,6 @@ export class client_socket {
   public sync_close() {
     this.mSocketIOClient.sync_close(this.classId);
   }
-
   public set_proxy_basic_auth(uri: string, username: string, password: string) {
     this.mSocketIOClient.set_proxy_basic_auth(uri, username, password, this.classId);
   }
@@ -117,7 +116,6 @@ export class client_socket {
   }
 
   //socket相关接口
-
   public set_nsp(nsp: string) {
     this.mSocketIOClient.set_nsp(nsp, this.classId);
   }
