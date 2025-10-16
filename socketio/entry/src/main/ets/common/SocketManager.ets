@@ -49,10 +49,18 @@ class SocketManager {
       this.login_finish = false;
     };
   };
-
+  // 2. 关闭连接
+  destroySyncCurrentClient(): void {
+    if (this.client) {
+      this.client.sync_close();
+      this.client = null;
+      this._connect_finish = false;
+      this.login_finish = false;
+    };
+  };
   commonInit() {
     // 销毁当前连接
-    this.destroyCurrentClient();
+    this.destroySyncCurrentClient();
     // 创建新连接
     this.client = new client_socket();
     if(this.client) {
@@ -179,7 +187,7 @@ class SocketManager {
     this.client?.connect(this.uri);
 
     // 通过set_option设置服务器重连功能：开启自动重连，重连尝试次数：5，// 初始重连延迟1000（毫秒），// 最大重连延迟5000（毫秒）
-    // this.client?.set_option('{reconnection: true, reconnectionAttempts: 5, reconnectionDelay: 1000, reconnectionDelayMax: 5000}');
+    this.client?.set_option('{reconnection: true, reconnectionAttempts: 5, reconnectionDelay: 1000, reconnectionDelayMax: 5000}');
   };
 
   //配置socket
@@ -200,6 +208,14 @@ class SocketManager {
     this.client?.on("disconnect", (data: string) => {
       hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX disconnect: ' + data);
       this.checkConnectionState("disconnect");
+    });
+    // 注册一个二进制事件监听器 例如监听二进制消息（比如服务器推送的文件流），并处理接收到的数据
+    this.client?.on_binary('on binary', (data: ArrayBuffer) => {
+      hilog.info(0x0000, 'testTag', `收到二进制数据，大小: ${data.byteLength} 字节`);
+    });
+    // 使用 once：只响应第一次 'welcome' 消息
+    this.client?.once('welcome', (data: string) => {
+      hilog.info(0x0000, 'testTag', '%{public}s', `${data}`);
     });
   };
 
@@ -229,10 +245,43 @@ class SocketManager {
     this.checkConnectionState("close");
   };
 
+  // set_nsp 设置命名空间
+  setNsp(nsp:string) {
+    if (!this.connect_finish) {
+      hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX 暂未连接服务器');
+      return;
+    };
+    this.client?.set_nsp(nsp);
+  };
+
+  // 设置其头部信息
+  setHeaders(headers:string) {
+    if (!this.connect_finish) {
+      hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX 暂未连接服务器');
+      return;
+    };
+    this.client?.set_headers(headers);
+  };
+  // 关闭一个由 classId 标识的 Socket.IO 客户端连接
+  socketClose() {
+    if (!this.connect_finish) {
+      hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX 暂未连接服务器');
+      return;
+    };
+    this.client?.socket_close();
+  };
   getResourceString(resourceName:Resource) {
     return getContext().resourceManager.getStringSync(resourceName.id);
   };
-
+  //发送消息
+  sendEmitAckBinaryMessage(message: ESObject) {
+    hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX sendMessage');
+    if (!this.connect_finish) {
+      hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX 暂未连接服务器');
+      return;
+    };
+    this.client?.emitAckBinary("new message", message);
+  };
   //发送消息
   sendMessage(message: ESObject) {
     hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX sendMessage');
