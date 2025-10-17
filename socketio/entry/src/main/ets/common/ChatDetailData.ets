@@ -10,6 +10,8 @@
  */
 
 import { BasicDataSource } from '../common/BasicDataSource';
+// 最大聊天消息数（防止内存溢出）
+const MAX_CHAT_MESSAGES = 50;
 
 class ChatDetailData extends BasicDataSource {
   private msgList: Array<ESObject> = [];
@@ -30,6 +32,14 @@ class ChatDetailData extends BasicDataSource {
   public pushData(data: ESObject): void {
     this.msgList.push(data);
     this.notifyDataAdd(this.msgList.length - 1);
+    // 控制最大数量，防止内存溢出
+    if (this.msgList.length > MAX_CHAT_MESSAGES) {
+      this.msgList.splice(0, this.msgList.length - MAX_CHAT_MESSAGES);
+    }
+  }
+
+  public delData(): void {
+    this.msgList=[];
   }
 }
 

@@ -23,7 +23,15 @@ struct Index {
   @State currentState: number = socketManager.currentState;
 
   private scroller: Scroller = new Scroller();
-
+  // 组件卸载 → 必须清理！
+  aboutToDisappear() {
+    socketManager.close()
+    this.login_finish = socketManager.login_finish
+    chatDetailData.delData()
+  }
+  onDestroy() {
+    socketManager.close(); // 彻底释放
+  }
   build() {
     Row() {
       Column() {
@@ -31,7 +39,9 @@ struct Index {
           List({ scroller: this.scroller }) {
             LazyForEach(chatDetailData, (message: ESObject) => {
               ListItem() {
-                ChatItemView({ message: message })
+                ChatItemView({ username: message.username,
+                  message: message.message?.toString() || "null",
+                  type: message.id?.toString() })
               }
             })
           }
@@ -39,7 +49,148 @@ struct Index {
           .divider({ strokeWidth: 2, color: "#f3f3f3" })
           .height('80%')
           .width('100%')
-
+          Row() {
+            Button('exit')
+              .onClick(() => {
+                socketManager.close()
+                this.login_finish = socketManager.login_finish
+                chatDetailData.delData()
+              })
+              .width('20%')
+            Button('null')
+              .onClick(() => {
+                socketManager.sendNullMessage(null)
+                let clientMessage: ESObject = { username: socketManager.username, message: null, id: 2 }
+                chatDetailData.pushData(clientMessage)
+              })
+              .width('20%')
+            Button('string')
+              .onClick(() => {
+                if (this.message == "") {
+                  prompt.showToast({ message: $r('app.string.Enter_messages') });
+                  return
+                }
+                socketManager.sendStringMessage(this.message)
+                let clientMessage: ESObject = { username: socketManager.username, message:this.message, id: 2 }
+                chatDetailData.pushData(clientMessage)
+              })
+              .width('20%')
+            Button('number')
+              .onClick(() => {
+                if (this.message == "") {
+                  prompt.showToast({ message: $r('app.string.Enter_messages') });
+                  return
+                }
+                socketManager.sendNumberMessage(this.message)
+                let clientMessage: ESObject = { username: socketManager.username, message:this.message, id: 2 }
+                chatDetailData.pushData(clientMessage)
+              })
+              .width('20%')
+            Button('object')
+              .onClick(() => {
+                if (this.message == "") {
+                  prompt.showToast({ message: $r('app.string.Enter_messages') });
+                  return
+                }
+                socketManager.sendObjectMessage(this.message)
+                let clientMessage: ESObject = { username: socketManager.username, message:this.message, id: 2 }
+                chatDetailData.pushData(clientMessage)
+              })
+              .width('20%')
+          }
+          .width('100%')
+          Row() {
+            Button('float')
+              .onClick(() => {
+                if (this.message == "") {
+                  prompt.showToast({ message: $r('app.string.Enter_messages') });
+                  return
+                }
+                socketManager.sendNumberMessage(this.message)
+                let clientMessage: ESObject = { username: socketManager.username, message:this.message, id: 2 }
+                chatDetailData.pushData(clientMessage)
+              })
+              .width('20%')
+            Button('array')
+              .onClick(() => {
+                if (this.message == "") {
+                  prompt.showToast({ message: $r('app.string.Enter_messages') });
+                  return
+                }
+                socketManager.sendArrayMessage(this.message)
+                let clientMessage: ESObject = { username: socketManager.username, message:this.message, id: 2 }
+                chatDetailData.pushData(clientMessage)
+              })
+              .width('20%')
+            Button('boolean')
+              .onClick(() => {
+                socketManager.sendBooleanMessage(true)
+                let clientMessage: ESObject = { username: socketManager.username, message:true, id: 2 }
+                chatDetailData.pushData(clientMessage)
+              })
+              .width('20%')
+            Button('buff')
+              .onClick(() => {
+                if (this.message == "") {
+                  prompt.showToast({ message: $r('app.string.Enter_messages') });
+                  return
+                }
+                socketManager.sendBufferMessage(this.message)
+                let clientMessage: ESObject = { username: socketManager.username, message:this.message, id: 2 }
+                chatDetailData.pushData(clientMessage)
+              })
+              .width('20%')
+            Button('multi')
+              .onClick(() => {
+                if (this.message == "") {
+                  prompt.showToast({ message: $r('app.string.Enter_messages') });
+                  return
+                }
+                socketManager.sendMultiParameterCallbackMessage(this.message)
+                let clientMessage: ESObject = { username: socketManager.username, message:this.message, id: 2 }
+                chatDetailData.pushData(clientMessage)
+              })
+              .width('20%')
+          }
+          .width('100%')
+          Row() {
+            Button('setNsp')
+              .onClick(() => {
+                if (this.message == "") {
+                  prompt.showToast({ message: $r('app.string.Enter_messages') });
+                  return
+                }
+                socketManager.setNsp(this.message)
+              })
+              .width('20%')
+            Button('setHeaders')
+              .onClick(() => {
+                if (this.message == "") {
+                  prompt.showToast({ message: $r('app.string.Enter_messages') });
+                  return
+                }
+                socketManager.setHeaders(this.message)
+              })
+              .width('20%')
+            Button('socketClose')
+              .onClick(() => {
+                socketManager.socketClose()
+                socketManager.close()
+                this.login_finish = socketManager.login_finish
+                chatDetailData.delData()
+              })
+              .width('20%')
+            Button('emitAckBinary')
+              .onClick(() => {
+                if (this.message == "") {
+                  prompt.showToast({ message: $r('app.string.Enter_messages') });
+                  return
+                }
+                socketManager.sendEmitAckBinaryMessage(this.message)
+              })
+              .width('20%')
+          }
+          .width('100%')
           Row() {
             TextInput({ placeholder: $r('app.string.Enter_message'), text: this.message })
               .width('80%')
@@ -64,6 +215,7 @@ struct Index {
           }
           .height('10%')
           .width('100%')
+
         } else {
           TextInput({ placeholder: $r('app.string.Server_address'), text: this.uri })
             .onChange((uri) => {
@@ -96,22 +248,25 @@ struct Index {
 
 @Component
 struct ChatItemView {
-  private message: ESObject
+  // @Prop message: ESObject
+  @Prop username: string
+  @Prop message: string
+  @Prop type: string  // 0: 系统, 1: 对方, 2: 自己
 
   build() {
     Column() {
-      if (this.message.id == 0) {
+      if (this.type === '0') {
         Row() {
-          Text(this.message.message)
+          Text(this.message)
         }
         .width("100%")
         .justifyContent(FlexAlign.Center)
         .margin({ top: 15 })
       }
-      else if (this.message.id == 1) {
+      else if (this.type === '1') {
         // 聊天页面对方的消息
         Row() {
-          Text(this.message.username + ":" + this.message.message)
+          Text(this.username + ":" + this.message)
         }
         .width("100%")
         .alignItems(VerticalAlign.Top)
@@ -120,7 +275,7 @@ struct ChatItemView {
       } else {
         // 聊天页面本人消息
         Row() {
-          Text(this.message.username + ":" + this.message.message)
+          Text(this.username + ":" + this.message)
         }
         .alignItems(VerticalAlign.Top)
         .width("100%")

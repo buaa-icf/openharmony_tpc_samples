@@ -103,7 +103,6 @@ export class client_socket {
   public sync_close() {
     this.mSocketIOClient.sync_close(this.classId);
   }
-
   public set_proxy_basic_auth(uri: string, username: string, password: string) {
     this.mSocketIOClient.set_proxy_basic_auth(uri, username, password, this.classId);
   }
@@ -117,13 +116,22 @@ export class client_socket {
   }
 
   //socket相关接口
-
   public set_nsp(nsp: string) {
     this.mSocketIOClient.set_nsp(nsp, this.classId);
   }
 
   public on(event_name: string, on_event_listener: (event_json: string) => void) {
-    this.mSocketIOClient.on(event_name, on_event_listener, this.classId);
+    const wrapper = (event_json: ESObject) => {
+      try {
+        console.log( '接收到on回调参数----on',  event_json);
+        const params:ESObject  = JSON.parse(event_json)
+        on_event_listener(JSON.stringify(params));
+      } catch (e) {
+        console.log( '接收到on回调参数----on',  event_json);
+        on_event_listener('Transmission data parsing error');
+      }
+    };
+    this.mSocketIOClient.on(event_name, wrapper, this.classId);
   }
 
   public on_binary(event_name: string, on_event_listener: (event_data: Uint8Array) => void) {
@@ -155,7 +163,17 @@ export class client_socket {
   }
 
   public emit(name: string, message: ESObject, on_emit_callback?: (emit_callback_json: string) => void) {
-    this.mSocketIOClient.emit(name, message,  on_emit_callback, this.classId);
+    const wrapper = (event_json: ESObject) => {
+      try {
+        console.log( '接收到emit回调参数----emit',  event_json);
+        const params:ESObject  = JSON.parse(event_json)
+        on_emit_callback&&on_emit_callback(JSON.stringify(params));
+      } catch (e) {
+        console.log( '接收到emit回调参数----emit',  event_json);
+        on_emit_callback&&on_emit_callback('Transmission data parsing error');
+      }
+    };
+    this.mSocketIOClient.emit(name, message,  wrapper, this.classId);
   }
 
   public emitAckBinary(name: string, message: ESObject,
