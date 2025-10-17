@@ -104,42 +104,42 @@ static std::string get_message_value(sio::message::ptr const &message)
     std::vector<sio::message::ptr> messageArray;
 
     switch (message->get_flag()) {
-    case sio::message::flag_integer:
-        return std::to_string(message->get_int());
-    case sio::message::flag_double:
-        return std::to_string(message->get_double());
-    case sio::message::flag_string:
-        return extract_string_from_message(message);
-    case sio::message::flag_binary:
-        return std::string("\"") + *message->get_binary() + "\"" + ",\"binary\":true";
-    case sio::message::flag_object:
-        message_json = "{";
-        messageMap = message->get_map();
-        for (auto it : messageMap) {
-            if (messageMap.begin()->first != it.first) {
-                message_json += std::string(",");
+        case sio::message::flag_integer:
+            return std::to_string(message->get_int());
+        case sio::message::flag_double:
+            return std::to_string(message->get_double());
+        case sio::message::flag_string:
+            return extract_string_from_message(message);
+        case sio::message::flag_binary:
+            return std::string("\"") + *message->get_binary() + "\"" + ",\"binary\":true";
+        case sio::message::flag_object:
+            message_json = "{";
+            messageMap = message->get_map();
+            for (auto it : messageMap) {
+                if (messageMap.begin()->first != it.first) {
+                    message_json += std::string(",");
+                }
+                message_json += std::string("\"") + it.first.c_str() + "\":" + get_message_value(it.second);
             }
-            message_json += std::string("\"") + it.first.c_str() + "\":" + get_message_value(it.second);
-        }
-        message_json += "}";
-        return message_json;
-    case sio::message::flag_array:
-        message_json = "[";
-        messageArray = message->get_vector();
-        for (int i = 0; i < messageArray.size(); i++) {
-            message_json += get_message_value(messageArray[i]);
-            if (i != (messageArray.size() - 1)) {
-                message_json += std::string(",");
+            message_json += "}";
+            return message_json;
+        case sio::message::flag_array:
+            message_json = "[";
+            messageArray = message->get_vector();
+            for (int i = 0; i < messageArray.size(); i++) {
+                message_json += get_message_value(messageArray[i]);
+                if (i != (messageArray.size() - 1)) {
+                    message_json += std::string(",");
+                }
             }
-        }
-        message_json += "]";
-        return message_json;
-    case sio::message::flag_boolean:
-        return std::to_string(message->get_bool());
-    case sio::message::flag_null:
-         return "null";
-    default:
-        return std::string("\"\"");
+            message_json += "]";
+            return message_json;
+        case sio::message::flag_boolean:
+            return std::to_string(message->get_bool());
+        case sio::message::flag_null:
+            return "null";
+        default:
+            return std::string("\"\"");
     }
 }
 
@@ -1340,20 +1340,20 @@ sio::message::ptr handle_array_value(napi_env env, napi_value value)
         napi_valuetype valueType;
         napi_typeof(env, element, &valueType);
         switch (valueType) {
-        case napi_number:
-            double num_value;
-            napi_get_value_double(env, element, &num_value);
-            array->get_vector().push_back(sio::double_message::create(num_value));
-            break;
-        case napi_string:
-            char char_value[MAX_BUF_SIZE];
-            napi_get_value_string_utf8(env, element, char_value, MAX_BUF_SIZE, &result);
-            array->get_vector().push_back(sio::string_message::create(char_value));
-            break;
-        case napi_object:
-            sio::object_message::ptr message_object = get_object_message(env, element);
-            array->get_vector().push_back(message_object);
-            break;
+            case napi_number:
+                double num_value;
+                napi_get_value_double(env, element, &num_value);
+                array->get_vector().push_back(sio::double_message::create(num_value));
+                break;
+            case napi_string:
+                char char_value[MAX_BUF_SIZE];
+                napi_get_value_string_utf8(env, element, char_value, MAX_BUF_SIZE, &result);
+                array->get_vector().push_back(sio::string_message::create(char_value));
+                break;
+            case napi_object:
+                sio::object_message::ptr message_object = get_object_message(env, element);
+                array->get_vector().push_back(message_object);
+                break;
         }
     }
     return array;
