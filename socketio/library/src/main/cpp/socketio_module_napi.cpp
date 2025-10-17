@@ -54,7 +54,8 @@ static constexpr const int ARG_INDEX_4 = 4;
 static bool g_isOnce = false;
 
 // 处理带有转义字符的字符串
-static std::string transfer_characters(const std::string &str) {
+static std::string transfer_characters(const std::string &str) 
+{
     std::string transChar;
     for (auto ch : str) {
         switch (ch) {
@@ -1226,7 +1227,8 @@ napi_value SocketIOClient::socket_close(napi_env env, napi_callback_info info)
     get_socket(classIdStr)->close();
     return 0;
 }
-napi_value SocketIOClient::on_error(napi_env env, napi_callback_info info) {
+napi_value SocketIOClient::on_error(napi_env env, napi_callback_info info) 
+{
     size_t argc = 2;
     napi_value args[2] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
