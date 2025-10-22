@@ -129,7 +129,9 @@ this.vapPlayer?.setFitType(fitType)
 ### 使用
 
 #### 播放接口 Play 的使用
-融合动画信息顺序自定义，需要指定 `tag`, `tag` 为视频制作时指定，该信息可通过`this.vapPlayer.getVideoInfo(uri)`
+融合动画信息顺序自定义，需要指定 `tag`, `tag` 为视频制作时指定，该信息可通过`this.vapPlayer.getVideoInfo(uri)`接口获取本地视频信息，
+通过`this.vapPlayer.getVideoInfoAsync(uri)`获取在线视频信息。
+
 当融合信息为字体时，可配置字体的对齐，颜色，大小
 ```typescript
 let opts: Array<MixData> = [{
@@ -149,6 +151,48 @@ let opts: Array<MixData> = [{
 this.buttonEnabled = false;
 
 this.vapPlayer?.play(getContext(this).filesDir + "/vapx.mp4", opts, () => {
+  this.buttonEnabled = true;
+});
+```
+
+当融合信息是图片时，可以使用本地的`png`图片或`image.PixelMap`，若使用`image.PixelMap`，当前仅支持像素格式为`image.PixelMapFormat.RGBA_8888`数据。
+
+```typescript
+let info = await this.vapPlayer?.getVideoInfoAsync("https://static.mszmapp.com/files/20250530/8d7032c2665096d51ca1736c74753998.mp4")
+console.log('getVideoInfo info ' + JSON.stringify(info))
+let color = new ArrayBuffer(16);
+let colorView = new Int8Array(color);
+colorView.set([
+// 第一行
+  0, 255, 0, 255,    // 左 (绿色)
+  255, 255, 0, 255,  // 右 (黄色)
+
+  // 第二行
+  0, 255, 0, 255,    // 左 (绿色)
+  255, 255, 0, 255   // 右 (黄色)
+])
+
+let pixelMap = image.createPixelMapSync({size: {height:2, width: 2}, pixelFormat: image.PixelMapFormat.RGBA_8888})
+pixelMap.writeBufferToPixelsSync(color)
+let opts: Array<MixData> = []
+if (info?.srcInfos !== undefined) {
+  for (let s of info?.srcInfos) {
+    if (s.type === SrcType.IMG) {
+      opts.push({
+        tag: s.tag,
+        imgUri: pixelMap
+      })
+    } else if (s.type === SrcType.TXT) {
+      opts.push({
+        tag: s.tag,
+        txt: "星河Harmony NEXT 星河Harmony NEXT",
+      })
+    }
+  }
+}
+this.buttonEnabled = false;
+this.vapPlayer?.play("https://static.mszmapp.com/files/20250530/8d7032c2665096d51ca1736c74753998.mp4", opts, () => {
+  LogUtil.info("js get callback")
   this.buttonEnabled = true;
 });
 ```

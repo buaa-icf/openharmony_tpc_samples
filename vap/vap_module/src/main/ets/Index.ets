@@ -28,7 +28,6 @@ import {
 } from './DataDeclare';
 import { LogUtil } from './LogUtil';
 import { downloadFile } from './HttpReq'
-import { systemDateTime } from '@kit.BasicServicesKit';
 
 class MaPosition {
   public width: number = 200
