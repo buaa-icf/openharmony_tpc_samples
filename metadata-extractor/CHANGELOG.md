@@ -1,3 +1,7 @@
+## 2.0.3
+- Fix the issue of being unable to parse image EXIF attributes
+- Fix the issue where AIGC data cannot be retrieved from the comment tag of PNG images
+
 ## 2.0.2
 - Change the repository address to gitcode
 - Release the official version 2.0.2

@@ -16,6 +16,7 @@ limitations under the License.
 import {Metadata} from '@ohos/metadata-extractor';
 import {ImageMetadataReader} from '@ohos/metadata-extractor'
 import {GlobalContext} from './GlobalContext'
+import fileIo from '@ohos.file.fs';
 
 let fileDir:string;
 
@@ -27,11 +28,17 @@ struct JpgSample {
 
   private getMetaData() {
     this.data.splice(0,this.data.length)
-
-    fileDir = GlobalContext.getContext().getValue("filesDir") as string;
-    let pathJpg = fileDir.concat("/metadata.JPG")
+    const imageData = getContext().resourceManager.getRawFileContentSync('rotate_rotate90.jpg')
+    const targetDir = getContext().filesDir + "webResources/"
+    if (!fileIo.accessSync(targetDir)) {
+      fileIo.mkdirSync(targetDir)
+    }
+    const filePath = targetDir + 'rotate_rotate90.jpg'
+    const fd = fileIo.openSync(filePath,fileIo.OpenMode.CREATE | fileIo.OpenMode.READ_WRITE)
+    fileIo.writeSync(fd.fd,imageData!.buffer)
+    fileIo.closeSync(fd)
     try {
-      let metadata: Metadata =  ImageMetadataReader.readMetadata(pathJpg);
+      let metadata: Metadata =  ImageMetadataReader.readMetadata(filePath);
       metadata.getDirectories().forEach((value:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
         let directoryName:string = value.getName()
         value.getTags().forEach((tag:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
