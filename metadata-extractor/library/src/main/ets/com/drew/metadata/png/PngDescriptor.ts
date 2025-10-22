@@ -112,10 +112,8 @@ class PngDescriptor extends TagDescriptor<PngDirectory> {
       LogUtil.error(TAG, `getTextualDataDescription end, object is null`);
       return null;
     }
-    //let keyValues = new Set<KeyValuePair>(object);
-    let keyValues = new Set<KeyValuePair>();
     let sb: string='';
-    for (let keyValue of keyValues) {
+    for (let keyValue of object as Set<KeyValuePair>) {
       if (sb.length != 0) {
         sb += '\n';
       }

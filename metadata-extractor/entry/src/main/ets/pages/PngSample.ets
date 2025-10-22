@@ -17,6 +17,7 @@ limitations under the License.
 import {Metadata} from '@ohos/metadata-extractor';
 import {ImageMetadataReader} from '@ohos/metadata-extractor'
 import {GlobalContext} from './GlobalContext'
+import fileIo from '@ohos.file.fs';
 
 let fileDir:string;
 @Entry
@@ -27,12 +28,18 @@ struct PngSample {
 
   private getMetaData() {
     this.data.splice(0,this.data.length)
-
-    fileDir = GlobalContext.getContext().getValue("filesDir") as string;
-    let pathPng = fileDir.concat("/favicon-48px.png")
+    const imageData = getContext().resourceManager.getRawFileContentSync('pngSample.png')
+    const targetDir = getContext().filesDir + "webResources/"
+    if (!fileIo.accessSync(targetDir)) {
+      fileIo.mkdirSync(targetDir)
+    }
+    const filePath = targetDir + 'pngSample.png'
+    const fd = fileIo.openSync(filePath,fileIo.OpenMode.CREATE | fileIo.OpenMode.READ_WRITE)
+    fileIo.writeSync(fd.fd,imageData!.buffer)
+    fileIo.closeSync(fd)
 
     try {
-      let metadata: Metadata =  ImageMetadataReader.readMetadata(pathPng);
+      let metadata: Metadata =  ImageMetadataReader.readMetadata(filePath);
       console.debug("metadata-extractor png directory count:"+metadata.getDirectoryCount())
       metadata.getDirectories().forEach((value:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
         console.debug("metadata-extractor png directory type:"+JSON.stringify(metadata.getDirectoriesOfType(value)))

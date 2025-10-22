@@ -56,7 +56,9 @@ class ExifReader implements JpegSegmentMetadataReader {
       LogUtil.error(TAG, `startsWithJpegExifPreamble end, bytes.length < ExifReader.JPEG_SEGMENT_PREAMBLE.length`);
       return false
     }
-    if (StringUtil.compare(StringUtil.utf8ByteToUnicodeStr(bytes), ExifReader.JPEG_SEGMENT_PREAMBLE) != 0) {
+    let unit8 = new Uint8Array(bytes)
+    let str = String.fromCharCode(...unit8).slice(0,ExifReader.JPEG_SEGMENT_PREAMBLE.length)
+    if (StringUtil.compare(str, ExifReader.JPEG_SEGMENT_PREAMBLE) != 0) {
       LogUtil.error(TAG, `startsWithJpegExifPreamble end, StringUtil.compare(StringUtil.utf8ByteToUnicodeStr(bytes), ExifReader.JPEG_SEGMENT_PREAMBLE) != 0`);
       return false
     }
