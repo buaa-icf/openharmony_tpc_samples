@@ -35,11 +35,14 @@ using namespace std::chrono_literals;
 
 Player::~Player()
 {
+    WaitForAsyncStop();
+
     callbackAll_ = nullptr;
     Stop();
     StartRelease();
     if (renderThread_ && renderThread_->joinable()) {
-        renderThread_->join();
+        // renderThread_->join();
+        renderThread_->detach();
     }
 }
 
@@ -98,6 +101,7 @@ void Player::InitControlSignal()
     isStop_ = false;
     isPause_ = false;
     isVideoEndOfFile_ = false;
+    isAsyncStopRequested_ = false;
 }
 
 int32_t Player::Init(VAPInfo &info)
@@ -216,6 +220,12 @@ void Player::StartRelease()
 
 void Player::ReleaseAudio()
 {
+    if (decAudioOutputThread_ && decAudioOutputThread_->joinable()) {
+        isStop_ = true;  // 触发线程循环退出
+        decAudioOutputThread_->join();  // 等待线程完全退出
+        decAudioOutputThread_.reset();  // 释放线程对象
+    }
+
     if (audioRenderer_) {
         OH_AudioRenderer_Flush(audioRenderer_);
         OH_AudioRenderer_Release(audioRenderer_);
@@ -292,6 +302,7 @@ void Player::ResetControlSignal()
     renderFrameCurIdx_ = 0;
     isSetVideoMode_ = false;
     speed_ = 1.0;
+    isAsyncStopRequested_ = false;
     CallBackJS(VapState::DESTROY, CallbackType::STATE_CHANGE);
     std::unique_lock<std::mutex> lock(callbackRefsMutex_);
     if (callbackRefs_.find(CallbackType::PLAY_DONE) != callbackRefs_.end() && callbackAll_) {
@@ -342,7 +353,7 @@ void Player::RenderThread()
     
     CallBackJS(VapState::START, CallbackType::STATE_CHANGE);
     
-    while (!isStop_ && isStarted_) {
+    while (!isStop_ && isStarted_ && !isAsyncStopRequested_) {
         thread_local auto lastPushTime = std::chrono::system_clock::now();
         if (isVideoEndOfFile_) {
             LOGE("Decoder render end.");
@@ -350,9 +361,12 @@ void Player::RenderThread()
         }
         std::unique_lock<std::mutex> lock(renderMutex_);
         bool condRet = renderCond_.wait_for(
-            lock, 300ms, [this]() { return !renderQueue_.empty(); });
+            lock, 1000ms, [this]() { return !renderQueue_.empty(); });
         if (renderQueue_.empty()) {
-            LOGE("RenderThread no data");
+            // 仅在非停止状态下打印警告（避免频繁日志）
+            if (!isStop_ && !isAsyncStopRequested_) {
+                LOGW("RenderThread no data (waiting)");
+            }
             continue;
         }
         std::vector<uint8_t> buffer = renderQueue_.front();
@@ -381,10 +395,10 @@ void Player::RenderThread()
 
 void Player::DecInputThread()
 {
-    while (!isStop_ && isStarted_) {
+    while (!isStop_ && isStarted_ && !isAsyncStopRequested_) {
         std::unique_lock<std::mutex> lock(signal_->inputMutex);
         bool condRet = signal_->inputCond.wait_for(
-            lock, 300ms, [this]() { return !isStarted_ || !signal_->inputBufferInfoQueue.empty();});
+            lock, 1000ms, [this]() { return !isStarted_ || !signal_->inputBufferInfoQueue.empty();});
         if (!isStarted_) {
             LOGE("Work done, thread out");
             break;
@@ -441,11 +455,11 @@ void Player::GetBufferData(CodecBufferInfo bufferInfo)
 void Player::DecOutputThread()
 {
     LOGD("sampleInfo_.frameInterval:  %{public}ld", sampleInfo_.frameInterval);
-    while (!isStop_ && isStarted_) {
+    while (!isStop_ && isStarted_ && !isAsyncStopRequested_) {
         thread_local auto lastPushTime = std::chrono::system_clock::now();
         std::unique_lock<std::mutex> lock(signal_->outputMutex);
         bool condRet = signal_->outputCond.wait_for(
-            lock, 300ms, [this]() { return !isStarted_ || !signal_->outputBufferInfoQueue.empty(); });
+            lock, 1000ms, [this]() { return !isStarted_ || !signal_->outputBufferInfoQueue.empty(); });
         if (!isStarted_) {
             LOGE("Decoder output thread done out");
             break;
@@ -483,10 +497,10 @@ void Player::DecOutputThread()
 
 void Player::DecAudioInputThread()
 {
-    while (!isStop_ && isStarted_) {
+    while (!isStop_ && isStarted_ && !isAsyncStopRequested_) {
         std::unique_lock<std::mutex> lock(audioSignal_->audioInputMutex);
         bool condRet = audioSignal_->audioInputCond.wait_for(
-            lock, 300ms, [this]() { return !isStarted_ || !audioSignal_->audioInputBufferInfoQueue.empty(); });
+            lock, 1000ms, [this]() { return !isStarted_ || !audioSignal_->audioInputBufferInfoQueue.empty(); });
         if (!isStarted_) {
             LOGE("audio Work done, thread out");
             break;
@@ -530,14 +544,14 @@ void Player::DecAudioOutputThread()
         OH_AudioRenderer_SetSpeed(audioRenderer_, speed_);
         OH_AudioRenderer_Start(audioRenderer_);
     }
-    while (!isStop_ && isStarted_) {
+    while (!isStop_ && isStarted_ && !isAsyncStopRequested_) {
         if (audioSignal_->isInterrupt) {
             LOGW("audio render interrupt. play stop");
             isStop_ = true;
             break;
         }
         std::unique_lock<std::mutex> pauseLock(pauseMutex_);
-        if (isPause_) {
+        if (isPause_ && audioRenderer_) {
             OH_AudioRenderer_Pause(audioRenderer_);
             pauseCond_.wait(pauseLock, [this]() { return !isPause_;});
             OH_AudioRenderer_Start(audioRenderer_);
@@ -545,7 +559,7 @@ void Player::DecAudioOutputThread()
         pauseLock.unlock();
         std::unique_lock<std::mutex> lock(audioSignal_->audioOutputMutex);
         bool condRet = audioSignal_->audioOutputCond.wait_for(
-            lock, 300ms, [this]() { return !isStarted_ || !audioSignal_->audioOutputBufferInfoQueue.empty(); });
+            lock, 1000ms, [this]() { return !isStarted_ || !audioSignal_->audioOutputBufferInfoQueue.empty(); });
         if (!isStarted_) {
             break;
         }
@@ -569,7 +583,9 @@ void Player::DecAudioOutputThread()
             return audioSignal_->renderQueue.size() < AUDIO_CACHE * bufferInfo.attr.size;
         });
     }
-    OH_AudioRenderer_Stop(audioRenderer_);
+    if (audioRenderer_){
+        OH_AudioRenderer_Stop(audioRenderer_);
+    }
 }
 
 void Player::InitAudioPlayer(AudioInitData audioInitData)
@@ -636,6 +652,45 @@ void Player::Stop()
         isPause_ = false;
         pauseCond_.notify_all();
     }
+}
+
+void Player::AsyncStop()
+{
+    if (!isStarted_) {
+        LOGD("AsyncStop player is not start");
+        return;
+    }
+    
+    std::lock_guard<std::mutex> lock(asyncStopMutex_);
+    if (!isAsyncStopCompleted_.load()) {
+        return;
+    }
+    isAsyncStopCompleted_.store(false);
+
+    isAsyncStopRequested_ = true;
+
+    isStop_ = true;
+    
+    std::thread([this]() {
+        try {
+            Stop();
+            StartRelease();
+        } catch (...) {
+            LOGE("AsyncStop encountered an exception");
+        }
+        
+        {
+            std::lock_guard<std::mutex> lock(asyncStopMutex_);
+            isAsyncStopCompleted_.store(true);
+        }
+        asyncStopCond_.notify_all();
+    }).detach();
+}
+
+void Player::WaitForAsyncStop()
+{
+    std::unique_lock<std::mutex> lock(asyncStopMutex_);
+    asyncStopCond_.wait(lock, [this]() { return isAsyncStopCompleted_.load(); });
 }
 
 void Player::CallBackJS(VapState state, CallbackType type, int32_t err)

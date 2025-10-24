@@ -1,5 +1,12 @@
 # 版本记录
 
+## 1.1.6-rc.2
+
+---
+
+1. Add asynchronous stop functionality with Promise pattern and callback separation mechanism
+2. Optimize error handling for stop operations
+
 ## 1.1.6-rc.1
 
 ---

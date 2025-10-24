@@ -167,6 +167,22 @@ this.vapPlayer?.pause()
 this.vapPlayer?.stop()
 ```
 
+#### Using StopAsync (Asynchronous Stop)
+
+```typescript
+// Asynchronous stop with timeout (recommended for new applications)
+this.vapPlayer?.stopAsync('unique_id', 3000).then(() => {
+  console.log('Stop completed successfully');
+}).catch((error) => {
+  console.error('Stop failed:', error);
+});
+
+// Set stop completion callback (for error handling)
+this.vapPlayer?.setStopCompleteCallback(() => {
+  console.log('Stop operation completed successfully');
+});
+```
+
 #### Listening for Gestures
 
 - During animation playback, if the clickable area is tapped and a merged animation resource is clicked, a callback will return that resource (string).

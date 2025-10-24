@@ -44,6 +44,7 @@ public:
     static napi_value On(napi_env env, napi_callback_info info);
     static napi_value Pause(napi_env env, napi_callback_info info);
     static napi_value Stop(napi_env env, napi_callback_info info);
+    static napi_value AsyncStop(napi_env env, napi_callback_info info);
     static napi_value SetLoop(napi_env env, napi_callback_info info);
     static napi_value SetFitType(napi_env env, napi_callback_info info);
     static napi_value GetVideoInfo(napi_env env, napi_callback_info info);

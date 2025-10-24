@@ -280,6 +280,25 @@ napi_value PluginRender::Stop(napi_env env, napi_callback_info info)
     return nullptr;
 }
 
+napi_value PluginRender::AsyncStop(napi_env env, napi_callback_info info)
+{
+    LOGD("enter AsyncStop");
+    NFuncArg funcArg(env, info);
+    if (!funcArg.InitArgs(NARG_CNT::ZERO, NARG_CNT::ONE)) {
+        return nullptr;
+    }
+    napi_value v1 = funcArg.GetArg(NARG_POS::FIRST);
+    NVal nVal(env, v1);
+    auto [succ, resData, length] = nVal.ToUTF8String();
+    std::string id = resData.get();
+    std::shared_ptr<PluginRender> render = PluginRender::GetInstance(id);
+    if (render && render->player_) {
+        render->player_->AsyncStop();
+    }
+    LOGD("end AsyncStop");
+    return nullptr;
+}
+
 napi_value PluginRender::SetLoop(napi_env env, napi_callback_info info)
 {
     LOGD("enter SetLoop");
@@ -524,7 +543,8 @@ void PluginRender::Export(napi_env env, napi_value exports)
         { "setFitType", nullptr, PluginRender::SetFitType, nullptr, nullptr, nullptr, napi_default, nullptr },
         { "setVideoMode", nullptr, PluginRender::SetVideoMode, nullptr, nullptr, nullptr, napi_default, nullptr },
         { "getVideoInfo", nullptr, PluginRender::GetVideoInfo, nullptr, nullptr, nullptr, napi_default, nullptr },
-        { "setSpeed", nullptr, PluginRender::SetSpeed, nullptr, nullptr, nullptr, napi_default, nullptr }
+        { "setSpeed", nullptr, PluginRender::SetSpeed, nullptr, nullptr, nullptr, napi_default, nullptr },
+        { "AsyncStop", nullptr, PluginRender::AsyncStop, nullptr, nullptr, nullptr, napi_default, nullptr },
     };
     if (napi_ok != napi_define_properties(env, exports, sizeof(desc) / sizeof(desc[0]), desc)) {
         LOGE("Export: napi_define_properties failed");

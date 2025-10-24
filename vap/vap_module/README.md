@@ -124,6 +124,28 @@ this.vapPlayer?.pause()
 this.vapPlayer?.stop()
 ```
 
+#### 异步停止的使用
+
+新增异步停止方法，支持Promise方式，解决stop操作完成时机不确定的问题。
+
+**使用Promise**
+```typescript
+// 使用await等待停止完成
+await this.vapPlayer?.stopAsync();
+console.log('停止完成，可以开始新的播放');
+
+// 或者使用then方法
+this.vapPlayer?.stopAsync().then(() => {
+    console.log('停止完成，可以开始新的播放');
+});
+```
+
+**可选参数**
+```typescript
+// 指定目标ID和超时时间
+await this.vapPlayer?.stopAsync('targetId', 5000);
+```
+
 #### 监听手势
 
 - 在动画播放过程中点击播放区域，如果点击到融合动画资源，回调会返回该资源（字符串）

@@ -51,6 +51,8 @@ public:
     
     void PauseAndResume();
     void Stop();
+    void AsyncStop(); 
+    void WaitForAsyncStop();
     void SetLoop(int32_t loops = 1) { loops_ = loops; }
     void SetFitType(VideoFitType fitType) { fitType_ = fitType; }
     void SetSpeed(float speed) { speed_ = speed; }
@@ -119,6 +121,10 @@ private:
     std::atomic<bool> isStarted_{false};
     std::atomic<bool> isReleased_{false};
     std::atomic<bool> isVideoEndOfFile_{false};
+    std::atomic<bool> isAsyncStopRequested_{false}; 
+    std::atomic<bool> isAsyncStopCompleted_{true};  
+    std::mutex asyncStopMutex_;
+    std::condition_variable asyncStopCond_;
 
     std::unique_ptr<std::thread> decAudioInputThread_ = nullptr;
     std::unique_ptr<std::thread> decAudioOutputThread_ = nullptr;

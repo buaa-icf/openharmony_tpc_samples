@@ -29,6 +29,12 @@ export class VAPPlayer implements XComponentContext {
   private id: string = ''
   private downloadTimeout: number = 60000; // ms
   private downloadCallback: (data: DownloadData) => void = (data: DownloadData) => {};
+  private isRunning: boolean = false;
+  private isStopping: boolean = false;
+  private stopCompleteCallback?: () => void;
+  private stopAsyncResolve?: () => void;
+  private stopAsyncReject?: (error: Error) => void;
+  private stopAsyncTimeoutId?: number;
 
   constructor(id: string) {
     this.id = id
@@ -36,6 +42,29 @@ export class VAPPlayer implements XComponentContext {
 
   setContext(context: object): void {
     this.vapContext = context as XComponentContext;
+    this.setupStateChangeListener()
+  }
+
+  private setupStateChangeListener(): void {
+    this.vapContext?.on('stateChange', (state?: string | VapState) => {
+      if (state === VapState.COMPLETE && this.isStopping) {
+        this.isRunning = false;
+        this.isStopping = false;
+        this.loops = 1;
+
+        if (this.stopCompleteCallback) {
+          this.stopCompleteCallback();
+          this.stopCompleteCallback = undefined;
+        }
+
+        if (this.stopAsyncResolve) {
+          this.stopAsyncResolve();
+          this.stopAsyncResolve = undefined;
+          this.stopAsyncReject = undefined;
+        }
+        this.cleanupTimeout()
+      }
+    }, this.id);
   }
 
   getVideoInfo(uri: string): VideoInfo | undefined {
@@ -62,6 +91,7 @@ export class VAPPlayer implements XComponentContext {
     } else {
       this.loops = 1
       this.jsCbfn ? this.jsCbfn() : ''
+      this.isRunning = false;
     }
   }
 
@@ -73,6 +103,17 @@ export class VAPPlayer implements XComponentContext {
   }
 
   async play(uri: string, mixData?: Array<MixData>, cbFn?: () => void): Promise<void> {
+    if (this.isStopping) {
+      console.warn("[VAPPlayer] Cannot play while stopping in progress");
+      this.isStopping = false;
+    }
+
+    if (this.isRunning) {
+      return;
+    }
+
+    this.isRunning = true;
+
     if (mixData) {
       this.mixData = []
       for (let element of mixData) {
@@ -101,9 +142,97 @@ export class VAPPlayer implements XComponentContext {
     this.vapContext?.pause(this.id);
   }
 
+  async stopAsync(id?: string, timeoutMs: number = 3000): Promise<void> {
+    if (this.isStopping) {
+      return;
+    }
+
+    if (!this.isRunning) {
+      return;
+    }
+    this.isStopping = true;
+
+    const TIMEOUT_MS = Math.max(100, Math.min(6000, timeoutMs));
+    const targetId = id || this.id;
+
+    return new Promise<void>((resolve, reject) => {
+      this.stopAsyncTimeoutId = setTimeout(() => {
+        if (!this.isStopping) {
+          return;
+        }
+        console.error("[VAPPlayer] stopAsync timeout after " + TIMEOUT_MS + "ms, forcing sync stop");
+        this.stopAsyncResolve = undefined;
+        this.stopAsyncReject = undefined;
+        try {
+          this.vapContext?.stop(targetId);
+          this.cleanupSyncStop();
+          reject(new Error("stopAsync timeout after " + TIMEOUT_MS + "ms"));
+        } catch (error) {
+          this.isStopping = false;
+          console.error("[VAPPlayer] Force sync stop failed:", error);
+          reject(new Error("stopAsync timeout and force sync stop failed: " + error));
+        }
+      }, TIMEOUT_MS);
+
+      try {
+        if (this.vapContext && this.vapContext.stopAsync) {
+          try {
+            this.stopAsyncResolve = resolve;
+            this.stopAsyncReject = reject;
+
+            this.vapContext.stopAsync(targetId);
+
+          } catch (nativeError) {
+            this.cleanupTimeout();
+            this.vapContext?.stop(targetId);
+            this.cleanupSyncStop();
+            resolve();
+          }
+        } else {
+          this.cleanupTimeout();
+          this.vapContext?.stop(targetId);
+          this.cleanupSyncStop();
+          resolve();
+        }
+      } catch (error) {
+        this.cleanupTimeout();
+        this.isStopping = false;
+        console.error("[VAPPlayer] stopAsync error:", error);
+        reject(error);
+      }
+    });
+  }
+
+  private cleanupSyncStop(): void {
+    this.isRunning = false;
+    this.isStopping = false;
+    this.loops = 1;
+
+    if (this.stopCompleteCallback) {
+      this.stopCompleteCallback();
+      this.stopCompleteCallback = undefined;
+    }
+  }
+
+  private cleanupTimeout(): void {
+    if (this.stopAsyncTimeoutId) {
+      clearTimeout(this.stopAsyncTimeoutId);
+      this.stopAsyncTimeoutId = undefined;
+    }
+  }
+
   stop(): void {
+    if (!this.isRunning) {
+      return;
+    }
+
     this.vapContext?.stop(this.id);
     this.loops = 1;
+    this.isRunning = false;
+  }
+
+  setStopCompleteCallback(callback: () => void): void {
+    this.stopCompleteCallback = callback;
   }
 
   setLoop(loops: number): void {
