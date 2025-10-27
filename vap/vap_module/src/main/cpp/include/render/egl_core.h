@@ -75,7 +75,7 @@ public:
         m_height = height;
         InitFitConfig();
     }
-    
+
     std::shared_ptr<AnimConfig> m_animConfig;
 private:
     VideoMode m_defaultVideoMode = VIDEO_MODE_SPLIT_HORIZONTAL;
