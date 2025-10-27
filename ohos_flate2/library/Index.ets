@@ -1,1 +1,1 @@
-export * from "libflate2.so";
+export { Options, deflate, deflateRaw, gzip, ungzip, inflate, inflateRaw } from "libflate2.so";
