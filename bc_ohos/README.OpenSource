@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "bc-java",
+        "License": "MIT License",
+        "License File": "LICENSE",
+        "Version Number": "r1rv82",
+        "Owner" : "xiafeng@huawei.com",
+        "Upstream URL": "https://github.com/bcgit/bc-java",
+        "Description": "The Bouncy Castle Crypto Package For Java."
+    }
+]

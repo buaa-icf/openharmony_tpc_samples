@@ -1,0 +1,22 @@
+{
+  "name": "@ohos/bc-ohos",
+  "version": "1.0.0",
+  "description": "OpenHarmony implementation of Bouncy Castle ISO9797 Algorithm 3 MAC (ANSI X9.19 Retail MAC). Provides cross-platform compatibility with Android Bouncy Castle API.",
+  "main": "Index.ets",
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@ohos/crypto-js": "^2.0.5"
+  },
+  "devDependencies": {},
+  "dynamicDependencies": {},
+  "keywords": [
+    "ISO9797",
+    "MAC",
+    "Retail MAC",
+    "DES",
+    "TripleDES",
+    "Cryptography",
+    "OpenHarmony"
+  ]
+}

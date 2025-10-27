@@ -1,0 +1,12 @@
+{
+  "name": "entry",
+  "version": "1.0.0",
+  "description": "Demo application for bc_ohos library showcasing ISO9797 Algorithm 3 MAC functionality with cross-platform compatibility.",
+  "main": "",
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "@ohos/bc-ohos": "file:../library"
+  }
+}
+
