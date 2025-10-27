@@ -46,17 +46,10 @@ export enum VAPTextAlign {
 }
 ;
 
-export interface MixUint8Img {
-  buffer: Uint8Array
-  pixelFormat: image.PixelMapFormat
-  h: number
-  w: number
-};
-
 export interface MixData {
   tag: string
   txt?: string
-  imgUri?: string | MixUint8Img
+  imgUri?: string | image.PixelMap // PixelMap类型只支持像素格式为image.PixelMapFormat.RGBA_8888数据。
   color?: VAPColor
   fontWeight?: VAPFontWeight
   textAlign?: VAPTextAlign

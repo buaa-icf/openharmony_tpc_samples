@@ -619,27 +619,45 @@ static void ParseMixParamImg(NVal &nValOneOpt, MixInputData &mixInputData)
     if (valueType == napi_string) {
         auto [imgSucc, resData, length] = param.ToUTF8String();
         if (imgSucc) {
-            mixInputData.imgSrc.type = MixImgSourceType::FILE_SOURCE;
-            mixInputData.imgSrc.buffer = resData.get();
+            mixInputData.imgUri = resData.get();
         }
     } else if (valueType == napi_object) {
-        napi_typedarray_type type;
-        size_t length;
-        void* data;
-        napi_value arraybuffer;
-        size_t offset;
-        status = napi_get_typedarray_info(nValOneOpt.env_, param.GetProp("buffer").val_, &type, &length, &data, &arraybuffer, &offset);
-        if (status != napi_ok) {
+        OH_PixelmapNative* pixelMap = nullptr;
+        Image_ErrorCode errCode = OH_PixelmapNative_ConvertPixelmapNativeFromNapi(nValOneOpt.env_, param.val_, &pixelMap);
+        if (errCode != IMAGE_SUCCESS) {
+            LOGE("%{public}s: %{public}d errCode: %{public}d", __FUNCTION__, __LINE__, errCode);
             return;
         }
-        mixInputData.imgSrc.type = MixImgSourceType::UINT8_SOURCE;
-        mixInputData.imgSrc.buffer = std::string(static_cast<char*>(data), length);
-        auto [ret, pixType] = param.GetProp("type").ToInt32();
-        mixInputData.imgSrc.pixelFormat = pixType;
-        auto [wRet, w] = param.GetProp("w").ToInt32();
-        mixInputData.imgSrc.w = w;
-        auto [hRet, h] = param.GetProp("h").ToInt32();
-        mixInputData.imgSrc.h = h;
+
+        OH_Pixelmap_ImageInfo* imageInfo = nullptr;
+        errCode = OH_PixelmapImageInfo_Create(&imageInfo);
+        if (errCode != IMAGE_SUCCESS) {
+            LOGE("%{public}s: %{public}d errCode: %{public}d", __FUNCTION__, __LINE__, errCode);
+            return;
+        }
+
+        std::unique_ptr<OH_Pixelmap_ImageInfo, void(*)(OH_Pixelmap_ImageInfo*)> imageInfoWrap(imageInfo, [](OH_Pixelmap_ImageInfo* p) {
+            OH_PixelmapImageInfo_Release(p);
+        });
+
+        errCode = OH_PixelmapNative_GetImageInfo(pixelMap, imageInfo);
+        if (errCode != IMAGE_SUCCESS) {
+            LOGE("%{public}s: %{public}d errCode: %{public}d", __FUNCTION__, __LINE__, errCode);
+            return;
+        }
+
+        int32_t pixelFormat = 0;
+        errCode = OH_PixelmapImageInfo_GetPixelFormat(imageInfo, &pixelFormat);
+        if (errCode != IMAGE_SUCCESS) {
+            LOGE("%{public}s: %{public}d errCode: %{public}d", __FUNCTION__, __LINE__, errCode);
+            return;
+        }
+
+        if (pixelFormat != PIXEL_FORMAT_RGBA_8888) {
+            LOGE("pixelFormat is %{public}d, only PIXEL_FORMAT_RGBA_8888 is supported", pixelFormat);
+            return;
+        }
+        mixInputData.pixelMap = pixelMap;
     }
 }
 

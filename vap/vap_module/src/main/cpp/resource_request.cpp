@@ -28,6 +28,8 @@
 #include "common_const.h"
 #include "mix_render.h"
 
+#include "fstream"
+
 using namespace CommonConst;
 
 void ResourceRequest::SetWidth(uint64_t width) { width_ = width; }
@@ -179,8 +181,14 @@ void ResourceRequest::FetchImg(std::vector<uint8_t> &data, ImageOption &imgOpt, 
     Image_ErrorCode errCode;
     float scaleX = 0;
     float scaleY = 0;
-    if (mixData.imgSrc.type == MixImgSourceType::FILE_SOURCE) {
-        errCode = OH_ImageSourceNative_CreateFromUri(const_cast<char *>(mixData.imgSrc.buffer.c_str()), mixData.imgSrc.buffer.size(), &source_);
+    if (mixData.pixelMap == nullptr) {
+        if (mixData.imgUri.empty()) {	
+            LOGE("FetchImg uri empty");	
+            return;
+        }
+        LOGD("FetchImg OH_ImageSourceNative_CreateFromUri,: %{public}s. %{public}p", mixData.imgUri.c_str(), source_);
+
+        errCode = OH_ImageSourceNative_CreateFromUri(const_cast<char *>(mixData.imgUri.c_str()), mixData.imgUri.size(), &source_);
         if (errCode != IMAGE_SUCCESS) {
             LOGE("FetchImg OH_ImageSourceNative_CreateFromUri failed, errCode: %{public}d.", errCode);
             return;
@@ -206,30 +214,39 @@ void ResourceRequest::FetchImg(std::vector<uint8_t> &data, ImageOption &imgOpt, 
         }
         scaleX = imgOpt.width / static_cast<float>(width);
         scaleY = imgOpt.height / static_cast<float>(height);
-    } else if (mixData.imgSrc.type == MixImgSourceType::UINT8_SOURCE) {
-        OH_Pixelmap_InitializationOptions *options = NULL;
-        OH_PixelmapInitializationOptions_Create(&options);
-        OH_PixelmapInitializationOptions_SetWidth(options, mixData.imgSrc.w);
-        OH_PixelmapInitializationOptions_SetHeight(options, mixData.imgSrc.h);
-        OH_PixelmapInitializationOptions_SetSrcPixelFormat(options, mixData.imgSrc.pixelFormat);
-
-        errCode = OH_PixelmapNative_CreatePixelmap((uint8_t*)mixData.imgSrc.buffer.c_str(), mixData.imgSrc.buffer.size(), options, &resPixMap_);
+    } else {
+        OH_Pixelmap_ImageInfo* imageInfo = nullptr;
+        errCode = OH_PixelmapImageInfo_Create(&imageInfo);
         if (errCode != IMAGE_SUCCESS) {
-            LOGE("FetchImg OH_PixelmapNative_CreatePixelmap failed, errCode: %{public}d.", errCode);
+            LOGE("%{public}s: %{public}d errCode: %{public}d", __FUNCTION__, __LINE__, errCode);
             return;
         }
-        scaleX = imgOpt.width / static_cast<float>(mixData.imgSrc.w);
-        scaleY = imgOpt.height / static_cast<float>(mixData.imgSrc.h);
+        errCode = OH_PixelmapNative_GetImageInfo(mixData.pixelMap, imageInfo);
+        if (errCode != IMAGE_SUCCESS) {
+            LOGE("%{public}s: %{public}d errCode: %{public}d", __FUNCTION__, __LINE__, errCode);
+            return;
+        }
+        
+        uint32_t width = 0;
+        uint32_t height = 0;
+        errCode = OH_PixelmapImageInfo_GetWidth(imageInfo, &width);
+        if (errCode != IMAGE_SUCCESS || width == 0) {
+            LOGE("%{public}s: %{public}d", __FUNCTION__, __LINE__);
+            return;
+        }
+        
+        errCode = OH_PixelmapImageInfo_GetHeight(imageInfo, &height);
+        if (errCode != IMAGE_SUCCESS || height == 0) {
+            LOGE("%{public}s: %{public}d", __FUNCTION__, __LINE__);
+            return;
+        }
+        
+        scaleX = imgOpt.width / static_cast<float>(width);
+        scaleY = imgOpt.height / static_cast<float>(height);
+        resPixMap_ = mixData.pixelMap;
     }
+
     errCode = OH_PixelmapNative_Scale(resPixMap_, scaleX, scaleY);
-    OH_Pixelmap_ImageInfo *imgInfo = nullptr;
-    OH_PixelmapImageInfo_Create(&imgInfo);
-    errCode = OH_PixelmapNative_GetImageInfo(resPixMap_, imgInfo);
-    if (errCode != IMAGE_SUCCESS) {
-        LOGE("FetchImg OH_PixelmapNative_GetImageInfo failed, errCode: %{public}d", errCode);
-        return;
-    }
-    
     uint32_t pixelMapHeight;
     uint32_t rowStride;
     GetPixelMapInfo(resPixMap_, pixelMapHeight, rowStride);

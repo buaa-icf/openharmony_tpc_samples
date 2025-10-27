@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import { MixData, VAPPlayer, VAPColor, MixUint8Img } from '@ohos/vap';
+import { MixData, VAPPlayer, VAPColor } from '@ohos/vap';
 import { systemDateTime } from '@kit.BasicServicesKit';
 import { LogUtil } from '../common/LogUtil';
 import { util } from '@kit.ArkTS';
@@ -243,35 +243,33 @@ struct VAPXAnimation {
             console.log('getVideoInfo info ' + JSON.stringify(info))
             this.srcInfo = info?.srcInfos
             this.opts = [];
-            const pixels = new Uint8Array([
-            // 第一行
-              0, 255, 0, 255,    // 左 (绿色)
-              0, 255, 255, 255,  // 右 (黄色)
 
-              // 第二行
-              0, 255, 0, 255,    // 左 (绿色)
-              0, 255, 255, 255   // 右 (黄色)
-            ]);
+            let color = new ArrayBuffer(16);
+            let colorView = new Int8Array(color);
+            colorView.set([
+              // 第一行
+                0, 255, 0, 255,    // 左 (绿色)
+              255, 255, 0, 255,  // 右 (黄色)
 
-            let imgObj: MixUint8Img = {
-              buffer: pixels,
-              pixelFormat: image.PixelMapFormat.BGRA_8888,
-              h: 2,
-              w: 2
-            }
+                // 第二行
+                0, 255, 0, 255,    // 左 (绿色)
+              255, 255, 0, 255   // 右 (黄色)
+              ])
 
+            let pixelMap = image.createPixelMapSync({size: {height:2, width: 2}, pixelFormat: image.PixelMapFormat.RGBA_8888})
+            pixelMap.writeBufferToPixelsSync(color)
             if (this.srcInfo !== undefined) {
               for (let s of this.srcInfo) {
                 if (s.type === SrcType.IMG) {
                   this.opts.push({
                     tag: s.tag,
-                    imgUri: imgObj
+                    imgUri: pixelMap
                   })
                 } else if (s.type === SrcType.TXT) {
                   this.opts.push({
                     tag: s.tag,
                     txt: "星河Harmony NEXT 星河Harmony NEXT",
-                    textAlign: this.textAlign, // VAPTextAlign.TEXT_ALIGN_JUSTIFY对齐方式规格见 https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/ts-basic-components-text-V5#textalign
+                    textAlign: this.textAlign,
                     fontWeight: this.fontWeight,
                     color: this.color
                   })
