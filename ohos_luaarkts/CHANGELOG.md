@@ -1,5 +1,8 @@
 **CHANGELOG.md**
 
+## 1.0.2-rc.0
+- Fix the issue where T2lCallFunction fails when passing a string
+
 ## 1.0.1
 - Switch the repository address to gitcode
 
