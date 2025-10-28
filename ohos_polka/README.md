@@ -168,7 +168,7 @@ export const fileUploadHtml = `
         - 使用post请求方式，获取接口'post-params'下的数据时，在请求头中解析出来的contentType为'application/x-www-form-urlencoded'
       或者'application/json'时，使用req.parameters获取请求体信息。
         - 若解析出来的的contentType为'multipart/form-data'，使用req.parameters.get(keys[0])[0] 获取文件名，
-      req.files.get(keys[0]).buffer 获取文件内容
+      req.files.get(keys[0]).buffer 获取文件内容。
 
 ## 接口说明
 
@@ -245,7 +245,7 @@ export const fileUploadHtml = `
     |getHeaders()     |                                                                      | 获取整个header信息          |
     |end()            | client 客户端的TCP连接<br/>bufferPool 缓冲池，文件下载场景时：文件沙箱路径、文件保存名称、request请求头 | 发送所有响应标头和正文/分块传输文件    |
 
-- parsed，类型：object。可选地提供一个解析的URL对象。如果您已经解析了传入路径，则很有用。否则，app.parse（又名parseurl）将默认运行
+- parsed，类型：object。可选地提供一个解析的URL对象。如果您已经解析了传入路径，则很有用。否则，app.parse（又名parseurl）将默认运行。
 
 ### 二、路由
 
@@ -276,7 +276,7 @@ app.post('/users', (req, res) => {
 
 ### 三、中间件
 
-在接收请求和执行路由的处理程序响应之间运行的函数。中间件参数接收请求（req）、响应（res）和回调（next）
+在接收请求和执行路由的处理程序响应之间运行的函数。中间件参数接收请求（req）、响应（res）和回调（next）。
 
 ```
 // Log every request
@@ -363,7 +363,7 @@ app
 
 - 创建文件服务器实例 new statik.Server()
 - 在一个特定的目录中提供文件，把它作为第一个参数传递 new statik.Server('/public')
-- 可以指定参数 new statik.Server('/public', { gzip: true });
+- 可以指定参数 new statik.Server('/public', { gzip: true })
 - 服务特定文件 serveFile('/error.html', 500, {}, request, response)
 
 ### 2、new statik.Server('./public', options)，options参数说明
