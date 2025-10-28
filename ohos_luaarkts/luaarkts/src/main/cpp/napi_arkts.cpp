@@ -325,6 +325,7 @@ napi_value T2lCallFunction(napi_env env, napi_callback_info info)
                 char tmpChar[2048];
                 size_t size = sizeof(tmpChar);
                 napi_get_value_string_utf8(g_env, it, tmpChar, size, &size);
+                lua_pushlstring(L, tmpChar, size);
             }
                 break;
             case napi_bigint: {
