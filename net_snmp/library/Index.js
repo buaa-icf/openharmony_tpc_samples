@@ -749,7 +749,7 @@ TrapPdu.prototype.toBuffer = function (buf) {
 	buf.startSequence(this.type);
 
 	buf.writeOID(this.enterprise);
-	buf.writeBuffer(buffer.Buffer.from(this.agentAddr.split(".")),
+	buf.writeBuffer(Buffer.from(this.agentAddr.split(".")),
 		ObjectType.IpAddress);
 	writeInt32(buf, ObjectType.Integer, this.generic);
 	writeInt32(buf, ObjectType.Integer, this.specific);

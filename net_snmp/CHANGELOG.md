@@ -1,3 +1,6 @@
+## v1.0.3
+Failed to modify trap request issue
+
 ## v1.0.2
 The issue of failed get/set request initiated by modifying the snmpV3 protocol
 
