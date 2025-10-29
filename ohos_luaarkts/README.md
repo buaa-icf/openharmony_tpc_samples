@@ -2,7 +2,7 @@
 
 ## 简介
 
-> 通过LuaJIT和NAPI实现lua脚本和ts脚本互相访问的能力.并通过AKI库简化C++和Arkts开发.
+> 通过LuaJIT和NAPI实现lua脚本和ts脚本互相访问的能力.并通过AKI库简化C++和Arkts开发
 
 ## 编译运行
 
@@ -24,11 +24,11 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 
 ## 使用说明
 1.获取so文件  
-方式1:找到最新的编译通过的pr，评论区中会有门禁报告链接；  
-方式2:自己提一个pr，触发门禁，编译成功后的门禁报告链接；   
+方式1:找到最新的编译通过的pr，评论区中会有门禁报告链接
+方式2:自己提一个pr，触发门禁，编译成功后的门禁报告链接
 2.点进门禁报告，可以看到tpc_component编译通过，点击通过后，选择日志详情，展开version，下面就有一个压缩包，
 这个压缩包中就有所需so和a文件  
-3、把so和a文件放入路径ohos_luaarkts/luaarkts/src/main/cpp/thirdparty下.
+3、把so和a文件放入路径ohos_luaarkts/luaarkts/src/main/cpp/thirdparty下
 
 
 ## har包引用
@@ -378,8 +378,8 @@ let c = harNAPI.t2lCallFunction("testcallback", 100, 200);
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提交 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues)，当然，也非常欢迎提交 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 。
+使用过程中发现任何问题都可以提交 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues)，当然，也非常欢迎提交 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls)
 
 ## 开源协议
 
-本项目遵循 [Apache License 2.0 ](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ohos_luaarkts/LICENSE)。
+本项目遵循 [Apache License 2.0 ](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ohos_luaarkts/LICENSE)
