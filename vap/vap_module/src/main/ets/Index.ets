@@ -24,7 +24,8 @@ import {
   VAPColor,
   VAPTextAlign,
   VAPFontWeight,
-  DownloadData
+  DownloadData,
+  VapState
 } from './DataDeclare';
 import { LogUtil } from './LogUtil';
 import { downloadFile } from './HttpReq'
@@ -82,6 +83,11 @@ export struct VAPComponent {
   private downloadTimeout: number = 60000; // ms
   private downloadCallback: (data: DownloadData) => void = (data: DownloadData) => {};
 
+  private isStopping: boolean = false;
+  private stopCompleteCallback?: () => void;
+  private stopAsyncResolve?: () => void;
+  private stopAsyncReject?: (error: Error) => void;
+
   aboutToDisappear() {
     LogUtil.info('[lifeCycle] VAPComponent aboutToDisappear')
   }
@@ -99,6 +105,29 @@ export struct VAPComponent {
     if (this.mCmpController) {
       this.mCmpController.attach(this); // 绑定控制器
     }
+
+    this.vapContext?.on('stateChange', (state?: string | VapState) => {
+      if (state === VapState.COMPLETE && this.isStopping) {
+        const shouldProcess = this.isStopping;
+
+        if (shouldProcess) {
+          this.isRunning = false;
+          this.isStopping = false;
+          this.loops = 1;
+
+          if (this.stopCompleteCallback) {
+            this.stopCompleteCallback();
+            this.stopCompleteCallback = undefined;
+          }
+
+          if (this.stopAsyncResolve) {
+            this.stopAsyncResolve();
+            this.stopAsyncResolve = undefined;
+            this.stopAsyncReject = undefined;
+          }
+        }
+      }
+    });
   }
 
   setDownloadAttribute(dTime: number, downloadProgress?: (data: DownloadData) => void) {
@@ -109,10 +138,11 @@ export struct VAPComponent {
   }
 
   async play(uri: string, mixData?: Array<MixData>, cbFn?: () => void) {
-    if (this.isRunning) {
-      return
+    if (this.isRunning || this.isStopping) {
+      return;
     }
     this.isRunning = true;
+    this.isStopping = false;
 
     this.uri = await downloadFile(uri, this.downloadTimeout ,this.sandDir, this.downloadCallback)
     if (mixData) {
@@ -133,6 +163,7 @@ export struct VAPComponent {
     this.isRunning = false;
     this.loops--;
     if (this.loops > 0) {
+      this.isRunning = true;
       this.vapContext?.play(this.uri, this.mixData, this.doneFn);
       LogUtil.log('loops ' + this.loops)
     } else {
@@ -152,12 +183,72 @@ export struct VAPComponent {
     return this.vapContext?.getVideoInfo(uri);
   }
 
+  async stopAsync(callback?: () => void, timeoutMs: number = 3000): Promise<void> {
+    if (this.isStopping) {
+      return;
+    }
+
+    if (!this.isRunning) {
+      return;
+    }
+
+    this.isStopping = true;
+
+    if (callback) {
+      this.stopCompleteCallback = callback;
+    }
+
+    const TIMEOUT_MS = Math.max(100, Math.min(6000, timeoutMs));
+
+    return new Promise<void>((resolve, reject) => {
+      const timeoutId = setTimeout(() => {
+
+        this.stopAsyncResolve = undefined;
+        this.stopAsyncReject = undefined;
+
+        try {
+          this.vapContext?.stop();
+          this.isRunning = false;
+          this.isStopping = false;
+          this.loops = 1;
+
+          if (this.stopCompleteCallback) {
+            this.stopCompleteCallback();
+            this.stopCompleteCallback = undefined;
+          }
+
+          reject(new Error("stopAsync timeout after " + TIMEOUT_MS + "ms"));
+        } catch (error) {
+          this.isStopping = false;
+          reject(new Error("stopAsync timeout and force sync stop failed: " + error));
+        }
+      }, TIMEOUT_MS);
+
+      try {
+        this.stopAsyncResolve = resolve;
+        this.stopAsyncReject = reject;
+
+        this.vapContext?.stopAsync();
+
+      } catch (error) {
+        clearTimeout(timeoutId);
+
+        this.stopAsyncResolve = undefined;
+        this.stopAsyncReject = undefined;
+
+        this.isStopping = false;
+        reject(error);
+      }
+    });
+  }
+
   stop() {
     if (!this.isRunning) {
       return
     }
     this.vapContext?.stop();
     this.loops = 1;
+    this.isRunning = false;
   }
 
   setLoop(loops: number): void {
@@ -231,6 +322,13 @@ export class VAPComponentController {
   pause(): void {
     if (this.mComponent) {
       return this.mComponent.pause();
+    }
+  }
+
+  async stopAsync(timeoutMs: number = 3000, _id?: string): Promise<void> {
+    if (this.mComponent) {
+      return await this.mComponent.stopAsync(undefined, timeoutMs);
+    } else {
     }
   }
 

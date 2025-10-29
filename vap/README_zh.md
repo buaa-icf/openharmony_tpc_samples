@@ -209,6 +209,20 @@ this.vapPlayer?.pause()
 this.vapPlayer?.stop()
 ```
 
+#### 异步停止的使用 (StopAsync)
+
+```typescript
+this.vapPlayer?.stopAsync('unique_id', 3000).then(() => {
+  console.log('停止操作完成');
+}).catch((error) => {
+  console.error('停止失败:', error);
+});
+
+this.vapPlayer?.setStopCompleteCallback(() => {
+  console.log('停止操作已成功完成');
+});
+```
+
 #### 监听手势
 
 - 在动画播放过程中点击播放区域，如果点击到融合动画资源，回调会返回该资源（字符串）

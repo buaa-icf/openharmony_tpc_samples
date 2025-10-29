@@ -36,6 +36,12 @@ export interface VAPColor {
 }
 ;
 
+export interface VAPCallback {
+  onStateChange?: (state: VapState, ret?: number | AnimConfig) => void;
+  onClick?: (text: string) => void;
+}
+;
+
 export enum VAPTextAlign {
   TEXT_ALIGN_LEFT,
   TEXT_ALIGN_RIGHT,
@@ -155,6 +161,8 @@ export interface XComponentContext {
   pause(id?:string): void
 
   stop(id?:string): void
+
+  stopAsync(id?:string, timeoutMs?: number): Promise<void>;
 
   setLoop(loops: number, id?: string): void
 
