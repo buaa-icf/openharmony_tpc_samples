@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <oatconfig>
+        <filefilterlist>
+            <filefilter name="copyrightPolicyFilter" desc="Filters for copyright header policies">
+                <filteritem type="filename" name="hvigorfile.ts" desc="项目工程默认文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filename" name="*.json5" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filepath" name=".clang-tidy" desc="项目工程默认文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filepath" name=".clangd" desc="项目工程默认文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filepath" name="hvigorw" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filepath" name="hvigorw.bat" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filepath" name="hvigor/hvigor-wrapper.js" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filepath" name="library/src/main/cpp/thirdparty/**" desc="第三方开源库代码，保留原始版权头"/>
+                <filteritem type="filename" name="*.md" desc="文档文件，不需要添加版权头"/>
+                <filteritem type="filename" name="LICENSE" desc="许可证文件"/>
+                <filteritem type="filename" name="NOTICE" desc="声明文件"/>
+                <filteritem type="filename" name=".gitmodules" desc="Git子模块配置文件"/>
+            </filefilter>
+            
+            <filefilter name="defaultPolicyFilter" desc="Filters for compatibility，license header policies">
+                <filteritem type="filename" name="hvigorfile.ts" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filename" name="*.json5" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filepath" name=".clang-tidy" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name=".clangd" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="hvigorw" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filepath" name="hvigorw.bat" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filepath" name="hvigor/hvigor-wrapper.js" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filepath" name="library/src/main/cpp/thirdparty/**" desc="第三方开源库代码，保留原始版权头"/>
+                <filteritem type="filename" name="*.md" desc="文档文件，不需要添加版权头"/>
+                <filteritem type="filename" name="LICENSE" desc="许可证文件"/>
+                <filteritem type="filename" name="NOTICE" desc="声明文件"/>
+                <filteritem type="filename" name=".gitmodules" desc="Git子模块配置文件"/>
+                <filteritem type="filepath" name="**/ohosTest/**" desc="测试代码文件"/>
+                <filteritem type="filepath" name="entry/src/main/resources/**" desc="资源文件"/>
+            </filefilter>
+            
+            <filefilter name="binaryFileTypePolicyFilter" desc="Filters for binary file policies">
+                <filteritem type="filepath" name="**/*.png" desc="图片资源文件"/>
+                <filteritem type="filepath" name="**/*.jpg" desc="图片资源文件"/>
+                <filteritem type="filepath" name="**/*.jpeg" desc="图片资源文件"/>
+                <filteritem type="filepath" name="**/*.so" desc="动态库文件"/>
+                <filteritem type="filepath" name="library/src/main/cpp/thirdparty/**" desc="第三方库文件"/>
+            </filefilter>
+        </filefilterlist>
+    </oatconfig>
+</configuration>

@@ -1,0 +1,10 @@
+[
+    {
+        "Name": "ohos_yoga",
+        "License": "Apache-2.0",
+        "License File": "LICENSE",
+        "Version Number": "v3.2.1",
+        "Upstream URL": "https://github.com/facebook/yoga.git",
+        "Description": "Flexbox layout engine; OpenHarmony port adds ArkTS bindings via NAPI."
+    }
+]

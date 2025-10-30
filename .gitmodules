@@ -63,3 +63,7 @@
 [submodule "ohos_pjsip/library/src/main/cpp/thirdparty/pjsip"]
 	path = ohos_pjsip/library/src/main/cpp/thirdparty/pjsip
 	url = https://gitcode.com/dingchengjie/pjsip
+
+[submodule "yoga/library/src/main/cpp/thirdparty/yoga"]
+	path = yoga/library/src/main/cpp/thirdparty/yoga
+	url = https://gitcode.com/maerzhahuan/yoga

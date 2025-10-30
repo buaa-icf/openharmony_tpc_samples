@@ -1,0 +1,11 @@
+{
+  "name": "entry",
+  "version": "1.0.0",
+  "description": "Yoga layout engine demo application for OpenHarmony",
+  "main": "",
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "@ohos/yoga": "file:../library"
+  }
+}

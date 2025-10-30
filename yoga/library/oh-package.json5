@@ -1,0 +1,11 @@
+{
+  "name": "@ohos/yoga",
+  "version": "1.0.0",
+  "description": "Yoga layout engine for OpenHarmony",
+  "main": "Index.ets",
+  "author": "ohos_tpc",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "libyoga_native.so": "file:./src/main/cpp/types/libyoga_native"
+  }
+}
