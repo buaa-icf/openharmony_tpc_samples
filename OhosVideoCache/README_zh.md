@@ -11,11 +11,11 @@ ohpm install @ohos/video-cache
 ```
 
 OpenHarmony ohpm
-环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)
+环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)。
 
 ## 使用说明
 
-安装OhosVideoCache库之后，在需要使用的界面先导入OhosVideoCache提供的API
+安装OhosVideoCache库之后，在需要使用的界面先导入OhosVideoCache提供的API。
 
 ```typescript
 import { HttpProxyCacheServer, HttpProxyCacheServerBuilder,CacheListener,FileNameGenerator ,HeaderInjector} from '@ohos/video-cache';
@@ -68,14 +68,14 @@ export default class GlobalProxyServer {
 }
   ```
 
-初始化代理服务器
+初始化代理服务器。
 
 ```typescript
 let server: HttpProxyCacheServer = new HttpProxyCacheServerBuilder(getContext()).build();
 GlobalProxyServer?.getInstance()?.setServer(server);
 ```
 
-在需要使用的地方取出
+在需要使用的地方取出。
 
 ```typescript
 let tempUrl = await GlobalProxyServer?.getInstance()?.getServer()?.getProxyUrl(originUrl)
