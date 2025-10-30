@@ -1,3 +1,7 @@
+## v2.1.3-rc.2
+
+- Fixed the issue of the number of callback function parameters in the on and emit methods and made improvements
+
 ## v2.1.3-rc.1
 
 - Fixed the issue where emit callbacks could be overwritten across same or different event names
