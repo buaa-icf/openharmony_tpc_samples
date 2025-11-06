@@ -143,55 +143,33 @@ export class VAPPlayer implements XComponentContext {
   }
 
   async stopAsync(id?: string, timeoutMs: number = 3000): Promise<void> {
-    if (this.isStopping) {
+    if (this.isStopping || !this.isRunning) {
       return;
     }
 
-    if (!this.isRunning) {
-      return;
-    }
     this.isStopping = true;
-
-    const TIMEOUT_MS = Math.max(100, Math.min(6000, timeoutMs));
     const targetId = id || this.id;
+    const TIMEOUT_MS = Math.max(100, Math.min(6000, timeoutMs));
 
     return new Promise<void>((resolve, reject) => {
       this.stopAsyncTimeoutId = setTimeout(() => {
-        if (!this.isStopping) {
-          return;
-        }
-        console.error("[VAPPlayer] stopAsync timeout after " + TIMEOUT_MS + "ms, forcing sync stop");
-        this.stopAsyncResolve = undefined;
-        this.stopAsyncReject = undefined;
-        try {
-          this.vapContext?.stop(targetId);
-          this.cleanupSyncStop();
+        if (this.isStopping) {
+          console.error("[VAPPlayer] stopAsync timeout after " + TIMEOUT_MS + "ms");
+          this.forceSyncStop(targetId);
           reject(new Error("stopAsync timeout after " + TIMEOUT_MS + "ms"));
-        } catch (error) {
-          this.isStopping = false;
-          console.error("[VAPPlayer] Force sync stop failed:", error);
-          reject(new Error("stopAsync timeout and force sync stop failed: " + error));
         }
       }, TIMEOUT_MS);
 
       try {
-        if (this.vapContext && this.vapContext.stopAsync) {
-          try {
-            this.stopAsyncResolve = resolve;
-            this.stopAsyncReject = reject;
+        if (this.vapContext?.stopAsync) {
+          this.stopAsyncResolve = resolve;
+          this.stopAsyncReject = reject;
 
-            this.vapContext.stopAsync(targetId);
-
-          } catch (nativeError) {
-            this.cleanupTimeout();
-            this.vapContext?.stop(targetId);
-            this.cleanupSyncStop();
-            resolve();
-          }
+          this.vapContext.stopAsync(targetId);
         } else {
           this.cleanupTimeout();
           this.vapContext?.stop(targetId);
-          this.cleanupSyncStop();
+          this.cleanupAfterStop();
           resolve();
         }
       } catch (error) {
@@ -203,7 +181,7 @@ export class VAPPlayer implements XComponentContext {
     });
   }
 
-  private cleanupSyncStop(): void {
+  private cleanupAfterStop(): void {
     this.isRunning = false;
     this.isStopping = false;
     this.loops = 1;
@@ -212,12 +190,25 @@ export class VAPPlayer implements XComponentContext {
       this.stopCompleteCallback();
       this.stopCompleteCallback = undefined;
     }
+
+    this.stopAsyncResolve = undefined;
+    this.stopAsyncReject = undefined;
   }
 
   private cleanupTimeout(): void {
     if (this.stopAsyncTimeoutId) {
       clearTimeout(this.stopAsyncTimeoutId);
       this.stopAsyncTimeoutId = undefined;
+    }
+  }
+
+  private forceSyncStop(id: string): void {
+    try {
+      this.vapContext?.stop(id);
+      this.cleanupAfterStop();
+    } catch (error) {
+      console.error("[VAPPlayer] Force sync stop failed:", error);
+      this.isStopping = false;
     }
   }
 

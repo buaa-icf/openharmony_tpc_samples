@@ -5,6 +5,7 @@
     "pages/VAPXAnimation",
     "pages/NewOn",
     "pages/MultiAnimation",
-    "pages/AsyncStopDemo"
+    "pages/AsyncStopDemo",
+    "pages/ParallelStopDemo"
   ]
 }
