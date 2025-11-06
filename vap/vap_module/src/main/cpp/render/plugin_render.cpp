@@ -544,7 +544,7 @@ void PluginRender::Export(napi_env env, napi_value exports)
         { "setVideoMode", nullptr, PluginRender::SetVideoMode, nullptr, nullptr, nullptr, napi_default, nullptr },
         { "getVideoInfo", nullptr, PluginRender::GetVideoInfo, nullptr, nullptr, nullptr, napi_default, nullptr },
         { "setSpeed", nullptr, PluginRender::SetSpeed, nullptr, nullptr, nullptr, napi_default, nullptr },
-        { "AsyncStop", nullptr, PluginRender::AsyncStop, nullptr, nullptr, nullptr, napi_default, nullptr },
+        { "stopAsync", nullptr, PluginRender::AsyncStop, nullptr, nullptr, nullptr, napi_default, nullptr },
     };
     if (napi_ok != napi_define_properties(env, exports, sizeof(desc) / sizeof(desc[0]), desc)) {
         LOGE("Export: napi_define_properties failed");
