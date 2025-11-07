@@ -31,6 +31,27 @@ struct ParallelStopDemo {
     this.initializePlayers();
   }
 
+  aboutToDisappear(): void {
+    LogUtil.info('页面即将消失，停止所有视频');
+    this.videoPlayers.forEach((player, index) => {
+      if (player.vapPlayer && player.isPlaying) {
+        try {
+          player.vapPlayer.stopAsync().then(() => {
+            player.isPlaying = false;
+            player.stopStatus = '已停止';
+            player.testResult = '页面离开停止';
+            LogUtil.info(`播放器${index + 1}已停止`);
+          }).catch((error: Error) => {
+            LogUtil.error(`播放器${index + 1}停止失败: ${error.message}`);
+          });
+        } catch (error) {
+          LogUtil.error(`播放器${index + 1}停止异常: ${JSON.stringify(error)}`);
+        }
+      }
+    });
+    this.isAllPlaying = false;
+  }
+
   initializePlayers() {
     this.videoPlayers = [];
     for (let i = 0; i < this.parallelCount; i++) {
@@ -59,7 +80,7 @@ struct ParallelStopDemo {
     }
 
     this.isAllPlaying = true;
-    this.isPlayCompleted = false; // 播放开始后，播放按钮变为不可点击
+    this.isPlayCompleted = false;
     this.overallStatus = 'Playing...';
 
     let completedCount = 0;
@@ -96,7 +117,7 @@ struct ParallelStopDemo {
 
           if (completedCount + errorCount === this.parallelCount) {
             this.isAllPlaying = false;
-            this.isPlayCompleted = true; // 播放完成后，允许播放按钮再次点击
+            this.isPlayCompleted = true;
             this.overallStatus = `并行播放完成 (成功: ${completedCount}/${this.parallelCount})`;
           }
         });
@@ -181,16 +202,14 @@ struct ParallelStopDemo {
     }
   }
 
-
-
   getGridRowsTemplate(): string {
-    const rows = Math.ceil(this.parallelCount / 3); // 每行3列
+    const rows = Math.ceil(this.parallelCount / 3);
     return '1fr '.repeat(rows).trim();
   }
 
   getGridHeight(): string {
-    const rows = Math.ceil(this.parallelCount / 3); // 每行3列
-    const rowHeight = 400; // 每行高度（包含播放器、文本和间距）
+    const rows = Math.ceil(this.parallelCount / 3);
+    const rowHeight = 400;
     return `${rows * rowHeight}px`;
   }
 
@@ -212,13 +231,12 @@ struct ParallelStopDemo {
         .fontColor(this.overallStatusColor)
         .margin({ bottom: 15 })
 
-      // Control buttons area
       Row({ space: 10 }) {
         Button('Play All')
           .width('30%')
           .backgroundColor(this.isAllPlaying ? Color.Green : Color.Blue)
           .fontColor(Color.White)
-          .enabled(!this.isAllPlaying && !this.isAllStopping && this.isPlayCompleted) // 仅在未播放、未停止且播放完成状态时可点击
+          .enabled(!this.isAllPlaying && !this.isAllStopping && this.isPlayCompleted)
           .onClick(() => {
             this.startAllPlay();
           })
@@ -227,14 +245,13 @@ struct ParallelStopDemo {
           .width('30%')
           .backgroundColor(this.isAllStopping ? Color.Orange : Color.Red)
           .fontColor(Color.White)
-          .enabled(this.isAllPlaying && !this.isAllStopping) // 只有在播放过程中且未停止时才可点击
+          .enabled(this.isAllPlaying && !this.isAllStopping)
           .onClick(() => {
             this.stopAllAsync();
           })
       }
       .margin({ bottom: 20 })
 
-      // 播放器网格布局
       Scroll() {
         Grid() {
           ForEach(this.videoPlayers, (player: VideoPlayer, index: number) => {

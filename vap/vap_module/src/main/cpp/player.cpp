@@ -361,7 +361,7 @@ void Player::RenderThread()
         }
         std::unique_lock<std::mutex> lock(renderMutex_);
         bool condRet = renderCond_.wait_for(
-            lock, 1000ms, [this]() { return !renderQueue_.empty(); });
+            lock, 300ms, [this]() { return !renderQueue_.empty(); });
         if (renderQueue_.empty()) {
             // 仅在非停止状态下打印警告（避免频繁日志）
             if (!isStop_ && !isAsyncStopRequested_) {
@@ -398,7 +398,7 @@ void Player::DecInputThread()
     while (!isStop_ && isStarted_ && !isAsyncStopRequested_) {
         std::unique_lock<std::mutex> lock(signal_->inputMutex);
         bool condRet = signal_->inputCond.wait_for(
-            lock, 1000ms, [this]() { return !isStarted_ || !signal_->inputBufferInfoQueue.empty();});
+            lock, 300ms, [this]() { return !isStarted_ || !signal_->inputBufferInfoQueue.empty();});
         if (!isStarted_) {
             LOGE("Work done, thread out");
             break;
@@ -459,7 +459,7 @@ void Player::DecOutputThread()
         thread_local auto lastPushTime = std::chrono::system_clock::now();
         std::unique_lock<std::mutex> lock(signal_->outputMutex);
         bool condRet = signal_->outputCond.wait_for(
-            lock, 1000ms, [this]() { return !isStarted_ || !signal_->outputBufferInfoQueue.empty(); });
+            lock, 300ms, [this]() { return !isStarted_ || !signal_->outputBufferInfoQueue.empty(); });
         if (!isStarted_) {
             LOGE("Decoder output thread done out");
             break;
@@ -500,7 +500,7 @@ void Player::DecAudioInputThread()
     while (!isStop_ && isStarted_ && !isAsyncStopRequested_) {
         std::unique_lock<std::mutex> lock(audioSignal_->audioInputMutex);
         bool condRet = audioSignal_->audioInputCond.wait_for(
-            lock, 1000ms, [this]() { return !isStarted_ || !audioSignal_->audioInputBufferInfoQueue.empty(); });
+            lock, 300ms, [this]() { return !isStarted_ || !audioSignal_->audioInputBufferInfoQueue.empty(); });
         if (!isStarted_) {
             LOGE("audio Work done, thread out");
             break;
@@ -559,7 +559,7 @@ void Player::DecAudioOutputThread()
         pauseLock.unlock();
         std::unique_lock<std::mutex> lock(audioSignal_->audioOutputMutex);
         bool condRet = audioSignal_->audioOutputCond.wait_for(
-            lock, 1000ms, [this]() { return !isStarted_ || !audioSignal_->audioOutputBufferInfoQueue.empty(); });
+            lock, 300ms, [this]() { return !isStarted_ || !audioSignal_->audioOutputBufferInfoQueue.empty(); });
         if (!isStarted_) {
             break;
         }
