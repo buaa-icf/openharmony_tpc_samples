@@ -100,8 +100,18 @@ struct Index {
   mathapplybitXor1 = '1'
   mathnum = '0'
 
-  getResourceString(res: Resource) {
-    return getContext().resourceManager.getStringSync(res.id)
+  uiContext = this.getUIContext();
+  getResourceString(res: Resource):string {
+    try {
+      let result = this.uiContext?.getHostContext()?.resourceManager.getStringSync(res.id)
+      if (result == undefined) {
+        return ""
+      } else {
+        return result;
+      }
+    } catch (error) {
+      return "getResourceString Failed:" + error;
+    }
   }
 
 
@@ -841,7 +851,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            router.back()
+            this.getUIContext().getRouter().back()
           })
 
       }

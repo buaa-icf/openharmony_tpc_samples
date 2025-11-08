@@ -13,13 +13,7 @@
  * limitations under the License.
  */
 import router from '@ohos.router';
-
-function routerfun(url: string) {
-  let options: router.RouterOptions = {
-    url: url
-  }
-  router.pushUrl(options)
-}
+import { BusinessError } from '@kit.BasicServicesKit';
 
 @Entry
 @Component
@@ -30,6 +24,18 @@ struct Index {
   @State ejmlMatrix: string = 'ejmlMatrix test'
   @State ejmlMathjs: string = 'ejmlMathjs test'
   @State jafama: string = 'jafama test'
+
+  async routerfun(url: string) {
+    let options: router.RouterOptions = {
+      url: url
+    }
+    this.getUIContext().getRouter().pushUrl(options).then(() => {
+      console.info('succeeded');
+    })
+      .catch((error: BusinessError) => {
+        console.error(`pushUrl failed, code is ${error.code}, message is ${error.message}`);
+      })
+  }
 
   build() {
     Scroll(this.scroller) {
@@ -46,7 +52,7 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             try {
-              routerfun('crcalc/crcalc')
+              this.routerfun('crcalc/crcalc')
             } catch (err) {
               console.log('errerrcrcalc ' + err)
             }
@@ -60,7 +66,7 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             try {
-              routerfun('ejml/ejml')
+              this.routerfun('ejml/ejml')
             } catch (err) {
               console.log('errerrejml ' + err)
             }
@@ -74,7 +80,7 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             try {
-              routerfun('ejml/ejmlMathjs')
+              this.routerfun('ejml/ejmlMathjs')
             } catch (err) {
               console.log('errerrejmlMathjs ' + err)
             }
@@ -88,7 +94,7 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             try {
-              routerfun('jafama/jafama')
+              this.routerfun('jafama/jafama')
             } catch (err) {
               console.log('errerrjafama ' + err)
             }
@@ -102,7 +108,7 @@ struct Index {
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
             try {
-              routerfun('mathjs/mathjs')
+              this.routerfun('mathjs/mathjs')
             } catch (err) {
               console.log('errerrmathjs ' + err)
             }

@@ -73,8 +73,18 @@ struct Index {
   ludigMatrix: string = '1,0,0;0,1,0;0,0,1'
   inverseMatrix: string = '1,0,0;0,1,0;0,0,1'
 
-  getResourceString(res: Resource) {
-    return getContext().resourceManager.getStringSync(res.id)
+  uiContext = this.getUIContext();
+  getResourceString(res: Resource):string {
+    try {
+      let result = this.uiContext?.getHostContext()?.resourceManager.getStringSync(res.id)
+      if (result == undefined) {
+        return ""
+      } else {
+        return result;
+      }
+    } catch (error) {
+      return "getResourceString Failed:" + error;
+    }
   }
 
   build() {
@@ -654,7 +664,7 @@ struct Index {
           .fontWeight(FontWeight.Bold)
           .border({ width: 2, color: '#535353', radius: 6 })
           .onClick(() => {
-            router.back()
+            this.getUIContext().getRouter().back()
           })
 
       }.width('100%')
