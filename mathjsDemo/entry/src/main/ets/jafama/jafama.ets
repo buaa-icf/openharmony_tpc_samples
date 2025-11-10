@@ -82,8 +82,18 @@ struct Index {
   mathceil: string = ''
   mathodd: string = ''
 
-  getResourceString(res: Resource) {
-    return getContext().resourceManager.getStringSync(res.id)
+  uiContext = this.getUIContext();
+  getResourceString(res: Resource):string {
+    try {
+      let result = this.uiContext?.getHostContext()?.resourceManager.getStringSync(res.id)
+      if (result == undefined) {
+        return ""
+      } else {
+        return result;
+      }
+    } catch (error) {
+      return "getResourceString Failed:" + error;
+    }
   }
 
   build() {
@@ -711,7 +721,7 @@ struct Index {
           .fontSize(20)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
-            router.back()
+            this.getUIContext().getRouter().back()
           })
 
       }
