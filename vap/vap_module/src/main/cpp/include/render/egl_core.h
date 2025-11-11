@@ -37,7 +37,7 @@ struct RenderData {
 class EGLCore {
 public:
     explicit EGLCore(){};
-    ~EGLCore() {}
+    ~EGLCore();
     bool EglContextInit(EGLNativeWindowType window, int width, int height, std::string uri,
         std::map<std::string, MixInputData> &iptData);
     
@@ -114,5 +114,6 @@ private:
     int32_t m_videoWidth = 0;
     int32_t m_videoHeight = 0;
     bool m_isH265 = false;
+    std::mutex mtx_;
 };
 #endif // VAP_EGL_CORE_H

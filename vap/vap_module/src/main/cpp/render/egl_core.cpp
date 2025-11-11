@@ -34,6 +34,11 @@ using namespace CommonConst;
 
 const float FIFTY_PERCENT = 0.5;
 
+EGLCore::~EGLCore()
+{
+    Release();
+}
+
 void EGLCore::FitCenter()
 {
     int32_t width = m_animConfig->width, height = m_animConfig->height;
@@ -407,6 +412,10 @@ bool EGLCore::FinishLoad()
 
 void EGLCore::Release()
 {
+    std::unique_lock<std::mutex> lock(mtx_);
+    if (m_eglDisplay == nullptr) {
+        return;
+    }
     m_render->ClearFrame();
     FinishLoad();
     m_render->ReleaseTexture();
@@ -416,10 +425,12 @@ void EGLCore::Release()
     if ((nullptr == m_eglDisplay) || (nullptr == m_eglSurface) || (!eglDestroySurface(m_eglDisplay, m_eglSurface))) {
         LOGE("Release eglDestroySurface failed");
     }
+    m_eglSurface = nullptr;
 
     if ((nullptr == m_eglDisplay) || (nullptr == m_eglContext) || (!eglDestroyContext(m_eglDisplay, m_eglContext))) {
         LOGE("Release eglDestroyContext failed");
     }
+    m_eglContext = nullptr;
 
     if ((nullptr == m_eglDisplay) || !eglMakeCurrent(m_eglDisplay, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT)) {
         LOGE("eglMakeCurrent failed");
@@ -428,4 +439,5 @@ void EGLCore::Release()
     if ((nullptr == m_eglDisplay) || (!eglTerminate(m_eglDisplay))) {
         LOGE("Release eglTerminate failed");
     }
+    m_eglDisplay = nullptr;
 }
