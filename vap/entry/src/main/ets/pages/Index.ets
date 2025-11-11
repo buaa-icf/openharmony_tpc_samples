@@ -14,10 +14,14 @@
  */
 
 import router from '@ohos.router';
+import { emitter } from '@kit.BasicServicesKit';
+import { promptAction } from '@kit.ArkUI';
 
 @Entry
 @Component
 struct Index{
+  private multiAnimationClosed = true;
+
   build() {
     Scroll() {
       Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
@@ -45,6 +49,14 @@ struct Index{
         Flex({ direction: FlexDirection.Row, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
           Button("测试多动画")
             .onClick(() => {
+              emitter.on("multiAnimationClosed", () => {
+                this.multiAnimationClosed = true;
+              })
+              if (!this.multiAnimationClosed) {
+                this.getUIContext().getPromptAction().showToast({ message: "Please wait", duration: 300 })
+                return;
+              }
+              this.multiAnimationClosed = false;
               router.pushUrl({ url: "pages/MultiAnimation" });
             }).margin({ top: 15 })
         }.width('100%').height(60)

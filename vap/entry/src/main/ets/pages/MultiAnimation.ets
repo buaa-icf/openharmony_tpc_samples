@@ -16,6 +16,7 @@
 import { VAPPlayer } from '@ohos/vap';
 import { util } from '@kit.ArkTS';
 import { LogUtil } from '../common/LogUtil';
+import { emitter } from '@kit.BasicServicesKit';
 
 @Entry
 @Component
@@ -51,6 +52,7 @@ struct MultiAnimation {
     this.vapPlayer6?.stop()
     this.vapPlayer7?.stop()
     this.vapPlayer8?.stop()
+    emitter.emit("multiAnimationClosed")
   }
 
   build() {
