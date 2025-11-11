@@ -84,23 +84,25 @@ struct Index {
   }
 
   async getData(kid:string) {
-
-
     if(this.client != null){
-      let signingKey: Single = await this.client.getSigningKey(kid)
-      console.info("jwks_rsa signingKey:"+JSON.stringify(signingKey))
-      this.kid = signingKey.kid
-      this.alg = signingKey.algorithm
-      this.kty = signingKey.type
-      this.usage = signingKey.usage
-      let pubKey:cryptoFramework.PubKey | undefined = await signingKey.getPublicKey()
-      let publicData:Uint8Array | undefined  = pubKey?.getEncoded().data;
-      console.info("jwks_rsa public key encode  = " + publicData)
+      let signingKey: Single = await this.client.getSigningKey(kid);
+      console.info("jwks_rsa signingKey:"+JSON.stringify(signingKey));
+      this.kid = signingKey.kid;
+      this.alg = signingKey.algorithm;
+      this.kty = signingKey.type;
+      this.usage = signingKey.usage;
+      let pubKey:cryptoFramework.PubKey | undefined = signingKey.getPublicKey();
+      let publicData:Uint8Array | undefined = undefined;
+      try {
+        publicData = pubKey?.getEncoded().data;
+      } catch (e) {
+        console.info("jwks_rsa getPublicKey error:" + JSON.stringify(e));
+      }
+      console.info("jwks_rsa public key encode  = " + publicData);
       let base64:util.Base64Helper = new util.Base64Helper();
       this.publicKey = base64.encodeToStringSync(publicData);
-      console.info("jwks_rsa publicKey = " + this.publicKey)
+      console.info("jwks_rsa publicKey = " + this.publicKey);
     }
-
   }
 }
 
