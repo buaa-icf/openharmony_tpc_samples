@@ -32,7 +32,7 @@ import router from '@ohos.router';
 @Component
 struct FileServerTest {
   @State msgHistory: string = '';
-  @State loginUrl: string = "http://127.0.0.1:9990/file.txt";
+  @State loginUrl: string = "http://127.0.0.1:9990";
   @State fileExtension: string = "";
   @State buf1flag: boolean = false;
   @State buf2flag: boolean = false;

@@ -86,6 +86,7 @@ struct Client {
               this.index = index;
               if (text) {
                 this.method = text;
+                this.text = text;
               }
             })
         }
@@ -118,7 +119,7 @@ struct Client {
             .onChange((value: string) => {
               this.headerKeys[0] = value
             })
-            .id(`cookie`).width(150)
+            .id(`cookie`).width(170)
 
           TextInput({ text: this.headerValues[0], placeholder: $r('app.string.headerValue') })
             .margin({ left: 4, right: 2 })
