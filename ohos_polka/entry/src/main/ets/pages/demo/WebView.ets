@@ -20,6 +20,7 @@ import { BusinessError } from '@ohos.base';
 import wifiManager from '@ohos.wifiManager';
 import router from '@ohos.router';
 import { createFile } from '@ohos/polka';
+import promptAction from '@ohos.promptAction';
 
 let context = getContext(this) as common.UIAbilityContext;
 
@@ -81,19 +82,27 @@ struct WebView {
             .fontSize(11)
             .flexGrow(0)
           Button($r('app.string.generateIndexHtml'))
-            .onClick(() => {
-              createFile(context.filesDir, 'index.html', `<!doctype html><html lang=""><head>
-                <meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge">
-                <meta name="viewport" content="width=device-width,initial-scale=1">
-                <link rel="icon" href="/favicon.ico"><title>vue-project</title>
-                <script defer="defer" src="/js/chunk-vendors.8099839b.js"></script>
-                <script defer="defer" src="/js/app.ef57ad63.js"></script>
-                <link href="/css/app.b2d625b8.css" rel="stylesheet"></head>
-                <body>
-                <noscript>
-                <strong>We're sorry but vue-project doesn't work properly without JavaScript enabled.
-                Please enable it to continue.</strong>
-                </noscript><div id="app">index.html file exists</div></body></html>`)
+            .onClick(async () => {
+              const targetPath: string = `${context.filesDir}/index.html`;
+              try {
+                await createFile(context.filesDir, 'index.html', `<!doctype html><html lang=""><head>
+                  <meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge">
+                  <meta name="viewport" content="width=device-width,initial-scale=1">
+                  <link rel="icon" href="/favicon.ico"><title>vue-project</title>
+                  <script defer="defer" src="/js/chunk-vendors.8099839b.js"></script>
+                  <script defer="defer" src="/js/app.ef57ad63.js"></script>
+                  <link href="/css/app.b2d625b8.css" rel="stylesheet"></head>
+                  <body>
+                  <noscript>
+                  <strong>We're sorry but vue-project doesn't work properly without JavaScript enabled.
+                  Please enable it to continue.</strong>
+                  </noscript><div id="app">index.html file exists</div></body></html>`);
+                promptAction.showToast({ message: `生成成功：${targetPath}`, duration: 1000 });
+              } catch (error) {
+                const message: string = error && (error as Error).message ? (error as Error).message : 'unknown error';
+                console.error(`generate index.html failed: ${message}`);
+                promptAction.showToast({ message: `生成失败：${message}`, duration: 1000 });
+              }
             })
             .fontSize(14)
             .flexGrow(0)
@@ -101,6 +110,11 @@ struct WebView {
           Button($r('app.string.load'))
             .onClick(() => {
               try {
+                const contentHint: string = this.loadUrl.endsWith('/') ? `${this.loadUrl}index.html` : this.loadUrl;
+                promptAction.showToast({
+                  message: `加载地址：${this.loadUrl}\n加载内容：${contentHint}`,
+                  duration: 1000
+                });
                 this.controller.loadUrl(this.loadUrl);
               } catch (error) {
                 console.error(`ErrorCode: ${error.code},  Message: ${error.message}`);
