@@ -29,6 +29,7 @@ import common from '@ohos.app.ability.common';
 import Want from '@ohos.app.ability.Want';
 import { BusinessError } from '@ohos.base';
 import polka, { createFile } from '@ohos/polka';
+import promptAction from '@ohos.promptAction';
 
 @Entry
 @Component
@@ -102,25 +103,56 @@ struct Redirect {
   generateDir() {
     try {
       let context = getContext(this) as common.UIAbilityContext;
-      fs.stat(context.filesDir + '/test', (e, res) => {
+      const dirPath = context.filesDir + '/test';
+      fs.stat(dirPath, (e, res) => {
         if (e) {
-          fs.mkdirSync(context.filesDir + '/test');
+          try {
+            fs.mkdirSync(dirPath);
+            promptAction.showToast({ message: `生成成功：${dirPath}`, duration: 1000 });
+          } catch (err) {
+            console.error('mkdir failed', err);
+            const msg = err && (err as Error).message ? (err as Error).message : 'unknown error';
+            promptAction.showToast({ message: `生成失败：${msg}`, duration: 1000 });
+          }
+        } else {
+          promptAction.showToast({ message: `目录已存在：${dirPath}`, duration: 1000 });
         }
       });
     } catch (e) {
+      const msg = e && (e as Error).message ? (e as Error).message : 'unknown error';
+      promptAction.showToast({ message: `生成失败：${msg}`, duration: 1000 });
     }
   }
 
   generateIndexHtml() {
     try {
       let context = getContext(this) as common.UIAbilityContext;
-      fs.stat(context.filesDir + '/test', (e, res) => {
+      const dirPath = context.filesDir + '/test';
+      fs.stat(dirPath, (e, res) => {
         if (!e) {
-          createFile(context.filesDir + '/test', 'index.html',
-            `<!doctype html><html lang=""><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.ico"><title>vue-project</title><script defer="defer" src="/js/chunk-vendors.8099839b.js"></script><script defer="defer" src="/js/app.ef57ad63.js"></script><link href="/css/app.b2d625b8.css" rel="stylesheet"></head><body><noscript><strong>We're sorry but vue-project doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id="app">test html from public</div></body></html>`)
+          const filePath = `${dirPath}/index.html`;
+          fs.stat(filePath, (fileErr) => {
+            if (fileErr) {
+              try {
+                createFile(dirPath, 'index.html',
+                  `<!doctype html><html lang=""><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.ico"><title>vue-project</title><script defer="defer" src="/js/chunk-vendors.8099839b.js"></script><script defer="defer" src="/js/app.ef57ad63.js"></script><link href="/css/app.b2d625b8.css" rel="stylesheet"></head><body><noscript><strong>We're sorry but vue-project doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id="app">test html from public</div></body></html>`);
+                promptAction.showToast({ message: `生成成功：${filePath}`, duration: 1000 });
+              } catch (err) {
+                console.error('createFile failed', err);
+                const msg = err && (err as Error).message ? (err as Error).message : 'unknown error';
+                promptAction.showToast({ message: `生成失败：${msg}`, duration: 1000 });
+              }
+            } else {
+              promptAction.showToast({ message: `文件已存在：${filePath}`, duration: 1000 });
+            }
+          });
+        } else {
+          promptAction.showToast({ message: `目标目录不存在：${dirPath}`, duration: 1000 });
         }
       });
     } catch (e) {
+      const msg = e && (e as Error).message ? (e as Error).message : 'unknown error';
+      promptAction.showToast({ message: `生成失败：${msg}`, duration: 1000 });
     }
   }
 
