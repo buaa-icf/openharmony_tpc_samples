@@ -476,7 +476,8 @@ static const struct luaL_Reg myLib[] = {
 
 int luaopen_mLualib(lua_State *L)
 {
-    luaL_register(L, "cc", myLib); // 注册导出类
+    luaL_newlib(L, myLib);         // 注册导出类
+    lua_setglobal(L, "cc");
     return 1;                      // 把myLib表压入了栈中，所以就需要返回1
 }
 } // namespace Ohos_LuaArkts

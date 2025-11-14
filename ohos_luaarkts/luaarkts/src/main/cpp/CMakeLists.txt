@@ -23,8 +23,8 @@ target_link_libraries(luaarkts PUBLIC Aki::libjsbind) # 链接二进制依赖 & 
 target_link_libraries(luaarkts PUBLIC libace_napi.z.so)
 target_link_libraries(luaarkts PUBLIC libhilog_ndk.z.so)
 
-target_include_directories(luaarkts PRIVATE  ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/LuaJIT/${OHOS_ARCH}/include/luajit-2.1)
-target_link_libraries(luaarkts PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/LuaJIT/${OHOS_ARCH}/lib/libluajit-5.1.a)
+target_include_directories(luaarkts PRIVATE  ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/lua/${OHOS_ARCH}/include)
+target_link_libraries(luaarkts PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/lua/${OHOS_ARCH}/lib/liblua.a)
 
 #add_subdirectory(aki)
 #target_link_libraries(luaarkts PUBLIC aki_jsbind)
