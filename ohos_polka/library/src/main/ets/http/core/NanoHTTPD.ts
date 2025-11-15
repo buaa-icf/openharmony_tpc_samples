@@ -31,6 +31,7 @@ import { BufferPool } from './request/BufferPool';
 import { EventEmitter } from '../../common/util/event-emitter';
 import type { Logger } from '../../common/util/log';
 import { getLogger } from '../../common/util/log';
+import { deviceInfo } from '@kit.BasicServicesKit';
 
 const logger: Logger = getLogger('NanoHTTPD');
 const DEFAULT_SOCKET_TIMEOUT: number = 5000;
@@ -218,7 +219,11 @@ export class NanoHTTPD extends EventEmitter {
     this.bufferPoolArray = [];
     this.serverConnectArray = [];
     this.serverIsStarted = false;
-    this.myServerSocket.close();
+    if (deviceInfo.sdkApiVersion > 19) {
+      this.myServerSocket.close();
+    } else {
+      console.error('Verification is required on devices with an API level of 20 or higher.')
+    }
   }
 
   /**
