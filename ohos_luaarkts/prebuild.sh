@@ -23,12 +23,12 @@ LYCIUM_TOOLS_DIR=$LYCIUM_ROOT_DIR/lycium
 LYCIUM_THIRDPARTY_DIR=$LYCIUM_ROOT_DIR/thirdparty
 LYCIUM_COMMUNITY_DIR=$LYCIUM_ROOT_DIR/community
 DEPENDS_DIR=$ROOT_DIR/doc                                                   # 依赖库编译脚本在仓库中的位置
-LUAJIT_NAME=LuaJIT                                                          # 依赖库名
+LUA_NAME=lua                                                                # 依赖库名
 
 CI_OUTPUT_DIR=$ROOT_DIR/../out/tpc/                                         # hap/har安装目录
 
-LIBS_NAME=("LuaJIT")
-PACKAGE_NAME=("LuaJIT-2.1.0-beta3.tar.gz")
+LIBS_NAME=("lua")
+PACKAGE_NAME=("lua-5.4.6.tar.gz")
 
 function prepare_lycium_tools()
 {
@@ -97,7 +97,7 @@ function copy_depends()
 
 function prepare_depends()
 {
-    copy_depends $LYCIUM_COMMUNITY_DIR $LUAJIT_NAME
+    copy_depends $LYCIUM_COMMUNITY_DIR $LUA_NAME
 }
 
 function check_sdk()
@@ -129,7 +129,7 @@ function check_copy_shasum()
 
 function install_shasum()
 {
-    check_copy_shasum $LUAJIT_NAME ${PACKAGE_NAME[0]} $LUAJIT_NAME
+    check_copy_shasum $LUA_NAME ${PACKAGE_NAME[0]} $LUA_NAME
 }
 
 function start_build()
@@ -141,7 +141,7 @@ function start_build()
         return 1
     fi
 
-    bash build.sh $LUAJIT_NAME
+    bash build.sh $LUA_NAME
     result=$?
     cd $OLDPWD
     return $result
@@ -151,7 +151,7 @@ function install_depends()
 {
     local install_dir=$ROOT_DIR/luaarkts/src/main/cpp/thirdparty/
     mkdir $ROOT_DIR/luaarkts/src/main/cpp/thirdparty/
-    cp -arf $LYCIUM_TOOLS_DIR/usr/$LUAJIT_NAME $install_dir/$LUAJIT_NAME
+    cp -arf $LYCIUM_TOOLS_DIR/usr/$LUA_NAME $install_dir/$LUA_NAME
     if [ $? -ne 0 ]
     then
         echo "LuaJIT build failed!"
@@ -160,7 +160,7 @@ function install_depends()
 
     if [ -d $CI_OUTPUT_DIR ]
     then
-        cp -arf $LYCIUM_TOOLS_DIR/usr/$LUAJIT_NAME $CI_OUTPUT_DIR
+        cp -arf $LYCIUM_TOOLS_DIR/usr/$LUA_NAME $CI_OUTPUT_DIR
     fi
 
     return 0
