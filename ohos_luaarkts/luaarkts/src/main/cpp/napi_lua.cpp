@@ -107,6 +107,7 @@ static int l2tCallModuleFunc(lua_State *L)
             char tmpChar[2048];
             size_t size = sizeof(tmpChar);
             napi_get_value_string_utf8(g_env, resultCall, tmpChar, size, &size);
+            lua_pushlstring(L, tmpChar, size);
         }
             return 1;
         case napi_bigint: {
@@ -181,6 +182,7 @@ static int l2tCallClass(lua_State *L)
             char tmpChar[2048];
             size_t size = sizeof(tmpChar);
             napi_get_value_string_utf8(g_env, resultCall, tmpChar, size, &size);
+            lua_pushlstring(L, tmpChar, size);
         }
             return 1;
         case napi_bigint: {

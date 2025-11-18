@@ -1,5 +1,9 @@
 **CHANGELOG.md**
 
+## 1.0.2-rc.1
+- Replace luaJIT with the Lua library
+- Fix the l2tCallModuleFunc interface so that it can return string types
+
 ## 1.0.2-rc.0
 - Fix the issue where T2lCallFunction fails when passing a string
 
