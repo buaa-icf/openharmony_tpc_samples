@@ -647,88 +647,60 @@ function crypto_secretbox_random_nonce(): Uint8Array {
 
 function crypto_secretbox(message: Uint8Array, nonce: Uint8Array, key: Uint8Array): Uint8Array {
   try {
-    console.log('yxc==== crypto_secretbox 开始执行');
-    console.log('yxc==== message length:', message.length);
-    console.log('yxc==== nonce length:', nonce.length);
-    console.log('yxc==== key length:', key.length);
-
     // 添加zerobytes填充
     // 根据NaCl文档，消息的前crypto_secretbox_ZEROBYTES(32)字节必须为0
     const m = new Uint8Array(crypto_secretbox_ZEROBYTES + message.length);
     m.set(message, crypto_secretbox_ZEROBYTES);
-    console.log('yxc==== zerobytes 填充后 m length:', m.length);
 
     // 使用 AES-GCM 对称加密
     const cipher = cryptoFramework.createCipher('AES256|GCM|NoPadding');
     const symKeyGenerator = cryptoFramework.createSymKeyGenerator('AES256');
     const keyObj = symKeyGenerator.convertKeySync({ data: new Uint8Array(key) });
-    console.log('yxc==== 密钥转换完成');
 
     // GCM 模式参数：不预先提供authTag
-    console.log('yxc==== 创建 GCM 参数规格');
     const paramsSpec: cryptoFramework.GcmParamsSpec = {
       iv: { data: new Uint8Array(nonce) },
       aad: { data: new Uint8Array(0) },
       algName: 'GcmParamsSpec'
     } as cryptoFramework.GcmParamsSpec;
 
-    console.log('yxc==== 初始化加密器');
     cipher.initSync(cryptoFramework.CryptoMode.ENCRYPT_MODE, keyObj, paramsSpec);
-
-    console.log('yxc==== 创建输入数据 blob');
     const inputDataBlob: cryptoFramework.DataBlob = {
       data: new Uint8Array(m),
       algName: 'DataBlob'
     } as cryptoFramework.DataBlob;
-    console.log('yxc==== 执行加密操作');
     const encrypted: cryptoFramework.DataBlob = cipher.doFinalSync(inputDataBlob);
-    console.log('yxc==== 加密完成, encrypted.data length:', encrypted.data.length);
 
     // 提取 authTag
-    console.log('yxc==== 提取 authTag');
     let authTag: Uint8Array;
     if (encrypted.data.length >= 16) {
       authTag = new Uint8Array(encrypted.data.buffer, encrypted.data.byteOffset + encrypted.data.length - 16, 16);
-      console.log('yxc==== 从加密结果末尾提取的authTag length:', authTag.length);
     } else {
       authTag = new Uint8Array(16);
-      console.log('yxc==== 创建默认authTag length:', authTag.length);
     }
 
     // 处理加密结果（移除authTag）
-    console.log('yxc==== 处理加密结果');
     let actualEncryptedData: Uint8Array;
     if (encrypted.data.length >= 16) {
       actualEncryptedData = new Uint8Array(encrypted.data.buffer, encrypted.data.byteOffset, encrypted.data.length - 16);
-      console.log('yxc==== 移除authTag后的加密数据长度:', actualEncryptedData.length);
     } else {
       actualEncryptedData = new Uint8Array(encrypted.data.buffer, encrypted.data.byteOffset, encrypted.data.length);
-      console.log('yxc==== 使用完整加密数据，长度:', actualEncryptedData.length);
     }
 
     // 合并密文和 authTag
-    console.log('yxc==== 合并密文和 authTag');
     const result: Uint8Array = new Uint8Array(actualEncryptedData.length + authTag.length);
     result.set(actualEncryptedData, 0);
     result.set(authTag, actualEncryptedData.length);
-    console.log('yxc==== 最终结果 length:', result.length);
-    console.log('yxc==== crypto_secretbox 执行完成');
 
     return result;
   } catch (error) {
     const err = error as Error;
-    console.log('yxc==== crypto_secretbox 错误:', err.message);
     throw new Error('Secret box encryption failed: ' + err.message);
   }
 }
 
 function crypto_secretbox_open(cipher: Uint8Array, nonce: Uint8Array, key: Uint8Array): Uint8Array {
   try {
-    console.log('yxc==== crypto_secretbox_open 开始执行');
-    console.log('yxc==== cipher length:', cipher.length);
-    console.log('yxc==== nonce length:', nonce.length);
-    console.log('yxc==== key length:', key.length);
-
     // 从密文中分离认证标签（最后16字节）和实际密文
     if (cipher.length < 16) {
       throw new Error('Ciphertext too short');
@@ -736,16 +708,12 @@ function crypto_secretbox_open(cipher: Uint8Array, nonce: Uint8Array, key: Uint8
 
     const actualCiphertext = cipher.slice(0, cipher.length - 16);
     const authTag = cipher.slice(cipher.length - 16);
-    console.log('yxc==== actualCiphertext length:', actualCiphertext.length);
-    console.log('yxc==== authTag length:', authTag.length);
 
     // 使用 AES-GCM 解密
     const decryptor = cryptoFramework.createCipher('AES256|GCM|NoPadding');
     const symKeyGenerator = cryptoFramework.createSymKeyGenerator('AES256');
     const keyObj = symKeyGenerator.convertKeySync({ data: new Uint8Array(key) });
-    console.log('yxc==== 密钥转换完成');
 
-    console.log('yxc==== 创建 GCM 参数规格');
     const paramsSpec: cryptoFramework.GcmParamsSpec = {
       iv: { data: new Uint8Array(nonce) },
       aad: { data: new Uint8Array(0) },
@@ -753,19 +721,15 @@ function crypto_secretbox_open(cipher: Uint8Array, nonce: Uint8Array, key: Uint8
       algName: 'GcmParamsSpec'
     } as cryptoFramework.GcmParamsSpec;
 
-    console.log('yxc==== 初始化解密器');
     decryptor.initSync(cryptoFramework.CryptoMode.DECRYPT_MODE, keyObj, paramsSpec);
 
-    console.log('yxc==== 创建输入数据 blob');
     const inputDataBlob: cryptoFramework.DataBlob = {
       data: new Uint8Array(actualCiphertext),
       algName: 'DataBlob'
     } as cryptoFramework.DataBlob;
 
-    console.log('yxc==== 执行解密操作');
     const decrypted: cryptoFramework.DataBlob = decryptor.doFinalSync(inputDataBlob);
     const result: Uint8Array = new Uint8Array(decrypted.data);
-    console.log('yxc==== 解密完成, decrypted.data length:', decrypted.data.length);
 
     // 移除 zerobytes 填充，返回明文
     // 根据NaCl文档，解密后的消息前crypto_secretbox_ZEROBYTES(32)字节为0
@@ -774,13 +738,10 @@ function crypto_secretbox_open(cipher: Uint8Array, nonce: Uint8Array, key: Uint8
     }
 
     const plaintext = new Uint8Array(result.buffer, result.byteOffset + crypto_secretbox_ZEROBYTES, result.length - crypto_secretbox_ZEROBYTES);
-    console.log('yxc==== 移除 zerobytes 填充, plaintext length:', plaintext.length);
-    console.log('yxc==== crypto_secretbox_open 执行完成');
 
     return plaintext;
   } catch (error) {
     const err = error as Error;
-    console.log('yxc==== crypto_secretbox_open 错误:', err.message);
     throw new Error('Secret box decryption failed: ' + err.message);
   }
 }
@@ -811,37 +772,27 @@ function crypto_sign_seed_keypair(seed: Uint8Array): SignKeyPair {
 
 function crypto_box_seed_keypair(seed: Uint8Array): BoxKeyPair {
   try {
-    console.log('yxc======= crypto_box_seed_keypair 开始');
-    console.log('yxc======= seed length:', seed.length);
     // 由于鸿蒙 ECC256 不支持从原始 seed 生成确定性密钥对
     // 我们使用 seed 作为随机数生成器的输入，但仍然生成随机密钥对
     // 这是一个限制，但是最安全的方法
     // TODO: 如果鸿蒙支持 X25519，应使用它来实现确定性生成
 
-    console.log('yxc======= 调用 crypto_box_keypair');
     const result = crypto_box_keypair();
-    console.log('yxc======= crypto_box_seed_keypair 结束');
     return result;
   } catch (error) {
     const err = error as Error;
-    console.log('yxc======= crypto_box_seed_keypair 错误:', err.message);
     return crypto_box_keypair();
   }
 }
 
 function crypto_box_keypair_from_raw_sk(secretKey: Uint8Array): BoxKeyPair {
   try {
-    console.log('yxc======= crypto_box_keypair_from_raw_sk 开始');
-    console.log('yxc======= secretKey length:', secretKey.length);
     // ECC256不支持从原始字节转换私钥
     // 作为 workaround，生成一个新的密钥对
-    console.log('yxc======= 调用 crypto_box_keypair');
     const result = crypto_box_keypair();
-    console.log('yxc======= crypto_box_keypair_from_raw_sk 结束');
     return result;
   } catch (error) {
     const err = error as Error;
-    console.log('yxc======= crypto_box_keypair_from_raw_sk 错误:', err.message);
     throw new Error('Key pair from raw secret key failed: ' + err.message);
   }
 }
@@ -929,17 +880,12 @@ function crypto_stream_xor(message: Uint8Array, nonce: Uint8Array, key: Uint8Arr
 
 function crypto_auth(message: Uint8Array, key: Uint8Array): Uint8Array {
   try {
-    console.log('yxc==== crypto_auth 开始执行');
-    console.log('yxc==== message length:', message.length);
-    console.log('yxc==== key length:', key.length);
-
     // 检查密钥长度
     if (key.length !== crypto_auth_KEYBYTES) {
       throw new Error(`Invalid key length. Expected ${crypto_auth_KEYBYTES}, got ${key.length}`);
     }
 
     // 使用SHA512实现认证加密（简化实现）
-    console.log('yxc==== 使用SHA512实现认证');
     const md = cryptoFramework.createMd('SHA512');
 
     // 将密钥和消息组合进行哈希
@@ -952,40 +898,27 @@ function crypto_auth(message: Uint8Array, key: Uint8Array): Uint8Array {
 
     // 取前32字节作为认证标签
     const result = new Uint8Array(hash.data.slice(0, crypto_auth_BYTES));
-    console.log('yxc==== 最终tag length:', result.length);
-    console.log('yxc==== crypto_auth 执行完成');
     return result;
   } catch (error) {
     const err = error as Error;
-    console.log('yxc==== crypto_auth 错误:', err.message);
-    console.log('yxc==== crypto_auth 错误堆栈:', err.stack);
     throw new Error('Auth generation failed: ' + err.message);
   }
 }
 
 function crypto_auth_verify(tag: Uint8Array, message: Uint8Array, key: Uint8Array): boolean {
   try {
-    console.log('yxc==== crypto_auth_verify 开始执行');
-    console.log('yxc==== tag length:', tag.length);
-    console.log('yxc==== message length:', message.length);
-    console.log('yxc==== key length:', key.length);
 
     // 检查标签长度
     if (tag.length !== crypto_auth_BYTES) {
-      console.log('yxc==== 标签长度不匹配');
       return false;
     }
 
     const computedTag = crypto_auth(message, key);
-    console.log('yxc==== computedTag length:', computedTag.length);
 
     // 恒定时间比较防止时序攻击
     const result = constant_time_compare(computedTag, tag);
-    console.log('yxc==== 比较结果:', result);
-    console.log('yxc==== crypto_auth_verify 执行完成');
     return result;
   } catch (error) {
-    console.log('yxc==== crypto_auth_verify 错误:', error);
     return false;
   }
 }
@@ -993,9 +926,6 @@ function crypto_auth_verify(tag: Uint8Array, message: Uint8Array, key: Uint8Arra
 // 一次性认证函数 - 使用简化实现确保兼容性
 function crypto_onetimeauth(message: Uint8Array, key: Uint8Array): Uint8Array {
   try {
-    console.log('yxc==== crypto_onetimeauth 开始执行');
-    console.log('yxc==== message length:', message.length);
-    console.log('yxc==== key length:', key.length);
 
     // 检查密钥长度
     if (key.length !== crypto_onetimeauth_KEYBYTES) {
@@ -1003,7 +933,6 @@ function crypto_onetimeauth(message: Uint8Array, key: Uint8Array): Uint8Array {
     }
 
     // 使用SHA256实现一次性认证（与js-nacl保持一致，确保兼容性）
-    console.log('yxc==== 使用SHA256实现认证');
     const md = cryptoFramework.createMd('SHA256');
 
     // 将密钥和消息组合进行哈希
@@ -1016,40 +945,26 @@ function crypto_onetimeauth(message: Uint8Array, key: Uint8Array): Uint8Array {
 
     // 取前16字节作为认证标签（Poly1305输出16字节）
     const result = new Uint8Array(hash.data.slice(0, crypto_onetimeauth_BYTES));
-    console.log('yxc==== 最终tag length:', result.length);
-    console.log('yxc==== crypto_onetimeauth 执行完成');
     return result;
   } catch (error) {
     const err = error as Error;
-    console.log('yxc==== crypto_onetimeauth 错误:', err.message);
-    console.log('yxc==== crypto_onetimeauth 错误堆栈:', err.stack);
     throw new Error('One-time auth generation failed: ' + err.message);
   }
 }
 
 function crypto_onetimeauth_verify(tag: Uint8Array, message: Uint8Array, key: Uint8Array): boolean {
   try {
-    console.log('yxc==== crypto_onetimeauth_verify 开始执行');
-    console.log('yxc==== tag length:', tag.length);
-    console.log('yxc==== message length:', message.length);
-    console.log('yxc==== key length:', key.length);
-
     // 检查标签长度
     if (tag.length !== crypto_onetimeauth_BYTES) {
-      console.log('yxc==== 标签长度不匹配');
       return false;
     }
 
     const computedTag = crypto_onetimeauth(message, key);
-    console.log('yxc==== computedTag length:', computedTag.length);
 
     // 恒定时间比较防止时序攻击
     const result = constant_time_compare(computedTag, tag);
-    console.log('yxc==== 比较结果:', result);
-    console.log('yxc==== crypto_onetimeauth_verify 执行完成');
     return result;
   } catch (error) {
-    console.log('yxc==== crypto_onetimeauth_verify 错误:', error);
     return false;
   }
 }
@@ -1102,35 +1017,7 @@ const utils: Nacl = {
   crypto_sign_seed_keypair,
   crypto_box_seed_keypair,
   crypto_box_keypair_from_raw_sk,
-  random_bytes,
-  crypto_stream,
-  crypto_stream_xor,
-  crypto_auth,
-  crypto_auth_verify,
-  crypto_onetimeauth,
-  crypto_onetimeauth_verify,
-  crypto_box_PUBLICKEYBYTES,
-  crypto_box_SECRETKEYBYTES,
-  crypto_box_BEFORENMBYTES,
-  crypto_box_NONCEBYTES,
-  crypto_box_ZEROBYTES,
-  crypto_box_BOXZEROBYTES,
-  crypto_secretbox_KEYBYTES,
-  crypto_secretbox_NONCEBYTES,
-  crypto_secretbox_ZEROBYTES,
-  crypto_secretbox_BOXZEROBYTES,
-  crypto_sign_PUBLICKEYBYTES,
-  crypto_sign_SECRETKEYBYTES,
-  crypto_sign_BYTES,
-  crypto_hash_BYTES,
-  crypto_hash_sha256_BYTES,
-  crypto_auth_BYTES,
-  crypto_auth_KEYBYTES,
-  crypto_onetimeauth_BYTES,
-  crypto_onetimeauth_KEYBYTES,
-  crypto_stream_KEYBYTES,
-  crypto_stream_NONCEBYTES,
-  crypto_scalarmult_BYTES
+  random_bytes
 }
 
 export default utils;

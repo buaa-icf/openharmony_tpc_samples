@@ -77,7 +77,7 @@ export interface NaclConstants {
 }
 
 // Nacl functions taken from js-nacl api spec
-export interface Nacl extends NaclConstants {
+export interface Nacl {
   // ==================== 字符串编码/解码 (6个) ====================
   to_hex: (arr: Uint8Array) => string;
   from_hex: (hex: string) => Uint8Array;
@@ -154,21 +154,6 @@ export interface Nacl extends NaclConstants {
 
   // ==================== 随机数生成 (1个) ====================
   random_bytes: (length: number) => Uint8Array;
-
-  // ==================== 流加密 (2个) ====================
-  crypto_stream: (len: number, nonce: Nonce, key: StreamKey) => Stream;
-  crypto_stream_xor: (msg: Message, nonce: Nonce, key: StreamKey) => Stream;
-
-  // ==================== 认证加密 (2个) ====================
-  crypto_auth: (msg: Message, key: Uint8Array) => Uint8Array;
-  crypto_auth_verify: (tag: Uint8Array, msg: Message, key: Uint8Array) => boolean;
-
-  // ==================== 一次性认证 (2个) ====================
-  crypto_onetimeauth: (msg: Message, key: Uint8Array) => Uint8Array;
-  crypto_onetimeauth_verify: (tag: Uint8Array, msg: Message, key: Uint8Array) => boolean;
-
-  // ==================== 标量乘法 (1个) ====================
-  // crypto_scalarmult_base: (scalar: Uint8Array) => Uint8Array;
 }
 
 

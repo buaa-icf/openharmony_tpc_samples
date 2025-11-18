@@ -85,7 +85,6 @@ struct Index {
     this.addTestResult('\n=== 1. 数据转换接口测试 ===');
 
     try {
-      console.log('yxc==== 开始执行数据转换测试');
       // 1.1 to_hex 测试 - 使用 "hello" 转换为 hex
       const originalText = "hello";
       const binaryData = this.nacl.encode_utf8(originalText);
@@ -135,7 +134,6 @@ struct Index {
       const outputFormatted5 = latin1String;
       this.addInterfaceTestResult('encode_latin1', inputFormatted4, outputFormatted4, latin1String === 'hello');
       this.addInterfaceTestResult('decode_latin1', inputFormatted5, outputFormatted5, latin1String === 'hello');
-      console.log('yxc==== 数据转换测试执行完成');
 
     } catch (error) {
       this.addTestResult(`❌ 数据转换测试异常: ${error.message}`);
@@ -148,7 +146,6 @@ struct Index {
     this.addTestResult('\n=== 2. 哈希函数测试 ===');
 
     try {
-      console.log('yxc==== 开始执行哈希函数测试');
       // 2.1 crypto_hash (SHA-512) 测试 - 使用 'hello'
       const testData = this.nacl.encode_utf8('hello');
       const hash = this.nacl.crypto_hash(testData);
@@ -164,7 +161,6 @@ struct Index {
       // 格式化输入输出为Vue文件格式
       const outputFormatted2 = `Uint8Array[${Array.from(hash256).join(', ')}]`;
       this.addInterfaceTestResult('crypto_hash_sha256', inputFormatted, outputFormatted2, hash256.length === 32);
-      console.log('yxc==== 哈希函数测试执行完成');
 
     } catch (error) {
       this.addTestResult(`❌ 哈希函数测试异常: ${error.message}`);
@@ -177,7 +173,6 @@ struct Index {
     this.addTestResult('\n=== 3. 随机数生成测试 ===');
 
     try {
-      console.log('yxc==== 开始执行随机数生成测试');
       // 3.1 random_bytes 测试
       const random = this.nacl.random_bytes(32);
       this.assert(random.length === 32, '3.1 random_bytes 测试通过');
@@ -185,7 +180,6 @@ struct Index {
       const inputFormatted = "32";
       const outputFormatted = `Uint8Array[${Array.from(random).join(', ')}]`;
       this.addInterfaceTestResult('random_bytes', inputFormatted, outputFormatted, random.length === 32);
-      console.log('yxc==== 随机数生成测试执行完成');
 
     } catch (error) {
       this.addTestResult(`❌ 随机数生成测试异常: ${error.message}`);
@@ -198,7 +192,6 @@ struct Index {
     this.addTestResult('\n=== 4. 数字签名测试 ===');
 
     try {
-      console.log('yxc==== 开始执行数字签名测试');
       // 4.1 crypto_sign_keypair 测试
       const kp = this.nacl.crypto_sign_keypair();
       this.assert(kp.signPk !== null && kp.signSk !== null, '4.1 crypto_sign_keypair 测试通过');
@@ -234,7 +227,6 @@ struct Index {
       const outputFormatted5 = `${valid}`;
       this.addInterfaceTestResult('crypto_sign_detached', inputFormatted4, outputFormatted4, true);
       this.addInterfaceTestResult('crypto_sign_verify_detached', inputFormatted5, outputFormatted5, valid === true);
-      console.log('yxc==== 数字签名测试执行完成');
 
     } catch (error) {
       this.addTestResult(`❌ 数字签名测试异常: ${error.message}`);
@@ -247,7 +239,6 @@ struct Index {
     this.addTestResult('\n=== 5. 非对称加密测试 ===');
 
     try {
-      console.log('yxc==== 开始执行非对称加密测试');
       // 5.1 crypto_box_keypair 测试
       const kp = this.nacl.crypto_box_keypair();
       this.assert(kp.boxPk !== null && kp.boxSk !== null, '5.1 crypto_box_keypair 测试通过');
@@ -320,7 +311,6 @@ struct Index {
       const inputFormatted9 = `Uint8Array[${Array.from(sk).join(', ')}]`;
       const outputFormatted9 = `{"pk":"present","sk":"present"}`;
       this.addInterfaceTestResult('crypto_box_keypair_from_raw_sk', inputFormatted9, outputFormatted9, kp3.boxPk !== null && kp3.boxSk !== null);
-      console.log('yxc==== 非对称加密测试执行完成');
 
     } catch (error) {
       this.addTestResult(`❌ 非对称加密测试异常: ${error.message}`);
@@ -333,24 +323,15 @@ struct Index {
     this.addTestResult('\n=== 6. 对称加密测试 ===');
 
     try {
-      console.log('yxc==== 开始执行对称加密测试');
       // 6.1 crypto_secretbox 和 crypto_secretbox_open 测试 - 使用 'hello' 和 'thekey'
-      console.log('yxc==== 开始执行 6.1 测试用例');
       const nonce = new Uint8Array(24); // 使用零nonce模拟测试
-      console.log('yxc==== nonce 创建完成, length:', nonce.length);
       const secretboxkey = this.nacl.crypto_hash(this.nacl.encode_utf8("thekey")).subarray(0, 32);
-      console.log('yxc==== secretboxkey 生成完成, length:', secretboxkey.length);
       const plaintext = "hello";
       const message = this.nacl.encode_utf8(plaintext);
-      console.log('yxc==== 明文:', plaintext);
       const c = this.nacl.crypto_secretbox(message, nonce, secretboxkey);
-      console.log('yxc==== 加密完成, c length:', c.length);
       const m = this.nacl.crypto_secretbox_open(c, nonce, secretboxkey);
-      console.log('yxc==== 解密完成, m length:', m.length);
       const decryptedText = this.nacl.decode_utf8(m);
-      console.log('yxc==== 解码完成, decryptedText:', decryptedText);
       this.assert(decryptedText === plaintext, '6.1 crypto_secretbox 和 crypto_secretbox_open 测试通过');
-      console.log('yxc==== 6.1 测试用例执行完成');
 
       // 格式化输入输出为Vue文件格式
       const inputFormatted = `{"message":"hello","nonce":"secretNonce","key":"key"}`;
@@ -359,138 +340,9 @@ struct Index {
       const outputFormatted2 = m ? `Uint8Array[${Array.from(m).join(', ')}]` : 'null';
       this.addInterfaceTestResult('crypto_secretbox', inputFormatted, outputFormatted, true);
       this.addInterfaceTestResult('crypto_secretbox_open', inputFormatted2, outputFormatted2, decryptedText === plaintext);
-      console.log('yxc==== 对称加密测试执行完成');
 
     } catch (error) {
       this.addTestResult(`❌ 对称加密测试异常: ${error.message}`);
-    }
-  }
-
-  // 7. 流加密测试 - 使用 'hello'
-  async testStream() {
-    if (!this.nacl) return;
-    this.addTestResult('\n=== 7. 流加密测试 ===');
-
-    try {
-      console.log('yxc==== 开始执行流加密测试');
-      // 7.1 crypto_stream 测试
-      console.log('yxc==== 开始执行 7.1 crypto_stream 测试');
-      const key = this.nacl.random_bytes(32);
-      console.log('yxc==== key 生成完成, length:', key.length);
-      const nonce = this.nacl.random_bytes(24); // 使用crypto_stream_random_nonce生成nonce
-      console.log('yxc==== nonce 生成完成, length:', nonce.length);
-      const streamLength = 64;
-      console.log('yxc==== 准备生成长度为', streamLength, '的流');
-      const stream = this.nacl.crypto_stream(streamLength, nonce, key);
-      console.log('yxc==== 流生成完成, stream length:', stream.length);
-      console.log('yxc==== 流的前16字节:', Array.from(stream.slice(0, 16)).map(b => b.toString(16).padStart(2, '0')).join(''));
-      this.assert(stream.length === streamLength, '7.1 crypto_stream 测试通过');
-      console.log('yxc==== 7.1 crypto_stream 测试通过');
-      // 格式化输入输出为Vue文件格式
-      const inputFormatted = `{"length":${streamLength},"nonce":"nonce","key":"key"}`;
-      const outputFormatted = `Uint8Array[${Array.from(stream).join(', ')}]`;
-      this.addInterfaceTestResult('crypto_stream', inputFormatted, outputFormatted, stream.length === streamLength);
-
-      // 7.2 crypto_stream_xor 测试 - 使用 'hello'
-      console.log('yxc==== 开始执行 7.2 crypto_stream_xor 测试');
-      const plaintext = "hello";
-      const message = this.nacl.encode_utf8(plaintext);
-      console.log('yxc==== message 编码完成, length:', message.length);
-      console.log('yxc==== message 内容:', Array.from(message).map(b => b.toString(16).padStart(2, '0')).join(''));
-      const encrypted = this.nacl.crypto_stream_xor(message, nonce, key);
-      console.log('yxc==== 加密完成, encrypted length:', encrypted.length);
-      const decrypted = this.nacl.crypto_stream_xor(encrypted, nonce, key);
-      console.log('yxc==== 解密完成, decrypted length:', decrypted.length);
-      const decryptedText = this.nacl.decode_utf8(decrypted);
-      console.log('yxc==== 解码完成, decryptedText:', decryptedText);
-      this.assert(decryptedText === "hello", '7.2 crypto_stream_xor 测试通过');
-      console.log('yxc==== 7.2 crypto_stream_xor 测试通过');
-      // 格式化输入输出为Vue文件格式
-      const inputFormatted2 = `{"message":"hello","nonce":"nonce","key":"key"}`;
-      const outputFormatted2 = `Uint8Array[${Array.from(encrypted).join(', ')}]`;
-      this.addInterfaceTestResult('crypto_stream_xor', inputFormatted2, outputFormatted2, true);
-      console.log('yxc==== 流加密测试执行完成');
-
-    } catch (error) {
-      this.addTestResult(`❌ 流加密测试异常: ${error.message}`);
-    }
-  }
-
-  // 8. 认证加密测试 - 使用 'hello'
-  async testAuth() {
-    if (!this.nacl) return;
-    this.addTestResult('\n=== 8. 认证加密测试 ===');
-
-    try {
-      console.log('yxc==== 开始执行认证加密测试');
-      // 8.1 crypto_auth 测试
-      console.log('yxc==== 开始执行 8.1 crypto_auth 测试');
-      const key = this.nacl.random_bytes(32);
-      console.log('yxc==== auth key 生成完成, length:', key.length);
-      const plaintext = "hello";
-      const message = this.nacl.encode_utf8(plaintext);
-      console.log('yxc==== auth message 编码完成, length:', message.length);
-      console.log('yxc==== auth message 内容:', Array.from(message).map(b => b.toString(16).padStart(2, '0')).join(''));
-      const tag = this.nacl.crypto_auth(message, key);
-      console.log('yxc==== auth tag 生成完成, tag length:', tag.length);
-      console.log('yxc==== auth tag 内容:', Array.from(tag).map(b => b.toString(16).padStart(2, '0')).join(''));
-      this.assert(tag.length === 32, '8.1 crypto_auth 测试通过');
-      console.log('yxc==== 8.1 crypto_auth 测试通过');
-      // 格式化输入输出为Vue文件格式
-      const inputFormatted = `{"message":"hello","key":"key"}`;
-      const outputFormatted = `Uint8Array[${Array.from(tag).join(', ')}]`;
-      this.addInterfaceTestResult('crypto_auth', inputFormatted, outputFormatted, tag.length === 32);
-
-      // 8.2 crypto_auth_verify 测试
-      console.log('yxc==== 开始执行 8.2 crypto_auth_verify 测试');
-      const isValid = this.nacl.crypto_auth_verify(tag, message, key);
-      console.log('yxc==== auth verify 结果:', isValid);
-      this.assert(isValid === true, '8.2 crypto_auth_verify 测试通过');
-      console.log('yxc==== 8.2 crypto_auth_verify 测试通过');
-      // 格式化输入输出为Vue文件格式
-      const inputFormatted2 = `{"tag":"authTag","message":"hello","key":"key"}`;
-      const outputFormatted2 = `${isValid}`;
-      this.addInterfaceTestResult('crypto_auth_verify', inputFormatted2, outputFormatted2, isValid === true);
-      console.log('yxc==== 认证加密测试执行完成');
-
-    } catch (error) {
-      this.addTestResult(`❌ 认证加密测试异常: ${error.message}`);
-      console.log('yxc==== 认证加密测试异常:', error);
-    }
-  }
-
-  // 9. 一次性认证测试 - 使用 'hello'
-  async testOnetimeAuth() {
-    if (!this.nacl) return;
-    this.addTestResult('\n=== 9. 一次性认证测试 ===');
-
-    try {
-      console.log('yxc==== 开始执行一次性认证测试');
-      // 9.1 crypto_onetimeauth 测试
-      const key = this.nacl.random_bytes(32);
-      const plaintext = "hello";
-      const message = this.nacl.encode_utf8(plaintext);
-      const tag = this.nacl.crypto_onetimeauth(message, key);
-      this.assert(tag.length === 16, '9.1 crypto_onetimeauth 测试通过');
-      // 格式化输入输出为Vue文件格式
-      const inputFormatted = `{"message":"hello","key":"key"}`;
-      const outputFormatted = `Uint8Array[${Array.from(tag).join(', ')}]`;
-      this.addInterfaceTestResult('crypto_onetimeauth', inputFormatted, outputFormatted, tag.length === 16);
-
-      // 9.2 crypto_onetimeauth_verify 测试
-      const isValid = this.nacl.crypto_onetimeauth_verify(tag, message, key);
-      this.assert(isValid === true, '9.2 crypto_onetimeauth_verify 测试通过');
-      // 格式化输入输出为Vue文件格式
-      const inputFormatted2 = `{"tag":"authTag","message":"hello","key":"key"}`;
-      const outputFormatted2 = `${isValid}`;
-      this.addInterfaceTestResult('crypto_onetimeauth_verify', inputFormatted2, outputFormatted2, isValid === true);
-      console.log('yxc==== 一次性认证测试执行完成');
-
-    } catch (error) {
-      this.addTestResult(`❌ 一次性认证测试异常: ${error.message}`);
-      // 即使出错也添加接口测试结果，便于调试
-      this.addInterfaceTestResult('crypto_onetimeauth', `{"message":"hello","key":"key"}`, `ERROR: ${error.message}`, false);
-      this.addInterfaceTestResult('crypto_onetimeauth_verify', `{"tag":"authTag","message":"hello","key":"key"}`, `ERROR: ${error.message}`, false);
     }
   }
 
@@ -511,9 +363,6 @@ struct Index {
       await this.testSignature();
       await this.testBox();
       await this.testSecretBox();
-      await this.testStream();
-      await this.testAuth();
-      await this.testOnetimeAuth();
 
       promptAction.showToast({
         message: '接口测试完成!',
@@ -547,9 +396,6 @@ struct Index {
       await this.testSignature();
       await this.testBox();
       await this.testSecretBox();
-      await this.testStream();
-      await this.testAuth();
-      await this.testOnetimeAuth();
 
       this.addTestResult(`\n========== 测试完成 ==========`);
       this.addTestResult(`✅ 通过: ${this.passCount} 个`);
