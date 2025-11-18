@@ -30,6 +30,7 @@ static napi_value Init(napi_env env, napi_value exports)
     napi_property_descriptor properties[] = {
         // Config
         DECLARE_NAPI_FUNCTION("configNew", YogaConfigNapi::NapiYGConfigNew),
+        DECLARE_NAPI_FUNCTION("configFree", YogaConfigNapi::NapiYGConfigFree),
         DECLARE_NAPI_FUNCTION("configSetUseWebDefaults", YogaConfigNapi::NapiYGConfigSetUseWebDefaults),
         DECLARE_NAPI_FUNCTION("configSetPointScaleFactor", YogaConfigNapi::NapiYGConfigSetPointScaleFactor),
         DECLARE_NAPI_FUNCTION("configSetErrata", YogaConfigNapi::NapiYGConfigSetErrata),
@@ -39,6 +40,7 @@ static napi_value Init(napi_env env, napi_value exports)
 
         // Node
         DECLARE_NAPI_FUNCTION("nodeNew", YogaNodeNapi::NapiYGNodeNew),
+        DECLARE_NAPI_FUNCTION("nodeFree", YogaNodeNapi::NapiYGNodeFree),
         DECLARE_NAPI_FUNCTION("nodeNewWithConfig", YogaNodeNapi::NapiYGNodeNewWithConfig),
         DECLARE_NAPI_FUNCTION("nodeClone", YogaNodeNapi::NapiYGNodeClone),
         DECLARE_NAPI_FUNCTION("nodeReset", YogaNodeNapi::NapiYGNodeReset),

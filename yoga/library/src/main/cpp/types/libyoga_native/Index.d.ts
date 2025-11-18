@@ -17,6 +17,7 @@
 
 // config
 export const configNew: () => Object;
+export const configFree: (node: Object) => void;
 export const configSetUseWebDefaults: (config: Object, enabled: boolean) => void;
 export const configSetPointScaleFactor: (config: Object, pixelsInPoint: number) => void;
 export const configSetErrata: (config: Object, errata: YogaErrata) => void;
@@ -25,6 +26,7 @@ export const configSetExperimentalFeatureEnabled: (config: Object, feature: Yoga
 
 // node
 export const nodeNew: () => Object;
+export const nodeFree: (node: Object) => void;
 export const nodeNewWithConfig: (config: Object) => Object;
 export const nodeClone: (node: Object) => Object;
 export const nodeReset: (node: Object) => void;

@@ -43,7 +43,7 @@ interface NativeYogaNode {
 export class YogaNode {
   private nativeNode: Object | null;
   private childNode: YogaNode[] = [];
-  private owner: YogaNode | null = null;
+  private owner: WeakRef<YogaNode> | null = null;
   private layoutData: LayoutData = LayoutData.defaultInit();
 
   constructor(config?: YogaConfig) {
@@ -51,6 +51,17 @@ export class YogaNode {
       this.nativeNode = yoga.nodeNewWithConfig(config.getNativeConfig());
     } else {
       this.nativeNode = yoga.nodeNew();
+    }
+  }
+
+  /**
+   * 释放node节点
+   */
+  free(): void {
+    if (this.nativeNode) {
+      this.clearChildren();
+      yoga.nodeFree(this.nativeNode);
+      this.nativeNode = null;
     }
   }
 
@@ -76,7 +87,7 @@ export class YogaNode {
     for (let i = 0; i < this.childNode.length; i++) {
       const clonedChild = this.childNode[i].cloneWithChildren();
       clonedNode.childNode.push(clonedChild);
-      clonedChild.owner = clonedNode;
+      clonedChild.owner = new WeakRef(clonedNode);
     }
 
     for (let i = 0; i < clonedNode.childNode.length; i++) {
@@ -185,12 +196,13 @@ export class YogaNode {
    */
   insertChild(child: YogaNode, index: number): void {
     if (this.nativeNode && child.nativeNode) {
-      if (child.getOwner() !== null) {
+      const owner = child.getOwner();
+      if (owner !== null) {
         throw new Error('Child already has a parent, it must be removed first.');
       }
 
       this.childNode.splice(index, 0, child);
-      child.owner = this;
+      child.owner = new WeakRef(this);
       yoga.nodeInsertChild(this.nativeNode, child.nativeNode, index);
     }
   }
@@ -202,7 +214,8 @@ export class YogaNode {
    */
   swapChild(newChild: YogaNode, position: number): void {
     if (this.nativeNode && newChild.nativeNode) {
-      if (newChild.getOwner() !== null) {
+      const owner = newChild.getOwner();
+      if (owner !== null) {
         throw new Error('New child already has a parent, it must be removed first.');
       }
 
@@ -210,8 +223,10 @@ export class YogaNode {
 
       const oldChild = this.childNode[position];
       this.childNode[position] = newChild;
-      oldChild.owner = null;
-      newChild.owner = this;
+      if (oldChild) {
+        oldChild.owner = null;
+      }
+      newChild.owner = new WeakRef(this);
     }
   }
 
@@ -280,7 +295,10 @@ export class YogaNode {
    * @returns 父节点或null
    */
   getOwner(): YogaNode | null {
-    return this.owner;
+    if (this.owner) {
+      return this.owner.deref() || null;
+    }
+    return null;
   }
 
   /**

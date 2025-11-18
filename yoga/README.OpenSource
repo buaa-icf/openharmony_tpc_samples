@@ -1,10 +1,11 @@
 [
     {
-        "Name": "ohos_yoga",
-        "License": "Apache-2.0",
+        "Name": "yoga",
+        "License": "MIT license",
         "License File": "LICENSE",
         "Version Number": "v3.2.1",
+        "Owner" : "xiafeng@huawei.com",
         "Upstream URL": "https://github.com/facebook/yoga.git",
-        "Description": "Flexbox layout engine; OpenHarmony port adds ArkTS bindings via NAPI."
+        "Description": "Yoga is an embeddable and performant flexbox layout engine with bindings for multiple languages."
     }
 ]

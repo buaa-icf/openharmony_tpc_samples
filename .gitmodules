@@ -66,4 +66,5 @@
 
 [submodule "yoga/library/src/main/cpp/thirdparty/yoga"]
 	path = yoga/library/src/main/cpp/thirdparty/yoga
-	url = https://gitcode.com/maerzhahuan/yoga
+	url = https://gitee.com/lycium_pkg_mirror/yoga
+	branch = v3.2.1

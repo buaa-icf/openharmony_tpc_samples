@@ -35,5 +35,6 @@ export {
   YogaMeasureMode,
   YogaErrata,
   YogaExperimentalFeature,
-  YogaBaselineFunction
+  YogaBaselineFunction,
+  YogaMeasureFunction
 } from './src/main/ets/yoga'

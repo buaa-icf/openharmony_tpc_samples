@@ -25,6 +25,7 @@ class YogaNodeNapi {
 public:
     // Node
     static napi_value NapiYGNodeNew(napi_env env, napi_callback_info info);
+    static napi_value NapiYGNodeFree(napi_env env, napi_callback_info info);
     static napi_value NapiYGNodeNewWithConfig(napi_env env, napi_callback_info info);
     static napi_value NapiYGNodeClone(napi_env env, napi_callback_info info);
     static napi_value NapiYGNodeReset(napi_env env, napi_callback_info info);

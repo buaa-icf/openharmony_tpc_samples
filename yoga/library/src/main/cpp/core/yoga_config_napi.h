@@ -25,6 +25,7 @@ class YogaConfigNapi {
 public:
     // Config
     static napi_value NapiYGConfigNew(napi_env env, napi_callback_info info);
+    static napi_value NapiYGConfigFree(napi_env env, napi_callback_info info);
     static napi_value NapiYGConfigSetUseWebDefaults(napi_env env, napi_callback_info info);
     static napi_value NapiYGConfigSetPointScaleFactor(napi_env env, napi_callback_info info);
     static napi_value NapiYGConfigSetErrata(napi_env env, napi_callback_info info);

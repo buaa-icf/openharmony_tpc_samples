@@ -28,6 +28,16 @@ export class YogaConfig {
   }
 
   /**
+   * 释放config节点
+   */
+  free(): void {
+    if (this.nativeConfig) {
+      yoga.configFree(this.nativeConfig);
+      this.nativeConfig = null;
+    }
+  }
+
+  /**
    * 设置是否使用Web默认值
    * @param enabled 是否启用Web默认值
    */

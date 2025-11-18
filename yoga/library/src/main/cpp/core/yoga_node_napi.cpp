@@ -44,6 +44,27 @@ napi_value YogaNodeNapi::NapiYGNodeNew(napi_env env, napi_callback_info info)
     return nodeObject;
 }
 
+// YGNodeFreeRecursive
+napi_value YogaNodeNapi::NapiYGNodeFree(napi_env env, napi_callback_info info)
+{
+    GET_PARAMS_WITH_CHECK(env, info, ARG_COUNT_ONE);
+
+    YGNodeRef node = extractNodeRef(env, args[ARG_INDEX_ZERO]);
+    if (node == nullptr) {
+        napi_throw_error(env, nullptr, "Invalid node");
+        return nullptr;
+    }
+
+    YogaNodeMap* nodeMap = GetYogaNodeMap(env);
+    if (nodeMap) {
+        nodeMap->removeNodeMapping(node);
+    }
+    JSFunctionAdapter::RemoveJSFunction(env, node);
+    YGNodeFreeRecursive(node);
+
+    return nullptr;
+}
+
 // YGNodeNewWithConfig
 napi_value YogaNodeNapi::NapiYGNodeNewWithConfig(napi_env env, napi_callback_info info)
 {

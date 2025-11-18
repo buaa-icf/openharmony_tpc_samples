@@ -41,6 +41,22 @@ napi_value YogaConfigNapi::NapiYGConfigNew(napi_env env, napi_callback_info info
     return configObject;
 }
 
+// YGConfigFree
+napi_value YogaConfigNapi::NapiYGConfigFree(napi_env env, napi_callback_info info)
+{
+    GET_PARAMS_WITH_CHECK(env, info, ARG_COUNT_ONE);
+
+    YGConfigRef config = extractConfigRef(env, args[ARG_INDEX_ZERO]);
+    if (config == nullptr) {
+        napi_throw_error(env, nullptr, "Invalid config");
+        return nullptr;
+    }
+
+    YGConfigFree(config);
+
+    return nullptr;
+}
+
 // YGConfigSetUseWebDefaults
 napi_value YogaConfigNapi::NapiYGConfigSetUseWebDefaults(napi_env env, napi_callback_info info)
 {

@@ -55,34 +55,14 @@ YGNodeRef YogaNapi::extractNodeRef(napi_env env, napi_value nodeValue)
 void YogaNapi::setConfigRef(napi_env env, napi_value configValue, YGConfigRef config)
 {
     napi_value external;
-    napi_create_external(
-        env, config,
-        [](napi_env env, void *data, void *finalize_hint) {
-            YGConfigRef configRef = static_cast<YGConfigRef>(data);
-            if (configRef) {
-                YGConfigFree(configRef);
-                OH_LOG_Print(LOG_APP, LOG_INFO, 0, YOGA_LOG_TAG, "configRef has been freed: %{public}p", configRef);
-            }
-        },
-        nullptr, &external);
+    napi_create_external(env, config, nullptr, nullptr, &external);
     napi_set_named_property(env, configValue, YG_CONFIG_REF, external);
 }
 
 void YogaNapi::setNodeRef(napi_env env, napi_value nodeValue, YGNodeRef node)
 {
     napi_value external;
-    napi_create_external(
-        env, node,
-        [](napi_env env, void *data, void *finalize_hint) {
-            YGNodeRef nodeRef = static_cast<YGNodeRef>(data);
-            if (nodeRef) {
-                JSFunctionAdapter::RemoveJSFunction(env, nodeRef);
-                GetYogaNodeMap(env)->removeNodeMapping(nodeRef);
-                YGNodeFinalize(nodeRef);
-                OH_LOG_Print(LOG_APP, LOG_INFO, 0, YOGA_LOG_TAG, "nodeRef has been freed: %{public}p", nodeRef);
-            }
-        },
-        nullptr, &external);
+    napi_create_external(env, node, nullptr, nullptr, &external);
     napi_set_named_property(env, nodeValue, YG_NODE_REF, external);
 
     GetYogaNodeMap(env)->addNodeMapping(node, nodeValue);

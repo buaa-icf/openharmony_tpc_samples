@@ -44,7 +44,7 @@ void YogaNodeMap::addNodeMapping(YGNodeRef node, napi_value jsObject)
 
     // Create new reference
     napi_ref ref = nullptr;
-    napi_status status = napi_create_reference(env, jsObject, 1, &ref);
+    napi_status status = napi_create_reference(env, jsObject, 0, &ref);
     if (status == napi_ok && ref != nullptr) {
         nodeToJsRefMap[node] = ref;
     } else {

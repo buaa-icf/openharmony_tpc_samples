@@ -137,7 +137,7 @@ void JSFunctionAdapter::StoreJSFunction(napi_env env, YGNodeRef node, napi_value
     // Store new reference
     if (func != nullptr) {
         napi_ref ref;
-        if (napi_create_reference(env, func, 1, &ref) == napi_ok && ref != nullptr) {
+        if (napi_create_reference(env, func, 0, &ref) == napi_ok && ref != nullptr) {
             funcMap[node] = ref;
         }
     }
