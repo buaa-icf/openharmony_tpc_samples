@@ -10,5 +10,3 @@
 /.clang-tidy
 **/.test
 /.appanalyzer
-/local.properties
-/.oh-package-lock.json

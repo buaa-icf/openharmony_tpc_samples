@@ -1,6 +1,6 @@
 {
   "app": {
-    "bundleName": "com.example.myapplication",
+    "bundleName": "cn.openharmony.nacl",
     "vendor": "example",
     "versionCode": 1000000,
     "versionName": "1.0.0",

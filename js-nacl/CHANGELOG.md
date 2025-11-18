@@ -1,2 +1,2 @@
 ### 1.0.0
-1. It provides a nacl_factory with a single function, instantiate, which returns a nacl instance containing the API functions to perform various encryption and decryption algorithms.
+1. 根据js-nacl库做鸿蒙化适配，支持数据加盐处理和解密功能。
