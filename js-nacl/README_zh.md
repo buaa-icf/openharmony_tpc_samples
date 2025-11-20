@@ -6,8 +6,6 @@
 
 ohos/js-nacl库基于js-nacl开发，针对OpenHarmony系统进行了适配，提供了以下功能：
 - 哈希计算（SHA-512、SHA-256）
-- 公钥加密认证（crypto_box）
-- 私钥加密认证（crypto_secretbox）
 - 数字签名（crypto_sign）
 
 
@@ -65,59 +63,39 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
 
 ## 接口说明
 ### 初始化NaCl加密库
- * instantiate - 异步加载和初始化NaCl加密库
+* instantiate - 异步加载和初始化NaCl加密库
 
 ### 字符串与二进制数据转换
- * to_hex - 将二进制数据转换为小写十六进制字符串
- * from_hex - 将十六进制字符串转换为二进制数据
- * encode_utf8 - 使用UTF-8编码将字符串转换为二进制数据
- * encode_latin1 - 使用Latin1编码将字符串转换为二进制数据
- * decode_utf8 - 使用UTF-8解码将二进制数据转换为字符串
- * decode_latin1 - 使用Latin1解码将二进制数据转换为字符串
+* to_hex - 将二进制数据转换为小写十六进制字符串
+* from_hex - 将十六进制字符串转换为二进制数据
+* encode_utf8 - 使用UTF-8编码将字符串转换为二进制数据
+* encode_latin1 - 使用Latin1编码将字符串转换为二进制数据
+* decode_utf8 - 使用UTF-8解码将二进制数据转换为字符串
+* decode_latin1 - 使用Latin1解码将二进制数据转换为字符串
 
 ### 哈希函数
- * crypto_hash - 计算SHA-512哈希值
- * crypto_hash_sha256 - 计算SHA-256哈希值
+* crypto_hash - 计算SHA-512哈希值
+* crypto_hash_sha256 - 计算SHA-256哈希值
 
 ### 公钥加密认证 (crypto_box)
- * crypto_box_keypair - 生成随机密钥对
- * crypto_box_random_nonce - 生成随机nonce
- * crypto_box - 使用公钥加密消息
- * crypto_box_open - 解密公钥加密的消息
- * crypto_box_precompute - 预计算共享密钥
- * crypto_box_precomputed - 使用预计算密钥加密消息
- * crypto_box_open_precomputed - 使用预计算密钥解密消息
- * crypto_box_seed_keypair - 从种子生成确定性密钥对
- * crypto_box_keypair_from_raw_sk - 从原始私钥生成密钥对
+* crypto_box_keypair - 生成随机密钥对
+* crypto_box_random_nonce - 生成随机nonce
+* crypto_box_seed_keypair - 从种子生成确定性密钥对
+* crypto_box_keypair_from_raw_sk - 从原始私钥生成密钥对
 
 ### 私钥加密认证 (crypto_secretbox)
- * crypto_secretbox_random_nonce - 生成随机nonce
- * crypto_secretbox - 使用私钥加密消息
- * crypto_secretbox_open - 解密私钥加密的消息
+* crypto_secretbox_random_nonce - 生成随机nonce
 
 ### 数字签名 (crypto_sign)
- * crypto_sign_keypair - 生成签名密钥对
- * crypto_sign - 对消息进行签名
- * crypto_sign_open - 验证签名并提取消息
- * crypto_sign_detached - 生成分离式签名
- * crypto_sign_verify_detached - 验证分离式签名
- * crypto_sign_seed_keypair - 从种子生成确定性签名密钥对
+* crypto_sign_keypair - 生成签名密钥对
+* crypto_sign - 对消息进行签名
+* crypto_sign_open - 验证签名并提取消息
+* crypto_sign_detached - 生成分离式签名
+* crypto_sign_verify_detached - 验证分离式签名
+* crypto_sign_seed_keypair - 从种子生成确定性签名密钥对
 
 ### 其他工具函数
- * random_bytes - 生成随机字节
-
-## 约束与限制
-
-在下述版本验证通过：
-
-
-
-- DevEco Studio 版本： 5.1  (5.1.1.830)
-
-
-- OpenHarmony SDK:API12 (5.0.0.12)
-
-
+* random_bytes - 生成随机字节
 
 ## 目录结构
 

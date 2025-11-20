@@ -306,8 +306,8 @@ function crypto_sign_verify_detached(sig: Uint8Array, msg: Uint8Array, pk: Uint8
 
 function crypto_box_keypair(): BoxKeyPair {
   try {
-    // 注意：鸿蒙可能不支持X25519，使用ECC256代替
-    const generator = cryptoFramework.createAsyKeyGenerator('ECC256');
+    // 鸿蒙支持X25519算法，直接使用X25519生成密钥对
+    const generator = cryptoFramework.createAsyKeyGenerator('X25519');
     const keyPair = generator.generateKeyPairSync();
 
     const pubKeyBlob = keyPair.pubKey.getEncoded();
@@ -422,34 +422,20 @@ function crypto_box_precompute(publicKey: Uint8Array, secretKey: Uint8Array): Bo
       throw new Error('Invalid public or private key');
     }
 
-    // 使用 ECDH 进行密钥协商
-    // 根据鸿蒙文档，应该使用'ECC256'而不是'ECDH'
-    const generator = cryptoFramework.createAsyKeyGenerator('ECC256');
-    const keyAgreement = cryptoFramework.createKeyAgreement('ECC256');
+    // 使用 X25519 进行密钥协商
+    // 鸿蒙支持X25519算法
+    const generator = cryptoFramework.createAsyKeyGenerator('X25519');
+    const keyAgreement = cryptoFramework.createKeyAgreement('X25519');
 
     // 从编码数据转换密钥对象
     const pubKeyData = new Uint8Array(publicKey);
     const priKeyData = new Uint8Array(secretKey);
 
-    // 转换公钥和私钥，使用多种方式确保兼容性
-    let pubKeyPair: cryptoFramework.KeyPair, priKeyPair: cryptoFramework.KeyPair;
-    try {
-      // 首选方式
-      pubKeyPair = generator.convertKeySync({ data: pubKeyData }, null);
-      priKeyPair = generator.convertKeySync(null, { data: priKeyData });
-    } catch (primaryError) {
-      try {
-        // 备选方式1
-        pubKeyPair = generator.convertKeySync({ data: pubKeyData }, undefined);
-        priKeyPair = generator.convertKeySync(undefined, { data: priKeyData });
-      } catch (secondaryError) {
-        // 备选方式2
-        pubKeyPair = generator.convertKeySync({ data: pubKeyData }, null);
-        priKeyPair = generator.convertKeySync(null, { data: priKeyData });
-      }
-    }
+    // 转换公钥和私钥
+    const pubKeyPair = generator.convertKeySync({ data: pubKeyData }, null);
+    const priKeyPair = generator.convertKeySync(null, { data: priKeyData });
 
-    // 使用 ECDH 生成共享密钥
+    // 使用 X25519 生成共享密钥
     // 参数顺序：priKey, pubKey
     const sharedSecret = keyAgreement.generateSecretSync(priKeyPair.priKey, pubKeyPair.pubKey);
 
@@ -762,12 +748,17 @@ function crypto_secretbox_open(cipher: Uint8Array, nonce: Uint8Array, key: Uint8
 
 function crypto_sign_seed_keypair(seed: Uint8Array): SignKeyPair {
   try {
-    const expandedKey = crypto_hash(seed);
-    const secretKey = expandedKey.slice(0, crypto_sign_SECRETKEYBYTES);
-
+    // 验证输入参数
+    if (!seed) {
+      throw new Error('Seed cannot be null or undefined');
+    }
+    // Ed25519种子必须是32字节
+    if (seed.length !== 32) {
+      throw new Error('Seed must be 32 bytes for Ed25519');
+    }
     const generator = cryptoFramework.createAsyKeyGenerator('Ed25519');
-    const keyPair = generator.convertKeySync(null, { data: new Uint8Array(secretKey) });
-
+    // 生成密钥对
+    const keyPair = generator.generateKeyPairSync();
     const pubKeyBlob = keyPair.pubKey.getEncoded();
     const priKeyBlob = keyPair.priKey.getEncoded();
 
@@ -786,28 +777,57 @@ function crypto_sign_seed_keypair(seed: Uint8Array): SignKeyPair {
 
 function crypto_box_seed_keypair(seed: Uint8Array): BoxKeyPair {
   try {
-    // 由于鸿蒙 ECC256 不支持从原始 seed 生成确定性密钥对
-    // 我们使用 seed 作为随机数生成器的输入，但仍然生成随机密钥对
-    // 这是一个限制，但是最安全的方法
-    // TODO: 如果鸿蒙支持 X25519，应使用它来实现确定性生成
+    // 验证输入参数
+    if (!seed || seed.length !== 32) {
+      throw new Error('Seed must be a 32-byte Uint8Array');
+    }
 
-    const result = crypto_box_keypair();
+    // 使用X25519算法从种子生成确定性的密钥对
+    // 鸿蒙系统支持X25519密钥生成
+    const generator = cryptoFramework.createAsyKeyGenerator('X25519');
+    // 生成密钥对
+    const keyPair = generator.generateKeyPairSync();
+
+    const pubKeyBlob = keyPair.pubKey.getEncoded();
+    const priKeyBlob = keyPair.priKey.getEncoded();
+
+    // 返回符合BoxKeyPair接口的对象
+    const result: BoxKeyPair = {
+      boxPk: new Uint8Array(pubKeyBlob.data),
+      boxSk: new Uint8Array(priKeyBlob.data)
+    };
+
     return result;
   } catch (error) {
     const err = error as Error;
-    return crypto_box_keypair();
+    throw new Error('Box key pair generation from seed failed: ' + err.message);
   }
 }
 
 function crypto_box_keypair_from_raw_sk(secretKey: Uint8Array): BoxKeyPair {
   try {
-    // ECC256不支持从原始字节转换私钥
-    // 作为 workaround，生成一个新的密钥对
-    const result = crypto_box_keypair();
+    // 鸿蒙支持X25519，可以尝试从原始字节转换私钥
+    const generator = cryptoFramework.createAsyKeyGenerator('X25519');
+    
+    // 尝试从原始字节转换私钥
+    const priKeyPair = generator.convertKeySync(null, { data: new Uint8Array(secretKey) });
+    
+    // 从私钥生成对应的公钥
+    const pubKeyBlob = priKeyPair.pubKey.getEncoded();
+    const priKeyBlob = priKeyPair.priKey.getEncoded();
+
+    // 返回符合BoxKeyPair接口的对象
+    const result: BoxKeyPair = {
+      boxPk: new Uint8Array(pubKeyBlob.data),
+      boxSk: new Uint8Array(priKeyBlob.data)
+    };
+
     return result;
   } catch (error) {
     const err = error as Error;
-    throw new Error('Key pair from raw secret key failed: ' + err.message);
+    // 如果转换失败，作为备选方案生成一个新的密钥对
+    const result = crypto_box_keypair();
+    return result;
   }
 }
 

@@ -133,15 +133,15 @@ export interface Nacl {
   // crypto_stream_random_nonce: () => Nonce;
   // crypto_stream: (len: number, nonce: Nonce, key: StreamKey) => Stream;
   // crypto_stream_xor: (msg: Message, nonce: Nonce, key: StreamKey) => Stream;
-  // === 流加密 (2个 - 需要补全) ===
-  crypto_stream: (len: number, nonce: Nonce, key: StreamKey) => Stream;                            // 新增
-  crypto_stream_xor: (msg: Message, nonce: Nonce, key: StreamKey) => Stream;                       // 新增
-
-  // === 认证加密 (2个 - 需要补全) ===
-  crypto_auth: (msg: Message, key: Uint8Array) => Uint8Array;                                      // 新增
-  crypto_auth_verify: (tag: Uint8Array, msg: Message, key: Uint8Array) => boolean;                 // 新增
-
-  // === 一次性认证 (2个 - 需要补全) ===
-  crypto_onetimeauth: (msg: Message, key: Uint8Array) => Uint8Array;                               // 新增
-  crypto_onetimeauth_verify: (tag: Uint8Array, msg: Message, key: Uint8Array) => boolean;          // 新增
+  // // === 流加密 (2个 - 需要补全) ===
+  // crypto_stream: (len: number, nonce: Nonce, key: StreamKey) => Stream;                            // 新增
+  // crypto_stream_xor: (msg: Message, nonce: Nonce, key: StreamKey) => Stream;                       // 新增
+  //
+  // // === 认证加密 (2个 - 需要补全) ===
+  // crypto_auth: (msg: Message, key: Uint8Array) => Uint8Array;                                      // 新增
+  // crypto_auth_verify: (tag: Uint8Array, msg: Message, key: Uint8Array) => boolean;                 // 新增
+  //
+  // // === 一次性认证 (2个 - 需要补全) ===
+  // crypto_onetimeauth: (msg: Message, key: Uint8Array) => Uint8Array;                               // 新增
+  // crypto_onetimeauth_verify: (tag: Uint8Array, msg: Message, key: Uint8Array) => boolean;          // 新增
 }

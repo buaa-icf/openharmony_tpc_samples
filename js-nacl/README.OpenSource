@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "js-nacl",
+        "License": "MIT License",
+        "License File": "LICENSE",
+        "Version Number": "1.4.0",
+        "Owner" : "xiafeng@huawei.com",
+        "Upstream URL": "https://github.com/tonyg/js-nacl",
+        "Description": "JavaScript implementation of NaCl (Networking and Cryptography Library) cryptographic functions."
+    }
+]
