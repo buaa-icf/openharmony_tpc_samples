@@ -27,7 +27,8 @@ static napi_value Init(napi_env env, napi_value exports)
 {
     napi_property_descriptor desc[] = {
         {"TestNAPI", nullptr, TestNAPI, nullptr, nullptr, nullptr, napi_default, nullptr},
-        {"T2lCallFunction", nullptr, T2lCallFunction, nullptr, nullptr, nullptr, napi_default, nullptr}
+        {"T2lCallFunction", nullptr, T2lCallFunction, nullptr, nullptr, nullptr, napi_default, nullptr},
+        {"T2lCallFunctionWithType", nullptr, T2lCallFunctionWithType, nullptr, nullptr, nullptr, napi_default, nullptr}
     };
     napi_define_properties(env, exports, sizeof(desc) / sizeof(desc[0]), desc);
 
