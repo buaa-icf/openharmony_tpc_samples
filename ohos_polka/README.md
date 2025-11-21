@@ -193,7 +193,20 @@ export const fileUploadHtml = `
 
 - 返回：Polka
 
-#### 5、`handler(req, res, parsed)` 主要的Polka IncomingMessage处理程序。它接收所有请求，并尝试将传入的URL与已知路由进行匹配
+#### 5、`stop()` 关闭当前监听的服务器实例
+
+- `polka().listen()` 成功后会在应用实例上创建 `server` 引用，可用于后续的生命周期管理。
+- 可在页面退出、路由切换或热重载前调用 `app.server?.stop()` 来释放端口和底层 socket 资源，避免重复监听报错。
+- 使用可选链确保仅在 `server` 存在时执行，典型用法：
+  
+  ```ts
+  const app = polka().listen(3000);
+  // ...业务逻辑
+  app.server?.stop(); // 组件销毁或需要重启服务时调用
+  ```
+  
+
+#### 6、`handler(req, res, parsed)` 主要的Polka IncomingMessage处理程序。它接收所有请求，并尝试将传入的URL与已知路由进行匹配
 
 - req 类型：IncomingMessage。
   - 内置属性
@@ -432,5 +445,4 @@ This project is licensed under [MIT License](https://gitcode.com/openharmony-tpc
 
 ## 遗留问题
 1. 目前不支持websocket
-2. 当前不支持手动关闭服务器
-3. 当前文件上传不支持超过20MB的文件(底座影响,后续rom版本会修复)
+2. 当前文件上传不支持超过20MB的文件(底座影响,后续rom版本会修复)
