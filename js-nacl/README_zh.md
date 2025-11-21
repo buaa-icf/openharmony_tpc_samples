@@ -123,7 +123,6 @@ js-nacl
 │   ├──  index.d.ts             # 库的类型定义文件
 │   └── ...                     # 其他文件
 ├── README_zh.md                # 项目中文文档和说明
-├── README.md                   # 项目英文文档和说明
 ├── oh-package.json5            # 项目配置文件
 └── ...                         # 其他配置文件               
 
