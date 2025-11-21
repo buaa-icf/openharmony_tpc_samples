@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "YYEVA-Android",
+        "License": "Apache License",
+        "License File": "LICENSE",
+        "Version Number": "1.1.62",
+        "Owner" : "xiafeng@huawei.com",
+        "Upstream URL": "https://github.com/yylive/YYEVA-Android",
+        "Description": "Lightweight,High Performance,Cross Platform,MP4 Gift Player"
+    }
+]

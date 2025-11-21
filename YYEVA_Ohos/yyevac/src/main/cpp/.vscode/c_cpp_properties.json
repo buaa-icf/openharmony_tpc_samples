@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "name": "OHOS Cross Compile",
+            "includePath": [
+                "${workspaceFolder}",
+                "${workspaceFolder}/napi",
+                "${workspaceFolder}/ohos",
+                "${OHOS_SDK}/native/sysroot/usr/include"
+            ],
+            "defines": [
+                "OHOS_NDK",
+                "__MUSL__=1",
+                "__STDC_CONSTANT_MACROS",
+                "_DEBUG"
+            ],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}
