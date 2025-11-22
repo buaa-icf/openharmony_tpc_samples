@@ -238,8 +238,8 @@ struct Index {
     try {
       const mac = new ISO9797Alg3Mac(new ISO7816d4Padding());
 
-      const inputBytes = this.hexToBytes(this.hex1Input);
-      const keyBytes = this.hexToBytes(this.hex1Key);
+      const inputBytes = this.hexStringToBytes(this.hex1Input);
+      const keyBytes = this.hexStringToBytes(this.hex1Key);
 
       // 密钥长度检查
       if (keyBytes.length !== 16 && keyBytes.length !== 24) {
@@ -252,7 +252,7 @@ struct Index {
       let params: ParametersWithIV | KeyParameter;
 
       if (this.hex1IV && this.hex1IV.trim().length > 0) {
-        ivBytes = this.hexToBytes(this.hex1IV);
+        ivBytes = this.hexStringToBytes(this.hex1IV);
         // IV长度检查
         if (ivBytes.length !== 8) {
           throw new Error("IV 长度必须是 8 字节，当前: " + ivBytes.length + " 字节");
@@ -348,6 +348,12 @@ struct Index {
    * @returns 字节数组
    */
   private hexStringToBytes(hex: string): Uint8Array {
+    // 检查输入是否包含中文或特殊字符
+    this.validateInputString(hex, "十六进制字符串");
+
+    // 检查是否包含无效字符
+    this.validateInvalidCharacters(hex, /^[0-9A-Fa-f\s]*$/, "十六进制字符串");
+
     // 移除所有空格
     hex = hex.replace(/\s+/g, '');
 
@@ -374,68 +380,94 @@ struct Index {
     return data;
   }
 
-  hexToBytes(hex: string): Uint8Array {
-    // 检查输入参数
-    if (!hex || hex.length === 0) {
-      return new Uint8Array(0);
+  /**
+   * 验证输入字符串是否包含中文或为空
+   *
+   * @param str 待验证的字符串
+   * @param type 字符串类型（用于错误消息）
+   */
+  private validateInputString(str: string, type: string): void {
+    // 检查输入是否为空
+    if (!str || str.trim().length === 0) {
+      throw new Error(type + "不能为空");
     }
 
-    // 检查长度是否为偶数
-    if (hex.length % 2 !== 0) {
-      throw new Error('十六进制字符串长度必须是偶数');
+    // 检查是否包含中文字符
+    const chineseCharPattern = /[\u4e00-\u9fa5]/;
+    const chineseMatch = str.match(chineseCharPattern);
+    if (chineseMatch) {
+      throw new Error(type + "不能包含中文字符，发现中文字符: " + chineseMatch[0]);
     }
-
-    const bytes: number[] = []
-    for (let i = 0; i < hex.length; i += 2) {
-      const hexPair = hex.substring(i, i + 2);
-      const byteValue = parseInt(hexPair, 16);
-      // 检查转换结果是否有效
-      if (isNaN(byteValue)) {
-        throw new Error("无效的十六进制字符: " + hex.substring(i, i + 2));
-      }
-      bytes.push(byteValue);
-    }
-    return new Uint8Array(bytes);
   }
 
-  private parseByteArray(str: string): Uint8Array {
-    try {
-      const cleaned = str.replace(/[\[\]\s]/g, '');
-      if (cleaned.length === 0) {
-        throw new Error("字节数组不能为空");
+  /**
+   * 验证输入字符串是否包含无效字符
+   *
+   * @param str 待验证的字符串
+   * @param validPattern 有效字符的正则表达式
+   * @param type 字符串类型（用于错误消息）
+   */
+  private validateInvalidCharacters(str: string, validPattern: RegExp, type: string): void {
+    // 找到第一个无效字符
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charAt(i);
+      if (!validPattern.test(char)) {
+        throw new Error(type + "包含无效字符，发现无效字符: '" + char + "' (位置: " + i + ")");
       }
-
-      // 如果字符串包含十六进制字符（A-F, a-f），则按十六进制处理
-      if (/[A-Fa-f]/.test(cleaned)) {
-        return this.hexStringToBytes(cleaned);
-      }
-
-      const parts = cleaned.split(',');
-      const numbers: number[] = [];
-
-      for (let i = 0; i < parts.length; i++) {
-        const part = parts[i].trim();
-        if (part === '') {
-          throw new Error("字节数组格式错误：存在空值");
-        }
-
-        const num = parseInt(part, 10);
-        if (isNaN(num)) {
-          throw new Error("无法解析字节值: " + part);
-        }
-
-        if (num < -128 || num > 255) {
-          throw new Error("字节值超出范围: " + num + " (必须在 -128 到 255 之间)");
-        }
-
-        // 转换为无符号字节
-        numbers.push(num < 0 ? num + 256 : num);
-      }
-
-      return new Uint8Array(numbers);
-    } catch (e) {
-      throw new Error("无法解析字节数组: " + e.message);
     }
+  }
+
+  /**
+   * 解析字节数组字符串或十六进制字符串
+   *
+   * 示例:
+   * "[1,2,3]" -> [1, 2, 3]
+   * "[-128, 64, 0]" -> [128, 64, 0]
+   * "7CA1" -> [0x7C, 0xA1]
+   *
+   * @param str 字节数组字符串或十六进制字符串
+   * @returns 字节数组
+   */
+  private parseByteArray(str: string): Uint8Array {
+    // 检查输入是否包含中文或特殊字符
+    this.validateInputString(str, "字节数组");
+
+    // 检查是否包含特殊字符
+    this.validateInvalidCharacters(str, /^[\d,\[\]\s\-\.A-Fa-f]*$/, "字节数组");
+
+    const cleaned = str.replace(/[\[\]\s]/g, '');
+    if (cleaned.length === 0) {
+      throw new Error("字节数组不能为空");
+    }
+
+    // 如果字符串包含十六进制字符（A-F, a-f），则按十六进制处理
+    if (/[A-Fa-f]/.test(cleaned)) {
+      return this.hexStringToBytes(cleaned);
+    }
+
+    const parts = cleaned.split(',');
+    const numbers: number[] = [];
+
+    for (let i = 0; i < parts.length; i++) {
+      const part = parts[i].trim();
+      if (part === '') {
+        throw new Error("字节数组格式错误：存在空值");
+      }
+
+      const num = parseInt(part, 10);
+      if (isNaN(num)) {
+        throw new Error("无法解析字节值: " + part);
+      }
+
+      if (num < -128 || num > 255) {
+        throw new Error("字节值超出范围: " + num + " (必须在 -128 到 255 之间)");
+      }
+
+      // 转换为无符号字节
+      numbers.push(num < 0 ? num + 256 : num);
+    }
+
+    return new Uint8Array(numbers);
   }
 
   private bytesToHex(bytes: Uint8Array): string {
