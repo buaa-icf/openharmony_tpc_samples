@@ -3,7 +3,8 @@
     "name": "library_test",
     "type": "feature",
     "deviceTypes": [
-      "default"
+      "default",
+      "tablet"
     ],
     "deliveryWithInstall": true,
     "installationFree": false

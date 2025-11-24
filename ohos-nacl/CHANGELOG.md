@@ -1,2 +1,2 @@
 ### 1.0.0
-1. 根据js-nacl库做鸿蒙化适配，支持数据加盐处理和解密功能。
+1. Porting the js-nacl library to HarmonyOS, providing it with the ability to handle data salting and decryption.
