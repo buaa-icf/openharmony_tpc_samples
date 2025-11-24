@@ -6,7 +6,7 @@
   "author": "",
   "license": "",
   "dependencies": {
-    "@ohos/js-nacl": "file:../library"
+    "@ohos/ohos-nacl": "file:../library"
   }
 }
 
