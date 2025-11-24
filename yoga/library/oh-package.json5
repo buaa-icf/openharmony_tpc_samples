@@ -1,0 +1,30 @@
+{
+  "types": "",
+  "keywords": [
+    "OpenHarmony",
+    "HarmonyOS",
+    "yoga",
+    "Layout"
+  ],
+  "author": "ohos_tpc",
+  "description": "Yoga layout engine for OpenHarmony",
+  "ohos": {
+    "org": "opensource"
+  },
+  "main": "Index.ets",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/yoga",
+  "type": "module",
+  "version": "1.0.0",
+  "dependencies": {},
+  "tags": [
+    "OpenHarmony",
+    "HarmonyOS",
+    "yoga",
+    "Layout"
+  ],
+  "license": "MIT License",
+  "devDependencies": {
+    "@types/libyoga_native.so": "file:./src/main/cpp/types/libyoga_native"
+  },
+  "name": "@ohos/yoga"
+}
