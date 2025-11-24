@@ -13,7 +13,7 @@
 * limitations under the License.
 */
 
-import nacl_factory,{ Nacl } from '@ohos/ohos-nacl';
+import nacl_factory,{ Nacl } from '@ohos/nacl';
 import promptAction from '@ohos.promptAction';
 
 // 先定义接口

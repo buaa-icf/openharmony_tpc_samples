@@ -1,10 +1,10 @@
-# ohos/ohos-nacl
+# ohos/nacl
 
 ## 简介
 
-> ohos/ohos-nacl是适用于OpenHarmony系统的NaCl加密库，提供了基于现代加密算法的高级API接口，包括哈希计算、数字签名、公钥加密、私钥加密等功能。
+> ohos/nacl是适用于OpenHarmony系统的NaCl加密库，提供了基于现代加密算法的高级API接口，包括哈希计算、数字签名、公钥加密、私钥加密等功能。
 
-ohos/ohos-nacl库基于js-nacl开发，针对OpenHarmony系统进行了适配，提供了以下功能：
+ohos/nacl库基于js-nacl开发，针对OpenHarmony系统进行了适配，提供了以下功能：
 - 哈希计算（SHA-512、SHA-256）
 - 数字签名（crypto_sign）
 
@@ -13,7 +13,7 @@ ohos/ohos-nacl库基于js-nacl开发，针对OpenHarmony系统进行了适配，
 
 ```shell
 
-ohpm install @ohos/ohos-nacl
+ohpm install @ohos/nacl
 
 ```
 
@@ -27,7 +27,7 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
 
  ```
 
- import nacl_factory from '@ohos/ohos-nacl'
+ import nacl_factory from '@ohos/nacl'
 
  
 
@@ -45,7 +45,7 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
 
  ```
 
- import nacl_factory from '@ohos/ohos-nacl'
+ import nacl_factory from '@ohos/nacl'
 
  
 
@@ -131,3 +131,4 @@ ohos-nacl
 在下述版本验证通过：
 
 -  DevEco Studio: 5.1.1.850, SDK: API12 (5.0.0)
+-  DevEco Studio: 6.0.1.249, SDK: API21 (6.0.1)

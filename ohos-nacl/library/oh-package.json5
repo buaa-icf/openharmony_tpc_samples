@@ -1,5 +1,5 @@
 {
-  "name": "@ohos/ohos-nacl",
+  "name": "@ohos/nacl",
   "version": "1.0.0",
   "description": "HarmonyOS Adaptation of js-nacl Library with Salted Data Encryption and Decryption.",
   "main": "Index.ets",

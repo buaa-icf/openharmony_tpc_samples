@@ -15,7 +15,7 @@
 
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium';
-import nacl_factory, { Nacl } from '@ohos/js-nacl';
+import nacl_factory, { Nacl } from '@ohos/nacl';
 
 export default function mainTest() {
   let nacl: Nacl;

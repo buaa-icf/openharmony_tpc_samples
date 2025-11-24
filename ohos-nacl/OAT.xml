@@ -40,10 +40,10 @@
                 <filteritem type="filepath" name="AppScope/app.json5" desc="项目工程默认文件，不需要添加版权头"/>
                 <filteritem type="filepath" name="entry/src/main/resource/rawfile/.*" desc="测试文件"/>
                 <filteritem type="filepath" name="entry/src/mmain/resources/base/media/.*" desc="测试文件"/>
-                <filteritem type="filepath" name="code-linter.json5" desc="ohos-nacl开源库代码（或原库代码文件），原本就无协议头，不做侵入式修改"/>
-                <filteritem type="filepath" name="entry/src/mock/mock-config.json5" desc="ohos-nacl开源库代码（或原库代码文件），原本就无协议头，不做侵入式修改"/>
-                <filteritem type="filepath" name="library/src/test/List.test.ets" desc="ohos-nacl开源库代码（或原库代码文件），原本就无协议头，不做侵入式修改"/>
-                <filteritem type="filepath" name="library/src/test/LocalUnit.test.ets" desc="ohos-nacl开源库代码（或原库代码文件），原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="code-linter.json5" desc="开源库代码（或原库代码文件），原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="entry/src/mock/mock-config.json5" desc="开源库代码（或原库代码文件），原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="library/src/test/List.test.ets" desc="开源库代码（或原库代码文件），原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="library/src/test/LocalUnit.test.ets" desc="开源库代码（或原库代码文件），原本就无协议头，不做侵入式修改"/>
             </filefilter>
             <filefilter name="binaryFileTypePolicyFilter" desc="Filters for copyright header policies">
                 <filteritem type="filepath" name="entry/src/main/resources/base/media/icon.png" desc="项目工程默认图片文件"/>
