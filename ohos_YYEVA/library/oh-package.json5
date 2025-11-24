@@ -1,0 +1,23 @@
+{
+  "types": "",
+  "keywords": [
+    "OpenHarmony",
+    "HarmonyOS",
+    "yyevac"
+  ],
+  "author": "ohos_tpc",
+  "description": "Lightweight,High Performance,Cross Platform,MP4 Gift Player",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_YYEVA",
+  "main": "index.ets",
+  "type": "module",
+  "version": "1.0.0",
+  "tags": [
+    "Media"
+  ],
+  "license": "Apache License 2.0",
+  "dependencies": {
+    "libyyeva_napi.so": "file:./src/main/cpp/types/libyyeva_napi",
+    "libmediacodec.so": "file:./src/main/cpp/types/mediacodec"
+  },
+  "name": "@ohos/yyevac"
+}
