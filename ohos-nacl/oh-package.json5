@@ -1,6 +1,6 @@
 {
   "modelVersion": "5.0.2",
-  "description": "Please describe the basic information.",
+  "description": "HarmonyOS Adaptation of js-nacl Library with Salted Data Encryption and Decryption.",
   "dependencies": {
   },
   "devDependencies": {
