@@ -1,15 +1,15 @@
-# bc_ohos
+# bc
 
 ## 简介
 
-> bc-ohos 是一个针对 OpenHarmony 平台的轻量级加密库，实现了 Bouncy Castle 的 ISO9797 Algorithm 3 MAC 算法。该库完全兼容 Android Bouncy Castle 的 API 设计，提供了一套与 Android 端高度一致的接口，便于开发者进行跨平台开发。
+> bc 是一个针对 OpenHarmony 平台的轻量级加密库，实现了 Bouncy Castle 的 ISO9797 Algorithm 3 MAC 算法。该库完全兼容 Android Bouncy Castle 的 API 设计，提供了一套与 Android 端高度一致的接口，便于开发者进行跨平台开发。
 
 ISO9797 Algorithm 3 是基于 DES 的 CBC 模式消息认证码算法，也称为 ANSI X9.19 Retail MAC。该算法广泛应用于金融、支付和安全通信领域。
 
 ## 下载安装
 
 ```
-ohpm install @ohos/bc-ohos
+ohpm install @ohos/bc
 ```
 
 OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmony ohpm 包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)。
@@ -19,7 +19,7 @@ OpenHarmony ohpm 环境配置等更多内容，请参考[如何安装 OpenHarmon
 ### 1. 基本用法
 
 ```typescript
-import { ISO9797Alg3Mac, ISO7816d4Padding } from '@ohos/bc-ohos'
+import { ISO9797Alg3Mac, ISO7816d4Padding } from '@ohos/bc'
 
 // 创建实例
 const mac = new ISO9797Alg3Mac(new ISO7816d4Padding())
@@ -45,7 +45,7 @@ console.log("MAC:", bytesToHex(output))
 ### 2. 带 IV 使用
 
 ```typescript
-import { ISO9797Alg3Mac, ParametersWithIV, ISO7816d4Padding } from '@ohos/bc-ohos'
+import { ISO9797Alg3Mac, ParametersWithIV, ISO7816d4Padding } from '@ohos/bc'
 
 const mac = new ISO9797Alg3Mac(new ISO7816d4Padding())
 

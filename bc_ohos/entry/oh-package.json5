@@ -6,7 +6,7 @@
   "author": "",
   "license": "",
   "dependencies": {
-    "@ohos/bc-ohos": "file:../library"
+    "@ohos/bc": "file:../library"
   }
 }
 
