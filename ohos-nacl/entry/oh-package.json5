@@ -1,0 +1,12 @@
+{
+  "name": "entry",
+  "version": "1.0.0",
+  "description": "HarmonyOS Adaptation of js-nacl Library with Salted Data Encryption and Decryption.",
+  "main": "",
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "@ohos/nacl": "file:../library"
+  }
+}
+

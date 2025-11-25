@@ -1,0 +1,10 @@
+{
+  "modelVersion": "5.0.2",
+  "description": "HarmonyOS Adaptation of js-nacl Library with Salted Data Encryption and Decryption.",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@ohos/hypium": "1.0.21",
+    "@ohos/hamock": "1.0.0"
+  }
+}
