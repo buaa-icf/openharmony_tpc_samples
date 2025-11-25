@@ -299,6 +299,11 @@ export default function mainTest() {
         expect(decryptedText).assertEqual(plaintext);
         hilog.info(0x0000, 'testTag', '%{public}s', '6.1 crypto_secretbox 和 crypto_secretbox_open test passed');
 
+        // 6.2 crypto_secretbox_random_nonce 测试
+        const randomNonce = nacl.crypto_secretbox_random_nonce();
+        expect(randomNonce.length).assertEqual(24);
+        hilog.info(0x0000, 'testTag', '%{public}s', '6.2 crypto_secretbox_random_nonce test passed');
+
         hilog.info(0x0000, 'testTag', '%{public}s', 'All secret box tests passed');
       } catch (error) {
         hilog.error(0x0000, 'testTag', 'Secret box test failed: %{public}s', error.message);
