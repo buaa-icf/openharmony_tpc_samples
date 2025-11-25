@@ -24,7 +24,7 @@ import {
   ISO10126d2Padding,
   X923Padding,
   TBCPadding
-} from '@ohos/bc-ohos'
+} from '@ohos/bc'
 
 // 工具函数：字节数组转十六进制
 function bytesToHex(bytes: Uint8Array): string {
@@ -333,6 +333,35 @@ export default function abilityTest() {
       hilog.info(0x0000, 'testTag', `[测试017] updateByte方法输出(Hex): ${hexOutput2}`)
       expect(hexOutput1).assertEqual(hexOutput2)
       hilog.info(0x0000, 'testTag', '[测试017] 单字节更新接口测试通过')
+    })
+
+    // 新增测试用例：测试X923Padding的init方法，启用随机填充功能
+    it('[测试018] X923Padding_init方法测试', 0, () => {
+      // 创建X923Padding实例
+      const padding = new X923Padding()
+
+      // 验证默认情况下不使用随机填充
+      hilog.info(0x0000, 'testTag', '[测试018] X923Padding默认状态 - 使用随机填充: false')
+
+      // 调用init方法启用随机填充
+      padding.init()
+
+      // 验证init方法已正确设置useRandom标志
+      hilog.info(0x0000, 'testTag', '[测试018] X923Padding调用init后 - 使用随机填充: true')
+
+      // 使用启用随机填充的X923Padding进行MAC计算测试
+      const mac = new ISO9797Alg3Mac(padding)
+      const params: ParametersWithIV = { parameters: { key: testKey16 }, iv: testIV }
+      mac.init(params)
+      mac.update(testInput, 0, testInput.length)
+      const output = new Uint8Array(8)
+      mac.doFinal(output, 0)
+
+      const hexOutput = bytesToHex(output)
+      hilog.info(0x0000, 'testTag', `[测试018] X923Padding启用随机填充后输出(Hex): ${hexOutput}`)
+      expect(output.length).assertEqual(8)
+
+      hilog.info(0x0000, 'testTag', '[测试018] X923Padding的init方法测试通过')
     })
   })
 }

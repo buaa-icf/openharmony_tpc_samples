@@ -17,7 +17,7 @@ import {
   ParametersWithIV,
   ISO7816d4Padding,
   KeyParameter,
-} from '@ohos/bc-ohos';
+} from '@ohos/bc';
 import promptAction from '@ohos.promptAction';
 
 export const TAG: string = 'ISO9797Alg3Mac';
