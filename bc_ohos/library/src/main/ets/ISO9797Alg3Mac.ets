@@ -13,10 +13,12 @@
 * limitations under the License.
 */
 
-import { CryptoJS } from '@ohos/crypto-js'
-import { BlockCipherPadding } from './Padding'
-import { KeyParameter, ParametersWithIV } from './Params';
-import { LogUtil } from './utils/LogUtil'
+import { cryptoFramework } from '@kit.CryptoArchitectureKit';
+import deviceInfo from '@ohos.deviceInfo';
+import { CryptoJS } from '@ohos/crypto-js';
+import { BlockCipherPadding } from './Padding';
+import { KeyParameter, ParametersWithIV, sdkApiVersion } from './Params';
+import { LogUtil } from './utils/LogUtil';
 
 /**
  * ISO 9797 Algorithm 3 MAC 实现
@@ -43,6 +45,10 @@ class ISO9797Alg3Mac {
   private macSize: number;
   // 块大小: DES 固定是 8 字节
   private blockSize: number;
+  // ohos Cipher
+  private cipher: cryptoFramework.Cipher | null = null;
+  // 密钥对生成器
+  private symKeyGenerator: cryptoFramework.SymKeyGenerator | null = null;
 
   /**
    * 创建基于 CBC 块加密的 Retail-MAC
@@ -83,6 +89,9 @@ class ISO9797Alg3Mac {
     this.key2 = null;
     this.key3 = null;
     this.iv = null;
+    if (deviceInfo.sdkApiVersion >= sdkApiVersion) {
+      this.createCipher();
+    }
   }
 
   /**
@@ -277,34 +286,72 @@ class ISO9797Alg3Mac {
    * 这里只需要进行单块 ECB 加密，不能再使用 CBC 模式！
    */
   private desEncrypt(data: Uint8Array, key: Uint8Array): Uint8Array {
-    const keyWords: CryptoJS.lib.WordArray = this.bytesToWordArray(key);
-    const dataWords: CryptoJS.lib.WordArray = this.bytesToWordArray(data);
+    try {
+      if (deviceInfo.sdkApiVersion < sdkApiVersion) {
+        const keyWords: CryptoJS.lib.WordArray = this.bytesToWordArray(key);
+        const dataWords: CryptoJS.lib.WordArray = this.bytesToWordArray(data);
 
-    const encrypted: CryptoJS.lib.CipherParams = CryptoJS.DES.encrypt(dataWords, keyWords, {
-      mode: CryptoJS.mode.ECB, // ✓ 必须使用 ECB 模式
-      padding: CryptoJS.pad.NoPadding
-    })
+        const encrypted: CryptoJS.lib.CipherParams = CryptoJS.DES.encrypt(dataWords, keyWords, {
+          mode: CryptoJS.mode.ECB, // ✓ 必须使用 ECB 模式
+          padding: CryptoJS.pad.NoPadding
+        })
 
-    return this.wordArrayToBytes(encrypted.ciphertext);
+        return this.wordArrayToBytes(encrypted.ciphertext);
+      } else {
+        if (!this.symKeyGenerator || !this.cipher) {
+          this.createCipher();
+        }
+        let keyMaterialBlob: cryptoFramework.DataBlob = { data: key };
+        let symKey = this.symKeyGenerator?.convertKeySync(keyMaterialBlob);
+        this.cipher?.initSync(cryptoFramework.CryptoMode.ENCRYPT_MODE, symKey, null);
+        let encryptData = this.cipher?.doFinalSync({ data });
+        return encryptData!!.data;
+      }
+    } catch (e) {
+      LogUtil.error('desEncrypt error :' + e);
+      return new Uint8Array();
+    }
+
   }
 
   /**
    * DES 解密
    */
   private desDecrypt(data: Uint8Array, key: Uint8Array): Uint8Array {
-    const keyWords: CryptoJS.lib.WordArray = this.bytesToWordArray(key);
-    const dataWords: CryptoJS.lib.WordArray = this.bytesToWordArray(data);
+    try {
+      if (deviceInfo.sdkApiVersion < sdkApiVersion) {
+        const keyWords: CryptoJS.lib.WordArray = this.bytesToWordArray(key);
+        const dataWords: CryptoJS.lib.WordArray = this.bytesToWordArray(data);
 
-    const decrypted: CryptoJS.lib.WordArray = CryptoJS.DES.decrypt(
-      CryptoJS.lib.CipherParams.create({ ciphertext: dataWords }),
-      keyWords,
-      {
-        mode: CryptoJS.mode.ECB,
-        padding: CryptoJS.pad.NoPadding
+        const decrypted: CryptoJS.lib.WordArray = CryptoJS.DES.decrypt(
+          CryptoJS.lib.CipherParams.create({ ciphertext: dataWords }),
+          keyWords,
+          {
+            mode: CryptoJS.mode.ECB,
+            padding: CryptoJS.pad.NoPadding
+          }
+        )
+        return this.wordArrayToBytes(decrypted);
+      } else {
+        if (!this.symKeyGenerator || !this.cipher) {
+          this.createCipher();
+        }
+        let keyMaterialBlob: cryptoFramework.DataBlob = { data: key };
+        let symKey = this.symKeyGenerator?.convertKeySync(keyMaterialBlob);
+        this.cipher?.initSync(cryptoFramework.CryptoMode.DECRYPT_MODE, symKey, null);
+        let decryptData = this.cipher?.doFinalSync({ data });
+        return decryptData!!.data;
       }
-    )
+    } catch (e) {
+      LogUtil.error('desDecrypt error :' + e);
+      return new Uint8Array();
+    }
+  }
 
-    return this.wordArrayToBytes(decrypted);
+  private createCipher () {
+    // 创建 算法实例，密钥对生成器
+    this.cipher = cryptoFramework.createCipher('DES64|ECB|NoPadding');
+    this.symKeyGenerator = cryptoFramework.createSymKeyGenerator('DES64');
   }
 
   /**

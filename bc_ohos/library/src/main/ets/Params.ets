@@ -27,3 +27,5 @@ export interface ParametersWithIV {
   parameters: KeyParameter
   iv: Uint8Array
 }
+
+export const sdkApiVersion: number = 20;
