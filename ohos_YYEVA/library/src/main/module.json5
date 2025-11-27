@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "yyevac",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}
