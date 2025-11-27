@@ -26,7 +26,7 @@ import {
   YogaMeasureOutput,
   YogaErrata,
   YogaUnit
-} from '../../../main/ets/yoga';
+} from '@ohos/yoga';
 
 export default function yogaNodeTest() {
   describe('YogaNodeTest', () => {

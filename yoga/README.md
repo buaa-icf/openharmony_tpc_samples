@@ -114,6 +114,16 @@ Yoga has been verified in the following versions:
 |     |---- README.md  # Readme                   
 ````
 
+## About obfuscation
+
+- Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- If you want the yoga library not to be obfuscated during code obfuscation, you need to add corresponding exclusion rules in the obfuscation rule configuration file obfuscation-rules.txt：
+
+```
+-keep
+./oh_modules/@ohos/yoga
+```
+
 ## How to Contribute
 
 If you find any problem when using yoga, submit an [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) or

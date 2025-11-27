@@ -21,7 +21,7 @@ import {
   YogaFlexDirection,
   YogaPositionType,
   YogaConstants
-} from '../../../main/ets/yoga';
+} from '@ohos/yoga';
 
 export default function yogaFlexTest() {
   describe('YogaFlexTest', () => {

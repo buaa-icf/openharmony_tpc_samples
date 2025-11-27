@@ -26,7 +26,7 @@ import {
   YogaPositionType,
   YogaWrap,
   YogaOverflow
-} from '../../../main/ets/yoga';
+} from '@ohos/yoga';
 
 export default function yogaAbsolutePositionTest() {
   describe('YogaAbsolutePositionTest', () => {

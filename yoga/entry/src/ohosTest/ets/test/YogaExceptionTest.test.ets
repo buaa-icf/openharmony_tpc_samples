@@ -20,7 +20,7 @@ import {
   YogaConstants,
   YogaFlexDirection,
   YogaAlign
-} from '../../../main/ets/yoga';
+} from '@ohos/yoga';
 
 export default function yogaExceptionTest() {
   describe('YogaExceptionTest', () => {

@@ -29,7 +29,7 @@ import {
   YogaDisplay,
   YogaValue,
   YogaUnit
-} from '../../../main/ets/yoga';
+} from '@ohos/yoga';
 
 export default function yogaNodeStylePropertiesTest() {
   describe('YogaNodeStylePropertiesTest', () => {
