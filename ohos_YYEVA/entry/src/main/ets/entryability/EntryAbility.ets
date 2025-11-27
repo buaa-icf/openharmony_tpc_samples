@@ -16,16 +16,13 @@
 import { AbilityConstant, ConfigurationConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
+import { BusinessError } from '@kit.BasicServicesKit';
 
 const DOMAIN = 0x0000;
 
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
-    try {
-      this.context.getApplicationContext().setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET);
-    } catch (err) {
-      hilog.error(DOMAIN, 'testTag', 'Failed to set colorMode. Cause: %{public}s', JSON.stringify(err));
-    }
+    this.context.getApplicationContext().setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET);
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onCreate');
   }
 
@@ -44,6 +41,18 @@ export default class EntryAbility extends UIAbility {
       }
       hilog.info(DOMAIN, 'testTag', 'Succeeded in loading the content.');
     });
+    // 获取主窗口
+    windowStage.getMainWindow((err: BusinessError, data) => {
+      if (err.code) {
+        console.error('获取主窗口失败: ' + JSON.stringify(err));
+        return;
+      }
+      const windowClass = data;
+      // 设置全屏模式
+      windowClass.setWindowLayoutFullScreen(true)
+        .then(() => console.info('全屏模式已启用'))
+        .catch((e: BusinessError) => console.error('设置失败: ' + JSON.stringify(e)));
+    });
   }
 
   onWindowStageDestroy(): void {
@@ -58,6 +67,7 @@ export default class EntryAbility extends UIAbility {
 
   onBackground(): void {
     // Ability has back to background
+    this.context.eventHub.emit('onBackground');
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onBackground');
   }
 }

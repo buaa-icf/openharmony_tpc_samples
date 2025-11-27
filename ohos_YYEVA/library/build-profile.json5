@@ -1,0 +1,12 @@
+{
+  "apiType": "stageMode",
+  "buildOption": {
+    "napiLibFilterOption": {
+      "enableOverride": true
+    },
+    "arkOptions": {
+    },
+    "sourceOption": {
+    }
+  }
+}

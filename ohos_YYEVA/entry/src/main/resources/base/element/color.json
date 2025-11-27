@@ -2,7 +2,27 @@
   "color": [
     {
       "name": "start_window_background",
-      "value": "#FFFFFF"
+      "value": "#000000"
+    },
+    {
+      "name": "slider_selected",
+      "value": "#007DFF"
+    },
+    {
+      "name": "speed_dialog",
+      "value": "#33bab4b4"
+    },
+    {
+      "name": "video_play",
+      "value": "#333333"
+    },
+    {
+      "name": "video_play_selected",
+      "value": "#5c5c5c"
+    },
+    {
+      "name": "page_background",
+      "value": "#6200EE"
     }
   ]
 }

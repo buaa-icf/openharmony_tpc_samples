@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Huawei Device Co., Ltd.
+ * Copyright (C) 2025 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -12,9 +12,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { appTasks } from '@ohos/hvigor-ohos-plugin';
 
-export default {
-    system: appTasks,  /* Built-in plugin of Hvigor. It cannot be modified. */
-    plugins:[]         /* Custom plugin to extend the functionality of Hvigor. */
+
+export class PointRect {
+  public x: number;
+  public y: number;
+  public w: number;
+  public h: number;
+
+  constructor(
+  x: number,
+  y: number,
+  w: number,
+  h: number
+  ) {
+  this.x = x;
+  this.y = y;
+  this.w = w;
+  this.h = h;
+}
+
+  toString(): string {
+    return `PointRect(x=${this.x}, y=${this.y}, w=${this.w}, h=${this.h})`
+  }
 }

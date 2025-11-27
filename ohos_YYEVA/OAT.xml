@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <oatconfig>
+        <policylist>
+            <policy name="projectPolicy" desc="">
+                <policyitem type="copyright" name="Copyright (c) 2012 - 2022 Krzysztof Gabis" path="yyevac/src/main/cpp/util/parson.c" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="Copyright (c) 2012 - 2022 Krzysztof Gabis" path="yyevac/src/main/cpp/util/parson.h" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="license" name="MIT" path="yyevac/src/main/cpp/util/parson.h" group="defaultGroup" filefilter="defaultPolicyFilter" desc="当前项目兼容此协议" />
+                <policyitem type="license" name="MIT" path="yyevac/src/main/cpp/util/parson.c" group="defaultGroup" filefilter="defaultPolicyFilter" desc="当前项目兼容此协议" />
+            </policy>
+        </policylist>
+        <filefilterlist>
+            <filefilter name="copyrightPolicyFilter" desc="Filters for compatibility，license header policies">
+                <filteritem type="filename" name="build-profile.json5" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="yyevac/src/main/ets/.*" desc="源库默认的版权头,不做修改"/>
+                <filteritem type="filepath" name="yyevac/index.ts" desc="源库默认的版权头,不做修改"/>
+                <filteritem type="filename" name="hvigorfile.ts" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filename" name="module.json5" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filename" name="hvigorw"  desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filename" name="hvigorw.bat" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filename" name="oh-package.json5" desc="项目工程默认文件，不需要添加版权头"/>
+				<filteritem type="filename" name="LICENSE" desc="项目工程LICENSE申明文件"/>
+				<filteritem type="filename" name="NOTICE" desc="项目工程NOTICE申明文件"/>
+                <filteritem type="filename" name="code-linter.json5" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="yyevac/BuildProfile.ets" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/src/mock/mock-config.json5" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/oh-package.json5" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="hvigor/hvigor-wrapper.js" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="hvigor/hvigor-config.json5" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="AppScope/app.json5" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/effect.cpp" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/effect.cpp" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/egl/eglcore.cpp" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/render.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/util/textureloadutil.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/effect.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/egl/eglcore.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/rendercontroller.cpp" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="AVCodec/src/main/ets/mediacodec/MediaConstant.ets" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/evaanimeconfig.cpp" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/egl/glbase.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/rendercontroller.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/util/vertexutil.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/evaanimeconfig.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/yuvrender.cpp" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/util/elog.cpp" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/bgrender.cpp" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/evaframe.cpp" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/yuvrender.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/util/elog.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/evaframe.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/bgrender.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/util/glfloatarray.cpp" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/evaframeall.cpp" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/evaengine.cpp" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/mix/evamixrender.cpp" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/util/glfloatarray.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/evaframeall.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/evaengine.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/mix/evamixrender.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/evaframeset.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/fbrender.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/mix/mixshader.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/util/shaderutil.cpp" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="AVCodec/src/main/cpp/napi/mediaformat.cpp" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/evasrc.cpp" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/irender.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/util/shaderutil.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/evasrc.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/egl/glbase.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/mp4render.cpp" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/util/stb_image.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="AVCodec/src/main/cpp/napi/surface_texture.cpp" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/evasrcmap.cpp" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/mp4render.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/record/recordercontroller.cpp" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/util/stb_image_write.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/data.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/evasrcmap.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/recordrender.cpp" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/record/recordercontroller.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/util/texcoordsutil.cpp" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="AVCodec/src/main/cpp/napi/threadhandler.cpp" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/datas.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/pointrect.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/recordrender.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/util/texcoordsutil.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/descript.h" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/render.cpp" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/util/textureloadutil.cpp" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/util/vertexutil.cpp" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/evaframeset.cpp" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/fbrender.cpp" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/mix/mixshader.cpp" desc="原库代码文件，原本就无版权头，不做侵入式修改"/>
+            </filefilter>
+            <filefilter name="defaultPolicyFilter" desc="Filters for compatibility，license header policies">
+                <filteritem type="filename" name="build-profile.json5" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="yyevac/src/main/ets/.*" desc="源库默认的版权头,不做修改"/>
+                <filteritem type="filepath" name="yyevac/index.ts" desc="源库默认的版权头,不做修改"/>
+                <filteritem type="filename" name="NOTICE" desc="项目工程LICENSE申明文件"/>
+                <filteritem type="filename" name="code-linter.json5" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="yyevac/BuildProfile.ets" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/src/mock/mock-config.json5" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filename" name="hvigorfile.ts" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filename" name="module.json5" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filename" name="LICENSE" desc="项目工程LICENSE申明文件"/>
+				<filteritem type="filename" name="NOTICE" desc="项目工程NOTICE申明文件"/>
+                <filteritem type="filename" name="hvigorw" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filename" name="hvigorw.bat" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filename" name="oh-package.json5" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/oh-package.json5" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="hvigor/hvigor-wrapper.js" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="hvigor/hvigor-config.json5" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="AppScope/app.json5" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="entry/src/main/resource/rawfile/.*" desc="测试文件"/>
+                <filteritem type="filepath" name="entry/src/mmain/resources/base/media/.*" desc="测试文件"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/effect.cpp" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/egl/eglcore.cpp" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/render.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/util/textureloadutil.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/effect.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/egl/eglcore.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/rendercontroller.cpp" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/util/vertexutil.cpp" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="AVCodec/src/main/ets/mediacodec/MediaConstant.ets" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/evaanimeconfig.cpp" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/egl/glbase.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/util/vertexutil.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/evaanimeconfig.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/yuvrender.cpp" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/util/elog.cpp" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/evaframe.cpp" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/bgrender.cpp" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/yuvrender.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/util/elog.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/evaframe.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/bgrender.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/util/glfloatarray.cpp" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/evaframeall.cpp" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/evaengine.cpp" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/mix/evamixrender.cpp" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/util/glfloatarray.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/evaframeall.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/evaengine.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/mix/evamixrender.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/fbrender.cpp" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/mix/mixshader.cpp" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/evaframeset.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/fbrender.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/mix/mixshader.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/util/shaderutil.cpp" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/rendercontroller.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/evaframeset.cpp" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="AVCodec/src/main/cpp/napi/mediaformat.cpp" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/evasrc.cpp" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/irender.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/util/shaderutil.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/evasrc.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/mp4render.cpp" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/util/stb_image.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="AVCodec/src/main/cpp/napi/surface_texture.cpp" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/evasrcmap.cpp" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/mp4render.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/record/recordercontroller.cpp" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/util/stb_image_write.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/data.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/evasrcmap.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/recordrender.cpp" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/record/recordercontroller.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/util/texcoordsutil.cpp" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="AVCodec/src/main/cpp/napi/threadhandler.cpp" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/datas.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/pointrect.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/recordrender.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/util/texcoordsutil.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/bean/descript.h" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/engine/render.cpp" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/util/textureloadutil.cpp" desc="原库代码文件，原本就无协议头，不做侵入式修改"/>
+            </filefilter>
+            <filefilter name="binaryFileTypePolicyFilter" desc="Filters for copyright header policies">
+                <filteritem type="filepath" name="entry/src/main/resources/base/media/icon.png" desc="项目工程默认图片文件"/>
+                <filteritem type="filepath" name="entry/src/main/resources/base/media/background.png" desc="项目工程默认图片文件"/>
+                <filteritem type="filepath" name="entry/src/main/resources/base/media/foreground.png" desc="项目工程默认图片文件"/>
+                <filteritem type="filepath" name="entry/src/main/resources/base/media/startIcon.png" desc="项目工程默认图片文件"/>
+                <filteritem type="filepath" name="entry/src/ohosTest/resources/base/media/icon.png" desc="项目工程默认图片文件"/>
+                <filteritem type="filepath" name="AppScope/resources/base/media/app_icon.png" desc="项目工程默认图片文件"/>
+                <filteritem type="filepath" name="AppScope/resources/base/media/app_background.png" desc="项目工程默认图片文件"/>
+                <filteritem type="filepath" name="AppScope/resources/base/media/app_foreground.png" desc="项目工程默认图片文件"/>
+                <filteritem type="filepath" name="entry/src/main/resources/rawfile/ball_1.png" desc="项目工程默认图片文件"/>
+                <filteritem type="filepath" name="entry/src/main/resources/rawfile/ball_2.png" desc="项目工程默认图片文件"/>
+                <filteritem type="filepath" name="entry/src/main/resources/rawfile/ball_3.png" desc="项目工程默认图片文件"/>
+                <filteritem type="filepath" name="entry/src/main/resources/base/media/icon.png" desc="项目工程默认图片文件"/>
+                <filteritem type="filepath" name="entry/src/main/resources/rawfile/car.mp4" desc="项目工程默认图片文件"/>
+                <filteritem type="filepath" name="entry/src/main/resources/rawfile/effect.mp4" desc="项目工程默认图片文件"/>
+                <filteritem type="filepath" name="entry/src/main/resources/base/media/ball_1.png" desc="项目工程默认图片文件"/>
+                <filteritem type="filepath" name="entry/src/main/resources/base/media/ball_2.png" desc="项目工程默认图片文件"/>
+                <filteritem type="filepath" name="entry/src/main/resources/base/media/ball_3.png" desc="项目工程默认图片文件"/>
+                <filteritem type="filepath" name="entry/src/main/resources/base/media/img.webp" desc="项目工程默认图片文件"/>
+                <filteritem type="filepath" name="yyevac/src/main/cpp/types/libyyeva_napi/index.d.ts" desc="项目工程默认图片文件"/>
+                <filteritem type="filepath" name="yyevac/oh-package.json5" desc="项目工程默认图片文件"/>
+                <filteritem type="filepath" name="AVCodec/src/ohosTest/resources/base/media/icon.png" desc="项目工程默认图片文件"/>
+            </filefilter>
+        </filefilterlist>
+    </oatconfig>
+</configuration>

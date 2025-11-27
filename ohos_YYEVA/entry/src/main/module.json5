@@ -11,6 +11,11 @@
     "deliveryWithInstall": true,
     "installationFree": false,
     "pages": "$profile:main_pages",
+    "requestPermissions": [
+      {
+        "name": 'ohos.permission.INTERNET',
+      }
+    ],
     "abilities": [
       {
         "name": "EntryAbility",
@@ -19,7 +24,8 @@
         "icon": "$media:layered_image",
         "label": "$string:EntryAbility_label",
         "startWindowIcon": "$media:startIcon",
-        "startWindowBackground": "$color:start_window_background",
+        "startWindowBackground": "$color:page_background",
+        "orientation": "auto_rotation",
         "exported": true,
         "skills": [
           {
@@ -27,7 +33,7 @@
               "entity.system.home"
             ],
             "actions": [
-              "ohos.want.action.home"
+              "action.system.home"
             ]
           }
         ]

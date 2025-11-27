@@ -18,7 +18,9 @@
   "description": "Lightweight,High Performance,Cross Platform,MP4 Gift Player",
   "main": "",
   "author": "",
-  "license": "",
-  "dependencies": {}
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@ohos/yyevac": "file:../library"
+  }
 }
 

@@ -12,26 +12,50 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import { EvaDemo } from './EvaDemo';
+import { EvaDownloadDemo } from './EvaDownloadDemo';
+
 @Entry
 @Component
 struct Index {
-  @State message: string = 'Hello World';
+  @State currentPage: string = 'main'
+  @Provide('pageInfos') pageInfos: NavPathStack = new NavPathStack()
+  private arr: string[] = ['Eva Demo', 'Eva Download Demo'];
 
-  build() {
-    RelativeContainer() {
-      Text(this.message)
-        .id('HelloWorld')
-        .fontSize($r('app.float.page_text_font_size'))
-        .fontWeight(FontWeight.Bold)
-        .alignRules({
-          center: { anchor: '__container__', align: VerticalAlign.Center },
-          middle: { anchor: '__container__', align: HorizontalAlign.Center }
-        })
-        .onClick(() => {
-          this.message = 'Welcome';
-        })
+  build(): void {
+    Navigation(this.pageInfos) {
+      List({ space: 12 }) {
+        ForEach(this.arr, (item: string) => {
+          ListItem() {
+            Text(item)
+              .width('100%')
+              .height(72)
+              .backgroundColor(Color.Blue)
+              .borderRadius(24)
+              .fontColor(Color.White)
+              .fontSize(16)
+              .fontWeight(500)
+              .textAlign(TextAlign.Center)
+              .onClick(() => {
+                this.pageInfos.replacePath({ name: item });
+              })
+          }
+        }, (item: number) => item.toString())
+      }
+      .width('90%')
+      .margin({ top: 12 })
+    }.mode(NavigationMode.Auto)
+    .title('YYEVA')
+    .navDestination(this.pageMap)
+  }
+
+  @Builder
+  pageMap(name: string) {
+    if (name === this.arr[0]) {
+      EvaDemo({ title: this.arr[0] });
+    } else if (name === this.arr[1]) {
+      EvaDownloadDemo({ title: this.arr[1] });
     }
-    .height('100%')
-    .width('100%')
   }
 }
