@@ -1,0 +1,13 @@
+{
+  "name": "@ohos/nacl",
+  "version": "1.0.0",
+  "description": "HarmonyOS Adaptation of js-nacl Library with Salted Data Encryption and Decryption.",
+  "author": "ohos_tpc",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos-nacl",
+  "main": "Index.ets",
+  "types": "Index.d.ts",
+  "type": "module",
+  "license": "Apache-2.0",
+  "packageType": "InterfaceHar",
+  "dependencies": {}
+}

@@ -17,7 +17,7 @@ import {
   ParametersWithIV,
   ISO7816d4Padding,
   KeyParameter,
-} from '@ohos/bc-ohos';
+} from '@ohos/bc';
 import promptAction from '@ohos.promptAction';
 
 export const TAG: string = 'ISO9797Alg3Mac';
@@ -243,7 +243,7 @@ struct Index {
 
       // 密钥长度检查
       if (keyBytes.length !== 16 && keyBytes.length !== 24) {
-        throw new Error("密钥长度必须是 16 字节（双长度）或 24 字节（三长度），当前: " + keyBytes.length + " 字节");
+        throw new Error('密钥长度必须是 16 字节（双长度）或 24 字节（三长度），当前: ' + keyBytes.length + ' 字节');
       }
 
       // 检查是否提供了IV
@@ -255,7 +255,7 @@ struct Index {
         ivBytes = this.hexStringToBytes(this.hex1IV);
         // IV长度检查
         if (ivBytes.length !== 8) {
-          throw new Error("IV 长度必须是 8 字节，当前: " + ivBytes.length + " 字节");
+          throw new Error('IV 长度必须是 8 字节，当前: ' + ivBytes.length + ' 字节');
         }
         params = {
           parameters: { key: keyBytes },
@@ -291,7 +291,7 @@ struct Index {
 
       // 密钥长度检查
       if (keyBytes.length !== 16 && keyBytes.length !== 24) {
-        throw new Error("密钥长度必须是 16 字节（双长度）或 24 字节（三长度），当前: " + keyBytes.length + " 字节");
+        throw new Error('密钥长度必须是 16 字节（双长度）或 24 字节（三长度），当前: ' + keyBytes.length + ' 字节');
       }
 
       // 检查是否提供了IV
@@ -303,7 +303,7 @@ struct Index {
         ivBytes = this.parseByteArray(this.bytes2IV);
         // IV长度检查
         if (ivBytes.length !== 8) {
-          throw new Error("IV 长度必须是 8 字节，当前: " + ivBytes.length + " 字节");
+          throw new Error('IV 长度必须是 8 字节，当前: ' + ivBytes.length + ' 字节');
         }
         params = {
           parameters: { key: keyBytes },
@@ -342,24 +342,24 @@ struct Index {
    * 十六进制字符串转字节数组
    *
    * 示例:
-   * "7CA1" -> [0x7C, 0xA1]
+   * '7CA1' -> [0x7C, 0xA1]
    *
    * @param hex 十六进制字符串（不区分大小写，可包含空格）
    * @returns 字节数组
    */
   private hexStringToBytes(hex: string): Uint8Array {
     // 检查输入是否包含中文或特殊字符
-    this.validateInputString(hex, "十六进制字符串");
+    this.validateInputString(hex, '十六进制字符串');
 
     // 检查是否包含无效字符
-    this.validateInvalidCharacters(hex, /^[0-9A-Fa-f\s]*$/, "十六进制字符串");
+    this.validateInvalidCharacters(hex, /^[0-9A-Fa-f\s]*$/, '十六进制字符串');
 
     // 移除所有空格
     hex = hex.replace(/\s+/g, '');
 
     // 确保长度为偶数
     if (hex.length % 2 !== 0) {
-      throw new Error("十六进制字符串长度必须是偶数");
+      throw new Error('十六进制字符串长度必须是偶数');
     }
 
     const len = hex.length;
@@ -371,7 +371,7 @@ struct Index {
       const low = parseInt(hex.charAt(i + 1), 16);
 
       if (isNaN(high) || isNaN(low)) {
-        throw new Error("无效的十六进制字符: " + hex.substring(i, i + 2));
+        throw new Error('无效的十六进制字符: ' + hex.substring(i, i + 2));
       }
 
       data[i / 2] = (high << 4) | low;
@@ -389,14 +389,14 @@ struct Index {
   private validateInputString(str: string, type: string): void {
     // 检查输入是否为空
     if (!str || str.trim().length === 0) {
-      throw new Error(type + "不能为空");
+      throw new Error(type + '不能为空');
     }
 
     // 检查是否包含中文字符
     const chineseCharPattern = /[\u4e00-\u9fa5]/;
     const chineseMatch = str.match(chineseCharPattern);
     if (chineseMatch) {
-      throw new Error(type + "不能包含中文字符，发现中文字符: " + chineseMatch[0]);
+      throw new Error(type + '不能包含中文字符，发现中文字符: ' + chineseMatch[0]);
     }
   }
 
@@ -412,7 +412,7 @@ struct Index {
     for (let i = 0; i < str.length; i++) {
       const char = str.charAt(i);
       if (!validPattern.test(char)) {
-        throw new Error(type + "包含无效字符，发现无效字符: '" + char + "' (位置: " + i + ")");
+        throw new Error(type + '包含无效字符，发现无效字符: "' + char + '" (位置: ' + i + ')');
       }
     }
   }
@@ -421,46 +421,92 @@ struct Index {
    * 解析字节数组字符串或十六进制字符串
    *
    * 示例:
-   * "[1,2,3]" -> [1, 2, 3]
-   * "[-128, 64, 0]" -> [128, 64, 0]
-   * "7CA1" -> [0x7C, 0xA1]
+   * '[1,2,3]' -> [1, 2, 3]
+   * '[-128, 64, 0]' -> [128, 64, 0]
+   * '7CA1' -> [0x7C, 0xA1]
    *
    * @param str 字节数组字符串或十六进制字符串
    * @returns 字节数组
    */
   private parseByteArray(str: string): Uint8Array {
     // 检查输入是否包含中文或特殊字符
-    this.validateInputString(str, "字节数组");
+    this.validateInputString(str, '字节数组');
 
     // 检查是否包含特殊字符
-    this.validateInvalidCharacters(str, /^[\d,\[\]\s\-\.A-Fa-f]*$/, "字节数组");
+    this.validateInvalidCharacters(str, /^[\d,\[\]\s\-\.A-Fa-f]*$/, '字节数组');
 
     const cleaned = str.replace(/[\[\]\s]/g, '');
     if (cleaned.length === 0) {
-      throw new Error("字节数组不能为空");
+      throw new Error('字节数组不能为空');
     }
 
     // 如果字符串包含十六进制字符（A-F, a-f），则按十六进制处理
     if (/[A-Fa-f]/.test(cleaned)) {
-      return this.hexStringToBytes(cleaned);
+      return this.parseHexByteArray(cleaned);
     }
 
-    const parts = cleaned.split(',');
+    // 按逗号分隔的数字数组处理
+    return this.parseNumberArray(cleaned);
+  }
+
+  /**
+   * 解析十六进制字符串为字节数组
+   * @param hex 十六进制字符串
+   * @returns 字节数组
+   */
+  private parseHexByteArray(hex: string): Uint8Array {
+    // 验证十六进制字符串
+    this.validateInputString(hex, '字节数组');
+    this.validateInvalidCharacters(hex, /^[0-9A-Fa-f]*$/, '字节数组');
+    
+    // 移除所有空格
+    hex = hex.replace(/\s+/g, '');
+    
+    // 确保长度为偶数
+    if (hex.length % 2 !== 0) {
+      throw new Error('字节数组中的十六进制字符串长度必须是偶数');
+    }
+
+    const len = hex.length;
+    const data = new Uint8Array(len / 2);
+
+    for (let i = 0; i < len; i += 2) {
+      // 每两个十六进制字符转换为一个字节
+      const high = parseInt(hex.charAt(i), 16);
+      const low = parseInt(hex.charAt(i + 1), 16);
+
+      if (isNaN(high) || isNaN(low)) {
+        throw new Error('字节数组中包含无效的十六进制字符: ' + hex.substring(i, i + 2));
+      }
+
+      data[i / 2] = (high << 4) | low;
+    }
+    
+    return data;
+  }
+
+  /**
+   * 解析逗号分隔的数字数组为字节数组
+   * @param str 数字字符串
+   * @returns 字节数组
+   */
+  private parseNumberArray(str: string): Uint8Array {
+    const parts = str.split(',');
     const numbers: number[] = [];
 
     for (let i = 0; i < parts.length; i++) {
       const part = parts[i].trim();
       if (part === '') {
-        throw new Error("字节数组格式错误：存在空值");
+        throw new Error('字节数组格式错误：存在空值');
       }
 
       const num = parseInt(part, 10);
       if (isNaN(num)) {
-        throw new Error("无法解析字节值: " + part);
+        throw new Error('无法解析字节值: ' + part);
       }
 
       if (num < -128 || num > 255) {
-        throw new Error("字节值超出范围: " + num + " (必须在 -128 到 255 之间)");
+        throw new Error('字节值超出范围: ' + num + ' (必须在 -128 到 255 之间)');
       }
 
       // 转换为无符号字节

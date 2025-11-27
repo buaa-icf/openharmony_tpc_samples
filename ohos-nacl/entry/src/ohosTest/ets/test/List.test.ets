@@ -12,20 +12,10 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
+import abilityTest from './Ability.test';
+import mainTest from './MainTest.test';
 
-/**
- * 密钥参数接口
- */
-export interface KeyParameter {
-  key: Uint8Array
+export default function testsuite() {
+  abilityTest();
+  mainTest();
 }
-
-/**
- * 带 IV 的参数接口
- */
-export interface ParametersWithIV {
-  parameters: KeyParameter
-  iv: Uint8Array
-}
-
-export const sdkApiVersion: number = 20;

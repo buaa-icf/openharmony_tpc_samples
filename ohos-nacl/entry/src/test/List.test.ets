@@ -13,19 +13,8 @@
 * limitations under the License.
 */
 
-/**
- * 密钥参数接口
- */
-export interface KeyParameter {
-  key: Uint8Array
-}
+import localUnitTest from './LocalUnit.test';
 
-/**
- * 带 IV 的参数接口
- */
-export interface ParametersWithIV {
-  parameters: KeyParameter
-  iv: Uint8Array
+export default function testsuite() {
+  localUnitTest();
 }
-
-export const sdkApiVersion: number = 20;
