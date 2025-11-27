@@ -14,6 +14,7 @@
  */
 
 import { image } from '@kit.ImageKit';
+import native from 'libyyeva_napi.so'
 import { ELog } from './util/ELog';
 import { EvaConstant } from './util/EvaConstant';
 
@@ -39,6 +40,7 @@ export class EvaUtil {
    */
   static nativeProcessPixelMap(pixelMap: image.PixelMap): void {
     ELog.i(EvaUtil.TAG, `nativeProcessPixelMap pixelMap: ${pixelMap}`);
+    native.nativeProcessPixelMap(pixelMap);
   }
 
   /**
@@ -48,7 +50,7 @@ export class EvaUtil {
    */
   static getExternalTexture(controllerId: number): number {
     ELog.i(EvaUtil.TAG, `getExternalTexture controllerId: ${controllerId}`);
-    return 0;
+    return native.getExternalTexture(controllerId);
   }
 
   /**
@@ -59,6 +61,7 @@ export class EvaUtil {
    */
   static updateViewPoint(controllerId: number, width: number, height: number): void {
     ELog.i(EvaUtil.TAG, `updateViewPoint controllerId: ${controllerId}, width: ${width}, height: ${height}`);
+    return native.updateViewPoint(controllerId, width, height);
   }
 
   /**
@@ -70,6 +73,7 @@ export class EvaUtil {
   static videoSizeChange(controllerId: number, newWidth: number, newHeight: number): void {
     ELog.i(EvaUtil.TAG,
       `videoSizeChange controllerId: ${controllerId}, newWidth: ${newWidth}, newHeight: ${newHeight}`);
+    native.videoSizeChange(controllerId, newWidth, newHeight);
   }
 
   /**
@@ -89,7 +93,7 @@ export class EvaUtil {
   ): number {
     ELog.i(EvaUtil.TAG,
       `initRender controllerId: ${controllerId}, surfaceId: ${surfaceId}, isNeedYuv: ${isNeedYuv}, isNormalMp4: ${isNormalMp4}, isVideoRecord: ${isVideoRecord}`);
-    return 0;
+    return native.initRender(controllerId, surfaceId, isNeedYuv, isNormalMp4, isVideoRecord);
   }
 
   /**
@@ -99,6 +103,7 @@ export class EvaUtil {
    */
   static setRenderConfig(controllerId: number, json: string): void {
     ELog.i(EvaUtil.TAG, `setRenderConfig controllerId: ${controllerId}, json: ${json}`);
+    return native.setRenderConfig(controllerId, json);
   }
 
   /**
@@ -116,6 +121,7 @@ export class EvaUtil {
   ): void {
     ELog.i(EvaUtil.TAG,
       `defaultConfig controllerId: ${controllerId}, width: ${width}, height: ${height}, defaultVideoMode: ${defaultVideoMode}`);
+    return native.defaultConfig(controllerId, width, height, defaultVideoMode);
   }
 
   /**
@@ -125,6 +131,7 @@ export class EvaUtil {
    */
   static setBgPixelMap(controllerId: number, pixelMap: image.PixelMap | null): void {
     ELog.i(EvaUtil.TAG, `setBgPixelMap controllerId: ${controllerId}, pixelMap: ${pixelMap}`);
+    return native.setBgBitmap(controllerId, pixelMap);
   }
 
   /**
@@ -142,6 +149,7 @@ export class EvaUtil {
   ): void {
     ELog.i(EvaUtil.TAG,
       `setSrcPixelMap controllerId: ${controllerId}, srcId: ${srcId}, pixelMap: ${pixelMap}, scaleMode: ${scaleMode}`);
+    return native.setSrcBitmap(controllerId, srcId, pixelMap, scaleMode);
   }
 
   /**
@@ -152,6 +160,7 @@ export class EvaUtil {
    */
   static setSrcTxt(controllerId: number, srcId: string, txt: string): void {
     ELog.i(EvaUtil.TAG, `setSrcTxt controllerId: ${controllerId}, srcId: ${srcId}, txt: ${txt}`);
+    native.setSrcTxt(controllerId, srcId, txt);
   }
 
   /**
@@ -160,6 +169,7 @@ export class EvaUtil {
    */
   static renderFrame(controllerId: number): void {
     ELog.i(EvaUtil.TAG, `renderFrame controllerId: ${controllerId}`);
+    native.renderFrame(controllerId);
   }
 
   /**
@@ -168,6 +178,7 @@ export class EvaUtil {
    */
   static renderClearFrame(controllerId: number): void {
     ELog.i(EvaUtil.TAG, `renderClearFrame controllerId: ${controllerId}`);
+    native.renderClearFrame(controllerId);
   }
 
   /**
@@ -176,6 +187,7 @@ export class EvaUtil {
    */
   static releaseTexture(controllerId: number): void {
     ELog.i(EvaUtil.TAG, `releaseTexture controllerId: ${controllerId}`);
+    native.releaseTexture(controllerId);
   }
 
   /**
@@ -184,6 +196,7 @@ export class EvaUtil {
    */
   static renderSwapBuffers(controllerId: number): void {
     ELog.i(EvaUtil.TAG, `renderSwapBuffers controllerId: ${controllerId}`);
+    native.renderSwapBuffers(controllerId);
   }
 
   /**
@@ -192,6 +205,7 @@ export class EvaUtil {
    */
   static destroyRender(controllerId: number): void {
     ELog.i(EvaUtil.TAG, `destroyRender controllerId: ${controllerId}`);
+    native.destroyRender(controllerId);
   }
 
   /**
@@ -202,7 +216,7 @@ export class EvaUtil {
    */
   static mixConfigCreate(controllerId: number, json: string): number {
     ELog.i(EvaUtil.TAG, `mixConfigCreate controllerId: ${controllerId}, json: ${json}`);
-    return 0;
+    return native.mixConfigCreate(controllerId, json);
   }
 
   /**
@@ -211,6 +225,7 @@ export class EvaUtil {
    */
   static mixRenderCreate(controllerId: number): void {
     ELog.i(EvaUtil.TAG, `mixRenderCreate controllerId: ${controllerId}`);
+    native.mixRenderCreate(controllerId);
   }
 
   /**
@@ -220,6 +235,7 @@ export class EvaUtil {
    */
   static mixRendering(controllerId: number, frameIndex: number): void {
     ELog.i(EvaUtil.TAG, `mixRendering controllerId: ${controllerId}, frameIndex: ${frameIndex}`);
+    native.mixRendering(controllerId, frameIndex);
   }
 
   /**
@@ -228,6 +244,7 @@ export class EvaUtil {
    */
   static mixRenderDestroy(controllerId: number): void {
     ELog.i(EvaUtil.TAG, `mixRenderDestroy controllerId: ${controllerId}`);
+    native.mixRenderDestroy(controllerId);
   }
 
   /**
@@ -235,7 +252,7 @@ export class EvaUtil {
    */
   static initVideoRecord(controllerId: number, surface: string): number {
     ELog.i(EvaUtil.TAG, `initVideoRecord controllerId: ${controllerId}, surface: ${surface}`);
-    return 0;
+    return native.initVideoRecord(controllerId, surface);
   }
 
   /**
@@ -243,6 +260,7 @@ export class EvaUtil {
    */
   static setRecordRenderConfig(controllerId: number, json: string): void {
     ELog.i(EvaUtil.TAG, `setRecordRenderConfig controllerId: ${controllerId}, json: ${json}`);
+    native.setRecordRenderConfig(controllerId, json);
   }
 
 
@@ -251,6 +269,7 @@ export class EvaUtil {
    */
   static recordRender(controllerId: number, time: number): void {
     ELog.i(EvaUtil.TAG, `recordRender controllerId: ${controllerId}, time: ${time}`);
+    native.recordRender(controllerId, time);
   }
 
   /**
@@ -258,6 +277,7 @@ export class EvaUtil {
    */
   static stopRecord(controllerId: number): void {
     ELog.i(EvaUtil.TAG, `stopRecord controllerId: ${controllerId}`);
+    native.stopRecord(controllerId);
   }
 
   /**
@@ -266,13 +286,16 @@ export class EvaUtil {
    */
   static setVideoRecord(controllerId: number, isVideoRecord: boolean): void {
     ELog.i(EvaUtil.TAG, `setVideoRecord controllerId: ${controllerId}, isVideoRecord: ${isVideoRecord}`);
+    native.setVideoRecord(controllerId, isVideoRecord);
   }
 
   static setLog(log: Log): void {
     ELog.i(EvaUtil.TAG, `setLog log: ${log}`);
+    native.setLog(log);
   }
 
   static setBlendMode(controllerId: number, blendMode: number): void {
     ELog.i(EvaUtil.TAG, `setBlendMode controllerId: ${controllerId}, blendMode: ${blendMode}`);
+    native.setBlendMode(controllerId, blendMode);
   }
 }

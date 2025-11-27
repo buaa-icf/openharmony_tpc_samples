@@ -34,6 +34,7 @@ import { resourceManager } from '@kit.LocalizationKit';
 import { EvaAnimConfig } from './EvaAnimConfig';
 import { ComponentUtils, UIContext } from '@kit.ArkUI';
 import { JSON } from '@kit.ArkTS';
+import { SurfaceTexture } from 'libmediacodec.so'
 
 /**
  * EvaAnimComponent组件控制器
@@ -112,6 +113,7 @@ export class EvaAnimPlayer {
   public isNormalMp4 = false //是否正常的不透明的mp4
   public isSurfaceAvailable = false
   public surfaceId: string | null = null
+  public surfaceTexure: SurfaceTexture | null = null;
   // 组件是否被卸载
   public isDetachedFromWindow: boolean = false
   /**
@@ -187,6 +189,9 @@ export class EvaAnimPlayer {
     return this.surfaceId;
   }
 
+  getSurfaceTexture(): SurfaceTexture | null {
+    return this.surfaceTexure;
+  }
 
   /**
    * 设置资源获取器
@@ -622,6 +627,7 @@ export class EvaAnimPlayer {
 
         if (this.isVideoRecord) {}
       }
+      this.surfaceTexure = new SurfaceTexture(textureId);
     }
     this.isSurfaceAvailable = true
     if (this.startRunnable != null) {
@@ -649,6 +655,8 @@ export class EvaAnimPlayer {
       await this.bg.release()
       this.bg = null
     }
+    this.surfaceTexure?.release();
+    this.surfaceTexure = null;
     emitter.off(EvaConstant.EVENT_ID_ON_VIDEO_CONFIG_READY);
     emitter.off(EvaConstant.EVENT_ID_SIZE_CHANGED);
   }

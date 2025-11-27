@@ -91,7 +91,7 @@ export struct EvaDemo {
         .height('10%')
       }.width('100%')
       .height('100%')
-      .backgroundImage($r('app.media.background'))
+      .backgroundImage($r('app.media.img'))
       .backgroundImageSize({ width: '100%', height: '100%' })
     }
     .title(this.title)

@@ -1,0 +1,31 @@
+//
+// Created by zengjiale on 2022/4/15.
+//
+#pragma once
+#include "src/main/cpp/egl/glbase.h"
+#include "src/main/cpp/egl/eglcore.h"
+#include <GLES3/gl3.h>
+#include <GLES2/gl2ext.h>
+//#include <GLES3/gl3.h>
+#ifdef __OHOS__
+#include <ohos/ohos_window.h>
+#else
+#include <android/native_window.h>
+#endif
+
+class EvaEngine: public GLBase {
+public:
+    EvaEngine(ANativeWindow *window);
+    ~EvaEngine();
+    int create();
+    void draw();
+    void stop();
+
+private:
+    ANativeWindow * mWindow;
+    GLuint mTextureId;
+    GLint  mTextureLoc;
+    GLint mMatrixLoc;
+    GLfloat mMatrix[16];
+    EGLCore *mEGLCore;
+};

@@ -16,6 +16,8 @@
   ],
   "license": "Apache License 2.0",
   "dependencies": {
+    "libyyeva_napi.so": "file:./src/main/cpp/types/libyyeva_napi",
+    "libmediacodec.so": "file:./src/main/cpp/types/mediacodec"
   },
   "name": "@ohos/yyevac"
 }
