@@ -265,6 +265,7 @@
 				        <filteritem type="filepath" name="OhosVideoCache/entry/src/main/resources/rawfile/test1.mp4" desc="测试文件"/>
                 <filteritem type="filepath" name="jackrabbit/LICENSE"  desc="原开源项目的LICENSE，不手动修改"/>
                 <filteritem type="filepath" name="bc_ohos/LICENSE"  desc="原开源项目的LICENSE，不手动修改"/>
+		<filteritem type="filepath" name="ohos_YYEVA/LICENSE"  desc="原开源项目的LICENSE，不手动修改"/>
                 <filteritem type="filepath" name="socketio/socketio服务搭建.pdf" desc="服务搭建文件，无需检查"/>
                 <filteritem type="filepath" name="socketio_2.x/socketio服务搭建.pdf" desc="服务搭建文件，无需检查"/>
                 <filteritem type="filepath" name="socketio_2.x/screenshot/效果展示_登陆页面.jpg" desc="效果展示文件，无需检查"/>
@@ -355,6 +356,7 @@
                 <policyitem type="license" name="MIT" path="protobuf_format/xml-js/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="jackrabbit/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="bc_ohos/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+		<policyitem type="license" name="MIT" path="ohos_YYEVA/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="copyright" name="Copyright 2010-2023 Three.js Authors" path="ThreeJs360Demo/source/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="匹配源码协议，符合开源要求"/>
                 <policyitem type="license" name="SPDX:MIT" path="ThreeJs360Demo/source/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="SMTPClient/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
