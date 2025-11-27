@@ -22,7 +22,7 @@ import {
   YogaAlign,
   YogaConstants,
   YogaBaselineFunction
-} from '../../../main/ets/yoga';
+} from '@ohos/yoga';
 
 export default function yogaAlignBaselineTest() {
   describe('YogaAlignBaselineTest', () => {

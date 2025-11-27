@@ -30,7 +30,7 @@ import {
   YogaPositionType,
   YogaWrap,
   YogaGutter
-} from '../../../main/ets/yoga';
+} from '@ohos/yoga';
 
 export default function yogaSizeOverflowTest() {
   describe('YogaSizeOverflowTest', () => {

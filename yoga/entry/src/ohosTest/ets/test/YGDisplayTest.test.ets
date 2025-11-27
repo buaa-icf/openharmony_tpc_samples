@@ -31,7 +31,7 @@ import {
   YogaWrap,
   YogaGutter,
   YogaDisplay
-} from '../../../main/ets/yoga';
+} from '@ohos/yoga';
 
 export default function yogaDisplayTest() {
   describe('YogaDisplayTest', () => {

@@ -23,7 +23,7 @@ import {
   YogaConstants,
   YogaJustify,
   YogaAlign
-} from '../../../main/ets/yoga';
+} from '@ohos/yoga';
 
 export default function yogaBorderTest() {
   describe('YogaBorderTest', () => {

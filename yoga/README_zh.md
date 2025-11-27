@@ -114,6 +114,16 @@ child.free();
 |     |---- README.md  # 说明文件      
 ````
 
+## 关于混淆
+
+- 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- 如果希望yoga库在代码混淆过程中不会被混淆，需要在混淆规则配置文件obfuscation-rules.txt中添加相应的排除规则：
+
+```
+-keep
+./oh_modules/@ohos/yoga
+```
+
 ## 贡献代码
 
 使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然也非常欢迎给

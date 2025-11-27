@@ -26,7 +26,7 @@ import {
   YogaPositionType,
   YogaWrap,
   YogaGutter
-} from '../../../main/ets/yoga';
+} from '@ohos/yoga';
 
 export default function yogaAlignContentTest() {
   describe('YogaAlignContentTest', () => {
