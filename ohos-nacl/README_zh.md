@@ -97,6 +97,12 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
 ### 其他工具函数
 * random_bytes - 生成随机字节
 
+## 约束与限制
+在下述版本验证通过：
+
+-  DevEco Studio: 5.1.1.850, SDK: API12 (5.0.0)
+-  DevEco Studio: 6.0.1.249, SDK: API21 (6.0.1)
+
 ## 目录结构
 
 ````
@@ -127,8 +133,21 @@ ohos-nacl
 └── ...                         # 其他配置文件               
 
 ````
-## 约束与限制
-在下述版本验证通过：
 
--  DevEco Studio: 5.1.1.850, SDK: API12 (5.0.0)
--  DevEco Studio: 6.0.1.249, SDK: API21 (6.0.1)
+- 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
+- 如果希望postcss库在代码混淆过程中不会被混淆，需要在混淆规则配置文件obfuscation-rules.txt中添加相应的排除规则：
+
+```
+-keep
+./oh_modules/@ohos/nacl
+```
+
+## 贡献代码
+
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建
+
+## 开源协议
+
+本项目基于 [MIT](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ohos-nacl/LICENSE) 协议，请自由地享受和参与开源。
+
+
