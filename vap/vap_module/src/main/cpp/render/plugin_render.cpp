@@ -328,6 +328,30 @@ napi_value PluginRender::SetLoop(napi_env env, napi_callback_info info)
     return nullptr;
 }
 
+static void FoundSrcInfo(napi_env env, const std::string& srcId, AnimConfig& animConfig, NVal& srcInfo)
+{
+    if (animConfig.frameAllPtr == nullptr || animConfig.frameAllPtr->frameAll.empty()) {
+        return;
+    }
+
+    for (const auto& frame : animConfig.frameAllPtr->frameAll) {
+        bool found = false;
+        for (const auto& src : frame.second.frames) {
+            if (src.srcId == srcId) {
+                auto x = NVal::CreateInt64(env, static_cast<int>(src.frame.x));
+                auto y = NVal::CreateInt64(env, static_cast<int>(src.frame.y));
+                srcInfo.AddProp("x", x.val_);
+                srcInfo.AddProp("y", y.val_);
+                found = true;
+                break;
+            }
+        }
+        if (found) {
+            break;
+        }
+    }
+}
+
 static napi_value GenSrcInfo(napi_env env, AnimConfig& animConfig)
 {
     std::map<std::string, Src> src;
@@ -351,21 +375,11 @@ static napi_value GenSrcInfo(napi_env env, AnimConfig& animConfig)
         srcInfo.AddProp("tag", tag.val_);
         srcInfo.AddProp("type", type.val_);
 
-        if (animConfig.frameAllPtr != nullptr && !animConfig.frameAllPtr->frameAll.empty()) {
-            for (const auto& item : animConfig.frameAllPtr->frameAll.begin()->second.frames) {
-                if (item.srcId == ele.first) {
-                    auto x = NVal::CreateInt64(env, static_cast<int>(item.frame.x));
-                    auto y = NVal::CreateInt64(env, static_cast<int>(item.frame.y));
-                    auto w = NVal::CreateInt64(env, static_cast<int>(item.frame.w));
-                    auto h = NVal::CreateInt64(env, static_cast<int>(item.frame.h));
-                    srcInfo.AddProp("x", x.val_);
-                    srcInfo.AddProp("y", y.val_);
-                    srcInfo.AddProp("w", w.val_);
-                    srcInfo.AddProp("h", h.val_);
-                    break;
-                }
-            }
-        }
+        FoundSrcInfo(env, ele.first, animConfig, srcInfo);
+        auto w = NVal::CreateInt64(env, ele.second.w);
+        auto h = NVal::CreateInt64(env, ele.second.h);
+        srcInfo.AddProp("w", w.val_);
+        srcInfo.AddProp("h", h.val_);
 
         status = napi_set_element(env, srcInfos, i, srcInfo.val_);
         if (status != napi_ok) {
@@ -623,6 +637,52 @@ static void ParseMixParamTxt(NVal &nValOneOpt, MixInputData &mixInputData)
     }
 }
 
+static void HandlePixelmap(NVal &nValOneOpt, MixInputData &mixInputData)
+{
+    OH_PixelmapNative* pixelMap = nullptr;
+    NVal param =  nValOneOpt.GetProp(PROP_IMAGE);
+    Image_ErrorCode errCode = OH_PixelmapNative_ConvertPixelmapNativeFromNapi(nValOneOpt.env_, param.val_, &pixelMap);
+    if (errCode != IMAGE_SUCCESS) {
+        LOGE("%{public}s: %{public}d errCode: %{public}d", __FUNCTION__, __LINE__, errCode);
+        return;
+    }
+
+    OH_Pixelmap_ImageInfo* imageInfo = nullptr;
+    errCode = OH_PixelmapImageInfo_Create(&imageInfo);
+    if (errCode != IMAGE_SUCCESS) {
+        OH_PixelmapNative_Release(pixelMap);
+        LOGE("%{public}s: %{public}d errCode: %{public}d", __FUNCTION__, __LINE__, errCode);
+        return;
+    }
+
+    std::unique_ptr<OH_Pixelmap_ImageInfo, void(*)(OH_Pixelmap_ImageInfo*)> imageInfoWrap(imageInfo,
+    [](OH_Pixelmap_ImageInfo* p) {
+        OH_PixelmapImageInfo_Release(p);
+    });
+
+    errCode = OH_PixelmapNative_GetImageInfo(pixelMap, imageInfo);
+    if (errCode != IMAGE_SUCCESS) {
+        OH_PixelmapNative_Release(pixelMap);
+        LOGE("%{public}s: %{public}d errCode: %{public}d", __FUNCTION__, __LINE__, errCode);
+        return;
+    }
+
+    int32_t pixelFormat = 0;
+    errCode = OH_PixelmapImageInfo_GetPixelFormat(imageInfo, &pixelFormat);
+    if (errCode != IMAGE_SUCCESS) {
+        OH_PixelmapNative_Release(pixelMap);
+        LOGE("%{public}s: %{public}d errCode: %{public}d", __FUNCTION__, __LINE__, errCode);
+        return;
+    }
+
+    if (pixelFormat != PIXEL_FORMAT_RGBA_8888) {
+        OH_PixelmapNative_Release(pixelMap);
+        LOGE("pixelFormat is %{public}d, only PIXEL_FORMAT_RGBA_8888 is supported", pixelFormat);
+        return;
+    }
+    mixInputData.pixelMap = pixelMap;
+}
+
 static void ParseMixParamImg(NVal &nValOneOpt, MixInputData &mixInputData)
 {
     if (!nValOneOpt.HasProp(PROP_IMAGE)) {
@@ -642,42 +702,7 @@ static void ParseMixParamImg(NVal &nValOneOpt, MixInputData &mixInputData)
             mixInputData.imgUri = resData.get();
         }
     } else if (valueType == napi_object) {
-        OH_PixelmapNative* pixelMap = nullptr;
-        Image_ErrorCode errCode = OH_PixelmapNative_ConvertPixelmapNativeFromNapi(nValOneOpt.env_, param.val_, &pixelMap);
-        if (errCode != IMAGE_SUCCESS) {
-            LOGE("%{public}s: %{public}d errCode: %{public}d", __FUNCTION__, __LINE__, errCode);
-            return;
-        }
-
-        OH_Pixelmap_ImageInfo* imageInfo = nullptr;
-        errCode = OH_PixelmapImageInfo_Create(&imageInfo);
-        if (errCode != IMAGE_SUCCESS) {
-            LOGE("%{public}s: %{public}d errCode: %{public}d", __FUNCTION__, __LINE__, errCode);
-            return;
-        }
-
-        std::unique_ptr<OH_Pixelmap_ImageInfo, void(*)(OH_Pixelmap_ImageInfo*)> imageInfoWrap(imageInfo, [](OH_Pixelmap_ImageInfo* p) {
-            OH_PixelmapImageInfo_Release(p);
-        });
-
-        errCode = OH_PixelmapNative_GetImageInfo(pixelMap, imageInfo);
-        if (errCode != IMAGE_SUCCESS) {
-            LOGE("%{public}s: %{public}d errCode: %{public}d", __FUNCTION__, __LINE__, errCode);
-            return;
-        }
-
-        int32_t pixelFormat = 0;
-        errCode = OH_PixelmapImageInfo_GetPixelFormat(imageInfo, &pixelFormat);
-        if (errCode != IMAGE_SUCCESS) {
-            LOGE("%{public}s: %{public}d errCode: %{public}d", __FUNCTION__, __LINE__, errCode);
-            return;
-        }
-
-        if (pixelFormat != PIXEL_FORMAT_RGBA_8888) {
-            LOGE("pixelFormat is %{public}d, only PIXEL_FORMAT_RGBA_8888 is supported", pixelFormat);
-            return;
-        }
-        mixInputData.pixelMap = pixelMap;
+        HandlePixelmap(nValOneOpt, mixInputData);
     }
 }
 
@@ -690,7 +715,7 @@ static void ParseMixParamColor(NVal &nValOneOpt, MixInputData &mixInputData)
             auto [succR, r] = colorNVal.GetProp("r").ToUint32();
             auto [succG, g] = colorNVal.GetProp("g").ToUint32();
             auto [succB, b] = colorNVal.GetProp("b").ToUint32();
-            
+
             if (succA && succB && succR && succG) {
                 mixInputData.color = {a, r, g, b};
                 mixInputData.isSet |= SET_COLOR;
