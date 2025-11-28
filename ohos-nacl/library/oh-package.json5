@@ -7,7 +7,7 @@
   "main": "Index.ets",
   "types": "Index.d.ts",
   "type": "module",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "packageType": "InterfaceHar",
   "dependencies": {}
 }
