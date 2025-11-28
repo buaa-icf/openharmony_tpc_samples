@@ -191,19 +191,13 @@ OH_NativeBuffer_Format EglFormatToNativeFormat(EGLint eglFormat)
 
 bool YYEVAComponent::PixelMap::Lock(void **pixels, OH_NativeBuffer_Config &pixelConfig)
 {
-    OH_Pixelmap_ImageInfo *srcInfo = nullptr;
-    OH_PixelmapImageInfo_Create(&srcInfo);
-    OH_PixelmapNative_GetImageInfo(nativePixelMap_, srcInfo);
-    OH_PixelmapImageInfo_GetWidth(srcInfo, (uint32_t *)&pixelConfig.width);
-    OH_PixelmapImageInfo_GetHeight(srcInfo, (uint32_t *)&pixelConfig.height);
-    OH_PixelmapImageInfo_GetRowStride(srcInfo, (uint32_t *)&pixelConfig.stride);
-    int32_t format;
-    OH_PixelmapImageInfo_GetPixelFormat(srcInfo, &format);
-    pixelConfig.format = EglFormatToNativeFormat(format);
-    OH_PixelmapImageInfo_Release(srcInfo);
-    LOGD("pixmap format: %d -> %d", format, pixelConfig.format);
-
-    Image_ErrorCode result = OH_PixelmapNative_AccessPixels(nativePixelMap_, pixels);
+    OhosPixelMapInfos srcInfo;
+    OH_PixelMap_GetImageInfo(nativePixelMap_, &srcInfo);
+    pixelConfig.width = srcInfo.width;
+    pixelConfig.height = srcInfo.height;
+    pixelConfig.stride = srcInfo.rowSize;
+    pixelConfig.format = srcInfo.pixelFormat;
+    int32_t result = OH_PixelMap_AccessPixels(nativePixelMap_, pixels);
     if (result != IMAGE_SUCCESS || *pixels == nullptr) {
         LOGE("Failed to access pixels: %d", result);
         return false;
@@ -217,7 +211,7 @@ void YYEVAComponent::PixelMap::Unlock()
     if (lock_ == false) {
         return;
     }
-    Image_ErrorCode result = OH_PixelmapNative_UnaccessPixels(nativePixelMap_);
+    int32_t result = OH_PixelMap_UnAccessPixels(nativePixelMap_);
     if (result != IMAGE_SUCCESS) {
         ELOGE("Failed to unaccess pixels: %d", result);
         return;
@@ -225,12 +219,12 @@ void YYEVAComponent::PixelMap::Unlock()
     lock_ = false;
 }
 
-OH_PixelmapNative *YYEVAComponent::PixelMap::GetPixelMap()
+NativePixelMap *YYEVAComponent::PixelMap::GetPixelMap()
 {
     return nativePixelMap_;
 }
 
-void YYEVAComponent::PixelMap::SetPixelMap(OH_PixelmapNative *pixelMap)
+void YYEVAComponent::PixelMap::SetPixelMap(NativePixelMap *pixelMap)
 {
     nativePixelMap_ = pixelMap;
 }
