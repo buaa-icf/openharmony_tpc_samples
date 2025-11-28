@@ -180,8 +180,8 @@ constructor(macSizeInBits: number, padding: BlockCipherPadding | null)
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue](https://gitcode/openharmony-tpc/openharmony_tpc_samples/bc_ohos/issues)，当然，也非常欢迎发 [PR](https://gitcode/openharmony-tpc/openharmony_tpc_samples/bc_ohos/pulls) 共建。
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues)，当然，也非常欢迎发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls) 共建。
 
 ## 开源协议
 
-本项目基于 [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/bc_ohos/blob/master/LICENSE.md)，请自由地享受和参与开源。
+本项目基于 [MIT License](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/bc_ohos/LICENSE)，请自由地享受和参与开源。
