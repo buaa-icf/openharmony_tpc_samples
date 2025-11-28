@@ -59,7 +59,9 @@ export struct EvaAnimComponent {
         }.id('eva_anim_component_stack')
         .width('100%')
         .height('100%')
-        .onAreaChange(this.playerEva.onStackAreaChange)
+        .onAreaChange((oldValue: Area, newValue: Area) => {
+            this.playerEva.onStackAreaChange(oldValue, newValue);
+        })
     }
 
     async aboutToAppear(): Promise<void> {

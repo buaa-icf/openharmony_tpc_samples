@@ -45,8 +45,7 @@ static napi_value nativeProcessPixelMap(napi_env env, napi_callback_info info)
     NapiHandler napiHandler(env, info, PARAM_COUNT_1);
 
     NAPI_CALL(env, napiHandler.ParseArgs(INDEX_0, [&](const napi_value &arg) -> napi_status {
-        OH_PixelmapNative *pixMap;
-        OH_PixelmapNative_ConvertPixelmapNativeFromNapi(env, arg, &pixMap);
+        NativePixelMap *pixMap = OH_PixelMap_InitNativePixelMap(env, arg);
         nativePixelMap.SetPixelMap(pixMap);
         return !nativePixelMap.IsNull() ? napi_ok : napi_generic_failure;
     }));
@@ -322,8 +321,7 @@ static napi_value setBgBitmap(napi_env env, napi_callback_info info)
     }
 
     NAPI_CALL(env, napiHandler.ParseArgs(INDEX_1, [&](const napi_value &arg) -> napi_status {
-        OH_PixelmapNative *pixMap;
-        OH_PixelmapNative_ConvertPixelmapNativeFromNapi(env, arg, &pixMap);
+        NativePixelMap *pixMap = OH_PixelMap_InitNativePixelMap(env, arg);
         bitmap.SetPixelMap(pixMap);
         return !bitmap.IsNull() ? napi_ok : napi_generic_failure;
     }));
@@ -356,8 +354,7 @@ static napi_value setSrcBitmap(napi_env env, napi_callback_info info)
     std::string srcId = napiHandler.ParseArgAs<std::string>(INDEX_1);
 
     NAPI_CALL(env, napiHandler.ParseArgs(INDEX_2, [&](const napi_value &arg) -> napi_status {
-        OH_PixelmapNative *pixMap;
-        OH_PixelmapNative_ConvertPixelmapNativeFromNapi(env, arg, &pixMap);
+        NativePixelMap *pixMap = OH_PixelMap_InitNativePixelMap(env, arg);
         bitmap.SetPixelMap(pixMap);
         return !bitmap.IsNull() ? napi_ok : napi_generic_failure;
     }));

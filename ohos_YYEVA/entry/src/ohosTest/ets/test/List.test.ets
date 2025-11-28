@@ -14,7 +14,9 @@
  */
 
 import abilityTest from './Ability.test';
+import evaDemoTest from './EvaDemo.test';
 
 export default function testsuite() {
   abilityTest();
+  evaDemoTest();
 }

@@ -56,12 +56,12 @@ public:
         ~PixelMap();
         bool Lock(void **pixels, OH_NativeBuffer_Config &pixelConfig);
         void Unlock();
-        OH_PixelmapNative *GetPixelMap();
-        void SetPixelMap(OH_PixelmapNative *pixelMap);
+        NativePixelMap *GetPixelMap();
+        void SetPixelMap(NativePixelMap *pixelMap);
         bool IsNull();
 
     private:
-        OH_PixelmapNative *nativePixelMap_ = nullptr;
+        NativePixelMap *nativePixelMap_ = nullptr;
         std::atomic<bool> lock_ {false};
     };
 
