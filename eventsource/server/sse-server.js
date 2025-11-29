@@ -7,7 +7,8 @@ const app = express()
 app.use(serveStatic(__dirname))
 app.get('/sse', (req, res) => {
   console.log('new connection')
-  console.log(req.url)
+  console.log('URL:', req.url)
+  console.log('Headers:', JSON.stringify(req.headers, null, 2))
    res.setHeader(  'Content-Type', 'application/octet-stream' ); 
   const sseStream = new SseStream(req)
   sseStream.pipe(res)
@@ -23,7 +24,8 @@ app.get('/sse', (req, res) => {
     sseStream.unpipe(res)
   })
 })
-app.listen(8080, (err) => {
+const PORT = process.env.PORT || 9000
+app.listen(PORT, '0.0.0.0', (err) => {
   if (err) throw err
-  console.log('server ready on http://localhost:8080')
+  console.log(`server ready on http://0.0.0.0:${PORT}`)
 })

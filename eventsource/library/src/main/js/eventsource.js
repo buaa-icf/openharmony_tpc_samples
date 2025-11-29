@@ -151,7 +151,7 @@ function EventSource(url, eventSourceInitDict) {
             method: http.RequestMethod.GET,
             connectTimeout: 0,
             readTimeout: 0,
-            header: new Header('application/json'),
+            header: options.headers,
         }, (err, res) => {
             if (!err) {
                 readyState = EventSource.OPEN

@@ -1,3 +1,7 @@
+## v2.0.4-rc.0
+
+- Fix the issue where the request for repair does not carry user-defined headers.
+
 ## v2.0.3
 
 - Release 2.0.3
