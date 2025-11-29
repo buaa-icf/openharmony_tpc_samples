@@ -59,18 +59,13 @@ int AnimConfig::GetJson(std::string &jsonStr, std::string &uri)
 
         if (boxHead.type.compare("vapc") == ZERO) { // memcmp(boxHead.type.data(), "vapc", 4) == 0
             LOGD("json length: %{public}d", boxHead.length);
-            std::vector<char> cont(boxHead.length);
-            file.read(cont.data(), boxHead.length);
+            std::vector<char> cont(boxHead.length - EIGHT);
+            file.read(cont.data(), boxHead.length - EIGHT);
             jsonStr.assign(cont.begin(), cont.end());
             ret = 0;
             break;
         }
-        if (isH265_) {
-            file.seekg(-FOUR, std::ios::cur);
-        }
-        if (boxHead.type.compare("moov") == 0) {
-            file.seekg(boxHead.length - EIGHT, std::ios::cur);
-        }
+        file.seekg(boxHead.length - EIGHT, std::ios::cur);
     }
     file.close();
     return ret;

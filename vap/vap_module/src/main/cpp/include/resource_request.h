@@ -60,6 +60,8 @@ public:
     
     void FetchText(std::vector<uint8_t> &data, TextOption &txtOpt);
     void FetchImg(std::vector<uint8_t> &data, ImageOption &imgOpt, const MixInputData& mixData);
+    bool HandleFileImg(const MixInputData& mixData, ImageOption &imgOpt, float& scaleX, float& scaleY);
+    bool HandlePixelImg(const MixInputData& mixData, ImageOption &imgOpt, float& scaleX, float& scaleY);
 private:
     uint64_t width_ = 300;
     uint64_t height_ = 50;
