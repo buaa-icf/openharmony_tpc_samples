@@ -26,7 +26,7 @@
  */
 
 
-import Eventsource from '@ohos/eventsource'
+import Eventsource, { EventSourceInitDict } from '@ohos/eventsource'
 import promptAction from '@ohos.promptAction';
 @Entry
 @Component
@@ -34,7 +34,7 @@ import promptAction from '@ohos.promptAction';
 struct Parent {
   @State simpleList: Array<string> = [];
   @State es: null | Eventsource = null;
-  @State text: string = 'http://139.9.217.131:8000/sse';
+  @State text: string = 'http://localhost:9000/sse';
   eventListener:null|((e: Record<"data", string>)=>void) = (e: Record<"data", string>) => {
     this.simpleList.push(e.data);
   }
@@ -65,7 +65,8 @@ struct Parent {
             height: 50
           })
           .onClick(() => {
-            this.es = new Eventsource(this.text);
+            let eventSourceInitDict: EventSourceInitDict = { headers: {'Cookie': 'test=test'}};
+            this.es = new Eventsource(this.text, eventSourceInitDict);
             if(this.es===null) return
             this.es.onFailure((e: Record<"message", string>) => {
               promptAction.showToast({ message: JSON.stringify(e.message) });
