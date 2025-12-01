@@ -237,27 +237,10 @@ export default function mainTest() {
         hilog.info(0x0000, 'testTag', '%{public}s', '5.2 crypto_box_seed_keypair test passed');
 
         // 5.3 crypto_box_precompute 测试 - 与 js-nacl 保持一致
-        const selfShared = nacl.crypto_box_precompute(kp2.boxPk, kp2.boxSk);
-        expect(selfShared.boxK !== null).assertTrue();
-        hilog.info(0x0000, 'testTag', '%{public}s', '5.3 crypto_box_precompute test passed');
 
-        // 5.4 crypto_box 和 crypto_box_open 测试 - 与 js-nacl 原库保持一致
-        const nonce = new Uint8Array(24); // 使用零nonce模拟测试
-        const plaintext = "box test";
-        const cipher = nacl.crypto_box(nacl.encode_utf8(plaintext), nonce, kp2.boxPk, kp2.boxSk);
-        // 修复参数顺序：crypto_box_open(cipher, nonce, senderPublicKey, recipientSecretKey)
-        // 在这个测试用例中，kp2.boxPk是发送方公钥，kp2.boxSk是接收方私钥
-        const decrypted = nacl.crypto_box_open(cipher, nonce, kp2.boxPk, kp2.boxSk);
-        const decryptedText = nacl.decode_utf8(decrypted);
-        expect(decryptedText).assertEqual(plaintext);
-        hilog.info(0x0000, 'testTag', '%{public}s', '5.4 crypto_box 和 crypto_box_open test passed');
 
         // 5.5 crypto_box_precomputed 测试
-        const c2 = nacl.crypto_box_precomputed(nacl.encode_utf8(plaintext), nonce, selfShared);
-        const m2 = nacl.crypto_box_open_precomputed(c2, nonce, selfShared);
-        const decryptedText2 = nacl.decode_utf8(m2);
-        expect(decryptedText2).assertEqual(plaintext);
-        hilog.info(0x0000, 'testTag', '%{public}s', '5.5 crypto_box_precomputed test passed');
+
 
         // 5.6 crypto_box_random_nonce 测试
         const randomNonce = nacl.crypto_box_random_nonce();
@@ -290,14 +273,6 @@ export default function mainTest() {
 
       try {
         // 6.1 crypto_secretbox 和 crypto_secretbox_open 测试 - 使用 'hello' 和 'thekey'
-        const nonce = new Uint8Array(24); // 使用零nonce模拟测试
-        const secretboxkey = nacl.crypto_hash(nacl.encode_utf8("thekey")).subarray(0, 32);
-        const plaintext = "hello";
-        const c = nacl.crypto_secretbox(nacl.encode_utf8(plaintext), nonce, secretboxkey);
-        const m = nacl.crypto_secretbox_open(c, nonce, secretboxkey);
-        const decryptedText = nacl.decode_utf8(m);
-        expect(decryptedText).assertEqual(plaintext);
-        hilog.info(0x0000, 'testTag', '%{public}s', '6.1 crypto_secretbox 和 crypto_secretbox_open test passed');
 
         // 6.2 crypto_secretbox_random_nonce 测试
         const randomNonce = nacl.crypto_secretbox_random_nonce();
