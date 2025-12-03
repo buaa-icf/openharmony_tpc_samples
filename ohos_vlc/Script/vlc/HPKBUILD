@@ -1,0 +1,106 @@
+# Copyright (c) 2025 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Contributor: Jeff Han <hanjinfei@foxmail.com>
+# Maintainer: Jeff Han <hanjinfei@foxmail.com>
+
+pkgname=vlc
+pkgver=ohos-3.0.21_dev
+pkgrel=0
+pkgdesc="VLC 是一款自由、开源的跨平台多媒体播放器及框架，可播放大多数多媒体文件，以及 DVD、音频 CD、VCD 及各类流媒体协议。"
+url="https://www.videolan.org/"
+archs=("arm64-v8a")
+license=("GPL")
+depends=("FFmpeg" "faad2" "libvorbis" "libvpx" "libdca" "flac" "speex" "libtheora" "aribb24" "speexdsp" "libkate" "libogg" "a52dec" "freetype2")
+
+source="https://gitcode.com/ohos-vlc/vlc.git"
+buildtools="configure"
+builddir=$pkgname-${pkgver}
+cloneflag=true
+autounpack=false
+
+source envset.sh
+inited=true
+
+host=
+prepare() {
+    if [ $cloneflag == true ];then
+        git clone -b $pkgver --depth=1 $source $builddir > $publicbuildlog 2>&1        
+        if [ $? -ne 0 ]
+        then
+            echo "$pkgname git clone $source error."
+            rm -rf $builddir
+            return -1
+        fi
+        cloneflag=false
+    fi
+
+    mkdir -p $builddir/$ARCH-build
+    if [ $ARCH == "arm64-v8a" ]
+    then
+        setarm64ENV
+        CFLAGS="-Wl,-L$LYCIUM_ROOT/usr/libogg/arm64-v8a/lib/ -Wl,-logg -I$LYCIUM_ROOT/usr/libogg/arm64-v8a/include -Wl,-L$LYCIUM_ROOT/usr/a52dec/arm64-v8a/lib/ -Wl,-la52 -I$LYCIUM_ROOT/usr/a52dec/arm64-v8a/include $CFLAGS"
+        host=aarch64-linux
+    else
+        echo "${ARCH} not support"
+        return -1
+    fi
+
+    if [ $inited == true ];then
+        inited=false
+        cd $builddir
+        ./bootstrap >> $publicbuildlog 2>&1
+        cd $OLDPWD
+    fi
+}
+
+build() {
+    cd $builddir/$ARCH-build
+
+    PKG_CONFIG_LIBDIR="${pkgconfigpath}" \
+	EGL_CFLAGS="-I${OHOS_SDK}/native/sysroot/usr/include" \
+	EGL_LIBS="-L${OHOS_SDK}/native/sysroot/usr/lib/aarch64-linux-ohos/ -lEGL" \
+	GLES2_CFLAGS="-I${OHOS_SDK}/native/sysroot/usr/include" \
+	GLES2_LIBS="-L${OHOS_SDK}/native/sysroot/usr/lib/aarch64-linux-ohos/ -lGLESv2" \
+	BUILDCC=gcc ../configure "$@" --host=$host --disable-lua --disable-a52 --disable-rpath \
+        --disable-xcb --disable-alsa --disable-vlc --disable-v4l2 --enable-gles2 \
+        --enable-freetype ac_cv_func_open_memstream=no > $buildlog 2>&1
+    $MAKE >> $buildlog 2>&1
+    ret=$?
+    cd $OLDPWD
+    return $ret
+}
+
+package() {
+    cd $builddir/$ARCH-build
+    $MAKE install >> `pwd`/build.log 2>&1
+    cd $OLDPWD
+}
+
+check() {
+    unset host
+    if [ $ARCH == "arm64-v8a" ]
+    then
+        unsetarm64ENV
+    else
+        echo "${ARCH} not support"
+        return -1
+    fi
+    echo "The test must be on an OpenHarmony device!"
+}
+
+# 清理环境
+cleanbuild() {
+    echo "The test must be on an OpenHarmony device!"
+    rm -rf ${PWD}/$builddir #${PWD}/$packagename
+}

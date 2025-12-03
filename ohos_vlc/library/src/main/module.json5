@@ -1,0 +1,9 @@
+{
+  "module": {
+    "name": "vlc_napi",
+    "type": "har",
+    "deviceTypes": [
+      "default"
+    ]
+  }
+}

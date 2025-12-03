@@ -69,6 +69,10 @@
 	url = https://gitee.com/lycium_pkg_mirror/yoga
 	branch = v3.2.1
 
+[submodule "ohos_vlc/library/src/main/cpp/boundscheck/third_party_bounds_checking_function"]
+	path = ohos_vlc/library/src/main/cpp/boundscheck/third_party_bounds_checking_function
+	url = https://gitee.com/openharmony/third_party_bounds_checking_function.git
+
 [submodule "spinec/Spinec/src/main/cpp/boundscheck/third_party_bounds_checking_function"]
 	path = spinec/Spinec/src/main/cpp/boundscheck/third_party_bounds_checking_function
 	url = https://gitee.com/openharmony/third_party_bounds_checking_function.git

@@ -1,0 +1,21 @@
+{
+  "apiType": "stageMode",
+  "buildOption": {
+    "napiLibFilterOption": {
+      "enableOverride": true
+    },
+    "externalNativeOptions": {
+      "path": "./src/main/cpp/CMakeLists.txt",
+      "arguments": "",
+      "abiFilters": [
+        "arm64-v8a"
+      ],
+      "cppFlags": ""
+    },
+    "arkOptions": {
+    },
+    "sourceOption": {
+    }
+  }
+}
+
