@@ -52,7 +52,7 @@ void ANativeWindowRelease(ANativeWindow *window)
     if (nativeWindow == nullptr) {
         return;
     }
-    OH_NativeWindow_NativeObjectUnreference(nativeWindow);
+    OH_NativeWindow_DestroyNativeWindow(nativeWindow);
 }
 
 int ANativeWindowGetWidth(ANativeWindow *window)

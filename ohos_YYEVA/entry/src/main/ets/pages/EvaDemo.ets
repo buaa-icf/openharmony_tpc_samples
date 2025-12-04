@@ -27,7 +27,7 @@ import { EvaResource } from '@ohos/yyevac/src/main/ets/mix/EvaResource';
 import { EvaSrc } from '@ohos/yyevac/src/main/ets/mix/EvaSrc';
 import image from '@ohos.multimedia.image';
 import { PromptAction, UIContext } from '@kit.ArkUI';
-import { emitter } from '@kit.BasicServicesKit';
+import { emitter, BusinessError } from '@kit.BasicServicesKit';
 import { ScaleType } from '@ohos/yyevac/src/main/ets/util/ScaleTypeUtil';
 import { MyElog } from '../bean/MyElog';
 
@@ -144,19 +144,40 @@ export struct EvaDemo {
       ELog.i(EvaAnimPlayer.TAG, `onVideoComplete eventData: ${JSON.stringify(eventData)}`);
       let uuid: string = eventData.data?.uuid
       console.log(`onVideoComplete, uuid = ${uuid}`);
+
+      this.closeEvaDemoRawFdFile();
     })
     emitter.on(EvaConstant.EVENT_ID_ON_VIDEO_DESTROY, (eventData: emitter.EventData) => {
       ELog.i(EvaAnimPlayer.TAG, `onVideoDestroy eventData: ${JSON.stringify(eventData)}`);
       let uuid: string = eventData.data?.uuid
       console.log(`onVideoDestroy, uuid = ${uuid}`);
-    })
+
+      this.closeEvaDemoRawFdFile();
+    });
+
     emitter.on(EvaConstant.EVENT_ID_ON_FAILED, (eventData: emitter.EventData) => {
       ELog.i(EvaAnimPlayer.TAG, `onFailed eventData: ${JSON.stringify(eventData)}`);
       let uuid: string = eventData.data?.uuid
       console.log(`onFailed, uuid = ${uuid}`);
-    })
+
+      this.closeEvaDemoRawFdFile();
+    });
 
     await this.play()
+  }
+
+  closeEvaDemoRawFdFile() {
+    try {
+      this.context.resourceManager.closeRawFd(this.videoInfo.fileName, (error: BusinessError) => {
+        if (error != null) {
+          console.error(`closeRawFd ${this.videoInfo.fileName} error is ` + JSON.stringify(error));
+          return;
+        }
+        console.info(`closeRawFd ${this.videoInfo.fileName} success.`);
+      });
+    } catch (error) {
+      ELog.e(EvaAnimPlayer.TAG, `closeEvaDemoRawFdFile catch error: ${JSON.stringify(error)}`);
+    }
   }
 
   aboutToDisappear(): void {

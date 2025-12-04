@@ -19,6 +19,7 @@ EGLCore::EGLCore():mDisplay(EGL_NO_DISPLAY), mSurface(EGL_NO_SURFACE),mContext(E
 }
 
 EGLCore::~EGLCore() {
+    release();
     mDisplay = EGL_NO_DISPLAY;
     mSurface = EGL_NO_SURFACE;
     mContext = EGL_NO_CONTEXT;

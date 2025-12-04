@@ -147,11 +147,11 @@ export class EvaMixAnimPlugin implements IEvaAnimPlugin {
       if (src.srcType === EvaSrc.SrcType.IMG) {
         ELog.i(EvaMixAnimPlugin.TAG, `setResourceSync image ${src.srcId}`)
         const promise = new Promise<void>((resolve) => {
-          this.resourceRequestEva?.setImage(new EvaResource(src), (pixelMap, fixType) => {
+          this.resourceRequestEva?.setImage(new EvaResource(src), async (pixelMap, fixType) => {
             let pixelMaps: image.PixelMap | null = pixelMap
             if (pixelMaps == null) {
               ELog.e(EvaMixAnimPlugin.TAG, `setResourceSync image ${src.srcId} bitmap return null`);
-              src.bitmap = EvaBitmapUtil.createEmptyBitmap();
+              src.bitmap = await EvaBitmapUtil.createEmptyBitmap();
             } else {
               if (pixelMap != undefined) {
                 pixelMap.clone().then((clonePixelMap: image.PixelMap) => {

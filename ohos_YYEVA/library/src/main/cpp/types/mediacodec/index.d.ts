@@ -40,13 +40,13 @@ export class MediaCodec {
    */
   bind(extractor: MediaExtractor, callback: (status: number, codecInfo: CodeInfoAttr) => void): void;
   configure(colorFormat?: number, surface?: SurfaceTexture): void;
-  start(): void;
-  restart(): void;
-  stop(): void;
+  start(): Promise<void>;
+  restart(): Promise<void>;
+  stop(): Promise<void>;
   flush(): void;
-  resume(): void;
-  pause(): void;
-  release(): void;
+  resume(): Promise<void>;
+  pause(): Promise<void>;
+  release(): Promise<void>;
   getState(): number;
   setSpeed(speed: number): void;
   setVolume(volume: number): void;

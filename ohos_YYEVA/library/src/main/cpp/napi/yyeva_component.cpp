@@ -196,7 +196,7 @@ bool YYEVAComponent::PixelMap::Lock(void **pixels, OH_NativeBuffer_Config &pixel
     pixelConfig.width = srcInfo.width;
     pixelConfig.height = srcInfo.height;
     pixelConfig.stride = srcInfo.rowSize;
-    pixelConfig.format = srcInfo.pixelFormat;
+    pixelConfig.format = EglFormatToNativeFormat(srcInfo.pixelFormat);
     int32_t result = OH_PixelMap_AccessPixels(nativePixelMap_, pixels);
     if (result != IMAGE_SUCCESS || *pixels == nullptr) {
         LOGE("Failed to access pixels: %d", result);
