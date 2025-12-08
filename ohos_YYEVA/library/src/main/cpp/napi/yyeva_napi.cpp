@@ -111,13 +111,15 @@ static napi_value initRender(napi_env env, napi_callback_info info)
     NapiHandler napiHandler(env, info, PARAM_COUNT_5);
     int controllerId = napiHandler.ParseArgAs<int>(INDEX_0);
     std::string surfaceId = napiHandler.ParseArgAs<std::string>(INDEX_1);
-    OHNativeWindow *window = nullptr;
     bool isNeedYUV = napiHandler.ParseArgAs<bool>(INDEX_2);
     bool isNormalMp4 = napiHandler.ParseArgAs<bool>(INDEX_3);
     bool isVideoRecord = napiHandler.ParseArgAs<bool>(INDEX_4);
 
     lock_guard<mutex> auto_lock(g_mtx);
-    window = (OHNativeWindow *)YYEVAComponent::Instance().CreateWindowBySurfaceId(surfaceId);
+    OHNativeWindow *window = nullptr;
+    uint64_t sid = atoll(surfaceId.c_str());
+    LOGD("Create Window, surfaceId: %s -> %llu", surfaceId.c_str(), sid);
+    OH_NativeWindow_CreateNativeWindowFromSurfaceId(sid, &window);
     int id = controllerId;
     if (controllerId == -1) {
         g_renderId += 1;
@@ -463,7 +465,10 @@ static napi_value initVideoRecord(napi_env env, napi_callback_info info)
     std::string surfaceId = napiHandler.ParseArgAs<std::string>(INDEX_1);
 
     lock_guard<mutex> auto_lock(g_mtx);
-    ANativeWindow *window = (OHNativeWindow *)YYEVAComponent::Instance().CreateWindowBySurfaceId(surfaceId);
+    OHNativeWindow *window = nullptr;
+    uint64_t id = atoll(surfaceId.c_str());
+    LOGD("Create Window, surfaceId: %s -> %llu", surfaceId.c_str(), id);
+    OH_NativeWindow_CreateNativeWindowFromSurfaceId(id, &window);
     if (window == nullptr) {
         ELOGE("window is nullptr");
         return napiHandler.GetNapiValue<int32_t>(-1);

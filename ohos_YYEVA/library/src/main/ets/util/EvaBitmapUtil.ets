@@ -24,17 +24,18 @@ export class EvaBitmapUtil {
   public static b: number = 0;
   public static a: number = 0;
 
-  static createEmptyBitmap(): image.PixelMap | null {
+  static async createEmptyBitmap(): Promise<image.PixelMap | null> {
     let result: image.PixelMap | null = null;
     const color: ArrayBuffer = new ArrayBuffer(256);
     let opts: image.InitializationOptions =
       { editable: true, pixelFormat: image.PixelMapFormat.RGBA_8888, size: { height: 16, width: 16 } }
-    image.createPixelMap(color, opts).then((pixelMap: image.PixelMap) => {
-      result = pixelMap;
+    try {
+      const pixelMap = await image.createPixelMap(color, opts);
       console.info('Succeeded in creating pixelmap.');
-    }).catch((error: BusinessError) => {
+      result = pixelMap;
+    } catch (error) {
       console.error(`Failed to create pixelmap. code is ${error.code}, message is ${error.message}`);
-    })
+    }
     return result;
   }
 

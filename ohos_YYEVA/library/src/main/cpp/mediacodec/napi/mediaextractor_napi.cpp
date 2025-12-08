@@ -473,9 +473,12 @@ static napi_value releaseDecoder(napi_env env, napi_callback_info info)
         LOGE("Unbind MediaCodec nullptr");
         return nullptr;
     }
-    mediaCodec->Release();
-
-    return napiHandler.GetVoidValue();
+    NapiAsyncHandler *asyncHandler = new NapiAsyncHandler(env, "release");
+    asyncHandler->OnWork([mediaCodec](napi_env env, void *d) -> napi_status {
+        mediaCodec->Release();
+        return napi_ok;
+    });
+    return napiHandler.Promise(asyncHandler);
 }
 
 static napi_value setSpeed(napi_env env, napi_callback_info info)
@@ -607,8 +610,12 @@ static napi_value start(napi_env env, napi_callback_info info)
         return nullptr;
     }
 
-    mediaCodec->Start();
-    return napiHandler.GetVoidValue();
+    NapiAsyncHandler *asyncHandler = new NapiAsyncHandler(env, "start");
+    asyncHandler->OnWork([mediaCodec](napi_env env, void *d) -> napi_status {
+        mediaCodec->Start();
+        return napi_ok;
+    });
+    return napiHandler.Promise(asyncHandler);
 }
 
 static napi_value stop(napi_env env, napi_callback_info info)
@@ -620,9 +627,12 @@ static napi_value stop(napi_env env, napi_callback_info info)
         LOGE("Unbind Extractor nullptr");
         return nullptr;
     }
-
-    mediaCodec->Stop();
-    return napiHandler.GetVoidValue();
+    NapiAsyncHandler *asyncHandler = new NapiAsyncHandler(env, "stop");
+    asyncHandler->OnWork([mediaCodec](napi_env env, void *d) -> napi_status {
+        mediaCodec->Stop();
+        return napi_ok;
+    });
+    return napiHandler.Promise(asyncHandler);
 }
 
 static napi_value restart(napi_env env, napi_callback_info info)
@@ -635,8 +645,12 @@ static napi_value restart(napi_env env, napi_callback_info info)
         return nullptr;
     }
 
-    mediaCodec->Restart();
-    return napiHandler.GetVoidValue();
+    NapiAsyncHandler *asyncHandler = new NapiAsyncHandler(env, "restart");
+    asyncHandler->OnWork([mediaCodec](napi_env env, void *d) -> napi_status {
+        mediaCodec->Restart();
+        return napi_ok;
+    });
+    return napiHandler.Promise(asyncHandler);
 }
 
 static napi_value pause(napi_env env, napi_callback_info info)
@@ -649,8 +663,12 @@ static napi_value pause(napi_env env, napi_callback_info info)
         return nullptr;
     }
 
-    mediaCodec->Pause();
-    return napiHandler.GetVoidValue();
+    NapiAsyncHandler *asyncHandler = new NapiAsyncHandler(env, "pause");
+    asyncHandler->OnWork([mediaCodec](napi_env env, void *d) -> napi_status {
+        mediaCodec->Pause();
+        return napi_ok;
+    });
+    return napiHandler.Promise(asyncHandler);
 }
 
 static napi_value resume(napi_env env, napi_callback_info info)
@@ -662,8 +680,12 @@ static napi_value resume(napi_env env, napi_callback_info info)
         return nullptr;
     }
 
-    mediaCodec->Resume();
-    return napiHandler.GetVoidValue();
+    NapiAsyncHandler *asyncHandler = new NapiAsyncHandler(env, "resume");
+    asyncHandler->OnWork([mediaCodec](napi_env env, void *d) -> napi_status {
+        mediaCodec->Resume();
+        return napi_ok;
+    });
+    return napiHandler.Promise(asyncHandler);
 }
 
 // SurfaceTexture

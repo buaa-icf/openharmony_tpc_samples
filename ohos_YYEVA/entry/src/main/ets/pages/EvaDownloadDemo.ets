@@ -17,7 +17,7 @@ import { ELog, EvaAnimComponent, EvaAnimPlayer, EvaConstant, OnEvaResourceClickL
 import { common } from '@kit.AbilityKit';
 import { VideoInfo } from '../bean/VideoInfo';
 import { MyElog } from '../bean/MyElog';
-import { emitter } from '@kit.BasicServicesKit';
+import { emitter, BusinessError } from '@kit.BasicServicesKit';
 import { EvaResource } from '@ohos/yyevac/src/main/ets/mix/EvaResource';
 import { PromptAction } from '@kit.ArkUI';
 import { ScaleType } from '@ohos/yyevac/src/main/ets/util/ScaleTypeUtil';
@@ -114,16 +114,22 @@ export struct EvaDownloadDemo {
       ELog.i(EvaAnimPlayer.TAG, `onVideoComplete eventData: ${JSON.stringify(eventData)}`);
       let uuid: string = eventData.data?.uuid
       console.log(`onVideoComplete, uuid = ${uuid}`);
+
+      this.closeDownloadDemoRawFdFile();
     })
     emitter.on(EvaConstant.EVENT_ID_ON_VIDEO_DESTROY, (eventData: emitter.EventData) => {
       ELog.i(EvaAnimPlayer.TAG, `onVideoDestroy eventData: ${JSON.stringify(eventData)}`);
       let uuid: string = eventData.data?.uuid
       console.log(`onVideoDestroy, uuid = ${uuid}`);
+
+      this.closeDownloadDemoRawFdFile();
     })
     emitter.on(EvaConstant.EVENT_ID_ON_FAILED, (eventData: emitter.EventData) => {
       ELog.i(EvaAnimPlayer.TAG, `onFailed eventData: ${JSON.stringify(eventData)}`);
       let uuid: string = eventData.data?.uuid
       console.log(`onFailed, uuid = ${uuid}`);
+
+      this.closeDownloadDemoRawFdFile();
     })
 
     await this.play()
@@ -138,6 +144,20 @@ export struct EvaDownloadDemo {
     emitter.off(EvaConstant.EVENT_ID_ON_VIDEO_COMPLETE)
     emitter.off(EvaConstant.EVENT_ID_ON_VIDEO_DESTROY)
     emitter.off(EvaConstant.EVENT_ID_ON_FAILED)
+  }
+
+  closeDownloadDemoRawFdFile() {
+    try {
+      this.context.resourceManager.closeRawFd(this.videoInfo.fileName, (error: BusinessError) => {
+        if (error != null) {
+          console.error(`closeRawFd ${this.videoInfo.fileName} error is ` + JSON.stringify(error));
+          return;
+        }
+        console.info(`closeRawFd ${this.videoInfo.fileName} success.`);
+      });
+    } catch (error) {
+      ELog.e(EvaAnimPlayer.TAG, `closeDownloadDemoRawFdFile catch error: ${JSON.stringify(error)}`);
+    }
   }
 
   initLog() {
