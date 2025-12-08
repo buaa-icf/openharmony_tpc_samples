@@ -1,7 +1,7 @@
 # spine-c
 
 #### 介绍
-是一套用C语言编写的程序库，负责在你的C/C++程序（如游戏引擎、应用）中加载、操控和渲染由Spine编辑器制作的骨骼动画数据。
+spinec是一套用C语言编写的程序库，负责在C/C++程序（如游戏引擎、应用）中加载、操控和渲染由Spine编辑器制作的骨骼动画数据。
 
 #### 安装教程
 
@@ -20,7 +20,6 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
 ## 使用示例
 ### 完整示例
  ``` 
-// 导入所需的HarmonyOS模块：Spine骨骼动画库和日志工具
 import { Spine} from '@ohos/spinec';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 
@@ -176,7 +175,7 @@ struct Index {
     // 垂直布局容器
     Column() {
       // 标题文本
-      Text('Spine 鸿蒙示例')
+      Text('Spine exip')
         .fontSize(24)
         .fontWeight(FontWeight.Bold)
         .margin({ top: 20, bottom: 10 })
@@ -190,7 +189,7 @@ struct Index {
       // XComponent就绪状态指示器
       Text(`XComponent: ${this.isXComponentReady ? '就绪' : '等待中'}`)
         .fontSize(12)
-        .fontColor(this.isXComponentReady ? '#00AA00' : '#FF6600')
+        .fontColor(this.isXComponentReady ? '#00AB00' : '#FF6600')
         .margin({ bottom: 5 })
 
       // 核心：XComponent渲染组件
