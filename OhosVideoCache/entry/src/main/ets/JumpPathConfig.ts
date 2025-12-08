@@ -74,6 +74,9 @@ export default class JumpPathConfig {
       let cacheSizeBean = new JumpBean('pages/CacheSizeDemo');
       this.dataList.push(cacheSizeBean)
 
+      let getRequestTestBean = new JumpBean('pages/GetRequestTestDemo');
+      this.dataList.push(getRequestTestBean)
+
     }
   }
 }

@@ -18,17 +18,19 @@ import Preconditions from './Preconditions';
 import { LogUtil } from './LogUtil';
 
 export default class GetRequest {
-  private RANGE_HEADER_PATTERN: RegExp = new RegExp("[R,r]ange:[ ]?bytes=(\\d*)-");
-  private URL_PATTERN: RegExp = new RegExp("GET /(.*) HTTP");
+  private RANGE_HEADER_PATTERN: RegExp = new RegExp("range:[ ]?bytes=(\\d*)-", "i");
+  private URL_PATTERN: RegExp = new RegExp("(GET|HEAD) /(.*) HTTP");
   public uri: string;
   public rangeOffset: number;
   public partial: boolean;
+  public method: string; // 请求方法: GET 或 HEAD
 
   constructor(request: string) {
     Preconditions.checkNotNull(request);
     let offset = this.findRangeOffset(request);
     this.rangeOffset = Math.max(0, offset);
     this.partial = offset >= 0;
+    this.method = this.findMethod(request);
     this.uri = this.findUri(request);
   }
 
@@ -49,19 +51,33 @@ export default class GetRequest {
     return -1;
   }
 
+  private findMethod(request: string): string {
+    let matcher = this.URL_PATTERN.exec(request);
+    // matcher[0]: 完整匹配
+    // matcher[1]: 请求方法 (GET|HEAD)
+    // matcher[2]: URL路径
+    if (!matcher || matcher.length < 2 || (matcher.length >= 2 && !matcher[1])) {
+      throw new Error('Invalid request: method not found!');
+    }
+    return matcher[1];
+  }
+
   private findUri(request: string): string {
     let matcher = this.URL_PATTERN.exec(request);
-    if (!matcher || matcher.length < 2 || (matcher.length >= 2 && !matcher[1])) throw new Error("Invalid request `");
-    if (this.URL_PATTERN.test(request)) {
-      return matcher!![1];
+    // matcher[0]: 完整匹配
+    // matcher[1]: 请求方法 (GET|HEAD)
+    // matcher[2]: URL路径
+    if (!matcher || matcher.length < 3 || (matcher.length >= 3 && !matcher[2])) {
+      throw new Error("Invalid request `" + request + "`: url not found!");
     }
-    throw new Error("Invalid request `" + request + "`: url not found!");
+    return matcher[2];
   }
 
 
   public toString(): string {
     return "GetRequest{" +
-      "rangeOffset=" + this.rangeOffset +
+      "method=" + this.method +
+      ", rangeOffset=" + this.rangeOffset +
       ", partial=" + this.partial +
       ", uri='" + this.uri + '\'' +
       '}';

@@ -30,6 +30,8 @@ import fs from '@ohos.file.fs';
 import http from '@ohos.net.http';
 import CryptoJS from '@ohos/crypto-js';
 import HashMap from '@ohos.util.HashMap';
+import buffer from '@ohos.buffer';
+import GetRequest from '@ohos/video-cache/src/main/ets/GetRequest';
 
 const BASE_COUNT = 1
 
@@ -341,6 +343,187 @@ export default function OhosVideoCacheTest() {
       } catch (err) {
         expect(1).assertEqual(2);
       }
+    })
+
+    // GetRequest 测试用例
+    describe('GetRequestTest', () => {
+      it('parseGETRequest', 0, () => {
+        try {
+          let requestStr = "GET /test%20url HTTP/1.1\r\nHost: example.com\r\nRange: bytes=1024-\r\n\r\n";
+          let requestBuffer = buffer.from(requestStr, 'utf-8').buffer;
+          let request = GetRequest.read(requestBuffer);
+          
+          expect(request.method).assertEqual("GET");
+          expect(request.uri).assertEqual("test%20url");
+          expect(request.rangeOffset).assertEqual(1024);
+          expect(request.partial).assertTrue();
+        } catch (err) {
+          expect(1).assertEqual(2);
+        }
+      })
+
+      it('parseHEADRequest', 0, () => {
+        try {
+          let requestStr = "HEAD /test%20url HTTP/1.1\r\nHost: example.com\r\nRange: bytes=2048-\r\n\r\n";
+          let requestBuffer = buffer.from(requestStr, 'utf-8').buffer;
+          let request = GetRequest.read(requestBuffer);
+          
+          expect(request.method).assertEqual("HEAD");
+          expect(request.uri).assertEqual("test%20url");
+          expect(request.rangeOffset).assertEqual(2048);
+          expect(request.partial).assertTrue();
+        } catch (err) {
+          expect(1).assertEqual(2);
+        }
+      })
+
+      it('parseGETRequestWithoutRange', 0, () => {
+        try {
+          let requestStr = "GET /test%20url HTTP/1.1\r\nHost: example.com\r\n\r\n";
+          let requestBuffer = buffer.from(requestStr, 'utf-8').buffer;
+          let request = GetRequest.read(requestBuffer);
+          
+          expect(request.method).assertEqual("GET");
+          expect(request.uri).assertEqual("test%20url");
+          expect(request.rangeOffset).assertEqual(0);
+          expect(request.partial).assertFalse();
+        } catch (err) {
+          expect(1).assertEqual(2);
+        }
+      })
+
+      it('parseHEADRequestWithoutRange', 0, () => {
+        try {
+          let requestStr = "HEAD /test%20url HTTP/1.1\r\nHost: example.com\r\n\r\n";
+          let requestBuffer = buffer.from(requestStr, 'utf-8').buffer;
+          let request = GetRequest.read(requestBuffer);
+          
+          expect(request.method).assertEqual("HEAD");
+          expect(request.uri).assertEqual("test%20url");
+          expect(request.rangeOffset).assertEqual(0);
+          expect(request.partial).assertFalse();
+        } catch (err) {
+          expect(1).assertEqual(2);
+        }
+      })
+
+      it('parseGETRequestWithComplexUrl', 0, () => {
+        try {
+          let encodedUrl = "https://example.com/video.mp4";
+          let requestStr = `GET /${encodedUrl} HTTP/1.1\r\nHost: 127.0.0.1\r\nRange: bytes=512-\r\n\r\n`;
+          let requestBuffer = buffer.from(requestStr, 'utf-8').buffer;
+          let request = GetRequest.read(requestBuffer);
+          
+          expect(request.method).assertEqual("GET");
+          expect(request.uri).assertEqual(encodedUrl);
+          expect(request.rangeOffset).assertEqual(512);
+          expect(request.partial).assertTrue();
+        } catch (err) {
+          expect(1).assertEqual(2);
+        }
+      })
+
+      it('parseHEADRequestWithComplexUrl', 0, () => {
+        try {
+          let encodedUrl = "https://example.com/video.mp4";
+          let requestStr = `HEAD /${encodedUrl} HTTP/1.1\r\nHost: 127.0.0.1\r\nRange: bytes=1024-\r\n\r\n`;
+          let requestBuffer = buffer.from(requestStr, 'utf-8').buffer;
+          let request = GetRequest.read(requestBuffer);
+          
+          expect(request.method).assertEqual("HEAD");
+          expect(request.uri).assertEqual(encodedUrl);
+          expect(request.rangeOffset).assertEqual(1024);
+          expect(request.partial).assertTrue();
+        } catch (err) {
+          expect(1).assertEqual(2);
+        }
+      })
+
+      it('parseGETRequestWithRangeHeaderCaseInsensitive', 0, () => {
+        try {
+          let requestStr = "GET /test%20url HTTP/1.1\r\nHost: example.com\r\nrange: bytes=256-\r\n\r\n";
+          let requestBuffer = buffer.from(requestStr, 'utf-8').buffer;
+          let request = GetRequest.read(requestBuffer);
+          
+          expect(request.method).assertEqual("GET");
+          expect(request.uri).assertEqual("test%20url");
+          expect(request.rangeOffset).assertEqual(256);
+          expect(request.partial).assertTrue();
+        } catch (err) {
+          expect(1).assertEqual(2);
+        }
+      })
+
+      it('parseHEADRequestWithRangeHeaderCaseInsensitive', 0, () => {
+        try {
+          let requestStr = "HEAD /test%20url HTTP/1.1\r\nHost: example.com\r\nRANGE: bytes=512-\r\n\r\n";
+          let requestBuffer = buffer.from(requestStr, 'utf-8').buffer;
+          let request = GetRequest.read(requestBuffer);
+          
+          expect(request.method).assertEqual("HEAD");
+          expect(request.uri).assertEqual("test%20url");
+          expect(request.rangeOffset).assertEqual(512);
+          expect(request.partial).assertTrue();
+        } catch (err) {
+          expect(1).assertEqual(2);
+        }
+      })
+
+      it('parseGETRequestWithZeroRange', 0, () => {
+        try {
+          let requestStr = "GET /test%20url HTTP/1.1\r\nHost: example.com\r\nRange: bytes=0-\r\n\r\n";
+          let requestBuffer = buffer.from(requestStr, 'utf-8').buffer;
+          let request = GetRequest.read(requestBuffer);
+          
+          expect(request.method).assertEqual("GET");
+          expect(request.uri).assertEqual("test%20url");
+          expect(request.rangeOffset).assertEqual(0);
+          expect(request.partial).assertTrue();
+        } catch (err) {
+          expect(1).assertEqual(2);
+        }
+      })
+
+      it('parseHEADRequestWithZeroRange', 0, () => {
+        try {
+          let requestStr = "HEAD /test%20url HTTP/1.1\r\nHost: example.com\r\nRange: bytes=0-\r\n\r\n";
+          let requestBuffer = buffer.from(requestStr, 'utf-8').buffer;
+          let request = GetRequest.read(requestBuffer);
+          
+          expect(request.method).assertEqual("HEAD");
+          expect(request.uri).assertEqual("test%20url");
+          expect(request.rangeOffset).assertEqual(0);
+          expect(request.partial).assertTrue();
+        } catch (err) {
+          expect(1).assertEqual(2);
+        }
+      })
+
+      it('parseInvalidRequestThrowsError', 0, () => {
+        try {
+          let requestStr = "POST /test%20url HTTP/1.1\r\nHost: example.com\r\n\r\n";
+          let requestBuffer = buffer.from(requestStr, 'utf-8').buffer;
+          let request = GetRequest.read(requestBuffer);
+          // 如果到达这里，说明没有抛出异常，测试失败
+          expect(1).assertEqual(2);
+        } catch (err) {
+          // 期望抛出异常
+          expect(1).assertEqual(1);
+        }
+      })
+
+      it('parseMalformedRequestThrowsError', 0, () => {
+        try {
+          let requestStr = "INVALID REQUEST\r\n\r\n";
+          let requestBuffer = buffer.from(requestStr, 'utf-8').buffer;
+          let request = GetRequest.read(requestBuffer);
+          // 如果到达这里，说明没有抛出异常，测试失败
+          expect(1).assertEqual(2);
+        } catch (err) {
+          // 期望抛出异常
+          expect(1).assertEqual(1);
+        }
+      })
     })
   })
 }
