@@ -3,7 +3,8 @@
   "buildOption": {
     "externalNativeOptions": {
       "path": "./src/main/cpp/CMakeLists.txt",
-      "arguments": "-DOHOS_STL=c++_shared -DCMAKE_C_FLAGS='-s' -DCMAKE_CXX_FLAGS='-s'",
+      "arguments": "-DOHOS_STL=c++_shared -DCMAKE_C_FLAGS='-s' -DCMAKE_CXX_FLAGS='-s'\
+                    -DCMAKE_BUILD_TYPE=Release -DCMAKE_SKIP_PATH=true",
       "abiFilters": [
         "armeabi-v7a",
         "arm64-v8a",
