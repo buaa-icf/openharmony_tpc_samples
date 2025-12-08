@@ -4,6 +4,9 @@ project(luaarkts)
 
 
 set(NATIVERENDER_ROOT_PATH ${CMAKE_CURRENT_SOURCE_DIR})
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDENUG")
+set(CMAKE_C_FLAGS_RELEASE "-O3 -DNDENUG")
+set(TARGET_NAME luaarkts)
 
 
 if(DEFINED PACKAGE_FIND_FILE)
@@ -18,6 +21,14 @@ set(CMAKE_MODULE_PATH ${AKI_ROOT_PATH})
 find_package(Aki REQUIRED)
 
 add_library(luaarkts SHARED napi_init.cpp napi_arkts.cpp napi_lua.cpp)
+
+if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
+    target_link_options(${TARGET_NAME} PRIVATE -s)
+    set(LTO_FLAG "-flto=thin")
+    add_compile_options(-O3 -march=native)
+    target_compile_options(${TARGET_NAME} PRIVATE ${LTO_FLAG})
+    target_link_options(${TARGET_NAME} PRIVATE ${LTO_FLAG})
+endif()
 
 target_link_libraries(luaarkts PUBLIC Aki::libjsbind) # 链接二进制依赖 & 头文件
 target_link_libraries(luaarkts PUBLIC libace_napi.z.so)
