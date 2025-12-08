@@ -1,0 +1,31 @@
+{
+  "name": "@ohos/mammoth",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Please describe the basic information.",
+  "main": "Index.ets",
+  "types": "index.d.ts",
+  "author": "",
+  "license": "Apache-2.0",
+  "ohos": {
+    "org": "opensource"
+  },
+  "keywords": [
+    "mammoth",
+    "docx",
+    "markdown"
+  ],
+  "tags": [
+    "UI",
+  ],
+  "author": "ohos_tpc",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_mammoth",
+  "dependencies": {
+    "@xmldom/xmldom": "0.8.2",
+    "base64-js": "^1.5.1",
+    "dingbat-to-unicode": "1.0.1",
+    "@ohos/jszip": '1.0.1',
+    "underscore": "^1.13.1",
+    "xmlbuilder": "^11.0.0"
+  }
+}

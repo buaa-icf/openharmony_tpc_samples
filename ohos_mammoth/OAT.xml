@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <oatconfig>
+        <filefilterlist>
+            <filefilter name="copyrightPolicyFilter" desc="版权头过滤器，按文件名或路径屏蔽无需检查的文件，需要通过desc备注说明原因">
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/styles/html-paths.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/images.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/package/lop/src/main/ets/lib/parsing-results.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/raw-text.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/promises.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/package/lop/src/main/ets/lib/StringSource.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/main.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/writers/html-writer.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/documents.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/docx/notes-reader.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/package/lop/src/main/ets/lib/Token.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/style-reader.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/writers/markdown-writer.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/html/simplify.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/package/lop/src/main/ets/lib/parser.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/document-to-html.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/xml/reader.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/xml/nodes.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/package/lop/src/main/ets/lib/rules.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/options-reader.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/index.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/styles/parser/tokeniser.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/docx/style-map.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/xml/xmldom.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/path-is-absolut.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/docx/numbering-xml.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/package/lop/src/main/ets/lib/regex-tokeniser.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/docx/relationships-reader.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/package/lop/src/main/ets/lib/TokenIterator.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/docx/comments-reader.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/docx/document-xml-reader.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/docx/files.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/package/lop/src/main/ets/package/option.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/entry/src/ohosTest/ets/test/docx/testing.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/package/lop/src/main/ets/lib/bottom-up.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/docx/office-xml-reader.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/unzip.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/package/lop/src/main/ets/lib/lazy-iterators.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/results.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/docx/content-types-reader.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/docx/docx-reader.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/zipfile.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/docx/body-reader.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/docx/styles-reader.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/html/ast.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/xml/writer.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/docx/uris.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/underline.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/entry/src/ohosTest/ets/test/docx/document-matchers.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/transforms.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/package/lop/src/main/ets/lib/errors.js" desc="此文件第三方开源软件源码，不修改版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/entry/src/main/resources/rawfile/test-data/hyperlinks/word/_rels/document.xml.rels" desc="此文件测试资源，不添加版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/entry/src/main/resources/rawfile/test-data/hyperlinks/word/document.xml" desc="此文件测试资源，不添加版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/package/dingbatToUnicode/src/main/ets/index.ts" desc="此文件导出文件，不添加版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/index.d.ts" desc="此文件导出文件，不添加版权头"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/package/dingbatToUnicode/src/main/ets/dingbats.ts" desc="此文件第三方开源软件源码，不修改版权头"/>
+            </filefilter>
+            <filefilter name="defaultPolicyFilter" desc="许可头过滤器，按文件名或路径屏蔽无需检查的文件，需要通过desc备注说明原因">
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/html/ast.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/images.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/package/lop/src/main/ets/lib/bottom-up.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/unzip.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/package/lop/src/main/ets/lib/errors.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/index.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/styles/html-paths.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/raw-text.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/xml/reader.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/docx/comments-reader.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/styles/parser/tokeniser.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/entry/src/ohosTest/ets/test/docx/testing.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/docx/style-map.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/package/lop/src/main/ets/lib/Token.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/package/lop/src/main/ets/package/option.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/package/lop/src/main/ets/lib/parsing-results.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/main.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/styles/document-matchers.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/docx/body-reader.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/docx/files.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/package/lop/src/main/ets/lib/parser.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/html/simplify.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/docx/document-xml-reader.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/docx/uris.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/docx/office-xml-reader.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/writers/markdown-writer.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/package/lop/src/main/ets/lib/regex-tokeniser.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/docx/notes-reader.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/xml/nodes.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/docx/styles-reader.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/docx/content-types-reader.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/path-is-absolut.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/documents.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/package/lop/src/main/ets/lib/StringSource.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/docx/relationships-reader.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/xml/writer.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/zipfile.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/options-reader.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/document-to-html.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/transforms.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/docx/numbering-xml.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/promises.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/package/lop/src/main/ets/lib/TokenIterator.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/writers/html-writer.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/package/lop/src/main/ets/lib/lazy-iterators.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/results.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/package/lop/src/main/ets/lib/rules.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/underline.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/xml/xmldom.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/style-reader.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/src/main/ets/docx/docx-reader.js" desc="此文件第三方开源软件源码，不修改许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/entry/src/main/resources/rawfile/test-data/hyperlinks/word/_rels/document.xml.rels" desc="此文件测试资源，不添加许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/entry/src/main/resources/rawfile/test-data/hyperlinks/word/document.xml" desc="此文件测试资源，不添加许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/package/dingbatToUnicode/src/main/ets/index.ts" desc="此文件导出文件，不添加许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/index.d.ts" desc="此文件导出文件，不添加许可证"/>
+                <filteritem type="filepath" name="ohos_mammoth/library/package/dingbatToUnicode/src/main/ets/dingbats.ts" desc="此文件第三方开源软件源码，不修改许可证"/>
+            </filefilter>
+            <filefilter name="binaryFileTypePolicyFilter" desc="二进制文件过滤器，按文件名或路径屏蔽无需检查的文件，需要通过desc备注说明原因">
+                <filteritem type="filepath" name="ohos_mammoth/entry/src/main/resources/rawfile/test-data/footnote-hyperlink.docx" desc="测试文件"/>
+                <filteritem type="filepath" name="ohos_mammoth/entry/src/main/resources/rawfile/Image.docx" desc="测试文件"/>
+                <filteritem type="filepath" name="ohos_mammoth/entry/src/main/resources/rawfile/test-data/text-box.docx" desc="测试文件"/>
+                <filteritem type="filepath" name="ohos_mammoth/entry/src/main/resources/rawfile/test-data/strict-format.docx" desc="测试文件"/>
+                <filteritem type="filepath" name="ohos_mammoth/entry/src/main/resources/rawfile/test-data/utf8-bom.docx" desc="测试文件"/>
+                <filteritem type="filepath" name="ohos_mammoth/entry/src/main/resources/rawfile/test-data/external-picture.docx" desc="测试文件"/>
+                <filteritem type="filepath" name="ohos_mammoth/entry/src/main/resources/rawfile/test-data/footnotes.docx" desc="测试文件"/>
+                <filteritem type="filepath" name="ohos_mammoth/entry/src/main/resources/rawfile/test-data/comments.docx" desc="测试文件"/>
+                <filteritem type="filepath" name="ohos_mammoth/entry/src/main/resources/rawfile/test-data/underline.docx" desc="测试文件"/>
+                <filteritem type="filepath" name="ohos_mammoth/entry/src/main/resources/rawfile/test-data/empty.docx" desc="测试文件"/>
+                <filteritem type="filepath" name="ohos_mammoth/entry/src/main/resources/rawfile/test-data/strikethrough.docx" desc="测试文件"/>
+                <filteritem type="filepath" name="ohos_mammoth/entry/src/main/resources/rawfile/test-data/endnotes.docx" desc="测试文件"/>
+                <filteritem type="filepath" name="ohos_mammoth/entry/src/main/resources/rawfile/longText.docx" desc="测试文件"/>
+                <filteritem type="filepath" name="ohos_mammoth/entry/src/main/resources/rawfile/test-data/tiny-picture-target-base-relative.docx" desc="测试文件"/>
+                <filteritem type="filepath" name="ohos_mammoth/entry/src/main/resources/rawfile/test-data/tiny-picture.docx" desc="测试文件"/>
+                <filteritem type="filepath" name="ohos_mammoth/entry/src/main/resources/rawfile/test-data/embedded-style-map.docx" desc="测试文件"/>
+                <filteritem type="filepath" name="ohos_mammoth/entry/src/main/resources/rawfile/dog.jpg" desc="测试图片"/>
+                <filteritem type="filepath" name="ohos_mammoth/entry/src/main/resources/rawfile/externalFile.docx" desc="测试文件"/>
+                <filteritem type="filepath" name="ohos_mammoth/entry/src/main/resources/rawfile/ignoreEmptyParagraphs.docx" desc="测试文件"/>
+                <filteritem type="filepath" name="ohos_mammoth/entry/src/main/resources/rawfile/hello.docx" desc="测试文件"/>
+                <filteritem type="filepath" name="ohos_mammoth/entry/src/main/resources/rawfile/test-data/simple-list.docx" desc="测试文件"/>
+                <filteritem type="filepath" name="ohos_mammoth/entry/src/main/resources/rawfile/test-data/tables.docx" desc="测试文件"/>
+                <filteritem type="filepath" name="ohos_mammoth/entry/src/main/resources/rawfile/test-data/single-paragraph.docx" desc="测试文件"/>
+            </filefilter>
+        </filefilterlist>
+        <policylist>
+            <policy name="projectPolicy" desc="配置兼容的协议等，需要指定具体的path和通过desc说明原因">
+                <policyitem type="license" name="MIT" path="exprParser/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="amqplib/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="utilCode/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="base64-js/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="utf8/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="mime/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="ISC" path=".*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="当前项目兼容此协议"/>
+                <policyitem type="license" name="ISC" path="msgpack-javascript/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="ISC" path="CaverPhone/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="pcx-js/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="compare-versions/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="amf/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="Eventmitter3Demo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="soundex-code/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="json-schema/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="PathToRegexpDemo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="ahocorasick/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="bignumberjsDemo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="cborjsDemo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="hex-encode-decodeDemo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="EventBus/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="inversifyDemo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="ForgeDemo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="xmldom/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="string.prototype.repeat/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="querystringify/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="minimist/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="mdurl/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="url_parse/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="dom_serializer/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="pinyinProDemo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="validator/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="behaviorTree/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="BSD-3-Clause" path="protobufjs_path/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="BSD-3-Clause" path="protobufjs_aspromise/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="BSD-3-Clause" path="protobufjs_float/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="BSD-3-Clause" path="protobufjs_pool/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="BSD-3-Clause" path="protobufjs_utf8/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="BSD-3-Clause" path="jsDiffDemo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="BSD-2-Clause" path="domelementtype/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="BSD-2-Clause" path="entities/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="BSD-2-Clause" path="nth-check/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="BSD-2-Clause" path="css-what/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="BSD-2-Clause" path="css-select/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="BSD-2-Clause" path="utilCode/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="LibphoneNumber/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="GNU AFFERO GENERAL PUBLIC LICENSE" path="newsie/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="lodashDemo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="sanitize-html/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="xml2jsDemo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="MetaPhone/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="unrar/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT License" path="socketio_tls/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="当前项目兼容此协议" />
+                <policyitem type="license" name="MIT" path="js-tokens/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="BSD-3-Clause" path="protobuf/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="ThirdPartyNotice" path=".*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="误报，非协议名称" />
+                <policyitem type="license" name="MIT" path="levenDemo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="JsSha1Demo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="protobuf_format/sax/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="protobuf_format/xml-js/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="jackrabbit/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="bc_ohos/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="ohos_YYEVA/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="copyright" name="Copyright 2010-2023 Three.js Authors" path="ThreeJs360Demo/source/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="匹配源码协议，符合开源要求"/>
+                <policyitem type="license" name="SPDX:MIT" path="ThreeJs360Demo/source/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="SMTPClient/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="class-transformer/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="Copyright (C) 2023 Huawei Device Co., Ltd." path="ohos_smack/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="Copyright (C) 1992-1996, 1998-2012 Free Software Foundation, Inc." path="ohos_smack/.*" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="ohos-jszip/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="LGPLStyleLicense" path="epublib/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="LGPLStyleLicense" path="GSYVideoPlayer/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="copyright" name="Copyright (c) 2006-2007 Erin Catto http://www.box2d.org" path="box2d/entry/src/main/ets/Testbed/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="Copyright (c) 2006-2012 Erin Catto http://www.box2d.org" path="box2d/entry/src/main/ets/Testbed/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="Copyright (c) 2006-2009 Erin Catto http://www.box2d.org" path="box2d/entry/src/main/ets/Testbed/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="Copyright (c) 2006-2007 Erin Catto http://www.box2d.org" path="box2d/library/src/main/ets/Box2D/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="Copyright (c) 2006-2012 Erin Catto http://www.box2d.org" path="box2d/library/src/main/ets/Box2D/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="Copyright (c) 2006-2009 Erin Catto http://www.box2d.org" path="box2d/library/src/main/ets/Box2D/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="Copyright (c) 2006-2011 Erin Catto http://www.box2d.org" path="box2d/library/src/main/ets/Box2D/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="Copyright (c) 2011 Erin Catto http://box2d.org" path="box2d/library/src/main/ets/Box2D/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="Copyright (c) 2010 Erin Catto http://www.box2d.org" path="box2d/library/src/main/ets/Box2D/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="Copyright (c) 2011 Erin Catto http://www.box2d.org" path="box2d/library/src/main/ets/Box2D/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="Copyright (c) 2009 Erin Catto http://www.box2d.org" path="box2d/library/src/main/ets/Box2D/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="Copyright (c) 2006-2010 Erin Catto http://www.box2d.org	" path="box2d/library/src/main/ets/Box2D/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="Copyright (c) 2015 Google, Inc." path="box2d/library/src/main/ets/Box2D/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="Copyright (c) 2014 Google, Inc." path="box2d/library/src/main/ets/Box2D/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="Copyright (c) 2013 Google, Inc." path="box2d/library/src/main/ets/Box2D/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="Copyright (c) 2014 Google, Inc" path="box2d/library/src/main/ets/Box2D/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="Copyright (c) 2015 Google, Inc." path="box2d/entry/src/main/ets/Testbed/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="Copyright (c) 2014 Google, Inc." path="box2d/entry/src/main/ets/Testbed/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="Copyright (c) 2013 Google, Inc." path="box2d/entry/src/main/ets/Testbed/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="Copyright (c) 2014 Google, Inc" path="box2d/entry/src/main/ets/Testbed/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="Copyright (c) 2005-2017 Mike Pall" path="ohos_luaarkts/luaarkts/src/main/cpp/thirdparty/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="Copyright (c) 2006-2011 Erin Catto http://www.box2d.org" path="box2d/entry/src/main/ets/Testbed/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="NULL" path="box2d/entry/src/main/ets/Testbed/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="NULL" path="box2d/library/src/main/ets/Box2D/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="Copyright (c) 2015 Melo Yao. All rights reserved." path="socketio/socketio/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by X Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="Copyright (c) 2013-2015 Niels Lohmann." path="socketio/socketio/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by X Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="Copyright 2009 Pete Goodliffe" path="socketio/socketio/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by X Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="license" name="MIT" path="socketio/.*" rule="may" group="defaultGroup" filefilter="defaultPolicyFilter" desc="源开源项目的LICENSE,  符合开源要求"/>
+                <policyitem type="license" name="ThirdPartyNotice" path="socketio/.*" rule="may" group="defaultGroup" filefilter="defaultPolicyFilter" desc="源开源项目的LICENSE,  符合开源要求"/>
+                <policyitem type="license" name="Copyright (C) 2023 Huawei Device Co., Ltd." path="socketio/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="copyright" name="Copyright (c) 2015 Melo Yao. All rights reserved." path="socketio_2.x/library/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by X Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="Copyright (c) 2013-2015 Niels Lohmann." path="socketio_2.x/library/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by X Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="copyright" name="Copyright 2009 Pete Goodliffe" path="socketio_2.x/library/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by X Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="license" name="MIT" path="socketio_2.x/.*" rule="may" group="defaultGroup" filefilter="defaultPolicyFilter" desc="源开源项目的LICENSE,  符合开源要求"/>
+                <policyitem type="license" name="ThirdPartyNotice" path="socketio_2.x/.*" rule="may" group="defaultGroup" filefilter="defaultPolicyFilter" desc="源开源项目的LICENSE,  符合开源要求"/>
+                <policyitem type="license" name="Copyright (C) 2023 Huawei Device Co., Ltd." path="socketio_2.x/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="Copyright (C) 2023 Huawei Device Co., Ltd." path="socketio_tls/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="zlib-acknowledgement" path="box2d/entry/src/main/ets/Testbed/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="当前项目兼容此协议" />
+                <policyitem type="license" name="zlib-acknowledgement" path="box2d/library/src/main/ets/Box2D/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="当前项目兼容此协议" />
+                <policyitem type="license" name="NoLicenseHeader" path="box2d/entry/src/main/ets/Testbed/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改" />
+                <policyitem type="license" name="NoLicenseHeader" path="box2d/library/src/main/ets/Box2D/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改" />
+                <policyitem type="license" name="MIT" path="jwks-rsa/library/.*" rule="may" group="defaultGroup" filefilter="defaultPolicyFilter" desc="源开源项目的LICENSE,  符合开源要求"/>
+                <policyitem type="copyright" name="Copyright (C) 2024 Huawei Device Co., Ltd." path="EspBlufiForHarmony/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="源开源项目的LICENSE,  符合开源要求"/>
+                <policyitem type="license" name="MIT" path="EspBlufiForHarmony/.*" rule="may" group="defaultGroup" filefilter="defaultPolicyFilter" desc="源开源项目的LICENSE,  符合开源要求"/>
+                <policyitem type="license" name="MIT" path="smbj/library/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="underscore/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="postcss/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="smbj/library/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="BSD" path="LICENSE" rule="may" group="defaultGroup" filefilter="defaultPolicyFilter" desc="BSD license"/>
+                <policyitem type="license" name="BSD" path="NOTICE" rule="may" group="defaultGroup" filefilter="defaultPolicyFilter" desc="BSD license"/>
+                <policyitem type="license" name="BSD" path="js-joda/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="当前项目兼容此协议" />
+                <policyitem type="license" name="BSD License" path="js-joda/entry/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="当前项目兼容此协议" />
+                <policyitem type="license" name="MIT" path="is_any_array/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="ml_array_max/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="ml_array_min/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="ml_array_rescale/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="escape_latex/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="javascript_natural_sort/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="tiny_emitter/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="complex_js/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="decimal_js/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="fraction_js/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="copyright" name="Copyright (c) 2012 Dang Mai" path="escape_latex/LICENSE.md" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="Developed by hihope Company 或 原开源库版权头，版权头维持原样，不做侵入式修改"/>
+                <policyitem type="license" name="BSD" path="Domhandler/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求" />
+                <policyitem type="license" name="BSD" path="domUtils/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求" />
+                <policyitem type="license" name="MIT" path="parse_srcset/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="BSD" path="ASN1js/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="BSD" path="ieee754/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="seedrandom/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="typed-function/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="pvutils/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="buffer/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="regeneratorruntime/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="Xmlbuilder/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="events/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="timers/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="BSD" path="Sax/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="Intl_utils/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="eventsource/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="Intl_unified_numberformat/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="lodash_Clonedeep/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="lodash_IsEqual/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="babel-runtime/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="requires-port/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="BSD" path="source_map_js/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="BSD-3-Clause" path="d3JsEasingDemo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="parserHtmlJsonDemo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="ohos_luaarkts/.*.h" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="ISC" path="ohos_luaarkts/.*.h" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="BSD" path="ohos_luaarkts/.*.h" group="defaultGroup" filefilter="defaultPolicyFilter" desc="当前项目兼容此协议" />
+                <policyitem type="license" name="MIT" path="ohos_luaarkts/luaarkts/src/main/cpp/thirdparty/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="三方库编译文件"/>
+                <policyitem type="license" name="MIT" path="xmpp_xml/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="xmpp_connection/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="xmpp_middleware/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="xmpp_connection_tcp/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="xmpp_reconnect/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="xmpp_websocket/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="xmpp_resolve/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="xmpp_client_core/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="xmpp_tcp/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="xmpp_iq/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="xmpp_stream_features/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="xmpp_resource_binding/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="xmpp_sasl/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="xmpp_session_establishment/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="xmpp_stream_management/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="xmpp_sasl_anonymous/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="xmpp_sasl_plain/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="xmpp_client/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="xmpp_uri/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="xmpp_debug/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="xmpp_component_core/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="xmpp_component/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="xmpp_tls/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="xmpp_starttls/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="xmpp_sasl_scram_sha_1/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="ISC" path="ohos_msgpack/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="ISC" path="xmpp_xml/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="ISC" path="xmpp_connection/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="ISC" path="xmpp_middleware/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="ISC" path="xmpp_connection_tcp/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="ISC" path="xmpp_reconnect/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="ISC" path="xmpp_websocket/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="ISC" path="xmpp_resolve/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="ISC" path="xmpp_client_core/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="ISC" path="xmpp_tcp/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="ISC" path="xmpp_iq/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="ISC" path="xmpp_stream_features/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="ISC" path="xmpp_resource_binding/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="ISC" path="xmpp_sasl/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="ISC" path="xmpp_session_establishment/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="ISC" path="xmpp_stream_management/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="ISC" path="xmpp_sasl_anonymous/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="ISC" path="xmpp_sasl_plain/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="ISC" path="xmpp_client/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="ISC" path="xmpp_uri/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="ISC" path="xmpp_debug/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="ISC" path="xmpp_component_core/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="ISC" path="xmpp_component/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="ISC" path="xmpp_tls/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="ISC" path="xmpp_starttls/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="ISC" path="xmpp_sasl_scram_sha_1/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="ohos_msgpack/entry/src/ohosTest/ets/test/test/msg/timestamp.js" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="js-md2Demo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="ThreeJs360Demo/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="smart_buffer/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求" />
+                <policyitem type="license" name="MIT" path="asn1_ber/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求" />
+                <policyitem type="license" name="MIT" path="net_snmp/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求" />
+                <policyitem type="license" name="MIT" path="ohos_7zip/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求" />
+                <policyitem type="license" name="MIT" path="ohos_polka/.*" rule="may" group="defaultGroup" filefilter="defaultPolicyFilter" desc="源开源项目的LICENSE,  符合开源要求"/>
+                <policyitem type="license" name="MIT" path="google_libphonenumber/.*" rule="may" group="defaultGroup" filefilter="defaultPolicyFilter" desc="源开源项目的LICENSE,  符合开源要求"/>
+                <policyitem type="license" name="BSD-3-Clause" path="stringTemplate/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求" />
+                <policyitem type="license" name="BSD" path="stringTemplate/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求" />
+            </policy>
+        </policylist>
+        <licensematcherlist>
+            <licensematcher name="MIT License" desc="License for MIT">
+                <licensetext name="
+               /**
+                *
+                * This software is distributed under a license. The full license
+                * agreement can be found in the file LICENSE in this distribution.
+                * This software may not be copied, modified, sold or distributed
+                * other than expressed in the named license agreement.
+                *
+                * This software is distributed without any warranty.
+                */
+                " desc="这段头内容实际指向了license文件，license文件是MIT协议的" />
+            </licensematcher>
+            <licensematcher name="BSD-2-Clause" desc="License for BSD">
+                <licensetext name="
+                /**
+                 * Copyright (c) 2023 Huawei Device Co., Ltd.
+                 *
+                 * All rights reserved.
+                 * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+                 * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+                 * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+                 * THIS IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 'AS IS' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS,
+                 * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+                 */
+                " desc="" />
+            </licensematcher>
+            <licensematcher desc="Huawei Device Co., Ltd." name="Copyright (C) 2023 Huawei Device Co., Ltd.">
+                <licensetext desc="" name="
+                         * Copyright (C) 2023 Huawei Device Co., Ltd.
+                         *
+                         * This software is distributed under a license. The full license
+                         * agreement can be found in the file LICENSE in this distribution.
+                         * This software may not be copied, modified, sold or distributed
+                         * other than expressed in the named license agreement.
+                         *
+                         * This software is distributed without any warranty."/>
+            </licensematcher>
+            <licensematcher name="BSD License" desc="License for BSD">
+                <licensetext name="
+                /**
+                 * BSD License
+                 *
+                 * Copyright (c) 2024 Huawei Device Co., Ltd. All rights reserved.
+                 *
+                 * Redistribution and use in source and binary forms, with or without modification,
+                 * are permitted provided that the following conditions are met:
+                 *
+                 * * Redistributions of source code must retain the above copyright notice, this
+                 *  list of conditions and the following disclaimer.
+                 *
+                 * * Redistributions in binary form must reproduce the above copyright notice,
+                 * this list of conditions and the following disclaimer in the documentation
+                 * and/or other materials provided with the distribution.
+                 *
+                 * * Neither the name Facebook nor the names of its contributors may be used to
+                 * endorse or promote products derived from this software without specific
+                 * prior written permission.
+                 *
+                 * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 'AS IS' AND
+                 * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+                 * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+                 * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+                 * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+                 * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+                 * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+                 * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+                 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+                 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+                 */
+                " desc="" />
+            </licensematcher>
+            <licensematcher name="BSD-2-Clause" desc="License for BSD">
+                <licensetext name="
+                /**
+                 *
+                 * Copyright (c) 2024 Huawei Device Co., Ltd.
+                 *
+                 * All rights reserved.
+                 * Redistribution and use in source and binary forms, with or without modification,
+                 * are permitted provided that the following conditions are met:
+                 *
+                 * Redistributions of source code must retain the above copyright notice,this
+                 * list of conditions and the following disclaimer.
+                 *
+                 * Redistributions in binary form must reproduce the above copyright notice,
+                 * this list of conditions and the following disclaimer in the documentation
+                 * and/or other materials provided with the distribution.
+                 *
+                 * THIS IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 'AS IS' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+                 * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+                 * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+                 * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+                 * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+                 * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+                 * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS,
+                 *
+                 * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+                 */
+                " desc="" />
+            </licensematcher>
+            <licensematcher name="BSD-2-Clause" desc="License for BSD">
+                <licensetext name="
+                /**
+                 *
+                 * Copyright (c) 2025 Huawei Device Co., Ltd.
+                 *
+                 * All rights reserved.
+                 * Redistribution and use in source and binary forms, with or without modification,
+                 * are permitted provided that the following conditions are met:
+                 *
+                 * Redistributions of source code must retain the above copyright notice,this
+                 * list of conditions and the following disclaimer.
+                 *
+                 * Redistributions in binary form must reproduce the above copyright notice,
+                 * this list of conditions and the following disclaimer in the documentation
+                 * and/or other materials provided with the distribution.
+                 *
+                 * THIS IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 'AS IS' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+                 * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+                 * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+                 * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+                 * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+                 * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+                 * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS,
+                 *
+                 * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+                 */
+                " desc="" />
+            </licensematcher>
+            <licensematcher name="ISC" desc="License for ISC">
+                <licensetext name="
+                /**
+                 * Copyright (c) 2024 Huawei Device Co., Ltd.
+                 *
+                 * Permission to use, copy, modify, and/or distribute this software for any purpose
+                 * with or without fee is hereby granted, provided that the above copyright notice
+                 * and this permission notice appear in all copies.
+                 *
+                 * THE SOFTWARE IS PROVIDED &quot;AS IS&quot; AND THE AUTHOR DISCLAIMS ALL
+                 * WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+                 * WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL
+                 * THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+                 * CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING
+                 * FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
+                 * CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+                 * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+                 */
+                " desc="" />
+            </licensematcher>
+            <licensematcher name="ISC" desc="License for ISC">
+                <licensetext name="
+                /**
+                 * Copyright 2019 The MessagePack Community.
+                 *
+                 * Permission to use, copy, modify, and/or distribute this software for any purpose
+                 * with or without fee is hereby granted, provided that the above copyright notice
+                 * and this permission notice appear in all copies.
+                 *
+                 * THE SOFTWARE IS PROVIDED &quot;AS IS&quot; AND THE AUTHOR DISCLAIMS ALL
+                 * WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+                 * WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL
+                 * THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+                 * CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING
+                 * FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
+                 * CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+                 * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+                 */
+                " desc="" />
+            </licensematcher>
+        </licensematcherlist>
+    </oatconfig>
+</configuration>
