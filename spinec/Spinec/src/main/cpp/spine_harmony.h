@@ -27,12 +27,6 @@
 #include <vector>
 #include <map>
 #include "thirdparty/spinec/include/spine/spine.h"
-#ifdef __cplusplus
-extern "C" {
-#endif
-#ifdef __cplusplus
-}
-#endif
 
 // ============================================================================
 // 纹理管理

@@ -260,7 +260,7 @@ static void EnsureWorldVerticesCapacity(SpineRenderer* renderer, int capacity)
         float* newWorldVertices = (float*)malloc(capacity * sizeof(float));
         if (renderer->worldVertices != nullptr) {
             // 复制原有数据到新数组
-            memcpy_s(newWorldVertices, sizeof(newWorldVertices), renderer->worldVertices,
+            memcpy_s(newWorldVertices, sizeof(float), renderer->worldVertices,
                      oldCapacity * sizeof(float));
             free(renderer->worldVertices);
         }
@@ -413,7 +413,7 @@ int GetAttachmentData(SpineRenderer* renderer, spAttachment* attachment, spSlot*
         spSkeletonClipping_clipStart(renderer->clipper, slot, clip);
         return 0;
     }
-    
+
     return 0;
 }
 
@@ -422,7 +422,7 @@ void FillAttachmentData(SpineRenderer* renderer, spAttachment* attachment, Attac
 {
     if (!renderer || !attachment || !data) { return; }
     
-    memset_s(data, sizeof(data), 0, sizeof(AttachmentData));
+    memset_s(data, sizeof(AttachmentData), 0, sizeof(AttachmentData));
     
     if (attachment->type == SP_ATTACHMENT_REGION) {
         FillRegionData((spRegionAttachment*)attachment, renderer, data);

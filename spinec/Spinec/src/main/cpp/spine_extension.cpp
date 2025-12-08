@@ -409,7 +409,7 @@ static unsigned char* LoadTextureData(const char* path, int* outLength)
 {
     *outLength = 0;
     // 先尝试 SpineReadRawfile
-    unsigned char* data = (unsigned char*)SpineReadRawfile(path, outLength);
+    unsigned char* data = reinterpret_cast<unsigned char*>(SpineReadRawfile(path, outLength));
     if (data) {
         LOGI("Rawfile read success, length: %d", *outLength);
         return data;

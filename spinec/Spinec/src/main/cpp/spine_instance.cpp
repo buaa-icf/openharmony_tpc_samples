@@ -28,6 +28,10 @@
 // 辅助函数：获取目录路径
 static char* GetDirectory(const char* path)
 {
+    if (path == nullptr) {
+        LOGE("path is null");
+        return nullptr;
+    }
     const char* lastSlash = strrchr(path, '/');
     if (!lastSlash) {
         // 没有斜杠，返回空字符串
@@ -38,7 +42,17 @@ static char* GetDirectory(const char* path)
     
     int len = lastSlash - path;
     char* dir = (char*)malloc(len + 1);
-    memcpy_s(dir, sizeof(dir), path, len);
+    if (dir == nullptr) {
+        LOGE("GetDirectory malloc failed");
+        return nullptr; // 内存分配失败
+    }
+    errno_t err = EOK;
+    err = memcpy_s(dir, len + 1, path, len);
+    if (err != EOK) {
+        LOGE("GetDirectory memcpy_s failed, err = %{public}d", err);
+        free(dir);
+        return nullptr; // 返回失败
+    }
     dir[len] = '\0';
     return dir;
 }
