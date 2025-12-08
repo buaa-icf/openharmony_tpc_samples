@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "mammoth.js",
+        "License": "BSD-2-Clause",
+        "License File": "LICENSE",
+        "Version Number": "1.11.0",
+        "Owner": "xiafeng@huawei.com",
+        "Upstream URL": "https://github.com/mwilliamson/mammoth.js",
+        "Description": "Mammoth is designed to convert .docx documents, such as those created by Microsoft Word, Google Docs and LibreOffice, and convert them to HTML."
+    }
+]

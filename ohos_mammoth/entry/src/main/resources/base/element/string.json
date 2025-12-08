@@ -1,0 +1,101 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "mammoth"
+    },
+    {
+      "name": "convert_markdown_styleMap_text",
+      "value": "1. `StyleMap`: Custom transformation rules. Here, it means: Heading 1 displays plain text."
+    },
+    {
+      "name": "convert_styleMap_text",
+      "value": "1. `StyleMap`: Custom conversion rules. Here, it means: Heading 1 is displayed in bold; bold is displayed in italics; italics are displayed as underlines; strikethrough is displayed in bold."
+    },
+    {
+      "name": "convert_includeEmbeddedStyleMap_text",
+      "value": "2. `includeEmbeddedStyleMap`: Controls how embedded style maps are handled in the document. A value of `false` disables embedded styles; a value of `true` uses embedded styles, with headings 1-6 displayed in italics."
+    },
+    {
+      "name": "convert_includeDefaultStyleMap_text",
+      "value": "3. `includeDefaultStyleMap`: Controls how the default style mapping is handled. A value of `false` means the default styles are not used, and headings 1-6 will be displayed as unstyled text; a value of `true` means the default styles are used."
+    },
+    {
+      "name": "convert_ignoreEmptyParagraphs_text",
+      "value": "4. `ignoreEmptyParagraphs`: Ignore blank paragraphs. If the value is true, blank paragraphs will not be parsed; otherwise, they will be parsed as P tags."
+    },
+    {
+      "name": "convert_idPrefix_text",
+      "value": "5. `idPrefix`: Adds a prefix to the automatically generated HTML ID. Setting idPrefix=hhhh- will result in the generated HTML ID having the prefix hhhh-."
+    },
+    {
+      "name": "convert_externalFileAccess_text",
+      "value": "6. `externalFileAccess`: Whether to allow access to the file system to read external files. If the text content is displayed normally, and the external file is displayed as an inaccessible image (the effect is the same in Node.js), then it is successful."
+    },
+    {
+      "name": "convert_long_text",
+      "value": "7. Long text test."
+    },
+    {
+      "name": "extractRaw_path_text",
+      "value": "Raw text via sandbox path."
+    },
+    {
+      "name": "extractRaw_arraybuffer_text",
+      "value": "Raw text via arraybuffer."
+    },
+    {
+      "name": "extractRaw_long_text",
+      "value": "Long text test."
+    },
+    {
+      "name": "convertImag_dataUri_text",
+      "value": "1. dataUri: Uses the default image converter; the converter will be effective if the image displays correctly."
+    },
+    {
+      "name": "convertImag_imgElement_read_text",
+      "value": "2. imgElement: read reads the image file using the specified encoding. The converter is effective if the image is displayed correctly."
+    },
+    {
+      "name": "convertImag_imgElement_readAsArrayBuffer_text",
+      "value": "3. imgElement: readAsArrayBuffer treats the image file as an ArrayBuffer object for processing. If the image is displayed correctly, the converter will be effective."
+    },
+    {
+      "name": "convertImag_imgElement_readAsBase64String_text",
+      "value": "4. imgElement: readAsBase64String reads the image file as a base64 encoded string and processes it. If the image is displayed normally, the converter is effective."
+    },
+    {
+      "name": "convertImag_imgElement_readAsBuffer_text",
+      "value": "5. imgElement: readAsBuffer reads the image file as a buffer and processes it. If the image is displayed normally, the converter is effective."
+    },
+    {
+      "name": "convertImag_imgElement_replace_text",
+      "value": "6. In the image processor, replace the image with another image."
+    },
+    {
+      "name": "convertImag_replace_text",
+      "value": "Replace image"
+    },
+    {
+      "name": "embedStyleMap_parse_text",
+      "value": "Parse file"
+    },
+    {
+      "name": "embedStyleMap_doc_text",
+      "value": "`embedStyleMap` generates a docx file. Reading the generated docx file will automatically include the styles mapped by `embedStyleMap`. In this case, headings 1-6 will be displayed as italic text. You can compare the differences using the \"Parse file\" button and other buttons."
+    },
+    {
+      "name": "embedStyleMap_get_text",
+      "value": "Get the EmbeddedStyleMap of the document"
+    }
+  ]
+}
+

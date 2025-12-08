@@ -1,0 +1,101 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "mammoth"
+    },
+    {
+      "name": "convert_markdown_styleMap_text",
+      "value": "1.styleMap：自定义转换规则。此处表现为：标题1展示普通文本。"
+    },
+    {
+      "name": "convert_styleMap_text",
+      "value": "1.styleMap：自定义转换规则。此处表现为：标题1展示为加粗；加粗展示为斜体；斜体展示为下划线；删除线展示加粗。"
+    },
+    {
+      "name": "convert_includeEmbeddedStyleMap_text",
+      "value": "2.includeEmbeddedStyleMap: 控制文档中嵌入的样式映射的处理方式。值为false则不使用嵌入的样式；为true，则使用嵌入的样式，标题1-6显示为斜体。"
+    },
+    {
+      "name": "convert_includeDefaultStyleMap_text",
+      "value": "3.includeDefaultStyleMap: 控制默认的样式映射的处理方式。值为false则不使用默认的样式，标题1-6显示为无样式的文本；为true，则使用默认的样式。"
+    },
+    {
+      "name": "convert_ignoreEmptyParagraphs_text",
+      "value": "4.ignoreEmptyParagraphs: 忽略空白段落。值为为true，则空白的段落不被解析，否则被解析为的P标签。"
+    },
+    {
+      "name": "convert_idPrefix_text",
+      "value": "5.idPrefix: 自动生成的 HTML ID 添加前缀。设置idPrefix=hhhh-后，生成的HTML ID 前缀为hhhh-。"
+    },
+    {
+      "name": "convert_externalFileAccess_text",
+      "value": "6.externalFileAccess: 是否允许访问文件系统来读取外部文件。文本内容正常展示，外部文件展示为不可打开的图片(这里nodejs效果一致)，即为成功。"
+    },
+    {
+      "name": "convert_long_text",
+      "value": "7.长文本测试。"
+    },
+    {
+      "name": "extractRaw_path_text",
+      "value": "通过沙箱路径获取原始文本"
+    },
+    {
+      "name": "extractRaw_arraybuffer_text",
+      "value": "通过arraybuffer原始文本"
+    },
+    {
+      "name": "extractRaw_long_text",
+      "value": "长文本测试"
+    },
+    {
+      "name": "convertImag_dataUri_text",
+      "value": "1.dataUri：使用默认图片转换器，图片正常展示则转换器生效。"
+    },
+    {
+      "name": "convertImag_imgElement_read_text",
+      "value": "2.imgElement：read使用指定的编码读取图像文件，图片正常展示则转换器生效。"
+    },
+    {
+      "name": "convertImag_imgElement_readAsArrayBuffer_text",
+      "value": "3.imgElement：readAsArrayBuffer将图像文件作为对象ArrayBuffer后进行处理，图片正常展示则转换器生效。"
+    },
+    {
+      "name": "convertImag_imgElement_readAsBase64String_text",
+      "value": "4.imgElement：readAsBase64String将图像文件读取为 base64 编码的字符串后进行处理，图片正常展示则转换器生效。"
+    },
+    {
+      "name": "convertImag_imgElement_readAsBuffer_text",
+      "value": "5.imgElement：readAsBuffer将图像文件读取为Buffer后进行处理，图片正常展示则转换器生效。"
+    },
+    {
+      "name": "convertImag_imgElement_replace_text",
+      "value": "6.在图片处理器中，将图片替换为其他图片。"
+    },
+    {
+      "name": "convertImag_replace_text",
+      "value": "替换图片"
+    },
+    {
+      "name": "embedStyleMap_parse_text",
+      "value": "解析文件"
+    },
+    {
+      "name": "embedStyleMap_doc_text",
+      "value": "embedStyleMap会生成一个docx文件，读取生成的docx文件会自带embedStyleMap设置的映射样式。此处表现为，标题1-6变成斜体文字。可通过“解析文件”按钮和其他按钮对比区别。"
+    },
+    {
+      "name": "embedStyleMap_get_text",
+      "value": "获取文档的EmbeddedStyleMap"
+    }
+  ]
+}
+
