@@ -1,0 +1,9 @@
+{
+  "module": {
+    "name": "Spinec",
+    "type": "har",
+    "deviceTypes": [
+      "default"
+    ]
+  }
+}
