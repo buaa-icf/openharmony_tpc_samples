@@ -55,52 +55,107 @@ void ResourceRequest::Create()
     }
 }
 
-void ResourceRequest::DrawText(TextOption &txtOpt)
+OH_Drawing_TextStyle *ResourceRequest::CreateTextStyle(const ColorARGB &color, double fontSize,
+    OH_Drawing_FontWeight fontWeight)
 {
-    // 选择从左到右/左对齐等排版属性
-    OH_Drawing_TypographyStyle *typoStyle = OH_Drawing_CreateTypographyStyle();
-    OH_Drawing_SetTypographyTextDirection(typoStyle, TEXT_DIRECTION_LTR);
-    OH_Drawing_SetTypographyTextAlign(typoStyle, txtOpt.textAlign);
-    
-    // 设置文字颜色，
     OH_Drawing_TextStyle *txtStyle = OH_Drawing_CreateTextStyle();
-    ColorARGB color = txtOpt.color;
-    LOGD("DrawText color argb: %{public}02x-%{public}02x-%{public}02x-%{public}02x",
-        color.alpha, color.red, color.green, color.blue);
-    LOGD("DrawText ta fw: %{public}d-%{public}d",
-        txtOpt.fontWeight, txtOpt.textAlign);
-    
-    OH_Drawing_SetTextStyleColor(txtStyle, OH_Drawing_ColorSetArgb(color.alpha, color.red, color.green, color.blue));
-    // 设置文字大小、字重等属性
-    double fontSize = DEFAULT_FONT_SIZE;
-    LOGD("strlen(text): %{public}zu, fontSize: %{public}f", strlen(txtOpt.text), fontSize);
+    OH_Drawing_SetTextStyleColor(txtStyle,
+        OH_Drawing_ColorSetArgb(color.alpha, color.red, color.green, color.blue));
     OH_Drawing_SetTextStyleFontSize(txtStyle, fontSize);
-    OH_Drawing_SetTextStyleFontWeight(txtStyle, txtOpt.fontWeight);
+    OH_Drawing_SetTextStyleFontWeight(txtStyle, fontWeight);
     OH_Drawing_SetTextStyleBaseLine(txtStyle, TEXT_BASELINE_ALPHABETIC);
     OH_Drawing_SetTextStyleFontHeight(txtStyle, 1);
-    OH_Drawing_FontCollection* fontCollection = OH_Drawing_CreateSharedFontCollection();
-    // 设置字体类型等
     OH_Drawing_SetTextStyleFontStyle(txtStyle, FONT_STYLE_NORMAL);
     OH_Drawing_SetTextStyleLocale(txtStyle, "zh");
+    return txtStyle;
+}
+
+OH_Drawing_Typography *ResourceRequest::CreateTypography(OH_Drawing_TypographyStyle *typoStyle,
+    OH_Drawing_FontCollection *fontCollection, OH_Drawing_TextStyle *txtStyle,
+    const char *text, double maxWidth)
+{
     OH_Drawing_TypographyCreate *handler =
         OH_Drawing_CreateTypographyHandler(typoStyle, fontCollection);
     OH_Drawing_TypographyHandlerPushTextStyle(handler, txtStyle);
-    // 设置文字内容
-    OH_Drawing_TypographyHandlerAddText(handler, txtOpt.text);
+    OH_Drawing_TypographyHandlerAddText(handler, text);
     OH_Drawing_TypographyHandlerPopTextStyle(handler);
     OH_Drawing_Typography *typography = OH_Drawing_CreateTypography(handler);
-    // 设置页面最大宽度
-    double maxWidth = width_;
     OH_Drawing_TypographyLayout(typography, maxWidth);
-    // 设置文本在画布上绘制的起始位置
-    double position[2] = {0, (height_ - fontSize) / 2.0};
-    // 将文本绘制到画布上
-    OH_Drawing_TypographyPaint(typography, cCanvas_, position[0], position[1]);
-    
-    OH_Drawing_DestroyTypography(typography);
     OH_Drawing_DestroyTypographyHandler(handler);
-    OH_Drawing_DestroyFontCollection(fontCollection);
+    return typography;
+}
+
+double ResourceRequest::CalculateFittingFontSize(TextOption &txtOpt,
+    OH_Drawing_TypographyStyle *typoStyle, OH_Drawing_FontCollection *fontCollection,
+    double maxWidth, double maxHeight)
+{
+    double fontSize = DEFAULT_FONT_SIZE;
+    double minFontSize = 8.0;
+    bool textFits = false;
+    int maxIterations = 50;
+    int iteration = 0;
+
+    while (!textFits && iteration < maxIterations && fontSize >= minFontSize) {
+        OH_Drawing_TextStyle *txtStyle = CreateTextStyle(txtOpt.color, fontSize, txtOpt.fontWeight);
+        OH_Drawing_Typography *typography = CreateTypography(typoStyle, fontCollection,
+            txtStyle, txtOpt.text, maxWidth);
+        double textHeight = OH_Drawing_TypographyGetHeight(typography);
+
+        OH_Drawing_DestroyTypography(typography);
+        OH_Drawing_DestroyTextStyle(txtStyle);
+
+        if (textHeight <= maxHeight * TEXT_HEIGHT_MARGIN_RATIO) {
+            textFits = true;
+        } else {
+            fontSize = fontSize * FONT_SIZE_REDUCE_RATIO;
+        }
+        iteration++;
+    }
+
+    if (!textFits) {
+        fontSize = minFontSize;
+        LOGD("Text does not fit, using minFontSize: %{public}f", fontSize);
+    } else {
+        LOGD("Found fitting fontSize: %{public}f (area: %{public}ldx%{public}ld, "
+             "iterations: %{public}d)", fontSize, width_, height_, iteration);
+    }
+    return fontSize;
+}
+
+void ResourceRequest::DrawFinalText(TextOption &txtOpt, OH_Drawing_TypographyStyle *typoStyle,
+    OH_Drawing_FontCollection *fontCollection, double fontSize, double maxWidth)
+{
+    OH_Drawing_TextStyle *txtStyle = CreateTextStyle(txtOpt.color, fontSize, txtOpt.fontWeight);
+    OH_Drawing_Typography *typography = CreateTypography(typoStyle, fontCollection,
+        txtStyle, txtOpt.text, maxWidth);
+    double textHeight = OH_Drawing_TypographyGetHeight(typography);
+    double position[2] = {0, (height_ - textHeight) / 2.0};
+    OH_Drawing_TypographyPaint(typography, cCanvas_, position[0], position[1]);
+
+    OH_Drawing_DestroyTypography(typography);
     OH_Drawing_DestroyTextStyle(txtStyle);
+}
+
+void ResourceRequest::DrawText(TextOption &txtOpt)
+{
+    OH_Drawing_TypographyStyle *typoStyle = OH_Drawing_CreateTypographyStyle();
+    OH_Drawing_SetTypographyTextDirection(typoStyle, TEXT_DIRECTION_LTR);
+    OH_Drawing_SetTypographyTextAlign(typoStyle, txtOpt.textAlign);
+
+    ColorARGB color = txtOpt.color;
+    LOGD("DrawText color argb: %{public}02x-%{public}02x-%{public}02x-%{public}02x",
+        color.alpha, color.red, color.green, color.blue);
+    LOGD("DrawText ta fw: %{public}d-%{public}d", txtOpt.fontWeight, txtOpt.textAlign);
+
+    OH_Drawing_FontCollection *fontCollection = OH_Drawing_CreateSharedFontCollection();
+    double maxWidth = width_;
+    double maxHeight = height_;
+
+    double fontSize = CalculateFittingFontSize(txtOpt, typoStyle, fontCollection,
+        maxWidth, maxHeight);
+    DrawFinalText(txtOpt, typoStyle, fontCollection, fontSize, maxWidth);
+
+    OH_Drawing_DestroyFontCollection(fontCollection);
     OH_Drawing_DestroyTypographyStyle(typoStyle);
 }
 

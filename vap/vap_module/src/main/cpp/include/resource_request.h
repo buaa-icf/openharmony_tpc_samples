@@ -73,5 +73,18 @@ private:
     OH_PixelmapNative *resPixMap_ = nullptr;
 
     static constexpr double DEFAULT_FONT_SIZE = 31.0;
+    static constexpr double TEXT_HEIGHT_MARGIN_RATIO = 0.95;  // 文本高度余量比例
+    static constexpr double FONT_SIZE_REDUCE_RATIO = 0.9;     // 字体大小减小比例
+
+private:
+    double CalculateFittingFontSize(TextOption &txtOpt, OH_Drawing_TypographyStyle *typoStyle,
+        OH_Drawing_FontCollection *fontCollection, double maxWidth, double maxHeight);
+    OH_Drawing_TextStyle *CreateTextStyle(const ColorARGB &color, double fontSize,
+        OH_Drawing_FontWeight fontWeight);
+    OH_Drawing_Typography *CreateTypography(OH_Drawing_TypographyStyle *typoStyle,
+        OH_Drawing_FontCollection *fontCollection, OH_Drawing_TextStyle *txtStyle,
+        const char *text, double maxWidth);
+    void DrawFinalText(TextOption &txtOpt, OH_Drawing_TypographyStyle *typoStyle,
+        OH_Drawing_FontCollection *fontCollection, double fontSize, double maxWidth);
 };
 #endif // VAP_RESOURCE_REQUEST_H
