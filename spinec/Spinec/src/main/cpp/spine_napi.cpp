@@ -64,7 +64,7 @@ static void OnSurfaceCreatedCB(OH_NativeXComponent* component, void* window) {
     uint64_t height;
     OH_NativeXComponent_GetXComponentSize(component, window, &width, &height);
     // 立即创建 context
-    SpineContext* ctx = SpineContextCreate(window, (int)width, (int)height);
+    SpineContext* ctx = SpineContextCreate(window, static_cast<int>(width), static_cast<int>(height));
     if (ctx) {
         g_contexts[idStr] = ctx;
         LOGI("Context created for XComponent: %s, size: %llu x %llu", idStr, width, height);
@@ -234,7 +234,7 @@ static SpineContext* CreateNewContext(const char* xcompId) {
     uint64_t width;
     uint64_t height;
     OH_NativeXComponent_GetXComponentSize(component, window, &width, &height);
-    return SpineContextCreate(window, (int)width, (int)height);
+    return SpineContextCreate(window, static_cast<int>(width), static_cast<int>(height));
 }
 
 // 6. 查找或创建上下文
@@ -311,7 +311,7 @@ static napi_value LoadSkeleton(napi_env env, napi_callback_info info) {
     SetEglContext(ctx);
     // 加载Spine实例
     bool success = LoadSpineInstance(createArgs.atlasPath, createArgs.skeletonPath,
-                                     (float)createArgs.scale, createArgs.instanceName, ctx);
+        static_cast<float>(createArgs.scale), createArgs.instanceName, ctx);
     return CreateBooleanResult(env, success);
 }
 
@@ -386,7 +386,7 @@ static napi_value SetPosition(napi_env env, napi_callback_info info) {
     
     SpineInstance* instance = SpineContextGetInstance(it->second, instanceName);
     if (instance) {
-        SpineInstanceSetPosition(instance, (float)x, (float)y);
+        SpineInstanceSetPosition(instance, static_cast<float>(x), static_cast<float>(y));
     }
     return nullptr;
 }
@@ -415,7 +415,7 @@ static napi_value SetScale(napi_env env, napi_callback_info info) {
     if (it == g_contexts.end()) { return nullptr; }
     SpineInstance* instance = SpineContextGetInstance(it->second, instanceName);
     if (instance) {
-        SpineInstanceSetScale(instance, (float)scaleX, (float)scaleY);
+        SpineInstanceSetScale(instance, static_cast<float>(scaleX), static_cast<float>(scaleY));
     }
     return nullptr;
 }

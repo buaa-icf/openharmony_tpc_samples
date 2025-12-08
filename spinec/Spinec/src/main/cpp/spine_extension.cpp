@@ -93,7 +93,7 @@ char* SpineReadRawfile(const char* path, int* length)
     }
     
     data[size] = '\0';
-    *length = (int)size;
+    *length = static_cast<int>(size);
     
     LOGI("Read rawfile: %s, size: %d", path, *length);
     return data;
@@ -123,7 +123,7 @@ extern "C" char* _spUtil_readFile(const char* path, int* length)
     if (fseeknumber != 0) {
         LOGE("fseek Failed");
     }
-    *length = (int)ftell(file);
+    *length = static_cast<int>(ftell(file));
     fseeknumber = fseek(file, 0, SEEK_SET);
     if (fseeknumber != 0) {
         LOGE("fseek Failed");
@@ -379,9 +379,9 @@ static unsigned char* LoadTextureFromFile(const char* path, int* outLength)
         }
         return nullptr;
     }
-    *outLength = (int)fileSize;
+    *outLength = static_cast<int>(fileSize);
     // 分配内存
-    unsigned char* data = (unsigned char*)malloc(*outLength);
+    unsigned char* data = reinterpret_cast<unsigned char*>(malloc(*outLength));
     if (!data) {
         LOGE("Failed to allocate memory length: %d", *outLength);
         int result = fclose(file);

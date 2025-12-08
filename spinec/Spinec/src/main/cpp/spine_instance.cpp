@@ -19,6 +19,8 @@
 #include "spine_harmony.h"
 #include <cstring>
 #include <hilog/log.h>
+#include "securec.h"
+
 #define LOG_TAG "SpineInstance"
 #define LOGI(...) OH_LOG_INFO(LOG_APP, __VA_ARGS__)
 #define LOGE(...) OH_LOG_ERROR(LOG_APP, __VA_ARGS__)
@@ -36,7 +38,7 @@ static char* GetDirectory(const char* path)
     
     int len = lastSlash - path;
     char* dir = (char*)malloc(len + 1);
-    memcpy(dir, path, len);
+    memcpy_s(dir, sizeof(dir), path, len);
     dir[len] = '\0';
     return dir;
 }
@@ -111,7 +113,7 @@ static spSkeletonData* ParseBinarySkeleton(spAtlas* atlas, const char* skeletonD
     spSkeletonBinary* binary = spSkeletonBinary_create(atlas);
     binary->scale = scale;
     spSkeletonData* skelData = spSkeletonBinary_readSkeletonData(binary, (const unsigned char*)skeletonData,
-                                                                 skeletonLength);
+        skeletonLength);
     if (!skelData) {
         LOGE("Failed to parse skeleton binary, error: %s", binary->error ? binary->error : "unknown");
     }

@@ -20,6 +20,7 @@
 #include <cstring>
 #include <cmath>
 #include <hilog/log.h>
+#include "securec.h"
 
 #define LOG_TAG "SpineRenderer"
 #define LOGI(...) OH_LOG_INFO(LOG_APP, __VA_ARGS__)
@@ -239,9 +240,9 @@ void SpineRendererSetViewport(SpineRenderer* renderer, int width, int height)
     // 创建正交投影参数
     OrthoProjectionParams params = {
         .left = 0.0f,
-        .right = (float)width,
+        .right = static_cast<float>(width),
         .bottom = 0.0f,
-        .top = (float)height,
+        .top = static_cast<float>(height),
         .near = -1.0f,
         .far = 1.0f
     };
@@ -259,7 +260,8 @@ static void EnsureWorldVerticesCapacity(SpineRenderer* renderer, int capacity)
         float* newWorldVertices = (float*)malloc(capacity * sizeof(float));
         if (renderer->worldVertices != nullptr) {
             // 复制原有数据到新数组
-            memcpy(newWorldVertices, renderer->worldVertices, oldCapacity * sizeof(float));
+            memcpy_s(newWorldVertices, sizeof(newWorldVertices), renderer->worldVertices,
+                     oldCapacity * sizeof(float));
             free(renderer->worldVertices);
         }
         renderer->worldVertices = newWorldVertices;
@@ -420,7 +422,7 @@ void FillAttachmentData(SpineRenderer* renderer, spAttachment* attachment, Attac
 {
     if (!renderer || !attachment || !data) { return; }
     
-    memset(data, 0, sizeof(AttachmentData));
+    memset_s(data, sizeof(data), 0, sizeof(AttachmentData));
     
     if (attachment->type == SP_ATTACHMENT_REGION) {
         FillRegionData((spRegionAttachment*)attachment, renderer, data);

@@ -4,6 +4,8 @@ project(spine_harmony)
 
 set(NATIVERENDER_ROOT_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 
+add_subdirectory(boundscheck)
+
 if(DEFINED PACKAGE_FIND_FILE)
     include(${PACKAGE_FIND_FILE})
 endif()
@@ -14,6 +16,8 @@ include_directories(
     ${NATIVERENDER_ROOT_PATH}/thirdparty/spinec/include
     ${NATIVERENDER_ROOT_PATH}/thirdparty/spinec/spine
     ${NATIVERENDER_ROOT_PATH}/thirdparty/stb
+    ${NATIVERENDER_ROOT_PATH}/boundscheck/third_party_bounds_checking_function/include
+    ${NATIVERENDER_ROOT_PATH}/boundscheck/third_party_bounds_checking_function/src
 )
 
 # spine-c 源文件
@@ -44,6 +48,7 @@ target_link_libraries(spine PUBLIC
     libEGL.so
     libGLESv3.so
     libnative_window.so
+    boundscheck
 )
 
 # C 编译选项
