@@ -1,3 +1,7 @@
+## v1.0.1 - 2025-12-08
+### fixed
+- Modify the optimization level of dynamic libraries.
+
 ## v1.0.0 - 2025-09-30
 
 ### Added
