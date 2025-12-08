@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "spine-ts",
+        "License": "Spine Runtimes License",
+        "License File": "LICENSE",
+        "Version Number": "4.2",
+        "Owner" : "xiafeng@huawei.com",
+        "Upstream URL": "http://github.com/EsotericSoftware/spine-runtimes/blob/4.2/spine-c/spine-c",
+        "Description": "2D skeletal animation runtimes for Spine"
+    }
+]

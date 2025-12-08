@@ -1,0 +1,124 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "spine"
+    },
+    {
+      "name": "Load_animation",
+      "value": "Load animation"
+    },
+    {
+      "name": "Load_network_animation",
+      "value": "Load network animation"
+    },
+    {
+      "name": "Load_JSON_animation",
+      "value": "Load JSON animation"
+    },
+    {
+      "name": "Load_skeletal_animation",
+      "value": "Load skeletal animation"
+    },
+    {
+      "name": "Load_sandbox_animation",
+      "value": "Load sandbox animation"
+    },
+    {
+      "name": "Pause_animation",
+      "value": "Pause animation"
+    },
+    {
+      "name": "Play_animation",
+      "value": "Play animation"
+    },
+    {
+      "name": "Clear_canvas",
+      "value": "Clear canvas"
+    },
+    {
+      "name": "Resource_6",
+      "value": "Resource 6"
+    },
+    {
+      "name": "Resource_1",
+      "value": "Resource 1"
+    },
+    {
+      "name": "Resource_2",
+      "value": "Resource 2"
+    },
+    {
+      "name": "Resource_3",
+      "value": "Resource 3"
+    },
+    {
+      "name": "Resource_4",
+      "value": "Resource 4"
+    },
+    {
+      "name": "Resource_5",
+      "value": "Resource 5"
+    },
+    {
+      "name": "other",
+      "value": "Other"
+    },
+    {
+      "name": "aim",
+      "value": "aim"
+    },
+    {
+      "name": "death",
+      "value": "death"
+    },
+    {
+      "name": "idle",
+      "value": "idle"
+    },
+    {
+      "name": "jump",
+      "value": "jump"
+    },
+    {
+      "name": "run",
+      "value": "run"
+    },
+    {
+      "name": "shoot",
+      "value": "shoot"
+    },
+    {
+      "name": "walk",
+      "value": "walk"
+    },
+    {
+      "name": "Add_listener",
+      "value": "Add listener"
+    },
+    {
+      "name": "Remove_the_listener",
+      "value": "Remove the listener"
+    },
+    {
+      "name": "Remove_all_listeners",
+      "value": "Remove all listeners"
+    },
+    {
+      "name": "sandbox_path",
+      "value": "Load resources under the sandbox path:"
+    },
+    {
+      "name": "Store_sandbox_animations",
+      "value": "Store sandbox animations"
+    }
+  ]
+}
