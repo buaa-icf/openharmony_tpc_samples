@@ -1,17 +1,17 @@
 {
   "apiType": "stageMode",
   "buildOption": {
-    "resOptions": {
-      "copyCodeResource": {
-        "enable": false
-      }
-    },
+//    "resOptions": {
+//      "copyCodeResource": {
+//        "enable": false
+//      }
+//    },
     "externalNativeOptions": {
       "path": "./src/main/cpp/CMakeLists.txt",
       "arguments": "",
       "cppFlags": "",
       "abiFilters": [
-        "x86_64"
+        "arm64-v8a"
       ]
     }
   },
