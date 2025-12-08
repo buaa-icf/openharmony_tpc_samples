@@ -21,8 +21,7 @@
                 <filteritem type="filename" name="hvigorfile.*" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
                 <filteritem type="filename" name="*.json5" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
                 <filteritem type="filename" name="LICENSE" desc="版权文件，不添加版权头"/>
-                <filteritem type="filename" name="COPYING_libwebp" desc="版权文件，不添加版权头"/>
-                <filteritem type="filename" name="COPYING_rlottie" desc="版权文件，不添加版权头"/>
+                <filteritem type="filename" name="README.md" desc="版权文件，不添加版权头"/>
                 <filteritem type="filename" name="hvigorw" desc="hvigorw配置文件，DevEco Studio自动生成，不手动修改"/>
                 <filteritem type="filename" name="hvigorw.bat" desc="hvigorw配置文件，DevEco Studio自动生成，不手动修改"/>
                 <filteritem type="filename" name="hvigor-wrapper.js" desc="hvigorw配置文件，DevEco Studio自动生成，不手动修改"/>
@@ -33,8 +32,7 @@
                 <filteritem type="filename" name="hvigorfile.*" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
                 <filteritem type="filename" name="*.json5" desc="hvigor等配置文件，DevEco Studio自动生成，且不支持注释"/>
                 <filteritem type="filename" name="LICENSE" desc="版权文件，不添加版权头"/>
-                <filteritem type="filename" name="COPYING_libwebp" desc="版权文件，不添加版权头"/>
-                <filteritem type="filename" name="COPYING_rlottie" desc="版权文件，不添加版权头"/>
+                <filteritem type="filename" name="README.md" desc="版权文件，不添加版权头"/>
                 <filteritem type="filename" name="hvigorw" desc="hvigorw配置文件，DevEco Studio自动生成，不手动修改"/>
                 <filteritem type="filename" name="hvigorw.bat" desc="hvigorw配置文件，DevEco Studio自动生成，不手动修改"/>
                 <filteritem type="filename" name="hvigor-wrapper.js" desc="hvigorw配置文件，DevEco Studio自动生成，不手动修改"/>

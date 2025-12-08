@@ -26,13 +26,10 @@
 #include <string>
 #include <vector>
 #include <map>
-
+#include "thirdparty/spinec/include/spine/spine.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include "thirdparty/spinec/include/spine/spine.h"
-
 #ifdef __cplusplus
 }
 #endif
