@@ -32,69 +32,69 @@ struct Index {
         .width("100%")
         .fontSize(30)
         .textAlign(TextAlign.Center)
-      //
-      // Button("Convert")
-      //   .margin({ top: 10 })
-      //   .width("90%")
-      //   .onClick(() => {
-      //     this.getUIContext().getRouter().pushUrl({
-      //       url: "pages/Convert"
-      //     })
-      //   })
-      //
-      // Button("ConvertToHtml")
-      //   .margin({ top: 10 })
-      //   .width("90%")
-      //   .onClick(() => {
-      //     this.getUIContext().getRouter().pushUrl({
-      //       url: "pages/ConvertToHtml"
-      //     })
-      //   })
-      //
-      // Button("ConvertToMarkdown")
-      //   .margin({ top: 10 })
-      //   .width("90%")
-      //   .onClick(() => {
-      //     this.getUIContext().getRouter().pushUrl({
-      //       url: "pages/ConvertToMarkdown"
-      //     })
-      //   })
-      //
-      // Button("ExtractRawText")
-      //   .margin({ top: 10 })
-      //   .width("90%")
-      //   .onClick(() => {
-      //     this.getUIContext().getRouter().pushUrl({
-      //       url: "pages/ExtractRawText"
-      //     })
-      //   })
-      //
-      // Button("ConvertImage")
-      //   .margin({ top: 10 })
-      //   .width("90%")
-      //   .onClick(() => {
-      //     this.getUIContext().getRouter().pushUrl({
-      //       url: "pages/ConvertImage"
-      //     })
-      //   })
-      //
-      // Button("EmbedStyleMap")
-      //   .margin({ top: 10 })
-      //   .width("90%")
-      //   .onClick(() => {
-      //     this.getUIContext().getRouter().pushUrl({
-      //       url: "pages/EmbedStyleMap"
-      //     })
-      //   })
-      //
-      // Button("TransformsAndUnderline")
-      //   .margin({ top: 10 })
-      //   .width("90%")
-      //   .onClick(() => {
-      //     this.getUIContext().getRouter().pushUrl({
-      //       url: "pages/TransformsPage"
-      //     })
-      //   })
+
+      Button("Convert")
+        .margin({ top: 10 })
+        .width("90%")
+        .onClick(() => {
+          this.getUIContext().getRouter().pushUrl({
+            url: "pages/Convert"
+          })
+        })
+
+      Button("ConvertToHtml")
+        .margin({ top: 10 })
+        .width("90%")
+        .onClick(() => {
+          this.getUIContext().getRouter().pushUrl({
+            url: "pages/ConvertToHtml"
+          })
+        })
+
+      Button("ConvertToMarkdown")
+        .margin({ top: 10 })
+        .width("90%")
+        .onClick(() => {
+          this.getUIContext().getRouter().pushUrl({
+            url: "pages/ConvertToMarkdown"
+          })
+        })
+
+      Button("ExtractRawText")
+        .margin({ top: 10 })
+        .width("90%")
+        .onClick(() => {
+          this.getUIContext().getRouter().pushUrl({
+            url: "pages/ExtractRawText"
+          })
+        })
+
+      Button("ConvertImage")
+        .margin({ top: 10 })
+        .width("90%")
+        .onClick(() => {
+          this.getUIContext().getRouter().pushUrl({
+            url: "pages/ConvertImage"
+          })
+        })
+
+      Button("EmbedStyleMap")
+        .margin({ top: 10 })
+        .width("90%")
+        .onClick(() => {
+          this.getUIContext().getRouter().pushUrl({
+            url: "pages/EmbedStyleMap"
+          })
+        })
+
+      Button("TransformsAndUnderline")
+        .margin({ top: 10 })
+        .width("90%")
+        .onClick(() => {
+          this.getUIContext().getRouter().pushUrl({
+            url: "pages/TransformsPage"
+          })
+        })
 
       Button("StyleMapping")
         .margin({ top: 10 })

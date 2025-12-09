@@ -34,9 +34,6 @@ export function RegexTokeniser(rules) {
                 var endIndex = startIndex + result[0].length;
                 if (result.index === startIndex && endIndex > startIndex) {
                     var value = result[1];
-                    if (value == undefined ) {
-                        value = result[0];
-                    }
                     var token = new Token(
                         rules[i].name,
                         value,

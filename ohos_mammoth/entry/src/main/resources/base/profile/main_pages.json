@@ -1,5 +1,13 @@
 {
   "src": [
+    "pages/Index",
+    "pages/ConvertImage",
+    "pages/EmbedStyleMap",
+    "pages/TransformsPage",
+    "pages/Convert",
+    "pages/ConvertToHtml",
+    "pages/ConvertToMarkdown",
+    "pages/ExtractRawText",
     "pages/styleMapping"
   ]
 }

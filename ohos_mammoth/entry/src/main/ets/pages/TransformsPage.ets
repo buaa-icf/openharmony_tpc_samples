@@ -32,6 +32,7 @@ import { BusinessError } from "@ohos.base";
 @Entry
 @Component
 struct TransformsPage {
+  @State md: string = "";
   private docxName = 'hello.docx';
   private webSrc: string = "result.html";
   private context: Context | undefined = this.getUIContext().getHostContext();
@@ -40,7 +41,7 @@ struct TransformsPage {
 
   // 添加弹窗控制器
   dialogController: CustomDialogController = new CustomDialogController({
-    builder: WebDialog({ src: this.filesDir + '/' + this.webSrc, md: '' }),
+    builder: WebDialog({ src: this.filesDir + '/' + this.webSrc, md: this.md }),
     autoCancel: true,
     alignment: DialogAlignment.Center,
     customStyle: false,
@@ -52,6 +53,8 @@ struct TransformsPage {
     try {
       let func: Function = mammoth.underline.element(title);
       Logger.log("underline result:" + JSON.stringify(func(text)));
+      this.md = JSON.stringify(func(text));
+      this.dialogController.open();
     } catch (e) {
       Logger.log("underline error:" + e);
     }
@@ -90,6 +93,7 @@ struct TransformsPage {
       Logger.info(`convertToHtml html: ${result.value}`);
       Logger.info(`convertToHtml messages: ${JSON.stringify(result.messages)}`);
 
+      this.md = "";
       // 写入文件并显示弹窗
       writeFile(this.filesDir, this.webSrc, result.value);
       this.dialogController.open();
@@ -125,7 +129,7 @@ struct TransformsPage {
     ).then((result) => {
       Logger.info(`convertToHtml html: ${result.value}`);
       Logger.info(`convertToHtml messages: ${JSON.stringify(result.messages)}`);
-
+      this.md = "";
       // 写入文件并显示弹窗
       writeFile(this.filesDir, this.webSrc, result.value);
       this.dialogController.open();
@@ -157,7 +161,7 @@ struct TransformsPage {
     ).then((result) => {
       Logger.info(`convertToHtml html: ${result.value}`);
       Logger.info(`convertToHtml messages: ${JSON.stringify(result.messages)}`);
-
+      this.md = "";
       // 写入文件并显示弹窗
       writeFile(this.filesDir, this.webSrc, result.value);
       this.dialogController.open();
@@ -173,6 +177,11 @@ struct TransformsPage {
       // 获取所有后代元素
       const descendants: BaseElement[] = mammoth.transforms.getDescendants(Element);
       Logger.log(`Found ${descendants.length} descendants`);
+      descendants.forEach((element: BaseElement) => {
+        if (element.type === 'document') {
+          Logger.log(`Found element: ${JSON.stringify(element)}`);
+        }
+      })
 
       // 获取特定类型的后代元素
       const hyperlinkElements: BaseElement[] = mammoth.transforms.getDescendantsOfType(Element, "hyperlink");
@@ -203,7 +212,7 @@ struct TransformsPage {
     ).then((result) => {
       Logger.info(`convertToHtml html: ${result.value}`);
       Logger.info(`convertToHtml messages: ${JSON.stringify(result.messages)}`);
-
+      this.md = "";
       // 写入文件并显示弹窗
       writeFile(this.filesDir, this.webSrc, result.value);
       this.dialogController.open();

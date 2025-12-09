@@ -6,30 +6,29 @@ import * as nodes from "@ohos/mammoth/src/main/ets/xml/nodes";
 
 export default function readerTest() {
   describe('readerTest', () => {
-    // todo
-    // it('should read self-closing element', 0, async (done: Function) => {
-    //   const result = await(reader.readString("<body/>") as  Promise<nodes.Element>);
-    //   const  expected:Element={
-    //     type:"element",
-    //     name:"body",
-    //     children:[],
-    //     attributes:{}
-    //   }
-    //   expect(result).assertDeepEquals(expected);
-    //   done();
-    // });
-    // todo
-    // it('should read empty element with separate closing tag', 0, async (done: Function) => {
-    //   const result = await (reader.readString("<body></body>") as Promise<nodes.Element>);
-    //   const expected:Element={
-    //     type:"element",
-    //     name:"body",
-    //     children:[],
-    //     attributes:{}
-    //   }
-    //   expect(result).assertDeepEquals(expected);
-    //   done();
-    // });
+    it('should read self-closing element', 0, async (done: Function) => {
+      const result = await(reader.readString("<body/>") as Promise<nodes.Element>);
+      const expected:Element={
+        type:"element",
+        name:"body",
+        attributes:{},
+        children:[],
+      }
+      expect(JSON.stringify(result)).assertDeepEquals(JSON.stringify(expected));
+      done();
+    });
+
+    it('should read empty element with separate closing tag', 0, async (done: Function) => {
+      const result = await (reader.readString("<body></body>") as Promise<nodes.Element>);
+      const expected:Element={
+        type:"element",
+        name:"body",
+        attributes:{},
+        children:[],
+      }
+      expect(JSON.stringify(result)).assertDeepEquals(JSON.stringify(expected));
+      done();
+    });
 
     it('should read attributes of tags', 0, async (done: Function) => {
       const result = await (reader.readString('<body name="bob"/>') as  Promise<nodes.Element>);
