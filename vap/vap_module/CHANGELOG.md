@@ -1,5 +1,12 @@
 # 版本记录
 
+## 1.1.6-rc.4
+
+---
+1. Fix the issue of long text being truncated.
+
+---
+
 ## 1.1.6-rc.3
 
 ---
