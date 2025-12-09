@@ -1,0 +1,12 @@
+{
+  "name": "@ohos/vlc",
+  "version": "1.0.0",
+  "description": "VLC for HarmonyOS",
+  "main": "Index.ets",
+  "author": "ohos_tpc",
+  "license": "GPL-2.0",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_vlc",
+  "dependencies": {
+    "libvlc_napi.so": "file:./src/main/cpp/types/vlc_napi"
+  }
+}

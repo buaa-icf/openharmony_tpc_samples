@@ -1,0 +1,12 @@
+[
+    {
+        "Name": "ohos_vlc",
+        "License": " GPL-2.0",
+        "License File": "LICENSE",
+        "Version Number": "3.7.0",
+        "Owner" : "xiafeng@huawei.com",
+        "Upstream URL": "https://github.com/videolan/vlc-android",
+        "Description": "VLC for Android, Android TV and ChromeOS"
+        "Dependencies": ["json"]
+    }
+]

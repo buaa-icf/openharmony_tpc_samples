@@ -1,0 +1,10 @@
+/oh_modules
+/.preview
+/build
+/.cxx
+/.test
+oh-package-lock.json5
+.clang-tidy
+.clangd
+/.idea
+**/.hvigor/
