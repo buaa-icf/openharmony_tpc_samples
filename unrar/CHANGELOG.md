@@ -1,6 +1,6 @@
 ## V2.0.4
 
-1.Release official version 2.0.4
+1.Modify the optimization level of dynamic libraries.
 
 ## V2.0.3
 
