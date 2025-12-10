@@ -196,118 +196,125 @@ struct Index {
       this.cleanupDisplayTimer = -1;
     }
   }
-  // 完全重置XComponent（最彻底的清理方法）
-  private resetXComponent(): void {
+
+  // 重置XComponent（使用Promise链避免竞态条件）
+  private async resetXComponent(): Promise<void> {
     hilog.info(0, LOG_TAG, '开始重置XComponent...');
 
-    // 先清理Spine实例
-    if (this.loadedInstanceName) {
-      try {
-        Spine.removeInstance(XCOMPONENT_ID, this.loadedInstanceName);
-        hilog.info(0, LOG_TAG, '已移除Spine实例');
-      } catch (error) {
-        hilog.error(0, LOG_TAG, '移除Spine实例失败: %{public}s', String(error));
-      }
+    // 如果组件已销毁，直接返回
+    if (this.isDestroyed) {
+      return;
     }
-    // 重置XComponent的控制器来触发重绘
+
     try {
-      // 延迟重置就绪状态
-      this.setTimeoutSafe(() => {
-        if (this.isDestroyed) { return; }
+      // 清理Spine实例
+      if (this.loadedInstanceName) {
+        await this.safeRemoveSpineInstance();
+      }
 
-        this.isXComponentReady = false;
-        this.message = 'XComponent重置中...';
+      // 重置UI状态
+      this.isXComponentReady = false;
+      this.message = 'XComponent重置中...';
 
-        // 延迟设置就绪状态
-        this.setTimeoutSafe(() => {
-          if (this.isDestroyed) { return; }
+      // 等待一小段时间确保Native层清理完成
+      await this.delay(100);
 
-          // 重新注册XComponent
-          const regResult: boolean = Spine.registerXComponent(XCOMPONENT_ID);
-          hilog.info(0, LOG_TAG, '重新注册XComponent结果: %{public}s', regResult ? '成功' : '失败');
+      // 重新注册XComponent
+      const regResult: boolean = Spine.registerXComponent(XCOMPONENT_ID);
+      hilog.info(0, LOG_TAG, '重新注册XComponent结果: %{public}s', regResult ? '成功' : '失败');
 
-          if (regResult) {
-            this.isXComponentReady = true;
-            this.message = '点击"加载骨骼"按钮';
-          } else {
-            this.message = 'XComponent重新注册失败';
-          }
-        }, 300);
-      }, 100);
+      // 更新UI状态
+      if (this.isDestroyed) {
+        return; // 再次检查是否已销毁
+      }
 
+      if (regResult) {
+        this.isXComponentReady = true;
+        this.message = '点击"加载骨骼"按钮';
+      } else {
+        this.message = 'XComponent重新注册失败';
+      }
+
+      hilog.info(0, LOG_TAG, '重置XComponent完成');
     } catch (error) {
       hilog.error(0, LOG_TAG, '重置XComponent失败: %{public}s', String(error));
+
+      if (!this.isDestroyed) {
+        this.message = 'XComponent重置失败';
+      }
     }
   }
 
-  // 自动释放资源
-  private autoReleaseResources(): void {
+  // 安全的移除Spine实例（返回Promise）
+  private async safeRemoveSpineInstance(): Promise<void> {
+    if (!this.loadedInstanceName) {
+      return;
+    }
+
+    try {
+      Spine.removeInstance(XCOMPONENT_ID, this.loadedInstanceName);
+      hilog.info(0, LOG_TAG, '已移除Spine实例: %{public}s', this.loadedInstanceName);
+      this.loadedInstanceName = null;
+    } catch (error) {
+      hilog.error(0, LOG_TAG, '移除Spine实例失败: %{public}s', String(error));
+    }
+  }
+
+  // 延迟函数（返回Promise）
+  private delay(ms: number): Promise<void> {
+    return new Promise(resolve => {
+      const timerId = setTimeout(() => {
+        // 检查组件是否已销毁
+        if (this.isDestroyed) {
+          return;
+        }
+        resolve();
+        // 清理定时器引用
+        this.removeTimerFromActiveList(timerId);
+      }, ms);
+
+      // 添加到活动定时器数组以便管理
+      this.activeTimers.push(timerId);
+    });
+  }
+
+  // 自动释放资源（使用Promise链）
+  private async autoReleaseResources(): Promise<void> {
     hilog.info(0, LOG_TAG, '开始自动释放资源...');
 
-    // 停止所有动画和定时器
-    this.stopRenderLoop();
-    this.stopCheckTimer();
-    this.isPlaying = false;
-
-    // 清理XComponent上的残留显示
-    this.clearXComponentDisplay();
-
-    // 移除Spine实例
-    if (this.loadedInstanceName) {
-      try {
-        Spine.removeInstance(XCOMPONENT_ID, this.loadedInstanceName);
-        hilog.info(0, LOG_TAG, '已释放Spine实例: %{public}s', this.loadedInstanceName);
-      } catch (error) {
-        hilog.error(0, LOG_TAG, '释放Spine实例失败: %{public}s', String(error));
-      }
-      this.loadedInstanceName = null;
+    // 如果组件已销毁，直接返回
+    if (this.isDestroyed) {
+      return;
     }
 
-    // 重置UI状态到初始状态
-    this.resetToInitialState();
+    try {
+      // 停止所有动画和定时器
+      this.stopRenderLoop();
+      this.stopCheckTimer();
+      this.stopCleanupDisplayTimer();
+      this.isPlaying = false;
 
-    // 完全重置XComponent
-    this.resetXComponent();
+      // 清理XComponent上的残留显示
+      this.clearXComponentDisplay();
 
-    hilog.info(0, LOG_TAG, '自动释放资源完成');
-  }
+      // 移除Spine实例
+      await this.safeRemoveSpineInstance();
 
-  // 重置到初始状态
-  private resetToInitialState(): void {
-    // 重置所有动画相关状态
-    this.isLoaded = false;
-    this.isLoading = false;
-    this.animationList = [];
-    this.currentAnimation = '';
-    this.playCount = 0;
+      // 等待一小段时间确保清理完成
+      await this.delay(50);
 
-    // 显示初始提示信息
-    this.message = this.isXComponentReady ? '点击"加载骨骼"按钮' : '等待 XComponent 初始化...';
-
-    // 重置活动时间（防止立即再次触发空闲检测）
-    this.updateActivityTime();
-
-    hilog.info(0, LOG_TAG, '已重置到初始状态');
-  }
-
-  // 安全的定时器设置函数
-  private setTimeoutSafe(callback: () => void, delay: number): number {
-    const timerId = setTimeout(() => {
-      // 检查组件是否已销毁
-      if (this.isDestroyed) {
-        return;
+      // 重置UI状态
+      if (!this.isDestroyed) {
+        this.resetToInitialState();
       }
-      try {
-        callback();
-      } catch (error) {
-        hilog.error(0, LOG_TAG, 'Timer callback error: %{public}s', String(error));
-      }
-      // 从活动定时器数组中移除
-      this.removeTimerFromActiveList(timerId);
-    }, delay);
-    // 添加到活动定时器数组
-    this.activeTimers.push(timerId);
-    return timerId;
+
+      // 完全重置XComponent
+      await this.resetXComponent();
+
+      hilog.info(0, LOG_TAG, '自动释放资源完成');
+    } catch (error) {
+      hilog.error(0, LOG_TAG, '自动释放资源失败: %{public}s', String(error));
+    }
   }
 
   // 清理所有活动定时器
@@ -344,15 +351,38 @@ struct Index {
     this.lastActivityTime = Date.now();
   }
 
+  // 重置到初始状态
+  private resetToInitialState(): void {
+    // 重置所有动画相关状态
+    this.isLoaded = false;
+    this.isLoading = false;
+    this.animationList = [];
+    this.currentAnimation = '';
+    this.playCount = 0;
+
+    // 显示初始提示信息
+    this.message = this.isXComponentReady ? '点击"加载骨骼"按钮' : '等待 XComponent 初始化...';
+
+    // 重置活动时间（防止立即再次触发空闲检测）
+    this.updateActivityTime();
+
+    hilog.info(0, LOG_TAG, '已重置到初始状态');
+  }
+
   // 停止检查定时器
   private stopCheckTimer(): void {
     if (this.checkInterval !== -1) {
       clearInterval(this.checkInterval);
+
+      // 从活动定时器数组中移除
+      this.removeTimerFromActiveList(this.checkInterval);
+
       this.checkInterval = -1;
     }
   }
 
-  loadSpineSkeleton(): void {
+  // 加载骨骼动画（使用Promise链）
+  async loadSpineSkeleton(): Promise<void> {
     // 更新活动时间
     this.updateActivityTime();
 
@@ -360,50 +390,57 @@ struct Index {
     if (this.isDestroyed) {
       return;
     }
+
     // XComponent 是否就绪
     if (!this.isXComponentReady) {
       this.message = 'XComponent 尚未就绪，请稍候...';
       return;
     }
+
     // 是否正在加载中（防止重复点击）
     if (this.isLoading) {
       this.message = '正在加载中，请稍候...';
       return;
     }
 
-    // 如果已经加载，则执行重新加载流程
-    if (this.isLoaded && this.loadedInstanceName) {
-      this.message = '重新加载中...';
-      this.isLoading = true;
-
-      // 使用安全的定时器
-      this.setTimeoutSafe(() => {
-        this.cleanupBeforeReload();
-        // 清理完成后重新加载
-        this.setTimeoutSafe(() => {
-          this.doLoadSkeleton();
-        }, 100);
-      }, 100);
-
-      return;
-    }
-    // 正常加载流程
-    this.message = '正在加载...';
+    // 标记为加载中
     this.isLoading = true;
-    // 使用安全的定时器
-    this.setTimeoutSafe(() => {
-      this.doLoadSkeleton();
-    }, 100);
+
+    try {
+      // 如果已经加载，则执行重新加载流程
+      if (this.isLoaded && this.loadedInstanceName) {
+        this.message = '重新加载中...';
+        await this.cleanupBeforeReload();
+        await this.doLoadSkeleton();
+      } else {
+        // 正常加载流程
+        this.message = '正在加载...';
+        await this.doLoadSkeleton();
+      }
+    } catch (error) {
+      hilog.error(0, LOG_TAG, '加载骨骼动画失败: %{public}s', String(error));
+      this.message = `加载失败: ${error}`;
+      this.loadedInstanceName = null;
+    } finally {
+      // 确保加载状态被重置
+      if (!this.isDestroyed) {
+        this.isLoading = false;
+      }
+    }
   }
 
-  doLoadSkeleton(): void {
+  // 加载骨骼动画的具体实现（异步）
+  private async doLoadSkeleton(): Promise<void> {
     // 再次检查组件是否已销毁
     if (this.isDestroyed) {
       return;
     }
     try {
       const instanceName = 'spineboy';
-      this.loadedInstanceName = instanceName;
+
+      // 添加一个小的延迟，确保之前的清理完成
+      await this.delay(10);
+
       // 加载骨骼文件
       const success: boolean = Spine.loadSkeleton(
         XCOMPONENT_ID,
@@ -412,52 +449,53 @@ struct Index {
         'spine/spineboy.json',
         1
       );
+
       if (success) {
         this.isLoaded = true;
-        this.isLoading = false;  // 释放加载锁
+        this.loadedInstanceName = instanceName;
         this.message = '加载成功！';
+
         // 获取动画列表
         this.animationList = Spine.getAnimations(XCOMPONENT_ID, instanceName) as string[];
+
         // 设置位置
         Spine.setPosition(XCOMPONENT_ID, instanceName, 540, 200);
+
         // 设置缩放
         Spine.setScale(XCOMPONENT_ID, instanceName, 0.5, 0.5);
+
         // 设置默认动画
         if (this.animationList.length > 0) {
           const defaultAnim = this.animationList[0];
           this.playAnimation(defaultAnim);
         }
       } else {
-        this.message = '加载失败，请查看日志';
-        this.isLoading = false;  // 失败也要释放锁
-        this.loadedInstanceName = null;
+        throw new Error('Spine.loadSkeleton 返回 false');
       }
     } catch (error) {
-      this.message = `加载错误: ${error}`;
-      this.isLoading = false;  // 异常也要释放锁
-      this.loadedInstanceName = null;
       // 尝试清理可能已创建的部分资源
-      this.safeCleanupSpineResources();
+      await this.safeCleanupSpineResources();
     }
   }
 
   // 安全的 Spine 资源清理
-  private safeCleanupSpineResources(): void {
+  private async safeCleanupSpineResources(): Promise<void> {
     if (!this.loadedInstanceName) {
       return;
     }
     try {
-      Spine.removeInstance(XCOMPONENT_ID, this.loadedInstanceName);
+      await this.safeRemoveSpineInstance();
     } catch (cleanupError) {
       hilog.debug(0, LOG_TAG, 'Cleanup error (expected): %{public}s', String(cleanupError));
     }
   }
 
-  // 清理重新加载
-  cleanupBeforeReload(): void {
+  // 清理重新加载（异步）
+  private async cleanupBeforeReload(): Promise<void> {
     if (!this.loadedInstanceName) {
       return;
     }
+
     try {
       // 停止渲染循环
       this.stopRenderLoop();
@@ -465,17 +503,24 @@ struct Index {
       this.stopCheckTimer();
       // 停止清理显示定时器
       this.stopCleanupDisplayTimer();
+
       // 移除已有实例
-      Spine.removeInstance(XCOMPONENT_ID, this.loadedInstanceName);
+      await this.safeRemoveSpineInstance();
+
       // 清理XComponent显示
       this.clearXComponentDisplay();
+
+      // 等待一小段时间确保清理完成
+      await this.delay(50);
+
       // 重置状态
-      this.isLoaded = false;
-      this.animationList = [];
-      this.currentAnimation = '';
-      this.loadedInstanceName = null;
-      this.playCount = 0;
-      this.isPlaying = false;
+      if (!this.isDestroyed) {
+        this.isLoaded = false;
+        this.animationList = [];
+        this.currentAnimation = '';
+        this.playCount = 0;
+        this.isPlaying = false;
+      }
     } catch (error) {
       hilog.error(0, LOG_TAG, 'Error in cleanupBeforeReload: %{public}s', String(error));
     }
@@ -540,6 +585,7 @@ struct Index {
         this.updateActivityTime();
       }
     }, 1000); // 每秒检查一次
+    this.activeTimers.push(this.checkInterval);
   }
 
   // 启动渲染循环
