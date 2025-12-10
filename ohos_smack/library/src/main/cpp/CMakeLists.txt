@@ -50,4 +50,4 @@ elseif(${CMAKE_HOST_SYSTEM_NAME} MATCHES "Linux")
             ${SOUCE_FILES})
 endif()
 
-target_link_libraries(entry PUBLIC libace_napi.z.so libc++.a libhilog_ndk.z.so)
+target_link_libraries(entry PUBLIC libace_napi.z.so libhilog_ndk.z.so)
