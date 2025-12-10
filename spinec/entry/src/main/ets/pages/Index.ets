@@ -213,14 +213,14 @@ struct Index {
     try {
       // 延迟重置就绪状态
       this.setTimeoutSafe(() => {
-        if (this.isDestroyed) return;
+        if (this.isDestroyed) { return; }
 
         this.isXComponentReady = false;
         this.message = 'XComponent重置中...';
 
         // 延迟设置就绪状态
         this.setTimeoutSafe(() => {
-          if (this.isDestroyed) return;
+          if (this.isDestroyed) { return; }
 
           // 重新注册XComponent
           const regResult: boolean = Spine.registerXComponent(XCOMPONENT_ID);
