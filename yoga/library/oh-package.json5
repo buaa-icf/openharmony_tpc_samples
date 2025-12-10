@@ -14,7 +14,7 @@
   "main": "Index.ets",
   "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/yoga",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "dependencies": {},
   "tags": [
     "OpenHarmony",
