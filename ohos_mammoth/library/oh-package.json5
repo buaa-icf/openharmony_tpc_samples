@@ -2,18 +2,21 @@
   "name": "@ohos/mammoth",
   "version": "1.0.0",
   "type": "module",
-  "description": "Please describe the basic information.",
+  "description": "Mammoth is designed to convert .docx documents, such as those created by Microsoft Word, Google Docs and LibreOffice, and convert them to HTML.",
   "main": "Index.ets",
   "types": "index.d.ts",
-  "author": "",
-  "license": "Apache-2.0",
+  "license": "BSD-2-Clause",
   "ohos": {
     "org": "opensource"
   },
   "keywords": [
     "mammoth",
     "docx",
-    "markdown"
+    "markdown",
+    "html",
+    "office",
+    "word",
+    "md"
   ],
   "tags": [
     "UI",

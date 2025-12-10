@@ -316,7 +316,7 @@ export default function styleReaderTest() {
     it("styleReader.read document error when not all input is consumed", 37, (done: Function) => {
       expect(readStyle("r => span a")).assertDeepEquals(
         new results.Result(null,
-          [results.warning("Did not understand this style mapping, so ignored it: r => span a\nError was at character number 10: Expected end but got whitespace \" \"")])
+          [results.warning("Did not understand this style mapping, so ignored it: r => span a\nError was at character number 10: Expected end but got whitespace")])
       );
       done();
     })

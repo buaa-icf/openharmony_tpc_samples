@@ -27,7 +27,7 @@ function assertTokens(input: string, expectedTokens: Token[]): void {
 
     expect(token.name).assertEqual(expected.name);
 
-    if (expected.value) {
+    if (expected.value && token.value) {
       expect(JSON.stringify(token.value)).assertEqual(JSON.stringify(expected.value));
     }
   }

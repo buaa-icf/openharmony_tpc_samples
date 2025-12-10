@@ -51,10 +51,7 @@ function Element(tagName, attributes, options) {
 }
 
 Element.prototype.matchesElement = function(element) {
-    var a = this.tagNames[element.tagName]
-    var b = _.isEqual(this.attributes || {}, element.attributes || {})
-    var aa = this.tagNames[element.tagName] && _.isEqual(this.attributes || {}, element.attributes || {});
-    return _.isEqual(this.attributes || {}, element.attributes || {});
+    return this.tagNames[element.tagName] && _.isEqual(this.attributes || {}, element.attributes || {});
 };
 
 Element.prototype.wrap = function wrap(generateNodes) {
