@@ -46,7 +46,10 @@ struct TransformsPage {
     alignment: DialogAlignment.Center,
     customStyle: false,
     cornerRadius: 20,
-    backgroundColor: Color.White
+    backgroundColor: Color.White,
+    onWillDisappear: () => {
+      deleteFile(this.filesDir + '/' + this.webSrc);
+    },
   });
 
   underline(title: string, text: string) {
@@ -233,7 +236,6 @@ struct TransformsPage {
   }
 
   aboutToDisappear(): void {
-    deleteFile(this.filesDir + '/' + this.webSrc);
     deleteFile(this.filesDir + '/' + this.docxName);
   }
 
@@ -249,28 +251,24 @@ struct TransformsPage {
       Button("TransformsParagraph")
         .margin({ top: 10 })
         .onClick(() => {
-          deleteFile(`${this.filesDir}/${this.webSrc}`);
           //标题前添加[Modified]并将无序列表转为有序列表
           this.transformsParagraph()
         })
       Button("TransformsRun")
         .margin({ top: 10 })
         .onClick(() => {
-          deleteFile(`${this.filesDir}/${this.webSrc}`);
           //加粗文本后添加[BOLD]并添加斜体样式
           this.transformsRun()
         })
       Button("TransformsOfType")
         .margin({ top: 10 })
         .onClick(() => {
-          deleteFile(`${this.filesDir}/${this.webSrc}`);
           //文本前修改[text]
           this.transformsOfType()
         })
       Button("Transforms")
         .margin({ top: 10 })
         .onClick(() => {
-          deleteFile(`${this.filesDir}/${this.webSrc}`);
           //修改超链接
           this.transforms()
         })

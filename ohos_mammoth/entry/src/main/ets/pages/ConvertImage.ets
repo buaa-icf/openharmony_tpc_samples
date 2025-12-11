@@ -52,6 +52,9 @@ struct ConvertImage {
     customStyle: false,
     cornerRadius: 20,
     backgroundColor: Color.White,
+    onWillDisappear: () => {
+      deleteFile(this.filesDir + '/' + this.webSrc);
+    },
     shadow: ({
       radius: 20,
       color: Color.Grey,
@@ -72,7 +75,6 @@ struct ConvertImage {
   }
 
   aboutToDisappear(): void {
-    deleteFile(this.filesDir + '/' + this.webSrc);
     deleteFile(this.filesDir + '/' + this.docxName);
   }
 

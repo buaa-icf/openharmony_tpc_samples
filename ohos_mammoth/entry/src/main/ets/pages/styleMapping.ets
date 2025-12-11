@@ -25,10 +25,9 @@
 import * as mammoth from "@ohos/mammoth";
 import fs from '@ohos.file.fs';
 import { WebDialog } from "../component/WebDialog";
-import { writeFile } from "../utils/FileUtils";
+import { deleteFile, writeFile } from "../utils/FileUtils";
 import { Logger } from "../utils/Logger";
 import { BusinessError } from "@ohos.base";
-import { Result } from "@ohos/mammoth";
 
 const TAG = `[mammoth]: `;
 
@@ -38,21 +37,22 @@ struct StyleMapping {
   private context: Context | undefined = this.getUIContext().getHostContext();
   @State md: string = '';
   private docxName = 'hello.docx';
+  private webSrc: string = "index1.html";
   private filesDir: string =  this.context!.filesDir;
   private inputDocx = this.filesDir + "/" + this.docxName;
 
   @State html: string = '';
 
   dialogController: CustomDialogController | null = new CustomDialogController({
-    builder: WebDialog({
-      src: this.context!.cacheDir + '/index1.html',
-      md: this.md
-    }),
+    builder: WebDialog({ src: this.filesDir + '/' + this.webSrc, md: this.md }),
     autoCancel: true,
     alignment: DialogAlignment.Center,
     customStyle: false,
     cornerRadius: 20,
     backgroundColor: Color.White,
+    onWillDisappear: () => {
+      deleteFile(this.filesDir + '/'+this.webSrc);
+    },
     shadow: ({
       radius: 20,
       color: Color.Grey,
@@ -61,7 +61,7 @@ struct StyleMapping {
     }),
   });
 
-// 使<h1>变为自定义的<...>
+  // 使<h1>变为自定义的<...>
   styleMap: string[] = [
     "p[style-name='Heading 1'] => u:fresh",
     "p[style-name='Heading 2'] => s:fresh",
@@ -77,23 +77,16 @@ struct StyleMapping {
     "b => s",
     "p => s",
   ]
-  writeFile() {
-    if (this.context) {
-      let filePath = this.context.cacheDir + '/index1.html';
-      let file = fs.openSync(filePath, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
-      fs.writeSync(file.fd, this.html);
-      fs.closeSync(file.fd);
-    }
-  }
+
   convertToHtml() {
     mammoth.convertToHtml({ path: this.inputDocx}, {styleMap: this.styleMap})
-      .then((result: Result) => {
+      .then((result) => {
         this.html = result.value; // The generated HTML
         let messages = result.messages; // Any messages, such as warnings during conversion
         console.info(`${TAG} convertToHtml html: ${this.html}`);
         console.info(`${TAG} convertToHtml messages: ${JSON.stringify(messages)}`)
 
-        this.writeFile();
+        writeFile(this.filesDir, this.webSrc, result.value);
         this.dialogController?.open();
       })
 
@@ -102,8 +95,6 @@ struct StyleMapping {
         console.error(`${TAG} convertToHtml html, error.stack: ${JSON.stringify(error.message)}`);
       });
   }
-
-
 
   aboutToAppear(): void {
     if (this.context) {
@@ -116,6 +107,9 @@ struct StyleMapping {
     }
   }
 
+  aboutToDisappear(): void {
+    deleteFile(this.inputDocx);
+  }
 
   build() {
     Column() {
