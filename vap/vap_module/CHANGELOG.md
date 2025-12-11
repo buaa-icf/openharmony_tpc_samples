@@ -1,18 +1,12 @@
 # 版本记录
 
-## 1.1.6-rc.4
-
----
-1. Fix the issue of long text being truncated.
-
----
-
 ## 1.1.6-rc.3
 
 ---
 
 1. Fixed the issue of incorrect reading of vapc information.
 2. Fix the issue of incomplete video information acquisition.
+3. Fix the issue of long text being truncated.
 
 ## 1.1.6-rc.2
 
