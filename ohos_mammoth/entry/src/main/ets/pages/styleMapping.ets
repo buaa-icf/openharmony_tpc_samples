@@ -50,7 +50,7 @@ struct StyleMapping {
     customStyle: false,
     cornerRadius: 20,
     backgroundColor: Color.White,
-    onWillDisappear: () => {
+    cancel: () => {
       deleteFile(this.filesDir + '/'+this.webSrc);
     },
     shadow: ({
@@ -108,6 +108,7 @@ struct StyleMapping {
   }
 
   aboutToDisappear(): void {
+    deleteFile(this.filesDir + '/' + this.webSrc);
     deleteFile(this.inputDocx);
   }
 

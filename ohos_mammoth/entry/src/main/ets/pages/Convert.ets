@@ -52,7 +52,7 @@ struct Index {
     customStyle: false,
     cornerRadius: 20,
     backgroundColor: Color.White,
-    onWillDisappear: () => {
+    cancel: () => {
       deleteFile(this.filesDir + '/' + this.webSrc);
     },
     shadow: ({
@@ -75,6 +75,7 @@ struct Index {
   }
 
   aboutToDisappear(): void {
+    deleteFile(this.filesDir + '/' + this.webSrc);
     deleteFile(this.filesDir + '/' + this.tempDocxName);
     deleteFile(this.filesDir + '/' + this.docxName);
   }

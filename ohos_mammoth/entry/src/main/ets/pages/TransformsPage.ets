@@ -47,7 +47,7 @@ struct TransformsPage {
     customStyle: false,
     cornerRadius: 20,
     backgroundColor: Color.White,
-    onWillDisappear: () => {
+    cancel: () => {
       deleteFile(this.filesDir + '/' + this.webSrc);
     },
   });
@@ -236,6 +236,7 @@ struct TransformsPage {
   }
 
   aboutToDisappear(): void {
+    deleteFile(this.filesDir + '/' + this.webSrc);
     deleteFile(this.filesDir + '/' + this.docxName);
   }
 
