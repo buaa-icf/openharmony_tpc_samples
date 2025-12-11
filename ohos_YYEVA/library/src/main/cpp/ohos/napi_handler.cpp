@@ -86,13 +86,13 @@ napi_value NapiHandler::CreateArray(int len, const std::function<napi_value(int)
 }
 
 template <>
-void NapiHandler::ParseArg<void>(const napi_value &arg)
+void NapiHandler::ParseArg<void>(const napi_value &arg) const
 {
     return;
 }
 
 template <>
-int NapiHandler::ParseArg<int>(const napi_value &arg)
+int NapiHandler::ParseArg<int>(const napi_value &arg) const
 {
     int result = -1;
     NAPI_CALL_HANDLE(env_, napi_get_value_int32(env_, arg, &result), result);
@@ -100,7 +100,7 @@ int NapiHandler::ParseArg<int>(const napi_value &arg)
 }
 
 template <>
-int64_t NapiHandler::ParseArg<int64_t>(const napi_value &arg)
+int64_t NapiHandler::ParseArg<int64_t>(const napi_value &arg) const
 {
     int64_t result = -1;
     NAPI_CALL_HANDLE(env_, napi_get_value_int64(env_, arg, &result), result);
@@ -108,7 +108,7 @@ int64_t NapiHandler::ParseArg<int64_t>(const napi_value &arg)
 }
 
 template <>
-uint64_t NapiHandler::ParseArg<uint64_t>(const napi_value &arg)
+uint64_t NapiHandler::ParseArg<uint64_t>(const napi_value &arg) const
 {
     uint64_t result = -1;
     bool lose = false;
@@ -117,7 +117,7 @@ uint64_t NapiHandler::ParseArg<uint64_t>(const napi_value &arg)
 }
 
 template <>
-double NapiHandler::ParseArg<double>(const napi_value &arg)
+double NapiHandler::ParseArg<double>(const napi_value &arg) const
 {
     double result = 0;
     NAPI_CALL_HANDLE(env_, napi_get_value_double(env_, arg, &result), result);
@@ -125,7 +125,7 @@ double NapiHandler::ParseArg<double>(const napi_value &arg)
 }
 
 template <>
-float NapiHandler::ParseArg<float>(const napi_value &arg)
+float NapiHandler::ParseArg<float>(const napi_value &arg) const
 {
     double result = 0;
     NAPI_CALL_HANDLE(env_, napi_get_value_double(env_, arg, &result), result);
@@ -133,7 +133,7 @@ float NapiHandler::ParseArg<float>(const napi_value &arg)
 }
 
 template <>
-bool NapiHandler::ParseArg<bool>(const napi_value &arg)
+bool NapiHandler::ParseArg<bool>(const napi_value &arg) const
 {
     bool result = false;
     NAPI_CALL_HANDLE(env_, napi_get_value_bool(env_, arg, &result), result);
@@ -141,7 +141,7 @@ bool NapiHandler::ParseArg<bool>(const napi_value &arg)
 }
 
 template <>
-ArrayBuffer NapiHandler::ParseArg<ArrayBuffer>(const napi_value &arg)
+ArrayBuffer NapiHandler::ParseArg<ArrayBuffer>(const napi_value &arg) const
 {
     bool is_arraybuffer;
     NAPI_CALL_HANDLE(env_, napi_is_arraybuffer(env_, arg, &is_arraybuffer), {});
@@ -160,7 +160,7 @@ ArrayBuffer NapiHandler::ParseArg<ArrayBuffer>(const napi_value &arg)
 }
 
 template <>
-std::string NapiHandler::ParseArg<std::string>(const napi_value &arg)
+std::string NapiHandler::ParseArg<std::string>(const napi_value &arg) const
 {
     std::string result = "";
     size_t length = 0;
@@ -187,7 +187,7 @@ std::string NapiHandler::ParseArg<std::string>(const napi_value &arg)
 }
 
 template <>
-napi_ref NapiHandler::ParseArg<napi_ref>(const napi_value &arg)
+napi_ref NapiHandler::ParseArg<napi_ref>(const napi_value &arg) const
 {
     napi_ref result = nullptr;
     NAPI_CALL_HANDLE(env_, napi_create_reference(env_, arg, 1, &result), result);
@@ -325,6 +325,13 @@ napi_value NapiHandler::BindObject(void *object, napi_finalize destructor)
     return thisArg_;
 }
 
+napi_value NapiHandler::BindSendableObject(NapiObject *object, napi_finalize destructor)
+{
+    NAPI_CALL(env_, napi_wrap_sendable(env_, thisArg_, static_cast<void *>(object), destructor, nullptr));
+    object->BindRef(thisArg_);
+    return thisArg_;
+}
+
 napi_value NapiHandler::BindSafeObject(const std::shared_ptr<NapiObject> &object, napi_finalize destructor)
 {
     int32_t id = static_cast<int32_t>(reinterpret_cast<intptr_t>(object.get()));
@@ -339,7 +346,7 @@ std::shared_ptr<NapiObject> NapiHandler::UnbindSafeObject()
     NAPI_CALL_HANDLE(env_, napi_unwrap(env_, thisArg_, reinterpret_cast<void **>(&t)), nullptr);
     int32_t id = static_cast<int32_t>(reinterpret_cast<intptr_t>(t));
     if (objectMap_.find(id) == objectMap_.end()) {
-        LOGE("not find object, %d", id);
+        LOGE("unbind safeobjec failed, not find object, %d", id);
         return nullptr;
     }
     return objectMap_[id];
@@ -438,4 +445,11 @@ void NapiHandler::JsCall(NapiAsyncHandler *asyncHandler)
 napi_value NapiHandler::GetArg(int32_t index)
 {
     return argv_[index];
+}
+
+napi_valuetype NapiHandler::GetArgType(int index)
+{
+    napi_valuetype type;
+    napi_typeof(env_, argv_[index], &type);
+    return type;
 }

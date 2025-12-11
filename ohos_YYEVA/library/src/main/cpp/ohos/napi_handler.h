@@ -67,12 +67,13 @@ public:
     napi_status ParseArgs(int index, const std::function<napi_status(const napi_value &)> &doArgs);
 
     bool HasArgIndex(int index);
+    napi_valuetype GetArgType(int index);
 
     template <typename T>
-    T ParseArg(const napi_value &arg);
+    T ParseArg(const napi_value &arg) const;
 
     template <typename T>
-    T ParseArgAs(int index)
+    T ParseArgAs(int index) const
     {
         T result;
         NAPI_ASSERT_BASE(env_, index < argc_, "Index out of range", result);
@@ -81,7 +82,7 @@ public:
     }
 
     template <typename T>
-    T ParseArgAs(int index, const Parser<T> &doArgs)
+    T ParseArgAs(int index, const Parser<T> &doArgs) const
     {
         T result;
         NAPI_ASSERT_BASE(env_, index < argc_, "Index out of range", result);
@@ -193,6 +194,15 @@ public:
     {
         T *t = nullptr;
         NAPI_CALL_HANDLE(env_, napi_unwrap(env_, thisArg_, reinterpret_cast<void **>(&t)), t);
+        return t;
+    }
+
+    napi_value BindSendableObject(NapiObject *object, napi_finalize destructor);
+    template <class T>
+    T *UnbindSendableObject()
+    {
+        T *t = nullptr;
+        NAPI_CALL_HANDLE(env_, napi_unwrap_sendable(env_, thisArg_, reinterpret_cast<void **>(&t)), t);
         return t;
     }
 

@@ -19,8 +19,9 @@ import { ELog } from '../util/ELog'
 import { EvaUtil } from '../EvaUtil'
 import { SpeedControlUtil } from '../util/SpeedControlUtil'
 import { emitter } from '@kit.BasicServicesKit'
-import { collections } from '@kit.ArkTS';
+import { collections, taskpool, worker } from '@kit.ArkTS';
 import { IEvaFileContainer } from '../file/IEvaFileContainer'
+import { ThreadTask } from 'libyyeva_napi.so'
 
 export abstract class Decoder {
   public static readonly TAG: string = `${EvaConstant.TAG}.Decoder`
@@ -32,10 +33,14 @@ export abstract class Decoder {
 
   public isStopReq: boolean = false // 是否需要停止
   public blendMode: number = 1;
-  private _fps: number = 0
-
+  private _fps: number = 0;
+  public threadRender: ThreadTask|null = null;
   protected constructor(playerEva: EvaAnimPlayer) {
     this.playerEva = playerEva;
+    if (this.playerEva.controllerId == -1) {
+      return;
+    }
+    this.threadRender = null;
   }
 
   get fps(): number {
@@ -123,10 +128,8 @@ export abstract class Decoder {
             }
           };
           ELog.i(Decoder.TAG, `ON_VIDEO_CONFIG_READY 1`);
-          emitter.emit(EvaConstant.EVENT_ID_ON_VIDEO_CONFIG_READY, { priority: emitter.EventPriority.IMMEDIATE },
-            eventData); //发出onVideoConfigReady事件
-          emitter.emit(EvaConstant.EVENT_ID_SIZE_CHANGED, { priority: emitter.EventPriority.IMMEDIATE },
-            { data: { uuid: this.playerEva.uuid } });
+          this.playerEva.sendEvent(EvaConstant.EVENT_ID_ON_VIDEO_CONFIG_READY, eventData);
+          this.playerEva.sendEvent(EvaConstant.EVENT_ID_SIZE_CHANGED, { data: { uuid: this.playerEva.uuid } });
           ELog.i(Decoder.TAG, `ON_VIDEO_CONFIG_READY 2`);
         } else if (config.jsonConfig != null) {
           ELog.i(Decoder.TAG, `EvaUtil.setRenderConfig 调用前`);
@@ -149,6 +152,8 @@ export abstract class Decoder {
   destroyThread(): void {
     ELog.i(Decoder.TAG, `destroyThread this.playerEva.isDetachedFromWindow: ${this.playerEva.isDetachedFromWindow}`);
     if (this.playerEva.isDetachedFromWindow) {}
+    this.threadRender?.stop();
+    this.threadRender = null;
   }
 
   onSurfaceSizeChanged(width: number, height: number): void {

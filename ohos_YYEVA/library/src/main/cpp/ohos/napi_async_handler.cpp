@@ -20,6 +20,7 @@
 #include <locale>
 #include <memory>
 #include <string>
+#include <thread>
 
 NapiAsyncHandler::NapiAsyncHandler(napi_env env, const std::string &resName) : env_(env), resName_(resName) {}
 
@@ -28,7 +29,15 @@ NapiAsyncHandler::~NapiAsyncHandler()
     if (freeFunc_) {
         freeFunc_(data_.get());
     }
-    if (safeFunc_) {}
+    if (safeFunc_) {
+        napi_release_threadsafe_function(safeFunc_, napi_tsfn_release);
+        safeFunc_ = nullptr;
+    }
+    if (funcRef_) {
+        uint32_t count = 0;
+        napi_reference_unref(env_, funcRef_, &count);
+    }
+    resource_ = nullptr;
 }
 
 napi_value NapiAsyncHandler::CreatePromise()
@@ -115,12 +124,15 @@ void NapiAsyncHandler::Finish()
 void NapiAsyncHandler::CallMethod(napi_env env)
 {
     if (funcRef_ == nullptr) {
-        LOGE("not bind method ref");
+        LOGE("CallMethod, not bind method ref");
         return;
     }
     if (env == nullptr) {
         env = env_;
     }
+
+    NapiScope scope(env);
+
     napi_value exception;
     status_ = napi_get_and_clear_last_exception(env, &exception);
     std::vector<napi_value> params;
@@ -129,28 +141,33 @@ void NapiAsyncHandler::CallMethod(napi_env env)
     }
 
     napi_value jsFunc;
-    napi_value result;
-    status_ = napi_get_reference_value(env, funcRef_, &jsFunc);
-    if (status_ != napi_ok) {
-        LOGE("get ref, status = %d", status_);
-        return;
+    if (func_ == nullptr) {
+        status_ = napi_get_reference_value(env, funcRef_, &jsFunc);
+        if (status_ != napi_ok) {
+            LOGE("CallMethod get ref, status = %d", status_);
+            return;
+        }
+    } else {
+        jsFunc = func_;
     }
     napi_valuetype vt;
     napi_typeof(env, jsFunc, &vt);
     if (vt != napi_function) {
-        LOGE("not function type");
+        LOGE("CallMethod,not function type");
         return;
     }
+    napi_value result;
     napi_value global;
     napi_get_global(env, &global);
     status_ = napi_call_function(env, global, jsFunc, params.size(), params.data(), &result);
     if (status_ != napi_ok) {
-        LOGE("call method, status = %d", status_);
+        LOGE("CallMethod, status = %d", status_);
     }
 }
 
 void NapiAsyncHandler::CallSafeMethod()
 {
+    NapiScope scope(env_);
     if (safeFunc_ == nullptr) {
         LOGE("not bind safe func");
         return;
@@ -164,9 +181,12 @@ void NapiAsyncHandler::OnParams(ParamSerializer paramFunc)
     paramFunc_ = paramFunc;
 }
 
-void NapiAsyncHandler::BindMethodRef(napi_ref funcRef)
+void NapiAsyncHandler::BindMethodRef(napi_ref funcRef, napi_value func)
 {
+    func_ = func;
     funcRef_ = funcRef;
+    uint32_t count = 0;
+    napi_reference_ref(env_, funcRef_, &count);
 }
 
 void NapiAsyncHandler::BindWrapper(const std::shared_ptr<NapiWrapper> &wrapper)
@@ -177,4 +197,38 @@ void NapiAsyncHandler::BindWrapper(const std::shared_ptr<NapiWrapper> &wrapper)
 std::shared_ptr<NapiWrapper> NapiAsyncHandler::GetWrapper()
 {
     return wrapper_;
+}
+
+void NapiAsyncHandler::CreateSafeThread()
+{
+    napi_value jsFunc;
+    status_ = napi_get_reference_value(env_, funcRef_, &jsFunc);
+    if (status_ != napi_ok) {
+        LOGE("get ref, status = %d", status_);
+        return;
+    }
+    LOGE("CreateSafeThread");
+    status_ = napi_create_threadsafe_function(
+        env_, jsFunc, NULL, GetResource(), 0, 1, NULL, NULL, this,
+        [](napi_env env, napi_value jsCb, void *context, void *data) {
+            LOGE("call method napi_create_threadsafe_function");
+            napi_value result;
+            napi_value global;
+            napi_get_global(env, &global);
+            napi_status status = napi_call_function(env, global, jsCb, 0, nullptr, &result);
+            if (status != napi_ok) {
+                LOGE("call method, status = %d", status);
+            }
+        },
+        &safeFunc_);
+    if (status_ != napi_ok) {
+        LOGE("napi_create_threadsafe_function failed, status = %d", status_);
+        return;
+    }
+    LOGE("CreateSafeThread success");
+}
+
+std::string NapiAsyncHandler::GetName() const
+{
+    return resName_;
 }

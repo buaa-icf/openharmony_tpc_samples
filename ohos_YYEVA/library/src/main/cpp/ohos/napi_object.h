@@ -22,16 +22,21 @@
 class NapiObject {
 public:
     explicit NapiObject(const napi_env &env);
+    NapiObject();
     virtual ~NapiObject();
-    void BindRef(const napi_ref &ref);
+    napi_env CreateEnv();
+    void DestroyEnv();
+    void BindRef(const napi_value &value);
     int32_t AddRef();
     int32_t UnRef();
     void CleanRef();
     bool IsValid();
     int32_t GetID();
+    napi_env GetEnv();
 
 private:
-    napi_env env_;
+    bool created_ = false;
+    napi_env env_ = nullptr;
     napi_ref object_ref_ = nullptr;
 };
 #endif

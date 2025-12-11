@@ -14,6 +14,7 @@
  */
 import { media } from '@kit.MediaKit'
 import { image } from "@kit.ImageKit";
+import { ThreadTask } from '../libyyeva_napi';
 
 export interface CodeInfoAttr {
   pts: number,
@@ -75,5 +76,8 @@ export class SurfaceTexture {
   updateTexImage(): void;
   setOnFrameAvailableListener(onFrameAvailable: () => void): void;
   setDefaultBufferSize(width: number, height: number): void;
+  onAttachToWindow(): void;
+  onDetachFromWindow(): void;
+  attachThread(thread: ThreadTask): void;
   release(): void;
 }

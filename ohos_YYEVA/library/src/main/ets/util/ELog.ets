@@ -13,8 +13,6 @@
  * limitations under the License.
  */
 
-import { EvaUtil } from '../EvaUtil'
-
 /**
  * YYEVA 日志接口
  * 定义日志输出功能
@@ -89,15 +87,7 @@ export class ELog {
      */
     static setNapiLog() {
         if (ELog.log) {
-            EvaUtil.setLog((level: string, tag: string, message: string) => {
-                if (level == 'i') {
-                    ELog.log!!.i(tag, message)
-                } else if (level == 'd') {
-                    ELog.log!!.d(tag, message)
-                } else if (level == 'e') {
-                    ELog.log!!.e(tag, message)
-                }
-            })
+            console.info(`EvaUtil.setLog((level: string, tag: string, message: string)`)
         } else {
             console.error(`Elog setNapiLog error: ELog.log is null or undefind`)
         }

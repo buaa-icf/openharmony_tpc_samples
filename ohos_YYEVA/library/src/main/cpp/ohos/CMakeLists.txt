@@ -9,6 +9,7 @@ set(UTILS_SRC
   napi_async_handler.cpp
   napi_wrapper.cpp
   ohos_window.cpp
+  threadtask.cpp
   )
 
 if (USE_HILOG)

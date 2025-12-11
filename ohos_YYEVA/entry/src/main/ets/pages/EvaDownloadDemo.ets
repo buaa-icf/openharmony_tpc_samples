@@ -90,41 +90,41 @@ export struct EvaDownloadDemo {
     this.player.setOnResourceClickListener(
       new EvaResourceClickListener(this.getUIContext()) as OnEvaResourceClickListener)
     this.player.isVideoConfigReady = true
-    emitter.on(EvaConstant.EVENT_ID_ON_VIDEO_CONFIG_READY, (eventData: emitter.EventData) => {
+    this.player.on(EvaConstant.EVENT_ID_ON_VIDEO_CONFIG_READY, (eventData: emitter.EventData) => {
       ELog.i(EvaAnimPlayer.TAG, `onVideoConfigReady eventData: ${JSON.stringify(eventData)}`);
       let uuid: string = eventData.data?.uuid
       console.log(`onVideoConfigReady, uuid = ${uuid}`);
     })
-    emitter.on(EvaConstant.EVENT_ID_ON_VIDEO_START, (eventData: emitter.EventData) => {
+    this.player.on(EvaConstant.EVENT_ID_ON_VIDEO_START, (eventData: emitter.EventData) => {
       ELog.i(EvaAnimPlayer.TAG, `onVideoStart eventData: ${JSON.stringify(eventData)}`);
       let uuid: string = eventData.data?.uuid
       console.log(`onVideoStart, uuid = ${uuid}`);
     })
-    emitter.on(EvaConstant.EVENT_ID_ON_VIDEO_RESTART, (eventData: emitter.EventData) => {
+    this.player.on(EvaConstant.EVENT_ID_ON_VIDEO_RESTART, (eventData: emitter.EventData) => {
       ELog.i(EvaAnimPlayer.TAG, `onVideoRestart eventData: ${JSON.stringify(eventData)}`);
       let uuid: string = eventData.data?.uuid
       console.log(`onVideoRestart, uuid = ${uuid}`);
     })
-    emitter.on(EvaConstant.EVENT_ID_ON_VIDEO_RENDER, (eventData: emitter.EventData) => {
+    this.player.on(EvaConstant.EVENT_ID_ON_VIDEO_RENDER, (eventData: emitter.EventData) => {
       ELog.i(EvaAnimPlayer.TAG, `onVideoRender eventData: ${JSON.stringify(eventData)}`);
       let uuid: string = eventData.data?.uuid
       console.log(`onVideoRender, uuid = ${uuid}`);
     })
-    emitter.on(EvaConstant.EVENT_ID_ON_VIDEO_COMPLETE, (eventData: emitter.EventData) => {
+    this.player.on(EvaConstant.EVENT_ID_ON_VIDEO_COMPLETE, (eventData: emitter.EventData) => {
       ELog.i(EvaAnimPlayer.TAG, `onVideoComplete eventData: ${JSON.stringify(eventData)}`);
       let uuid: string = eventData.data?.uuid
       console.log(`onVideoComplete, uuid = ${uuid}`);
 
       this.closeDownloadDemoRawFdFile();
     })
-    emitter.on(EvaConstant.EVENT_ID_ON_VIDEO_DESTROY, (eventData: emitter.EventData) => {
+    this.player.on(EvaConstant.EVENT_ID_ON_VIDEO_DESTROY, (eventData: emitter.EventData) => {
       ELog.i(EvaAnimPlayer.TAG, `onVideoDestroy eventData: ${JSON.stringify(eventData)}`);
       let uuid: string = eventData.data?.uuid
       console.log(`onVideoDestroy, uuid = ${uuid}`);
 
       this.closeDownloadDemoRawFdFile();
     })
-    emitter.on(EvaConstant.EVENT_ID_ON_FAILED, (eventData: emitter.EventData) => {
+    this.player.on(EvaConstant.EVENT_ID_ON_FAILED, (eventData: emitter.EventData) => {
       ELog.i(EvaAnimPlayer.TAG, `onFailed eventData: ${JSON.stringify(eventData)}`);
       let uuid: string = eventData.data?.uuid
       console.log(`onFailed, uuid = ${uuid}`);
@@ -137,13 +137,13 @@ export struct EvaDownloadDemo {
 
   aboutToDisappear(): void {
     this.player.stop()
-    emitter.off(EvaConstant.EVENT_ID_ON_VIDEO_CONFIG_READY)
-    emitter.off(EvaConstant.EVENT_ID_ON_VIDEO_START)
-    emitter.off(EvaConstant.EVENT_ID_ON_VIDEO_RESTART)
-    emitter.off(EvaConstant.EVENT_ID_ON_VIDEO_RENDER)
-    emitter.off(EvaConstant.EVENT_ID_ON_VIDEO_COMPLETE)
-    emitter.off(EvaConstant.EVENT_ID_ON_VIDEO_DESTROY)
-    emitter.off(EvaConstant.EVENT_ID_ON_FAILED)
+    this.player.off(EvaConstant.EVENT_ID_ON_VIDEO_CONFIG_READY)
+    this.player.off(EvaConstant.EVENT_ID_ON_VIDEO_START)
+    this.player.off(EvaConstant.EVENT_ID_ON_VIDEO_RESTART)
+    this.player.off(EvaConstant.EVENT_ID_ON_VIDEO_RENDER)
+    this.player.off(EvaConstant.EVENT_ID_ON_VIDEO_COMPLETE)
+    this.player.off(EvaConstant.EVENT_ID_ON_VIDEO_DESTROY)
+    this.player.off(EvaConstant.EVENT_ID_ON_FAILED)
   }
 
   closeDownloadDemoRawFdFile() {

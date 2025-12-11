@@ -26,10 +26,31 @@
 
 class NapiWrapper;
 
+class NapiScope {
+public:
+    NapiScope(napi_env env) : env_(env)
+    {
+        napi_status status = napi_open_handle_scope(env_, &scope_);
+        if (status != napi_ok) {
+            LOGE("Failed to open handle scope");
+            return;
+        }
+    }
+    ~NapiScope()
+    {
+        napi_close_handle_scope(env_, scope_);
+    }
+
+private:
+    napi_env env_;
+    napi_handle_scope scope_;
+};
+
 class NapiAsyncHandler {
 public:
     NapiAsyncHandler(napi_env env, const std::string &resName);
     virtual ~NapiAsyncHandler();
+    std::string GetName() const;
     napi_value CreatePromise();
     napi_value GetResource();
     void SetStatus(napi_status status);
@@ -42,13 +63,14 @@ public:
     void Finish();
     void CallMethod(napi_env env = nullptr);
     void CallSafeMethod();
+    void CreateSafeThread();
 
     void OnWork(std::function<napi_status(napi_env, void *)> workFunc);
     void OnFinish(std::function<napi_value(napi_env, void *)> finishFunc);
     void OnFree(std::function<void(void *)> freeFunc);
     void OnParams(ParamSerializer paramFunc);
 
-    void BindMethodRef(napi_ref funcRef);
+    void BindMethodRef(napi_ref funcRef, napi_value func = nullptr);
     void BindWrapper(const std::shared_ptr<NapiWrapper> &wrapper);
     std::shared_ptr<NapiWrapper> GetWrapper();
 
@@ -69,10 +91,13 @@ public:
     }
 
 private:
-    napi_env env_;
-    napi_ref funcRef_;
-    napi_threadsafe_function safeFunc_;
-    napi_status status_;
+    napi_env env_ = nullptr;
+    napi_ref funcRef_ = nullptr;
+    napi_value func_ = nullptr;
+    // safe thread
+    napi_threadsafe_function safeFunc_ = nullptr;
+
+    napi_status status_ = napi_ok;
     napi_deferred deferred_ = nullptr;
     napi_value resource_ = nullptr;
     std::string resName_;
@@ -80,7 +105,7 @@ private:
     std::function<napi_value(napi_env, void *)> finishFunc_ = nullptr;
     std::function<void(void *)> freeFunc_ = nullptr;
     ParamSerializer paramFunc_ = nullptr;
-    std::shared_ptr<void> data_;
+    std::shared_ptr<void> data_ = nullptr;
     std::shared_ptr<NapiWrapper> wrapper_ = nullptr;
 };
 #endif // UTILS_NAPI_ASYNC_HANDLER_H

@@ -13,12 +13,12 @@
  * limitations under the License.
  */
 
-import { EvaAnimPlayer } from '../EvaAnimPlayer';
+import { IEvaAnimPlayer } from './IEvaAnimPlayer';
 import { emitter } from '@kit.BasicServicesKit';
-import { MyXComponentController } from './MyXComponentController';
 import { EvaConstant } from '../util/EvaConstant';
 import { ELog } from '../util/ELog';
 import { EvaPref } from '../file/EvaPref';
+import { EvaAnimView } from './EvaAnimView'
 
 
 @Component
@@ -31,22 +31,23 @@ export struct EvaAnimComponent {
     static readonly EVENT_ID_ON_SURFACE_CHANGED = 'onSurfaceChanged';
     // XComponentController中的onSurfaceDestroyed回调事件
     static readonly EVENT_ID_ON_SURFACE_DESTROYED = 'onSurfaceDestroyed';
-    @ObjectLink playerEva: EvaAnimPlayer;
-    xType: XComponentType = XComponentType.SURFACE;
-    xComponentController: XComponentController = new MyXComponentController(this.playerEva.uuid);
+    @ObjectLink playerEva: IEvaAnimPlayer;
+    public xcompID: string = "";
+    public xType: XComponentType = XComponentType.SURFACE;
+    public evaView: EvaAnimView = new EvaAnimView();
 
     build() {
         Stack() {
             XComponent({
-                id: 'EvaAnimComponent',
+                id: this.xcompID,
                 type: this.xType,
-                controller: this.xComponentController
+                controller: this.evaView
             }).width(this.playerEva.xArea.width)
                 .height(this.playerEva.xArea.height)
                 .backgroundColor(Color.Transparent)
                 .onTouch((event: TouchEvent) => {
                     const isRunning = this.playerEva.isRunning()
-                    const isDispatch = event != null && this.playerEva?.pluginManager?.onDispatchTouchEvent(event)
+                    const isDispatch = event != null && this.playerEva?.onDispatchTouchEvent(event)
                     const isHasBg = this.playerEva?.hasBgImage()
                     if (isRunning && !isDispatch && !isHasBg) {
                         return false
@@ -56,74 +57,32 @@ export struct EvaAnimComponent {
                         return true
                     }
                 })
-        }.id('eva_anim_component_stack')
+                .onAreaChange((oldValue: Area, newValue: Area) => {
+                    this.playerEva.onStackAreaChange(oldValue, newValue);
+                })
+                .id('eva_anim_component_stack')
+        }
         .width('100%')
         .height('100%')
-        .onAreaChange((oldValue: Area, newValue: Area) => {
-            this.playerEva.onStackAreaChange(oldValue, newValue);
-        })
     }
 
     async aboutToAppear(): Promise<void> {
-        // 注册事件
-        emitter.on(EvaAnimComponent.EVENT_ID_ON_SURFACE_CREATED, this.onSurfaceCreated);
-        emitter.on(EvaAnimComponent.EVENT_ID_ON_SURFACE_CHANGED, this.onSurfaceChanged);
-        emitter.on(EvaAnimComponent.EVENT_ID_ON_SURFACE_DESTROYED, this.onSurfaceDestroyed);
-
-        this.playerEva.xController = this.xComponentController
-        await this.playerEva.aboutToAppear()
-        EvaPref.init(this.getUIContext().getHostContext())
+        if (this.playerEva == null) {
+            return;
+        }
+        this.xcompID = 'EvaAnimComponent'+this.playerEva.uuid;
+        this.evaView?.bind(this.playerEva);
+        await this.evaView?.aboutToAppear();
+        EvaPref.init(this.getUIContext().getHostContext());
     }
 
     aboutToDisappear(): void {
-        emitter.off(EvaAnimComponent.EVENT_ID_ON_SURFACE_CREATED);
-        emitter.off(EvaAnimComponent.EVENT_ID_ON_SURFACE_CHANGED);
-        emitter.off(EvaAnimComponent.EVENT_ID_ON_SURFACE_DESTROYED);
-        this.playerEva.aboutToDisappear()
+        this.playerEva.onDestroy()
     }
 
     onPageShow(): void {
-        this.playerEva.onPageShow()
     }
 
     onPageHide(): void {
-        this.playerEva.onPageHide()
-    }
-
-    private onSurfaceCreated: Callback<emitter.EventData> = (eventData: emitter.EventData): void => {
-        ELog.i(EvaAnimComponent.TAG, `onSurfaceCreated eventData: ${JSON.stringify(eventData)}`);
-        let uuid: string = eventData.data?.uuid
-        if (uuid != this.playerEva.uuid) {
-            ELog.e(EvaAnimPlayer.TAG, `uuid不匹配 uuid = ${uuid}, EvaAnimPlayer.uuid = ${this.playerEva.uuid}`)
-            return
-        }
-        let surfaceId: string = eventData.data?.surfaceId;
-        ELog.i(EvaAnimComponent.TAG, `onSurfaceCreated surfaceId = ${surfaceId}`)
-        this.playerEva.onSurfaceCreated(surfaceId)
-    }
-    
-    private onSurfaceChanged: Callback<emitter.EventData> = (eventData: emitter.EventData): void => {
-        ELog.i(EvaAnimComponent.TAG, `onSurfaceChanged eventData: ${JSON.stringify(eventData)}`);
-        let uuid: string = eventData.data?.uuid
-        if (uuid != this.playerEva.uuid) {
-            ELog.e(EvaAnimPlayer.TAG, `uuid不匹配 uuid = ${uuid}, EvaAnimPlayer.uuid = ${this.playerEva.uuid}`)
-            return
-        }
-        let surfaceId: string = eventData.data?.surfaceId;
-        let rect: SurfaceRect = eventData.data?.rect;
-        ELog.i(EvaAnimComponent.TAG, `onSurfaceChanged surfaceId: ${surfaceId}, rect: ${JSON.stringify(rect)}}`);
-        this.playerEva.onSurfaceTextureSizeChanged(surfaceId, rect)
-    }
-    
-    private onSurfaceDestroyed: Callback<emitter.EventData> = (eventData: emitter.EventData): void => {
-        ELog.i(EvaAnimComponent.TAG, `onSurfaceDestroyed eventData: ${JSON.stringify(eventData)}`);
-        let uuid: string = eventData.data?.uuid
-        if (uuid != this.playerEva.uuid) {
-            ELog.e(EvaAnimPlayer.TAG, `uuid不匹配 uuid = ${uuid}, EvaAnimPlayer.uuid = ${this.playerEva.uuid}`)
-            return
-        }
-        let surfaceId: string = eventData.data?.surfaceId;
-        ELog.i(EvaAnimComponent.TAG, `onSurfaceDestroyed surfaceId = ${surfaceId}`)
-        this.playerEva.onSurfaceDestroyed()
     }
 }

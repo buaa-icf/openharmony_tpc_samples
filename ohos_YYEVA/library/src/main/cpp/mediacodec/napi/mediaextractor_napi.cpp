@@ -20,6 +20,7 @@
 #include "mediaextractor.h"
 #include "mediacodec.h"
 #include "surface_texture.h"
+#include "ohos/napi_safe_wrapper.h"
 
 namespace mediacodec {
 struct MediaSource {
@@ -586,12 +587,12 @@ static napi_value bind(napi_env env, napi_callback_info info)
     mediaCodec->Init(mediaExtractor->GetSampleInfo());
     napi_ref statusMethodRef = napiHandler.ParseArgAs<napi_ref>(INDEX_1);
     std::shared_ptr<NapiWrapper> wrapper = std::make_shared<NapiWrapper>(env, NW_NEVER);
-
-    mediaCodec->BindExtractor(mediaExtractor, [wrapper, statusMethodRef](int32_t status, const CodeInfoAttr &attr) {
-        wrapper->BindMethod("StatusChanged", statusMethodRef);
+    wrapper->BindMethod("StatusChanged", statusMethodRef);
+    mediaCodec->BindExtractor(mediaExtractor, [wrapper](int32_t status, const CodeInfoAttr &attr) {
         auto getParam = [status, codec = std::move(attr)](napi_env env, std::vector<napi_value> &params) {
             NapiHandler h(env);
-            params = {h.GetNapiValue<int32_t>(status),
+            params = {
+                h.GetNapiValue<int32_t>(status),
                 h.GetNapiValue<CodeInfoAttr>(codec, [&](const CodeInfoAttr &attr) -> napi_value {
                     return SerializeCodeInfoAttr(env, attr);
                 })};
@@ -731,9 +732,8 @@ static napi_value setOnFrameAvailableListener(napi_env env, napi_callback_info i
 
     napi_ref updateRef = napiHandler.ParseArgAs<napi_ref>(INDEX_0);
     std::shared_ptr<NapiWrapper> wrapper = std::make_shared<NapiWrapper>(env, NW_NEVER);
-
-    surface->SetOnFrameAvailableListener([wrapper, updateRef]() {
-        wrapper->BindMethod("onFrameAvailable", updateRef);
+    wrapper->BindMethod("onFrameAvailable", updateRef);
+    surface->SetOnFrameAvailableListener([wrapper]() {
         auto getParam = [](napi_env env, std::vector<napi_value> &params) {};
         NapiWrapper::JsCall(wrapper, "onFrameAvailable", getParam);
     });
@@ -769,6 +769,52 @@ static napi_value releaseSurface(napi_env env, napi_callback_info info)
     return napiHandler.GetVoidValue();
 }
 
+static napi_value onAttachToWindow(napi_env env, napi_callback_info info)
+{
+    NapiHandler napiHandler(env, info, PARAM_COUNT_0);
+    std::shared_ptr<SurfaceTexture> surface = std::static_pointer_cast<SurfaceTexture>(napiHandler.UnbindSafeObject());
+    if (surface == nullptr) {
+        LOGE("Unbind surface nullptr");
+        return nullptr;
+    }
+    surface->AttachWindow();
+    return napiHandler.GetVoidValue();
+}
+
+static napi_value onDetachFromWindow(napi_env env, napi_callback_info info)
+{
+    NapiHandler napiHandler(env, info, PARAM_COUNT_0);
+    std::shared_ptr<SurfaceTexture> surface = std::static_pointer_cast<SurfaceTexture>(napiHandler.UnbindSafeObject());
+    if (surface == nullptr) {
+        LOGE("Unbind surface nullptr");
+        return nullptr;
+    }
+    surface->DetachWindow();
+    return napiHandler.GetVoidValue();
+}
+
+static napi_value attachThread(napi_env env, napi_callback_info info)
+{
+    NapiHandler napiHandler(env, info, PARAM_COUNT_1);
+    std::shared_ptr<SurfaceTexture> surface = std::static_pointer_cast<SurfaceTexture>(napiHandler.UnbindSafeObject());
+    if (surface == nullptr) {
+        LOGE("Unbind surface nullptr");
+        return nullptr;
+    }
+    NapiSafeWrappable<ThreadTask> *threadWrapper = napiHandler.ParseArgAs<NapiSafeWrappable<ThreadTask> *>(
+        INDEX_0, [&](const napi_value &obj) -> NapiSafeWrappable<ThreadTask> * {
+            NapiSafeWrappable<ThreadTask> *t = nullptr;
+            NAPI_CALL_HANDLE(env_, napi_unwrap(env, obj, reinterpret_cast<void **>(&t)), t);
+            return t;
+        });
+    if (threadWrapper == nullptr) {
+        LOGE("attach null thread");
+        return nullptr;
+    }
+    auto thread = threadWrapper->GetSafeObject();
+    surface->AttachThread(thread);
+    return napiHandler.GetVoidValue();
+}
 } // namespace mediacodec
 
 EXTERN_C_START
@@ -856,10 +902,15 @@ static napi_value InitMediaExtractor(napi_env env, napi_value exports)
 
 static napi_value InitSurfaceTexture(napi_env env, napi_value exports)
 {
-    napi_property_descriptor desc[] = {DECLARE_NAPI_FUNCTION("updateTexImage", mediacodec::updateTexImage),
+    napi_property_descriptor desc[] = {
+        DECLARE_NAPI_FUNCTION("updateTexImage", mediacodec::updateTexImage),
         DECLARE_NAPI_FUNCTION("setOnFrameAvailableListener", mediacodec::setOnFrameAvailableListener),
         DECLARE_NAPI_FUNCTION("setDefaultBufferSize", mediacodec::setDefaultBufferSize),
-        DECLARE_NAPI_FUNCTION("release", mediacodec::releaseSurface)};
+        DECLARE_NAPI_FUNCTION("release", mediacodec::releaseSurface),
+        DECLARE_NAPI_FUNCTION("onAttachToWindow", mediacodec::onAttachToWindow),
+        DECLARE_NAPI_FUNCTION("onDetachFromWindow", mediacodec::onDetachFromWindow),
+        DECLARE_NAPI_FUNCTION("attachThread", mediacodec::attachThread),
+    };
 
     napi_value surfaceTexture = nullptr;
     std::string className = "SurfaceTexture";

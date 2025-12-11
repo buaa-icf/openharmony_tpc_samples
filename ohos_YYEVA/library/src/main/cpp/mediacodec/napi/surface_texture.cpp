@@ -56,9 +56,14 @@ SurfaceTexture::~SurfaceTexture()
 
 void SurfaceTexture::UpdateTexImage()
 {
-    if (image_ != nullptr) {
-        OH_NativeImage_UpdateSurfaceImage(image_);
+    if (threadTask_ == nullptr) {
+        return;
     }
+    threadTask_->Send([this]() {
+        if (image_ != nullptr) {
+            OH_NativeImage_UpdateSurfaceImage(image_);
+        }
+    });
 }
 
 void SurfaceTexture::SetOnFrameAvailableListener(const std::function<void()> &onFrameAvailable)
@@ -90,6 +95,7 @@ void SurfaceTexture::Release()
 void SurfaceTexture::OnFrameAvailable()
 {
     if (onFrameAvailable_ == nullptr) {
+        LOGE("onFrameAvailable is nullptr");
         return;
     }
     onFrameAvailable_();
@@ -98,4 +104,23 @@ void SurfaceTexture::OnFrameAvailable()
 OHNativeWindow *SurfaceTexture::GetWindow()
 {
     return window_;
+}
+
+void SurfaceTexture::AttachWindow()
+{
+    if (image_) {
+        OH_NativeImage_AttachContext(image_, textureId_);
+    }
+}
+
+void SurfaceTexture::DetachWindow()
+{
+    if (image_) {
+        OH_NativeImage_DetachContext(image_);
+    }
+}
+
+void SurfaceTexture::AttachThread(const std::shared_ptr<ThreadTask> &threadTask)
+{
+    threadTask_ = threadTask;
 }
