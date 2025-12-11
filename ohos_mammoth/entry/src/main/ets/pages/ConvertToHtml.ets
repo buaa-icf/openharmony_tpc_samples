@@ -52,6 +52,9 @@ struct ConvertToHtml {
     customStyle: false,
     cornerRadius: 20,
     backgroundColor: Color.White,
+    cancel: () => {
+      deleteFile(this.filesDir + '/' + this.webSrc);
+    },
     shadow: ({
       radius: 20,
       color: Color.Grey,
