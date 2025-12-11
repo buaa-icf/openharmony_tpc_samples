@@ -89,9 +89,21 @@ export default class HttpProxyCache extends ProxyCache {
     let msg: socket.TCPSendOptions = {
       data: responseHeaders
     }
-    await serverConnect?.send(msg);
+    try {
+      await serverConnect?.send(msg);
+    } catch (err) {
+      LogUtil.error('[HttpProxyCache] [发送响应头] 发送失败: ' + JSON.stringify(err));
+      throw new Error(err);
+    }
     this.offset = request.rangeOffset;
     this.stopped = false;
+    
+    // HEAD 请求只返回响应头，不返回响应体
+    if (request.method === 'HEAD') {
+      LogUtil.info('[HttpProxyCache] [处理请求] HEAD请求，跳过响应体发送');
+      return Promise.resolve();
+    }
+    
     if (this.cache && this.source) {
       let available = this.cache.available();
       let length = await this.source.length()
@@ -136,7 +148,7 @@ export default class HttpProxyCache extends ProxyCache {
 
   private async responseWithoutCache(offset: number, serverConnect: socket.TCPSocketConnection): Promise<void> {
     if (!this.source) {
-      return Promise.reject(new Error("source is null"));
+      return Promise.reject(new Error('source is null'));
     }
     const ctx = this;
     let newSourceNoCache = new HttpUrlSource([this.source]);

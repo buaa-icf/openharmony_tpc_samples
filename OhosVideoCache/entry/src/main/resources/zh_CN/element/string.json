@@ -151,6 +151,10 @@
     {
       "name": "cache_size_demo",
       "value": "查看视频缓存大小"
+    },
+    {
+      "name": "get_request_test_demo",
+      "value": "GET/HEAD请求测试"
     }
   ]
 }

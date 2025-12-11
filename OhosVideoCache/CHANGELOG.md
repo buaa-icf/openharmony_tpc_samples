@@ -1,3 +1,6 @@
+## 1.0.7-rc.0
+1. Fix the issue where HEAD requests cannot be processed
+
 ## 1.0.6
 1. Release the official version
 

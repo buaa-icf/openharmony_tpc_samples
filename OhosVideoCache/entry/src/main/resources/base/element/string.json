@@ -187,6 +187,10 @@
     {
       "name": "cache_size_demo",
       "value": "Video cache size"
+    },
+    {
+      "name": "get_request_test_demo",
+      "value": "GET/HEAD Request Test"
     }
   ]
 }
