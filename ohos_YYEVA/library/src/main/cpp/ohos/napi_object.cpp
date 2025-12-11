@@ -16,14 +16,31 @@
 
 NapiObject::NapiObject(const napi_env &env) : env_(env) {}
 
+NapiObject::NapiObject() : env_(nullptr) {}
+
 NapiObject::~NapiObject()
 {
     CleanRef();
 }
 
-void NapiObject::BindRef(const napi_ref &ref)
+static void CleanUp(void *arg)
 {
-    object_ref_ = ref;
+    LOGE("napi object clean up");
+}
+
+void NapiObject::DestroyEnv()
+{
+    if (env_ && created_) {
+        napi_remove_env_cleanup_hook(env_, CleanUp, this);
+        napi_destroy_ark_runtime(&env_);
+        env_ = nullptr;
+    }
+    created_ = false;
+}
+
+void NapiObject::BindRef(const napi_value &value)
+{
+    napi_create_reference(env_, value, 1, &object_ref_);
 }
 
 int32_t NapiObject::AddRef()
@@ -77,4 +94,20 @@ bool NapiObject::IsValid()
 int32_t NapiObject::GetID()
 {
     return static_cast<int32_t>(reinterpret_cast<uintptr_t>(this));
+}
+
+napi_env NapiObject::CreateEnv()
+{
+    napi_status ret = napi_create_ark_runtime(&env_);
+    if (ret != napi_ok) {
+        LOGE("create runtime failed, %d", ret);
+        return nullptr;
+    }
+    created_ = true;
+    return env_;
+}
+
+napi_env NapiObject::GetEnv()
+{
+    return env_;
 }

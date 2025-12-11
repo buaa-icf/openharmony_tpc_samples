@@ -15,13 +15,14 @@
 
 import { EvaDemo } from './EvaDemo';
 import { EvaDownloadDemo } from './EvaDownloadDemo';
+import { EvaListDemo } from './EvaListDemo';
 
 @Entry
 @Component
 struct Index {
   @State currentPage: string = 'main'
   @Provide('pageInfos') pageInfos: NavPathStack = new NavPathStack()
-  private arr: string[] = ['Eva Demo', 'Eva Download Demo'];
+  private arr: string[] = ['Eva Demo', 'Eva Download Demo', 'Eva List Demo'];
 
   build(): void {
     Navigation(this.pageInfos) {
@@ -56,6 +57,8 @@ struct Index {
       EvaDemo({ title: this.arr[0] });
     } else if (name === this.arr[1]) {
       EvaDownloadDemo({ title: this.arr[1] });
+    } else if (name === this.arr[2]) {
+      EvaListDemo({ title: this.arr[2] });
     }
   }
 }

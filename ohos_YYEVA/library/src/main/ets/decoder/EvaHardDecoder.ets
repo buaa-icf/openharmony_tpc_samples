@@ -56,13 +56,7 @@ export class EvaHardDecoder extends Decoder {
   constructor(playerEva: EvaAnimPlayer) {
     super(playerEva);
     // 注册emitter监听
-    emitter.on(EvaConstant.EVENT_ID_ON_VIDEO_COMPLETE, (eventData: emitter.EventData): void => {
-      ELog.i(EvaAnimPlayer.TAG, `onVideoConfigReady eventData: ${JSON.stringify(eventData)}`);
-      let uuid: string = eventData.data?.uuid
-      if (uuid != this.playerEva.uuid) {
-        ELog.e(EvaAnimPlayer.TAG, `uuid不匹配 uuid = ${uuid}, EvaAnimPlayer.uuid = ${this.playerEva.uuid}`)
-        return
-      }
+    playerEva.on(EvaConstant.EVENT_ID_ON_VIDEO_COMPLETE, (eventData: emitter.EventData): void => {
       const payload = eventData.data as LastFrameInterface;
       const lastFrame = payload?.lastFrame === true;
       ELog.i(Decoder.TAG, `emitter.on onVideoComplete: ${lastFrame}`);
@@ -184,8 +178,7 @@ export class EvaHardDecoder extends Decoder {
                 `support hevc: video/hevc`
             }
           };
-          emitter.emit(EvaConstant.EVENT_ID_ON_FAILED, { priority: emitter.EventPriority.IMMEDIATE },
-            notSupportEventData);
+          this.playerEva.sendEvent(EvaConstant.EVENT_ID_ON_FAILED, notSupportEventData);
           this.extractor.release();
           this.extractor = null;
           return;
@@ -223,6 +216,8 @@ export class EvaHardDecoder extends Decoder {
         ELog.e(EvaHardDecoder.TAG,
           `startPlay controllerId: ${this.playerEva.controllerId}, textureID:  ${this.textureID}, glTexture: ${this.glTexture}  `);
       }
+      this.threadRender = EvaUtil.getRenderThread(this.playerEva.controllerId);
+      this.glTexture.attachThread(this.threadRender);
 
       if (videoWidth <= 0 || videoHeight <= 0) {
         ELog.e(EvaHardDecoder.TAG, `error Video size is ${videoWidth}  x ${videoHeight}`);
@@ -233,7 +228,7 @@ export class EvaHardDecoder extends Decoder {
             errorMsg: `error Video size is ${videoWidth}  x ${videoHeight}`
           }
         };
-        emitter.emit(EvaConstant.EVENT_ID_ON_FAILED, { priority: emitter.EventPriority.IMMEDIATE }, failedEventData);
+        this.playerEva.sendEvent(EvaConstant.EVENT_ID_ON_FAILED, failedEventData);
         this.extractor.release();
         this.extractor = null;
         return;
@@ -252,7 +247,7 @@ export class EvaHardDecoder extends Decoder {
               errorMsg: `eva not init, can not get glTexture`
             }
           };
-          emitter.emit(EvaConstant.EVENT_ID_ON_FAILED, { priority: emitter.EventPriority.IMMEDIATE }, excEventData);
+          this.playerEva.sendEvent(EvaConstant.EVENT_ID_ON_FAILED, excEventData);
           this.release(this.decoder!, this.extractor);
         } else {
           ELog.e(EvaHardDecoder.TAG, `retryCount ${this.retryCount} eva not init, can not get glTexture`);
@@ -277,7 +272,7 @@ export class EvaHardDecoder extends Decoder {
             errorMsg: `${EvaConstant.ERROR_MSG_EXTRACTOR_EXC} e=${e}`
           }
         };
-        emitter.emit(EvaConstant.EVENT_ID_ON_FAILED, { priority: emitter.EventPriority.IMMEDIATE }, excEventData);
+        this.playerEva.sendEvent(EvaConstant.EVENT_ID_ON_FAILED, excEventData);
         this.release(this.decoder!, this.extractor);
       } else {
         ELog.e(EvaHardDecoder.TAG, `retryCount ${this.retryCount}, MediaCodec configure exception e=${e}`);
@@ -305,7 +300,7 @@ export class EvaHardDecoder extends Decoder {
       }
       
       this.decoder?.bind(this.extractor, (status: number, codecInfo: CodeInfoAttr) => {
-        ELog.e(EvaHardDecoder.TAG,
+        ELog.i(EvaHardDecoder.TAG,
           `bind回调 decoder callback status: ${status}, frameIndex: ${codecInfo.frameIndex}`);
         try {
           if (status < 0  || this.outputDone) {
@@ -339,8 +334,7 @@ export class EvaHardDecoder extends Decoder {
               errorMsg: `${EvaConstant.ERROR_MSG_DECODE_EXC} e=${e}`
             }
           };
-          emitter.emit(EvaConstant.EVENT_ID_ON_FAILED, { priority: emitter.EventPriority.IMMEDIATE },
-            decodeExcEventData);
+          this.playerEva.sendEvent(EvaConstant.EVENT_ID_ON_FAILED, decodeExcEventData);
           this.release(this.decoder, this.extractor);
         }
       });
@@ -356,7 +350,7 @@ export class EvaHardDecoder extends Decoder {
             errorMsg: `${EvaConstant.ERROR_MSG_DECODE_EXC} e=${e}`
           }
         };
-        emitter.emit(EvaConstant.EVENT_ID_ON_FAILED, { priority: emitter.EventPriority.IMMEDIATE }, decodeExcEventData);
+        this.playerEva.sendEvent(EvaConstant.EVENT_ID_ON_FAILED, decodeExcEventData);
         this.release(this.decoder, this.extractor);
         return;
       } else { //加入重试机制
@@ -395,16 +389,14 @@ export class EvaHardDecoder extends Decoder {
         this.speedControlUtil.reset();
         this.frameIndex = 0;
         this.isLoop = true;
-        emitter.emit(EvaConstant.EVENT_ID_ON_VIDEO_RESTART, { priority: emitter.EventPriority.IMMEDIATE },
-          { data: { uuid: this.playerEva.uuid } });
+        this.playerEva.sendEvent(EvaConstant.EVENT_ID_ON_VIDEO_RESTART, { data: { uuid: this.playerEva.uuid } });
         let startEventData: emitter.EventData = {
           data: {
             uuid: this.playerEva.uuid,
             flag: true
           }
         };
-        emitter.emit(EvaConstant.EVENT_ID_ON_VIDEO_START, { priority: emitter.EventPriority.IMMEDIATE },
-          startEventData);
+        this.playerEva.sendEvent(EvaConstant.EVENT_ID_ON_VIDEO_START, startEventData);
       }
     }
     ELog.e(EvaHardDecoder.TAG, `startDecode outputDone: ${this.outputDone}`);
@@ -433,8 +425,7 @@ export class EvaHardDecoder extends Decoder {
 
         ELog.i(EvaHardDecoder.TAG, `codecInfo.frameIndex: ${codecInfo.frameIndex}, !isLoop: ${!this.isLoop}`);
         if (this.frameIndex == 0 && !this.isLoop) {
-          emitter.emit(EvaConstant.EVENT_ID_ON_VIDEO_START, { priority: emitter.EventPriority.IMMEDIATE },
-            { data: { uuid: this.playerEva.uuid } });
+          this.playerEva.sendEvent(EvaConstant.EVENT_ID_ON_VIDEO_START, { data: { uuid: this.playerEva.uuid } });
         }
 
         this.playerEva.pluginManager.onDecoding(this.frameIndex);
@@ -445,8 +436,7 @@ export class EvaHardDecoder extends Decoder {
             config: this.playerEva.configManager.config
           }
         };
-        emitter.emit(EvaConstant.EVENT_ID_ON_VIDEO_RENDER, { priority: emitter.EventPriority.IMMEDIATE },
-          frameIndexEventData);
+        this.playerEva.sendEvent(EvaConstant.EVENT_ID_ON_VIDEO_RENDER, frameIndexEventData);
 
       }
     } catch (e) { //解码帧失败跳过，直接继续解尝试
@@ -469,8 +459,7 @@ export class EvaHardDecoder extends Decoder {
       ELog.e(EvaHardDecoder.TAG, `release catch error: ${e}`);
     }
     this.playerEva?.runningTask.delete(Decoder.TAG);
-    emitter.emit(EvaConstant.EVENT_ID_ON_VIDEO_COMPLETE, { priority: emitter.EventPriority.IMMEDIATE },
-      { data: { uuid: this.playerEva.uuid } });
+    this.playerEva.sendEvent(EvaConstant.EVENT_ID_ON_VIDEO_COMPLETE, { data: { uuid: this.playerEva.uuid } });
 
     if (this.needDestroy) {
       this.destroyInner();
@@ -493,7 +482,7 @@ export class EvaHardDecoder extends Decoder {
         lastFrame: true
       }
     };
-    emitter.emit(EvaConstant.EVENT_ID_ON_VIDEO_COMPLETE, { priority: emitter.EventPriority.IMMEDIATE }, eventData);
+    this.playerEva.sendEvent(EvaConstant.EVENT_ID_ON_VIDEO_COMPLETE, eventData);
   }
 
   checkIsHevc(videoFormat: MediaFormat): Boolean {
@@ -594,7 +583,6 @@ export class EvaHardDecoder extends Decoder {
     } catch (e) {
       ELog.i(EvaHardDecoder.TAG, `destroy catch error: ${e}`);
     } finally {
-      emitter.off(EvaConstant.EVENT_ID_ON_VIDEO_COMPLETE);
     }
   }
 
@@ -602,18 +590,15 @@ export class EvaHardDecoder extends Decoder {
     ELog.i(EvaHardDecoder.TAG, 'destroyInner');
     try {
       this.decodeEnd(MediaConstant.PLAY_END); //强制让播放结束
-      this.decoder?.stop();
-      this.decoder?.release();
-      this.extractor?.release();
-      this.decoder = null;
-      this.extractor = null;
+
+      this.decoder?.stop().then(()=>{
+        this.decoder?.release();
+        this.extractor?.release();
+        this.decoder = null;
+        this.extractor = null;
+      });
 
       this.evaFileContainer?.close();
-      this.playerEva.pluginManager.onDestroy();
-      EvaUtil.destroyRender(this.playerEva.controllerId);
-      this.playerEva.controllerId = -1;
-      emitter.emit(EvaConstant.EVENT_ID_ON_VIDEO_DESTROY, { priority: emitter.EventPriority.IMMEDIATE },
-        { data: { uuid: this.playerEva.uuid } });
       this.destroyThread();
       this.completeBlock = null;
     } catch (e) {
@@ -635,8 +620,7 @@ export class EvaHardDecoder extends Decoder {
     }
 
     this.playerEva?.runningTask.delete(Decoder.TAG);
-    emitter.emit(EvaConstant.EVENT_ID_ON_VIDEO_COMPLETE, { priority: emitter.EventPriority.IMMEDIATE },
-      { data: { uuid: this.playerEva.uuid } });
+    this.playerEva.sendEvent(EvaConstant.EVENT_ID_ON_VIDEO_COMPLETE, { data: { uuid: this.playerEva.uuid } });
 
     if (this.needDestroy) {
       this.destroyInner();

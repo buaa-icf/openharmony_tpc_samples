@@ -26,6 +26,8 @@
 #include "ohos/napi_handler.h"
 #include "yyeva_napi.h"
 #include "yyeva_component.h"
+#include "ohos/threadtask.h"
+#include "ohos/napi_safe_wrapper.h"
 
 #define LOG_TAG    "YYEVANAPI"
 #define ELOGE(...) OhosLogPrint(IL_ERROR, LOG_TAG, __VA_ARGS__)
@@ -36,8 +38,136 @@ using namespace std;
 using namespace yyeva;
 map<int, std::shared_ptr<RenderController>> renderMap;
 map<int, std::shared_ptr<RecorderController>> recordMap;
-int g_renderId = 0;
-mutex g_mtx;
+std::map<int, std::shared_ptr<ThreadTask>> threadMap;
+static int g_renderId = 0;
+static mutex g_mtx;
+static napi_ref g_thread_ref = nullptr;
+
+static void JsThreadTaskDestructor(napi_env env, void *nativeObject, void *finalizeHint)
+{
+    LOGD("destructor SurfaceTexture");
+    NapiSafeWrappable<ThreadTask> *threadTask = static_cast<NapiSafeWrappable<ThreadTask> *>(nativeObject);
+    if (threadTask == nullptr) {
+        return;
+    }
+    delete threadTask;
+}
+
+static napi_value JsThreadTaskConstructor(napi_env env, napi_callback_info info)
+{
+    NapiHandler napiHandler(env, info, PARAM_COUNT_1);
+
+    LOGD("constructor ThreadTask");
+    NapiSafeWrappable<ThreadTask> *threadWrapper;
+    if (napiHandler.GetArgType(INDEX_0) == napi_number) {
+        ELOGE("by id ThreadTask env: %p", env);
+        int controllerId = napiHandler.ParseArgAs<int>(INDEX_0);
+        if (threadMap.find(controllerId) == threadMap.end()) {
+            ELOGE("getExternalTexture controller %d not found", controllerId);
+            return nullptr;
+        }
+        auto thread = threadMap[controllerId];
+        if (thread == nullptr) {
+            ELOGE("thread is nullptr");
+            return nullptr;
+        }
+        threadWrapper = new NapiSafeWrappable<ThreadTask>(thread);
+        if (threadWrapper == nullptr) {
+            ELOGE("wrapper calloc failed");
+            return nullptr;
+        }
+    } else {
+        ELOGE("by name");
+        std::string name = napiHandler.ParseArgAs<std::string>(INDEX_0);
+        threadWrapper = new NapiSafeWrappable<ThreadTask>(env, name);
+
+        threadWrapper->ExecuteSafely([](const std::shared_ptr<ThreadTask> &obj) {
+            obj->OnWork([](napi_env env, const Task &task) {
+                task();
+            });
+            obj->Start();
+        });
+    }
+
+    return napiHandler.BindObject(threadWrapper, JsThreadTaskDestructor);
+}
+
+static napi_value thread_stop(napi_env env, napi_callback_info info)
+{
+    NapiHandler napiHandler(env, info, PARAM_COUNT_0);
+    NapiSafeWrappable<ThreadTask> *threadWrapper = napiHandler.UnbindObject<NapiSafeWrappable<ThreadTask>>();
+
+    if (threadWrapper == nullptr) {
+        LOGE("Unbind threadtask nullptr");
+        return nullptr;
+    }
+    auto threadTask = threadWrapper->GetSafeObject();
+    NapiAsyncHandler *asyncHandler = new NapiAsyncHandler(env, "stop");
+    asyncHandler->OnWork([threadTask](napi_env env, void *d) -> napi_status {
+        threadTask->Stop();
+        return napi_ok;
+    });
+    return napiHandler.Promise(asyncHandler);
+}
+
+static napi_value InitThreadTask(napi_env env, napi_value exports)
+{
+    napi_property_descriptor desc[] = {
+        DECLARE_NAPI_FUNCTION("stop", thread_stop),
+    };
+
+    napi_value thread = nullptr;
+    std::string className = "ThreadTask";
+    napi_define_class(
+        env, className.c_str(), className.length(), JsThreadTaskConstructor, nullptr, sizeof(desc) / sizeof(desc[0]),
+        desc, &thread);
+    napi_status status = napi_create_reference(env, thread, 1, &g_thread_ref);
+    if (status != napi_ok) {
+        LOGE("Failed to create MediaFormat constructor reference");
+        return nullptr;
+    }
+    ELOGE("ThreadTask env: %p", env);
+    napi_set_named_property(env, exports, "ThreadTask", thread);
+    return exports;
+}
+
+static napi_value getRenderThread(napi_env env, napi_callback_info info)
+{
+    NapiHandler napiHandler(env, info, PARAM_COUNT_1);
+    napi_value constructor;
+    napi_status status = napi_get_reference_value(env, g_thread_ref, &constructor);
+    if (status != napi_ok) {
+        ELOGE("Failed to get thread constructor reference");
+        return nullptr;
+    }
+
+    napi_value instance;
+    napi_value args[] = {napiHandler.GetArg(INDEX_0)};
+    status = napi_new_instance(env, constructor, 1, args, &instance);
+    if (status != napi_ok) {
+        ELOGE("Failed to create new instance");
+        return nullptr;
+    }
+    // NAPI_CALL(env, napi_wrap(env, instance, threadWrapper, JsThreadTaskDestructor, nullptr, nullptr));
+    return instance;
+}
+
+static void ThreadCall(napi_env env, int id, const Task &task)
+{
+    if (id <= 0) {
+        return;
+    }
+    if (threadMap.find(id) == threadMap.end()) {
+        LOGE("threadMap not find %d", id);
+        auto threadTask = std::make_shared<ThreadTask>(env, "rendertask_" + std::to_string(id));
+        threadTask->OnWork([&](napi_env env, const Task &task) {
+            task();
+        });
+        threadTask->Start();
+        threadMap.insert(std::make_pair(id, threadTask));
+    }
+    threadMap[id]->Send(task);
+}
 
 static napi_value nativeProcessPixelMap(napi_env env, napi_callback_info info)
 {
@@ -78,8 +208,8 @@ static napi_value updateViewPoint(napi_env env, napi_callback_info info)
 {
     NapiHandler napiHandler(env, info, PARAM_COUNT_3);
     int controllerId = napiHandler.ParseArgAs<int>(INDEX_0);
-    int width = napiHandler.ParseArgAs<int>(INDEX_1);
-    int height = napiHandler.ParseArgAs<int>(INDEX_2);
+    int width = static_cast<int32_t>(napiHandler.ParseArgAs<double>(INDEX_1));
+    int height = static_cast<int32_t>(napiHandler.ParseArgAs<double>(INDEX_2));
 
     if (renderMap.find(controllerId) == renderMap.end()) {
         ELOGE("updateViewPoint controller %d not found", controllerId);
@@ -115,29 +245,35 @@ static napi_value initRender(napi_env env, napi_callback_info info)
     bool isNormalMp4 = napiHandler.ParseArgAs<bool>(INDEX_3);
     bool isVideoRecord = napiHandler.ParseArgAs<bool>(INDEX_4);
 
-    lock_guard<mutex> auto_lock(g_mtx);
-    OHNativeWindow *window = nullptr;
-    uint64_t sid = atoll(surfaceId.c_str());
-    LOGD("Create Window, surfaceId: %s -> %llu", surfaceId.c_str(), sid);
-    OH_NativeWindow_CreateNativeWindowFromSurfaceId(sid, &window);
     int id = controllerId;
+    lock_guard<mutex> auto_lock(g_mtx);
+    std::shared_ptr<RenderController> controller = nullptr;
     if (controllerId == -1) {
         g_renderId += 1;
         id = g_renderId;
-        auto *controller = new RenderController();
-        controller->initRender(window, isNeedYUV, isNormalMp4);
+        controller = std::make_shared<RenderController>();
         renderMap.insert(make_pair(id, controller));
-        controller->setVideoRecord(isVideoRecord);
     } else if (renderMap.find(controllerId) != renderMap.end()) {
-        if (renderMap[controllerId]->getExternalTexture() == -1) { // 防止重复初始化
-            renderMap[controllerId]->initRender(window, isNeedYUV, isNormalMp4);
-            renderMap[controllerId]->setVideoRecord(isVideoRecord);
-        } else {
-            ELOGE("initRender init repeat");
-        }
+        controller = renderMap[controllerId];
     } else {
         ELOGE("initRender controller %d not found", controllerId);
     }
+    if (controller == nullptr) {
+        return nullptr;
+    }
+    ThreadCall(env, id, [controller, isNeedYUV, surfaceId, isVideoRecord, isNormalMp4]() {
+        if (controller->getExternalTexture() == -1) { // 防止重复初始化
+            OHNativeWindow *window = nullptr;
+            uint64_t sid = atoll(surfaceId.c_str());
+            LOGD("Create Window, surfaceId: %s -> %llu", surfaceId.c_str(), sid);
+            OH_NativeWindow_CreateNativeWindowFromSurfaceId(sid, &window);
+            controller->initRender(window, isNeedYUV, isNormalMp4);
+            controller->setVideoRecord(isVideoRecord);
+        } else {
+            ELOGE("initRender init repeat");
+        }
+    });
+
     return napiHandler.GetNapiValue<int32_t>(id);
 }
 
@@ -201,7 +337,11 @@ static napi_value renderFrame(napi_env env, napi_callback_info info)
         ELOGE("renderFrame controller %d not found", controllerId);
         return nullptr;
     }
-    renderMap[controllerId]->renderFrame();
+    auto controller = renderMap[controllerId];
+
+    ThreadCall(env, controllerId, [controller]() {
+        controller->renderFrame();
+    });
     return napiHandler.GetVoidValue();
 }
 
@@ -219,7 +359,12 @@ static napi_value renderSwapBuffers(napi_env env, napi_callback_info info)
         ELOGE("renderSwapBuffers controller %d not found", controllerId);
         return nullptr;
     }
-    renderMap[controllerId]->renderSwapBuffers();
+    auto controller = renderMap[controllerId];
+
+    ThreadCall(env, controllerId, [controller]() {
+        controller->renderSwapBuffers();
+    });
+
     return napiHandler.GetVoidValue();
 }
 
@@ -237,7 +382,10 @@ static napi_value renderClearFrame(napi_env env, napi_callback_info info)
         ELOGE("renderClearFrame controller %d not found", controllerId);
         return nullptr;
     }
-    renderMap[controllerId]->renderClearFrame();
+    auto controller = renderMap[controllerId];
+    ThreadCall(env, controllerId, [controller]() {
+        controller->renderClearFrame();
+    });
     return napiHandler.GetVoidValue();
 }
 
@@ -259,7 +407,11 @@ static napi_value releaseTexture(napi_env env, napi_callback_info info)
         ELOGE("render controller is nullptr, %d", controllerId);
         return nullptr;
     }
-    renderMap[controllerId]->releaseTexture();
+    auto controller = renderMap[controllerId];
+
+    ThreadCall(env, controllerId, [controller]() {
+        controller->releaseTexture();
+    });
     return napiHandler.GetVoidValue();
 }
 
@@ -278,6 +430,13 @@ static napi_value destroyRender(napi_env env, napi_callback_info info)
         return nullptr;
     }
     renderMap.erase(controllerId);
+    if (threadMap.find(controllerId) == threadMap.end()) {
+        ELOGE("threadMap not found");
+        return nullptr;
+    }
+    ELOGE("threadMap erase %d", controllerId);
+    auto thread = threadMap[controllerId];
+    threadMap.erase(controllerId);
     return napiHandler.GetVoidValue();
 }
 
@@ -287,22 +446,30 @@ static napi_value mixConfigCreate(napi_env env, napi_callback_info info)
     int controllerId = napiHandler.ParseArgAs<int>(INDEX_0);
     std::string json = napiHandler.ParseArgAs<std::string>(INDEX_1);
 
+    int id = controllerId;
+
     shared_ptr<EvaAnimeConfig> config = EvaAnimeConfig::parse(json.c_str());
+    std::shared_ptr<RenderController> controller = nullptr;
 
     lock_guard<mutex> auto_lock(g_mtx);
-    int id = controllerId;
     if (controllerId == -1) {
         ELOGV("mixConfigCreate controller not init");
         g_renderId += 1;
         id = g_renderId;
-        auto controller = make_shared<RenderController>();
+        controller = make_shared<RenderController>();
         renderMap.insert(make_pair(id, controller));
-        renderMap[id]->mixConfigCreate(config);
     } else if (renderMap.find(controllerId) != renderMap.end()) {
-        renderMap[controllerId]->mixConfigCreate(config);
+        controller = renderMap[controllerId];
     } else {
         ELOGE("mixConfigCreate controller %d not found", controllerId);
     }
+
+    if (controller == nullptr) {
+        return napiHandler.GetNapiValue<int32_t>(id);
+    }
+    ThreadCall(env, controllerId, [controller, config]() {
+        controller->mixConfigCreate(config);
+    });
     return napiHandler.GetNapiValue<int32_t>(id);
 }
 
@@ -402,7 +569,11 @@ static napi_value mixRenderCreate(napi_env env, napi_callback_info info)
         ELOGE("mixRenderCreate controller %d not found", controllerId);
         return nullptr;
     }
-    renderMap[controllerId]->mixRenderCreate();
+    auto controller = renderMap[controllerId];
+
+    ThreadCall(env, controllerId, [controller]() {
+        controller->mixRenderCreate();
+    });
     return napiHandler.GetVoidValue();
 }
 
@@ -417,7 +588,10 @@ static napi_value mixRendering(napi_env env, napi_callback_info info)
         ELOGE("mixRendering controller %d not found", controllerId);
         return nullptr;
     }
-    renderMap[controllerId]->mixRendering(frameIndex);
+    auto controller = renderMap[controllerId];
+    ThreadCall(env, controllerId, [controller, frameIndex]() {
+        controller->mixRendering(frameIndex);
+    });
     return napiHandler.GetVoidValue();
 }
 
@@ -435,7 +609,10 @@ static napi_value mixRenderDestroy(napi_env env, napi_callback_info info)
         ELOGE("render controller is nullptr, %d", controllerId);
         return nullptr;
     }
-    renderMap[controllerId]->mixRenderDestroy();
+    auto controller = renderMap[controllerId];
+    ThreadCall(env, controllerId, [controller]() {
+        controller->mixRenderDestroy();
+    });
     return napiHandler.GetVoidValue();
 }
 
@@ -609,8 +786,11 @@ static napi_value Init(napi_env env, napi_value exports)
         DECLARE_NAPI_FUNCTION("stopRecord", stopRecord),
         DECLARE_NAPI_FUNCTION("setLog", setLog),
         DECLARE_NAPI_FUNCTION("setBlendMode", setBlendMode),
+        DECLARE_NAPI_FUNCTION("getRenderThread", getRenderThread),
     };
     NAPI_CALL(env, napi_define_properties(env, exports, sizeof(desc) / sizeof(desc[0]), desc));
+
+    InitThreadTask(env, exports);
     return exports;
 }
 EXTERN_C_END

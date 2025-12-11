@@ -53,8 +53,8 @@ napi_ref NapiWrapper::FindAsyncHandler(const std::string &method)
     return funcMap_[method];
 }
 
-void NapiWrapper::JsCall(const std::shared_ptr<NapiWrapper> &wrapper,
-    const std::string &method, ParamSerializer paramSerializer)
+void NapiWrapper::JsCall(
+    const std::shared_ptr<NapiWrapper> &wrapper, const std::string &method, ParamSerializer paramSerializer)
 {
     napi_ref funcRef = wrapper->FindAsyncHandler(method);
     if (funcRef == nullptr) {

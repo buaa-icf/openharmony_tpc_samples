@@ -24,8 +24,10 @@
 #include <thread>
 #include <atomic>
 #include <mutex>
+#include <memory>
 #include <condition_variable>
 #include <ohos/napi_object.h>
+#include <ohos/threadtask.h>
 
 class SurfaceTexture : public NapiObject {
 public:
@@ -36,6 +38,9 @@ public:
     void SetDefaultBufferSize(int32_t width, int32_t height);
     void Release();
     void OnFrameAvailable();
+    void AttachWindow();
+    void DetachWindow();
+    void AttachThread(const std::shared_ptr<ThreadTask> &threadTask);
     OHNativeWindow *GetWindow();
 
 private:
@@ -43,5 +48,6 @@ private:
     OH_NativeImage *image_ = nullptr;
     OHNativeWindow *window_;
     std::function<void()> onFrameAvailable_;
+    std::shared_ptr<ThreadTask> threadTask_ = nullptr;
 };
 #endif

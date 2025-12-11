@@ -15,6 +15,7 @@
 
 import { image } from '@kit.ImageKit';
 import native from 'libyyeva_napi.so'
+import {ThreadTask} from 'libyyeva_napi.so'
 import { ELog } from './util/ELog';
 import { EvaConstant } from './util/EvaConstant';
 
@@ -33,6 +34,11 @@ export enum VideoMode {
  */
 export class EvaUtil {
   public static readonly TAG: string = `${EvaConstant.TAG}.EvaUtil`;
+
+  static getRenderThread(controllerId: number): ThreadTask {
+    ELog.i(EvaUtil.TAG, `getRenderThread: ${controllerId}`);
+    return native.getRenderThread(controllerId);
+  }
 
   /**
    * 处理图像像素（替代 Android Bitmap）

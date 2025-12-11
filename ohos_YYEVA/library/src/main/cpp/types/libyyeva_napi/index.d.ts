@@ -1,5 +1,12 @@
 import { image } from "@kit.ImageKit";
 
+export class ThreadTask {
+  constructor(name: string);
+  stop(): Promise<void>;
+}
+
+export const getRenderThread: (controllerId: number) => ThreadTask;
+
 /**
  * 处理图像像素（替代 Android Bitmap）
  * @param pixelMap - 鸿蒙图像对象
@@ -123,7 +130,7 @@ export const renderSwapBuffers: (controllerId: number) => void;
  * 销毁渲染器
  * @param controllerId - 控制器 ID
  */
-function destroyRender(controllerId: number): void;
+export const destroyRender: (controllerId: number) => void;
 
 /**
  * 创建动效混合渲染器

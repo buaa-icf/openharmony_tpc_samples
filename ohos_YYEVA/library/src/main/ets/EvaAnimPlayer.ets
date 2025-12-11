@@ -35,23 +35,16 @@ import { EvaAnimConfig } from './EvaAnimConfig';
 import { ComponentUtils, UIContext } from '@kit.ArkUI';
 import { JSON } from '@kit.ArkTS';
 import { SurfaceTexture } from 'libmediacodec.so'
+import { IEvaAnimPlayer } from './view/IEvaAnimPlayer'
 
 /**
  * EvaAnimComponent组件控制器
  */
 @Observed
-export class EvaAnimPlayer {
+export class EvaAnimPlayer extends IEvaAnimPlayer {
   public static readonly TAG: string = `${EvaConstant.TAG}.EvaAnimPlayer`
-  public scaleTypeUtil: ScaleTypeUtil = new ScaleTypeUtil()
-  @Track public xArea: Area = {
-    width: '100%',
-    height: '100%',
-    position: { x: 0, y: 0 },
-    globalPosition: { x: 0, y: 0 }
-  }
-  public uuid: string // player中的唯一标识，在player被创建的时候必须传入，可以用于同时存在多个视频动画时过滤当前播放的事件
+
   public rect: SurfaceRect | null = null
-  public xController: XComponentController | null = null;
   public configManager: EvaAnimConfigManager = new EvaAnimConfigManager(this)
   public pluginManager: EvaAnimPluginManager = new EvaAnimPluginManager(this);
   public decoder: Decoder | null = null
@@ -120,13 +113,9 @@ export class EvaAnimPlayer {
    * 设置视频准备好后是否继续播放
    */
   public isVideoConfigReady: boolean = true;
-  public controllerId: number = -1; //底层Native管理器id
-
   public isVideoRecord: boolean = false //是否开启录制
 
   //mediaRecorder: EvaMediaRecorder = new EvaMediaRecorder()
-  public context: common.UIAbilityContext
-  public uiContext: UIContext
   public startRunnable: (() => void) | null = null
   public isPause: boolean = false
   /**
@@ -137,50 +126,27 @@ export class EvaAnimPlayer {
   }
 
   constructor(context: UIContext, uuid: string) {
-    this.uiContext = context
-    this.context = context.getHostContext() as common.UIAbilityContext
-    this.uuid = uuid
-
-    // 注册emitter监听
-    emitter.on(EvaConstant.EVENT_ID_ON_VIDEO_CONFIG_READY, (eventData: emitter.EventData): void => {
-      ELog.i(EvaAnimPlayer.TAG, `onVideoConfigReady eventData: ${JSON.stringify(eventData)}`);
-      let uuid: string = eventData.data?.uuid
-      if (uuid != this.uuid) {
-        ELog.e(EvaAnimPlayer.TAG, `uuid不匹配 uuid = ${uuid}, EvaAnimPlayer.uuid = ${this.uuid}`)
-        return
-      }
-      let config: EvaAnimConfig = eventData.data?.config
-      ELog.i(EvaAnimPlayer.TAG, `onVideoConfigReady width ${config.width}, height ${config.height}`)
-      this.scaleTypeUtil.setVideoSize(context.px2vp(config.videoWidth), context.px2vp(config.videoHeight))
-      this.updateUI()
-    })
-    emitter.on(EvaConstant.EVENT_ID_SIZE_CHANGED, (eventData: emitter.EventData) => {
-      ELog.i(EvaAnimPlayer.TAG, `sieze_changed eventData: ${JSON.stringify(eventData)}`);
-      let uuid: string = eventData.data?.uuid
-      if (uuid != this.uuid) {
-        ELog.e(EvaAnimPlayer.TAG, `uuid不匹配 uuid = ${uuid}, EvaAnimPlayer.uuid = ${this.uuid}`)
-        return
-      }
-      ELog.i(EvaAnimPlayer.TAG, `size_changed`);
-      this.updateUI()
-    })
+    super(context, uuid);
+    this.prepareDecoder();
   }
 
-  /**
-   * 设置布局的初始尺寸
-   */
-  setLayoutSize() {
-    try {
-      let componentUtils: ComponentUtils = this.uiContext.getComponentUtils();
-      let modePosition = componentUtils.getRectangleById('eva_anim_component_stack');
-      ELog.i(EvaAnimPlayer.TAG, `setLayoutSize, modePosition = ${JSON.stringify(modePosition)}`)
-      this.scaleTypeUtil.setLayoutSize(this.uiContext.px2vp(modePosition.size.width),
-        this.uiContext.px2vp(modePosition.size.height))
-    } catch (error) {
-      ELog.e(EvaAnimPlayer.TAG, `setLayoutSize, error = ${JSON.stringify(error)}`)
-    }
+  onDispatchTouchEvent(event: TouchEvent): boolean {
+    return this.pluginManager.onDispatchTouchEvent(event);
   }
 
+  onConfigReady(eventData: emitter.EventData): void {
+    let config: EvaAnimConfig = eventData.data?.config
+    ELog.i(EvaAnimPlayer.TAG, `onVideoConfigReady width ${config.videoWidth}, height ${config.videoHeight}`)
+    let width = this.px2vp(config.videoWidth);
+    let height = this.px2vp(config.videoHeight);
+    this.setVideoSize(width, height);
+    this.updateUI()
+  }
+
+  onSizeChanged(eventData: emitter.EventData): void {
+    ELog.i(EvaAnimPlayer.TAG, `onSizeChanged eventData: ${JSON.stringify(eventData)}`);
+    this.updateUI();
+  }
 
   /**
    * 替代Android端，getSurfaceTexture()，getSurface()
@@ -278,20 +244,6 @@ export class EvaAnimPlayer {
   }
 
   /**
-   * 设置缩放类型
-   */
-  setScaleType(type: ScaleType): void {
-    this.scaleTypeUtil.currentScaleType = type
-  }
-
-  /**
-   * 设置缩放类型
-   */
-  setIScaleType(scaleType: IScaleType): void {
-    this.scaleTypeUtil.scaleTypeImpl = scaleType
-  }
-
-  /**
    * 设置静音
    */
   setMute(isMute: boolean): void {
@@ -318,9 +270,8 @@ export class EvaAnimPlayer {
           errorMsg: EvaConstant.ERROR_MSG_FILE_ERROR
         }
       };
-      emitter.emit(EvaConstant.EVENT_ID_ON_FAILED, { priority: emitter.EventPriority.IMMEDIATE }, eventData)
-      emitter.emit(EvaConstant.EVENT_ID_ON_VIDEO_COMPLETE, { priority: emitter.EventPriority.IMMEDIATE },
-        { data: { uuid: this.uuid } })
+      this.sendEvent(EvaConstant.EVENT_ID_ON_FAILED, eventData)
+      this.sendEvent(EvaConstant.EVENT_ID_ON_VIDEO_COMPLETE, { data: { uuid: this.uuid } })
     }
   }
 
@@ -363,9 +314,8 @@ export class EvaAnimPlayer {
           errorMsg: EvaConstant.ERROR_MSG_FILE_ERROR
         }
       };
-      emitter.emit(EvaConstant.EVENT_ID_ON_FAILED, { priority: emitter.EventPriority.IMMEDIATE }, eventData)
-      emitter.emit(EvaConstant.EVENT_ID_ON_VIDEO_COMPLETE, { priority: emitter.EventPriority.IMMEDIATE },
-        { data: { uuid: this.uuid } })
+      this.sendEvent(EvaConstant.EVENT_ID_ON_FAILED, eventData)
+      this.sendEvent(EvaConstant.EVENT_ID_ON_VIDEO_COMPLETE, { data: { uuid: this.uuid } })
     }
   }
 
@@ -387,9 +337,8 @@ export class EvaAnimPlayer {
           errorMsg: EvaConstant.ERROR_MSG_FILE_ERROR
         }
       };
-      emitter.emit(EvaConstant.EVENT_ID_ON_FAILED, { priority: emitter.EventPriority.IMMEDIATE }, eventData)
-      emitter.emit(EvaConstant.EVENT_ID_ON_VIDEO_COMPLETE, { priority: emitter.EventPriority.IMMEDIATE },
-        { data: { uuid: this.uuid } })
+      this.sendEvent(EvaConstant.EVENT_ID_ON_FAILED, eventData)
+      this.sendEvent(EvaConstant.EVENT_ID_ON_VIDEO_COMPLETE, { data: { uuid: this.uuid } })
     }
   }
 
@@ -443,13 +392,6 @@ export class EvaAnimPlayer {
   isRunning(): boolean {
     ELog.i(EvaAnimPlayer.TAG, `isStartRunning $isStartRunning, decoderRunning ${this.runningTask.has(Decoder.TAG)}`)
     return this.runningTask.has(EvaAnimPlayer.TAG) || this.runningTask.has(Decoder.TAG)
-  }
-
-  /**
-   * 获取实际尺寸
-   */
-  getRealSize(): Size {
-    return this.scaleTypeUtil.getRealSize()
   }
 
   /**
@@ -527,9 +469,8 @@ export class EvaAnimPlayer {
           errorMsg: EvaConstant.ERROR_MSG_CREATE_THREAD
         }
       };
-      emitter.emit(EvaConstant.EVENT_ID_ON_FAILED, { priority: emitter.EventPriority.IMMEDIATE }, eventData)
-      emitter.emit(EvaConstant.EVENT_ID_ON_VIDEO_COMPLETE, { priority: emitter.EventPriority.IMMEDIATE },
-        { data: { uuid: this.uuid } })
+      this.sendEvent(EvaConstant.EVENT_ID_ON_FAILED, eventData)
+      this.sendEvent(EvaConstant.EVENT_ID_ON_VIDEO_COMPLETE, { data: { uuid: this.uuid } })
       this.decoder.completeBlock?.(false)
       return
     }
@@ -544,9 +485,8 @@ export class EvaAnimPlayer {
           errorMsg: EvaConstant.getErrorMsg(result)
         }
       };
-      emitter.emit(EvaConstant.EVENT_ID_ON_FAILED, { priority: emitter.EventPriority.IMMEDIATE }, eventData)
-      emitter.emit(EvaConstant.EVENT_ID_ON_VIDEO_COMPLETE, { priority: emitter.EventPriority.IMMEDIATE },
-        { data: { uuid: this.uuid } })
+      this.sendEvent(EvaConstant.EVENT_ID_ON_FAILED, eventData)
+      this.sendEvent(EvaConstant.EVENT_ID_ON_VIDEO_COMPLETE, { data: { uuid: this.uuid } })
       this.decoder?.completeBlock?.(false)
       return
     }
@@ -566,8 +506,7 @@ export class EvaAnimPlayer {
         }
       };
       ELog.i(EvaAnimPlayer.TAG, `发送事件：${EvaConstant.EVENT_ID_ON_VIDEO_CONFIG_READY}`);
-      emitter.emit(EvaConstant.EVENT_ID_ON_VIDEO_CONFIG_READY, { priority: emitter.EventPriority.IMMEDIATE },
-        eventData); //发出onVideoConfigReady事件
+      this.sendEvent(EvaConstant.EVENT_ID_ON_VIDEO_CONFIG_READY, eventData);
       if (config.isDefaultConfig || this.isVideoConfigReady == true) {
         this.innerStartPlay(evaFileContainer, prepare)
       } else {
@@ -602,11 +541,11 @@ export class EvaAnimPlayer {
   private prepareDecoder() {
     if (this.decoder == null) {
       this.decoder = new EvaHardDecoder(this)
-      this.decoder.playLoop = this.playLoop
-      this.decoder.isLoop = this.isLoop
-      this.decoder.fps = this.fps
-      this.decoder.blendMode = this.blendMode
     }
+    this.decoder.playLoop = this.playLoop
+    this.decoder.isLoop = this.isLoop
+    this.decoder.fps = this.fps
+    this.decoder.blendMode = this.blendMode
   }
 
   async onSurfaceCreated(surfaceId: string) {
@@ -637,16 +576,19 @@ export class EvaAnimPlayer {
     this.setLayoutSize()
   }
 
-  onSurfaceTextureSizeChanged(surfaceId: string, rect: SurfaceRect) {
-    ELog.i(EvaAnimPlayer.TAG, `onSurfaceTextureSizeChanged ${rect.surfaceWidth} x ${rect.surfaceHeight}`)
+  onSurfaceChanged(surfaceId: string, rect: SurfaceRect) {
+    ELog.i(EvaAnimPlayer.TAG, `onSurfaceChanged ${rect.surfaceWidth} x ${rect.surfaceHeight}`)
     this.rect = rect
-    this.decoder?.onSurfaceSizeChanged(rect.surfaceWidth as number, rect.surfaceHeight)
+    let width = rect.surfaceWidth;
+    let height = rect.surfaceHeight
+    this.decoder?.onSurfaceSizeChanged(width, height)
   }
 
   /**
    * XComponent中的Surface插件卸载完成时回调事件。(对应Android中onSurfaceTextureDestroyed())
    */
-  async onSurfaceDestroyed() {
+  async onSurfaceDestroyed(surfaceId: string) {
+    ELog.i(EvaAnimPlayer.TAG, `onSurfaceDestroyed ${surfaceId}`)
     this.isSurfaceAvailable = false
     this.runningTask.delete(EvaAnimPlayer.TAG)
     this.startPoint = 0
@@ -657,8 +599,11 @@ export class EvaAnimPlayer {
     }
     this.surfaceTexure?.release();
     this.surfaceTexure = null;
-    emitter.off(EvaConstant.EVENT_ID_ON_VIDEO_CONFIG_READY);
-    emitter.off(EvaConstant.EVENT_ID_SIZE_CHANGED);
+
+    this.pluginManager.onDestroy();
+    EvaUtil.destroyRender(this.controllerId);
+    this.controllerId = -1;
+    this.sendEvent(EvaConstant.EVENT_ID_ON_VIDEO_DESTROY, { data: { uuid: this.uuid } });
   }
 
   /**
@@ -678,58 +623,12 @@ export class EvaAnimPlayer {
   /**
    * 组件被卸载
    */
-  aboutToDisappear(): void {
+   async aboutToDisappear(): Promise<void> {
     ELog.i(EvaAnimPlayer.TAG, 'aboutToDisappear')
     this.surfaceId = null
     this.bg = null
     this.isDetachedFromWindow = true
     this.runningTask.clear()
-    this.onSurfaceDestroyed()
-  }
-
-  /**
-   * 组件外部容器尺寸变化时回调
-   *
-   * @param oldValue
-   * @param newValue
-   */
-  onStackAreaChange(oldValue: Area, newValue: Area) {
-    let nw = newValue.width;
-    let nh = newValue.height;
-    if (nw && nh) {
-      ELog.i(EvaAnimPlayer.TAG, `onStackAreaChange，新的尺寸：nw = ${nw}, nh = ${nh}`)
-      if (this && this.scaleTypeUtil) {
-        this.scaleTypeUtil.setLayoutSize(nw as number, nh as number)
-        // 触发尺寸变化，更新UI
-        this.updateUI()
-      }
-    }
-  }
-
-  /**
-   * 触发UI更新
-   */
-  updateUI() {
-    try {
-      let componentUtils: ComponentUtils = this.uiContext.getComponentUtils();
-      let modePosition = componentUtils.getRectangleById('eva_anim_component_stack');
-      ELog.i(EvaAnimPlayer.TAG, `updataUI, modePosition = ${JSON.stringify(modePosition)}`)
-      const area: Area = {
-        width: this.uiContext.px2vp(modePosition.size.width),
-        height: this.uiContext.px2vp(modePosition.size.height),
-        position: {
-          x: this.uiContext.px2vp(modePosition.localOffset.x),
-          y: this.uiContext.px2vp(modePosition.localOffset.y)
-        },
-        globalPosition: {
-          x: this.uiContext.px2vp(modePosition.windowOffset.x),
-          y: this.uiContext.px2vp(modePosition.windowOffset.y)
-        }
-      }
-      this.xArea = this.scaleTypeUtil.getLayoutParam(area)
-    } catch (error) {
-      ELog.e(EvaAnimPlayer.TAG, `updataUI, error = ${JSON.stringify(error)}`)
-    }
   }
 
   /**

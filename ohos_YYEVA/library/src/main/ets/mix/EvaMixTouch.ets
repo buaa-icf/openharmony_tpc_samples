@@ -45,10 +45,10 @@ export class EvaMixTouch {
 
     if (ev.type === TouchType.Down) {
       const touchPoint = ev.touches[0];
-      const x = this.mixAnimPlugin.playerEva.uiContext.vp2px(touchPoint.x) * videoWith /
-      this.mixAnimPlugin.playerEva.uiContext.vp2px(viewWith);
-      const y = this.mixAnimPlugin.playerEva.uiContext.vp2px(touchPoint.y) * videoHeight /
-      this.mixAnimPlugin.playerEva.uiContext.vp2px(viewHeight);
+      const x = this.mixAnimPlugin.playerEva.vp2px(touchPoint.x) * videoWith /
+      this.mixAnimPlugin.playerEva.vp2px(viewWith);
+      const y = this.mixAnimPlugin.playerEva.vp2px(touchPoint.y) * videoHeight /
+      this.mixAnimPlugin.playerEva.vp2px(viewHeight);
 
       const list = this.mixAnimPlugin.frameAll?.map?.get(this.mixAnimPlugin.curFrameIndex)?.list;
       if (list) {
