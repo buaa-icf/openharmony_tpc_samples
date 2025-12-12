@@ -72,8 +72,15 @@ struct ConvertToMarkdown {
         }else{
           Logger.error("get rawFile content error , message" + JSON.stringify(content))
         }
-      } catch (error) {
-
+      }catch (error) {
+        Logger.error("err:" + JSON.stringify(error));
+        if (error instanceof Error) {
+          throw error;
+        } else {
+          // 将其他类型转换为 Error
+          const errorMessage = typeof error === 'object' ? JSON.stringify(error) : String(error);
+          throw new Error(errorMessage);
+        }
       }
 
     }
@@ -115,8 +122,15 @@ struct ConvertToMarkdown {
         return
       }
       this.convert({ arrayBuffer: content.buffer })
-    } catch (error) {
-
+    }catch (error) {
+      Logger.error("err:" + JSON.stringify(error));
+      if (error instanceof Error) {
+        throw error;
+      } else {
+        // 将其他类型转换为 Error
+        const errorMessage = typeof error === 'object' ? JSON.stringify(error) : String(error);
+        throw new Error(errorMessage);
+      }
     }
 
   }
@@ -203,7 +217,14 @@ struct ConvertToMarkdown {
       }
       this.convert({ arrayBuffer: content.buffer }, { ignoreEmptyParagraphs: false }, true);
     } catch (error) {
-
+      Logger.error("err:" + JSON.stringify(error));
+      if (error instanceof Error) {
+        throw error;
+      } else {
+        // 将其他类型转换为 Error
+        const errorMessage = typeof error === 'object' ? JSON.stringify(error) : String(error);
+        throw new Error(errorMessage);
+      }
     }
 
   }
@@ -222,6 +243,14 @@ struct ConvertToMarkdown {
       }
       this.convert({ arrayBuffer: content.buffer }, { ignoreEmptyParagraphs: true }, true);
     } catch (error) {
+      Logger.error("err:" + JSON.stringify(error));
+      if (error instanceof Error) {
+        throw error;
+      } else {
+        // 将其他类型转换为 Error
+        const errorMessage = typeof error === 'object' ? JSON.stringify(error) : String(error);
+        throw new Error(errorMessage);
+      }
     }
 
   }
@@ -250,7 +279,14 @@ struct ConvertToMarkdown {
       }
       this.convert({ arrayBuffer: content.buffer }, { externalFileAccess: false });
     } catch (error) {
-
+      Logger.error("err:" + JSON.stringify(error));
+      if (error instanceof Error) {
+        throw error;
+      } else {
+        // 将其他类型转换为 Error
+        const errorMessage = typeof error === 'object' ? JSON.stringify(error) : String(error);
+        throw new Error(errorMessage);
+      }
     }
 
   }
@@ -268,8 +304,15 @@ struct ConvertToMarkdown {
         return
       }
       this.convert({ arrayBuffer: content.buffer }, { externalFileAccess: true });
-    } catch (error) {
-
+    }catch (error) {
+      Logger.error("err:" + JSON.stringify(error));
+      if (error instanceof Error) {
+        throw error;
+      } else {
+        // 将其他类型转换为 Error
+        const errorMessage = typeof error === 'object' ? JSON.stringify(error) : String(error);
+        throw new Error(errorMessage);
+      }
     }
 
   }
@@ -287,8 +330,15 @@ struct ConvertToMarkdown {
         return
       }
       this.convert({ arrayBuffer: content.buffer })
-    } catch (error) {
-
+    }catch (error) {
+      Logger.error("err:" + JSON.stringify(error));
+      if (error instanceof Error) {
+        throw error;
+      } else {
+        // 将其他类型转换为 Error
+        const errorMessage = typeof error === 'object' ? JSON.stringify(error) : String(error);
+        throw new Error(errorMessage);
+      }
     }
 
   }
