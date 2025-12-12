@@ -10,6 +10,8 @@ if(DEFINED PACKAGE_FIND_FILE)
     include(${PACKAGE_FIND_FILE})
 endif()
 
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
 # 头文件目录
 include_directories(
     ${NATIVERENDER_ROOT_PATH}
@@ -62,9 +64,18 @@ target_compile_options(spine PRIVATE
     -Wall
     -Wno-unused-variable
     -Wno-unused-function
+    -O3
 )
 
 # 定义宏
 target_compile_definitions(spine PRIVATE
     SPINE_SHORT_NAMES
 )
+
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    target_link_options(spine PUBLIC -s)
+    set(LTO_FLAG "-flto=thin")
+    add_compile_options(-O3 -march=native)
+    target_compile_options(spine PRIVATE ${LTO_FLAG})
+    target_link_options(spine PRIVATE ${LTO_FLAG})
+endif()
