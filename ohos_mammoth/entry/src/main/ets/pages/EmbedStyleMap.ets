@@ -78,11 +78,10 @@ struct Index {
           Logger.error("get rawFile content error , message" + JSON.stringify(content))
         }
       }catch (error) {
-        Logger.error("err:" + JSON.stringify(error));
+        Logger.error('err:' + JSON.stringify(error));
         if (error instanceof Error) {
           throw error;
         } else {
-          // 将其他类型转换为 Error
           const errorMessage = typeof error === 'object' ? JSON.stringify(error) : String(error);
           throw new Error(errorMessage);
         }
