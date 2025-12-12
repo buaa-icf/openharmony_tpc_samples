@@ -65,12 +65,17 @@ struct ConvertToMarkdown {
 
   aboutToAppear(): void {
     if (this.context) {
-      let content = this.context.resourceManager.getRawFileContentSync(this.docxName);
-      if (content) {
-        writeFile(this.context.filesDir, this.docxName,content.buffer);
-      }else{
-        Logger.error("get rawFile content error , message" + JSON.stringify(content))
+      try {
+        let content = this.context.resourceManager.getRawFileContentSync(this.docxName);
+        if (content) {
+          writeFile(this.context.filesDir, this.docxName,content.buffer);
+        }else{
+          Logger.error("get rawFile content error , message" + JSON.stringify(content))
+        }
+      } catch (error) {
+
       }
+
     }
   }
 
@@ -103,12 +108,17 @@ struct ConvertToMarkdown {
       Logger.error("Context is undefined.")
       return
     }
-    let content = this.context.resourceManager.getRawFileContentSync(this.docxName);
-    if (!content) {
-      Logger.error("RawFile content  is undefined.")
-      return
+    try {
+      let content = this.context.resourceManager.getRawFileContentSync(this.docxName);
+      if (!content) {
+        Logger.error("RawFile content  is undefined.")
+        return
+      }
+      this.convert({ arrayBuffer: content.buffer })
+    } catch (error) {
+
     }
-    this.convert({ arrayBuffer: content.buffer })
+
   }
 
   //  自定义styleMap
@@ -185,12 +195,17 @@ struct ConvertToMarkdown {
       Logger.error("Context is undefined.")
       return
     }
-    let content = this.context.resourceManager.getRawFileContentSync("ignoreEmptyParagraphs.docx");
-    if (!content) {
-      Logger.error("RawFile content  is undefined.")
-      return
+    try {
+      let content = this.context.resourceManager.getRawFileContentSync("ignoreEmptyParagraphs.docx");
+      if (!content) {
+        Logger.error("RawFile content  is undefined.")
+        return
+      }
+      this.convert({ arrayBuffer: content.buffer }, { ignoreEmptyParagraphs: false }, true);
+    } catch (error) {
+
     }
-    this.convert({ arrayBuffer: content.buffer }, { ignoreEmptyParagraphs: false }, true);
+
   }
 
   // 开启忽略空白段落
@@ -199,12 +214,16 @@ struct ConvertToMarkdown {
       Logger.error("Context is undefined.")
       return
     }
-    let content = this.context.resourceManager.getRawFileContentSync("ignoreEmptyParagraphs.docx");
-    if (!content) {
-      Logger.error("RawFile content  is undefined.")
-      return
+    try {
+      let content = this.context.resourceManager.getRawFileContentSync("ignoreEmptyParagraphs.docx");
+      if (!content) {
+        Logger.error("RawFile content  is undefined.")
+        return
+      }
+      this.convert({ arrayBuffer: content.buffer }, { ignoreEmptyParagraphs: true }, true);
+    } catch (error) {
     }
-    this.convert({ arrayBuffer: content.buffer }, { ignoreEmptyParagraphs: true }, true);
+
   }
 
   // 为 自动生成的 HTML ID 添加前缀
@@ -223,12 +242,17 @@ struct ConvertToMarkdown {
       Logger.error("Context is undefined.")
       return
     }
-    let content = this.context.resourceManager.getRawFileContentSync("externalFile.docx");
-    if (!content) {
-      Logger.error("RawFile content  is undefined.")
-      return
+    try {
+      let content = this.context.resourceManager.getRawFileContentSync("externalFile.docx");
+      if (!content) {
+        Logger.error("RawFile content  is undefined.")
+        return
+      }
+      this.convert({ arrayBuffer: content.buffer }, { externalFileAccess: false });
+    } catch (error) {
+
     }
-    this.convert({ arrayBuffer: content.buffer }, { externalFileAccess: false });
+
   }
 
   // 允许访问文件系统来读取外部文件
@@ -237,12 +261,17 @@ struct ConvertToMarkdown {
       Logger.error("Context is undefined.")
       return
     }
-    let content = this.context.resourceManager.getRawFileContentSync("externalFile.docx");
-    if (!content) {
-      Logger.error("RawFile content  is undefined.")
-      return
+    try {
+      let content = this.context.resourceManager.getRawFileContentSync("externalFile.docx");
+      if (!content) {
+        Logger.error("RawFile content  is undefined.")
+        return
+      }
+      this.convert({ arrayBuffer: content.buffer }, { externalFileAccess: true });
+    } catch (error) {
+
     }
-    this.convert({ arrayBuffer: content.buffer }, { externalFileAccess: true });
+
   }
 
   // 长文本测试
@@ -251,12 +280,17 @@ struct ConvertToMarkdown {
       console.error("Context is undefined.")
       return
     }
-    let content = this.context.resourceManager.getRawFileContentSync(this.docxName2);
-    if (!content) {
-      console.error("RawFile content  is undefined.")
-      return
+    try {
+      let content = this.context.resourceManager.getRawFileContentSync(this.docxName2);
+      if (!content) {
+        console.error("RawFile content  is undefined.")
+        return
+      }
+      this.convert({ arrayBuffer: content.buffer })
+    } catch (error) {
+
     }
-    this.convert({ arrayBuffer: content.buffer })
+
   }
 
   build() {

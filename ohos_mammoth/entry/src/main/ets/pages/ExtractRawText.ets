@@ -64,12 +64,17 @@ struct ExtractRawText {
 
   aboutToAppear(): void {
     if (this.context) {
-      let content = this.context.resourceManager.getRawFileContentSync(this.docxName);
-      if (content) {
-        writeFile(this.context.filesDir, this.docxName, content.buffer);
-      } else {
-        Logger.error("get rawFile content error , message" + JSON.stringify(content))
+      try {
+        let content = this.context.resourceManager.getRawFileContentSync(this.docxName);
+        if (content) {
+          writeFile(this.context.filesDir, this.docxName, content.buffer);
+        } else {
+          Logger.error("get rawFile content error , message" + JSON.stringify(content))
+        }
+      } catch (error) {
+
       }
+
     }
   }
 
@@ -102,12 +107,17 @@ struct ExtractRawText {
       console.error("Context is undefined.")
       return
     }
-    let content = this.context.resourceManager.getRawFileContentSync(this.docxName);
-    if (!content) {
-      console.error("RawFile content  is undefined.")
-      return
+    try {
+      let content = this.context.resourceManager.getRawFileContentSync(this.docxName);
+      if (!content) {
+        console.error("RawFile content  is undefined.")
+        return
+      }
+      this.convert({ arrayBuffer: content.buffer })
+    } catch (error) {
+
     }
-    this.convert({ arrayBuffer: content.buffer })
+
   }
 
   convert_longText() {
@@ -115,12 +125,17 @@ struct ExtractRawText {
       console.error("Context is undefined.")
       return
     }
-    let content = this.context.resourceManager.getRawFileContentSync(this.docxName2);
-    if (!content) {
-      console.error("RawFile content  is undefined.")
-      return
+    try {
+      let content = this.context.resourceManager.getRawFileContentSync(this.docxName2);
+      if (!content) {
+        console.error("RawFile content  is undefined.")
+        return
+      }
+      this.convert({ arrayBuffer: content.buffer })
+    } catch (error) {
+
     }
-    this.convert({ arrayBuffer: content.buffer })
+
   }
 
   build() {

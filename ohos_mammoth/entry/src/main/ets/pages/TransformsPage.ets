@@ -228,10 +228,15 @@ struct TransformsPage {
 
   aboutToAppear(): void {
     if (this.context) {
-      let content = this.context.resourceManager.getRawFileContentSync(this.docxName);
-      if (content) {
-        writeFile(this.context.filesDir, this.docxName,content.buffer);
+      try {
+        let content = this.context.resourceManager.getRawFileContentSync(this.docxName);
+        if (content) {
+          writeFile(this.context.filesDir, this.docxName,content.buffer);
+        }
+      } catch (error) {
+
       }
+
     }
   }
 

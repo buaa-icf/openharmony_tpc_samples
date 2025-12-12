@@ -98,12 +98,17 @@ struct StyleMapping {
 
   aboutToAppear(): void {
     if (this.context) {
-      let content = this.context.resourceManager.getRawFileContentSync(this.docxName);
-      if (content) {
-        writeFile(this.context.filesDir, this.docxName,content.buffer);
-      }else{
-        Logger.error("get rawFile content error , message" + JSON.stringify(content))
+      try {
+        let content = this.context.resourceManager.getRawFileContentSync(this.docxName);
+        if (content) {
+          writeFile(this.context.filesDir, this.docxName,content.buffer);
+        }else{
+          Logger.error("get rawFile content error , message" + JSON.stringify(content))
+        }
+      } catch (error) {
+
       }
+
     }
   }
 
