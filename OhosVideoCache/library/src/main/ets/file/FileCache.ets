@@ -158,7 +158,8 @@ export default class FileCache implements Cache {
 
     } catch (e) {
       let format = `Error writing ${length} bytes to ${this.tempFilePath}from buffer with size ${fileData.byteLength},reason is : ${e.message}`;
-      throw new Error(format);
+      LogUtil.error(format);
+      return;
     }
   }
 
@@ -202,7 +203,8 @@ export default class FileCache implements Cache {
     }
     catch (e) {
       let format = `Error reading ${length} bytes with offset ${offset} from file[${this.available()} bytes] to buffer[${buffer.byteLength} bytes], readon is : ${e.message}`;
-      throw new Error(format);
+      LogUtil.error(format);
+      return -1;
     }
   }
 
