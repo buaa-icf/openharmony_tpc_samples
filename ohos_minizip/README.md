@@ -12,16 +12,21 @@ For details about the OpenHarmony ohpm environment configuration, see [OpenHarmo
 
 ### How to Build
 
-This project depends on the minizip_ng library. The build products, .a file and header file, are imported through **git submodule**. The **--recursive** parameter must be carried in the command used to download the project code.
-  ```
-  git clone --recursive https://gitcode.com/openharmony-tpc/openharmony_tpc_samples.git
-  ```
+This project depends on the bzip2, minizip-ng, openssl, xz, and zstd libraries. You need to compile the generated .so files and header files yourself.
 
-For details about how to build minizip_ng locally, see [Integrating minizip_ng into Your HAP](https://gitcode.com/openharmony-sig/tpc_c_cplusplus/tree/master/community/minizip-ng).
+Refer to [bzip2 local compilation script](https://gitcode.com/openharmony-sig/tpc_c_cplusplus/tree/master/thirdparty/bzip2)
 
-Add the **third_party** directory to the **cpp** directory, and copy the library generated after compilation to the **third_party** directory.
+Refer to [minizip-ng local compilation script](https://gitcode.com/openharmony-sig/tpc_c_cplusplus/tree/master/thirdparty/minizip-ng)
 
-![img.png](image%2Fimg.png)
+Refer to [openssl local compilation script](https://gitcode.com/openharmony-sig/tpc_c_cplusplus/tree/master/thirdparty/openssl)
+
+Refer to [xz local compilation script](https://gitcode.com/openharmony-sig/tpc_c_cplusplus/tree/master/thirdparty/xz)
+
+Refer to [zstd local compilation script](https://gitcode.com/openharmony-sig/tpc_c_cplusplus/tree/master/thirdparty/zstd)
+
+Add a third_party directory under the cpp directory, and copy the compiled libraries of bzip2, minizip-ng, openssl, xz, and zstd into this directory, as shown in the following diagram:
+
+![img.png](image/third.png)
 
 ## How to Use
 

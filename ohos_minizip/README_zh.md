@@ -12,16 +12,22 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
 
 ### 编译运行
 
-本项目依赖minizip_ng库，编译产物.a文件和头文件通过`git submodule`引入，下载代码时需加上`--recursive`参数。
-  ```
-  git clone --recursive https://gitcode.com/openharmony-tpc/openharmony_tpc_samples.git
-  ```
+本项目依赖bzip2、minizip-ng、openssl、xz、zstd库，编译产物.so文件和头文件需要自行编译
 
-如果想要在本地编译minizip_ng，参考[minizip_ng集成到应用hap](https://gitcode.com/openharmony-sig/tpc_c_cplusplus/tree/master/community/minizip-ng)。
+参考[bzip2本地编译脚本](https://gitcode.com/openharmony-sig/tpc_c_cplusplus/tree/master/thirdparty/bzip2)
 
-在cpp目录下新增third_party目录，并将编译生成的库拷贝到该目录下，如下图所示：
+参考[minizip-ng本地编译脚本](https://gitcode.com/openharmony-sig/tpc_c_cplusplus/tree/master/thirdparty/minizip-ng)
 
-![img.png](image%2Fimg.png)
+参考[openssl本地编译脚本](https://gitcode.com/openharmony-sig/tpc_c_cplusplus/tree/master/thirdparty/openssl)
+
+参考[xz本地编译脚本](https://gitcode.com/openharmony-sig/tpc_c_cplusplus/tree/master/thirdparty/xz)
+
+参考[zstd本地编译脚本](https://gitcode.com/openharmony-sig/tpc_c_cplusplus/tree/master/thirdparty/zstd)
+
+
+在cpp目录下新增third_party目录，并将编译生成的bzip2、minizip-ng、openssl、xz、zstd库拷贝到该目录下，如下图所示：
+
+![img.png](image/third.png)
 
 ## 使用说明
 
