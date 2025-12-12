@@ -65,12 +65,23 @@ struct Index {
 
   aboutToAppear(): void {
     if (this.context) {
-      let content = this.context.resourceManager.getRawFileContentSync(this.docxName);
-      if (content) {
-        writeFile(this.context.filesDir, this.docxName,content.buffer);
-      }else{
-        Logger.error("get rawFile content error , message" + JSON.stringify(content))
+      try {
+        let content = this.context.resourceManager.getRawFileContentSync(this.docxName);
+        if (content) {
+          writeFile(this.context.filesDir, this.docxName, content.buffer);
+        } else {
+          Logger.error("get rawFile content error , message" + JSON.stringify(content))
+        }
+      } catch (error) {
+        Logger.error('err:' + JSON.stringify(error));
+        if (error instanceof Error) {
+          throw error;
+        } else {
+          const errorMessage = typeof error === 'object' ? JSON.stringify(error) : String(error);
+          throw new Error(errorMessage);
+        }
       }
+
     }
   }
 
@@ -109,12 +120,23 @@ struct Index {
       Logger.error("Context is undefined.")
       return
     }
-    let content = this.context.resourceManager.getRawFileContentSync(this.docxName);
-    if (!content) {
-      Logger.error("RawFile content  is undefined.")
-      return
+    try {
+      let content = this.context.resourceManager.getRawFileContentSync(this.docxName);
+      if (!content) {
+        Logger.error("RawFile content  is undefined.")
+        return
+      }
+      this.convert({ arrayBuffer: content.buffer })
+    } catch (error) {
+      Logger.error('err:' + JSON.stringify(error));
+      if (error instanceof Error) {
+        throw error;
+      } else {
+        const errorMessage = typeof error === 'object' ? JSON.stringify(error) : String(error);
+        throw new Error(errorMessage);
+      }
     }
-    this.convert({ arrayBuffer: content.buffer })
+
   }
 
   //  自定义styleMap
@@ -191,12 +213,23 @@ struct Index {
       Logger.error("Context is undefined.")
       return
     }
-    let content = this.context.resourceManager.getRawFileContentSync("ignoreEmptyParagraphs.docx");
-    if (!content) {
-      Logger.error("RawFile content  is undefined.")
-      return
+    try {
+      let content = this.context.resourceManager.getRawFileContentSync("ignoreEmptyParagraphs.docx");
+      if (!content) {
+        Logger.error("RawFile content  is undefined.")
+        return
+      }
+      this.convert({ arrayBuffer: content.buffer }, { ignoreEmptyParagraphs: false }, true);
+    } catch (error) {
+      Logger.error('err:' + JSON.stringify(error));
+      if (error instanceof Error) {
+        throw error;
+      } else {
+        const errorMessage = typeof error === 'object' ? JSON.stringify(error) : String(error);
+        throw new Error(errorMessage);
+      }
     }
-    this.convert({ arrayBuffer: content.buffer }, { ignoreEmptyParagraphs: false }, true);
+
   }
 
   // 开启忽略空白段落
@@ -205,12 +238,23 @@ struct Index {
       Logger.error("Context is undefined.")
       return
     }
-    let content = this.context.resourceManager.getRawFileContentSync("ignoreEmptyParagraphs.docx");
-    if (!content) {
-      Logger.error("RawFile content  is undefined.")
-      return
+    try {
+      let content = this.context.resourceManager.getRawFileContentSync("ignoreEmptyParagraphs.docx");
+      if (!content) {
+        Logger.error("RawFile content  is undefined.")
+        return
+      }
+      this.convert({ arrayBuffer: content.buffer }, { ignoreEmptyParagraphs: true }, true);
+    } catch (error) {
+      Logger.error('err:' + JSON.stringify(error));
+      if (error instanceof Error) {
+        throw error;
+      } else {
+        const errorMessage = typeof error === 'object' ? JSON.stringify(error) : String(error);
+        throw new Error(errorMessage);
+      }
     }
-    this.convert({ arrayBuffer: content.buffer }, { ignoreEmptyParagraphs: true }, true);
+
   }
 
   // 为 自动生成的 HTML ID 添加前缀
@@ -229,12 +273,23 @@ struct Index {
       Logger.error("Context is undefined.")
       return
     }
-    let content = this.context.resourceManager.getRawFileContentSync("externalFile.docx");
-    if (!content) {
-      Logger.error("RawFile content  is undefined.")
-      return
+    try {
+      let content = this.context.resourceManager.getRawFileContentSync("externalFile.docx");
+      if (!content) {
+        Logger.error("RawFile content  is undefined.")
+        return
+      }
+      this.convert({ arrayBuffer: content.buffer }, { externalFileAccess: false });
+    }catch (error) {
+      Logger.error('err:' + JSON.stringify(error));
+      if (error instanceof Error) {
+        throw error;
+      } else {
+        const errorMessage = typeof error === 'object' ? JSON.stringify(error) : String(error);
+        throw new Error(errorMessage);
+      }
     }
-    this.convert({ arrayBuffer: content.buffer }, { externalFileAccess: false });
+
   }
 
   // 允许访问文件系统来读取外部文件
@@ -243,12 +298,23 @@ struct Index {
       Logger.error("Context is undefined.")
       return
     }
-    let content = this.context.resourceManager.getRawFileContentSync("externalFile.docx");
-    if (!content) {
-      Logger.error("RawFile content  is undefined.")
-      return
+    try {
+      let content = this.context.resourceManager.getRawFileContentSync("externalFile.docx");
+      if (!content) {
+        Logger.error("RawFile content  is undefined.")
+        return
+      }
+      this.convert({ arrayBuffer: content.buffer }, { externalFileAccess: true });
+    }catch (error) {
+      Logger.error('err:' + JSON.stringify(error));
+      if (error instanceof Error) {
+        throw error;
+      } else {
+        const errorMessage = typeof error === 'object' ? JSON.stringify(error) : String(error);
+        throw new Error(errorMessage);
+      }
     }
-    this.convert({ arrayBuffer: content.buffer }, { externalFileAccess: true });
+
   }
 
   // 长文本测试
@@ -257,12 +323,23 @@ struct Index {
       console.error("Context is undefined.")
       return
     }
-    let content = this.context.resourceManager.getRawFileContentSync(this.docxName2);
-    if (!content) {
-      console.error("RawFile content  is undefined.")
-      return
+    try {
+      let content = this.context.resourceManager.getRawFileContentSync(this.docxName2);
+      if (!content) {
+        console.error("RawFile content  is undefined.")
+        return
+      }
+      this.convert({ arrayBuffer: content.buffer })
+    }catch (error) {
+      Logger.error('err:' + JSON.stringify(error));
+      if (error instanceof Error) {
+        throw error;
+      } else {
+        const errorMessage = typeof error === 'object' ? JSON.stringify(error) : String(error);
+        throw new Error(errorMessage);
+      }
     }
-    this.convert({ arrayBuffer: content.buffer })
+
   }
 
   build() {
