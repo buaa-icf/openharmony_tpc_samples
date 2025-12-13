@@ -65,7 +65,9 @@ class JpegSegmentReader {
 
         let segmentLength: number = reader.getUInt16();
 
-        segmentLength -= 2;
+        if (segmentLength >= 2) {
+          segmentLength -= 2;
+        }
 
         if (segmentLength < 0)
         throw new Error("JPEG segment size would be less than zero");

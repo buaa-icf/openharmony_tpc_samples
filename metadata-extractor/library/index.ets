@@ -43,6 +43,7 @@ export {default as PngDescriptor} from './src/main/ets/com/drew/metadata/png/Png
 export { default as PngChunkReader} from './src/main/ets/com/drew/imaging/png/PngChunkReader'
 export { default as JpegSegmentReader} from './src/main/ets/com/drew/imaging/jpeg/JpegSegmentReader'
 export { default as JpegSegmentData} from './src/main/ets/com/drew/imaging/jpeg/JpegSegmentData'
+export { default as JpegSegmentType} from './src/main/ets/com/drew/imaging/jpeg/JpegSegmentType'
 export { default as JpegMetadataReader} from './src/main/ets/com/drew/imaging/jpeg/JpegMetadataReader'
 export { default as AviMetadataReader} from './src/main/ets/com/drew/imaging/avi/AviMetadataReader'
 export { default as BmpMetadataReader} from './src/main/ets/com/drew/imaging/bmp/BmpMetadataReader'
@@ -79,6 +80,11 @@ export { default as JpegDhtReader} from './src/main/ets/com/drew/metadata/jpeg/J
 export { default as JpegDnlReader} from './src/main/ets/com/drew/metadata/jpeg/JpegDnlReader'
 export { default as JpegComponent} from './src/main/ets/com/drew/metadata/jpeg/JpegComponent'
 
+// XMP
+export { default as XmpDirectory} from './src/main/ets/com/drew/metadata/xmp/XmpDirectory'
+export { default as XmpReader} from './src/main/ets/com/drew/metadata/xmp/XmpReader'
+export { default as XmpWriter} from './src/main/ets/com/drew/metadata/xmp/XmpWriter'
+export { default as XmpDescriptor} from './src/main/ets/com/drew/metadata/xmp/XmpDescriptor'
 
 
 

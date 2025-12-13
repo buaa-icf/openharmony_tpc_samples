@@ -21,10 +21,10 @@ struct Picture {
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
       Column() {
-        Text("GIF")
+        Text('GIF')
           .fontSize(25)
           .padding(10)
-          .width("100%")
+          .width('100%')
           .textAlign(TextAlign.Center)
           .border({ width: "2px", color: "#000000" })
           .onClick(() => {
@@ -32,10 +32,10 @@ struct Picture {
               url: "pages/GifSample"
             })
           })
-        Text("ICO")
+        Text('ICO')
           .fontSize(25)
           .padding(10)
-          .width("100%")
+          .width('100%')
           .textAlign(TextAlign.Center)
           .border({ width: "2px", color: "#000000" })
           .onClick(() => {
@@ -43,10 +43,10 @@ struct Picture {
               url: "pages/IcoSample"
             })
           })
-        Text("PCX")
+        Text('PCX')
           .fontSize(25)
           .padding(10)
-          .width("100%")
+          .width('100%')
           .textAlign(TextAlign.Center)
           .border({ width: "2px", color: "#000000" })
           .onClick(() => {
@@ -54,10 +54,10 @@ struct Picture {
               url: "pages/PcxSample"
             })
           })
-        Text("PNG")
+        Text('PNG')
           .fontSize(25)
           .padding(10)
-          .width("100%")
+          .width('100%')
           .textAlign(TextAlign.Center)
           .border({ width: "2px", color: "#000000" })
           .onClick(() => {
@@ -65,10 +65,10 @@ struct Picture {
               url: "pages/PngSample"
             })
           })
-        Text("Bmp")
+        Text('BMP')
           .fontSize(25)
           .padding(10)
-          .width("100%")
+          .width('100%')
           .textAlign(TextAlign.Center)
           .border({ width: "2px", color: "#000000" })
           .onClick(() => {
@@ -76,20 +76,21 @@ struct Picture {
               url: "pages/BmpSample"
             })
           })
-        Text("WEBP")
+        Text('WEBP')
           .fontSize(25)
           .padding(10)
-          .width("100%")
+          .width('100%')
           .textAlign(TextAlign.Center)
           .border({ width: "2px", color: "#000000" })
           .onClick(() => {
             router.pushUrl({
-              url: "pages/WebpSample" })
+              url: "pages/WebpSample"
+            })
           })
-        Text("JPG")
+        Text('JPG')
           .fontSize(25)
           .padding(10)
-          .width("100%")
+          .width('100%')
           .textAlign(TextAlign.Center)
           .border({ width: "2px", color: "#000000" })
           .onClick(() => {
@@ -97,10 +98,10 @@ struct Picture {
               url: "pages/JpgSample"
             })
           })
-        Text("PSD")
+        Text('PSD')
           .fontSize(25)
           .padding(10)
-          .width("100%")
+          .width('100%')
           .textAlign(TextAlign.Center)
           .border({ width: "2px", color: "#000000" })
           .onClick(() => {

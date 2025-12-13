@@ -13,38 +13,47 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {Metadata} from '@ohos/metadata-extractor';
-import {ImageMetadataReader} from '@ohos/metadata-extractor'
-import {GlobalContext} from './GlobalContext'
+import { Metadata } from '@ohos/metadata-extractor';
+import { ImageMetadataReader } from '@ohos/metadata-extractor'
+import { GlobalContext } from './GlobalContext'
+import fileIo from '@ohos.file.fs';
 
-let fileDir:string;
+let fileDir: string;
+
 @Entry
 @Component
-struct PsdSample{
+struct PsdSample {
   @State isVisibility: Visibility = Visibility.Hidden
-  @State data: string[]= []
+  @State data: string[] = []
   scroller: Scroller = new Scroller()
 
   private getMetaData() {
-    fileDir = GlobalContext.getContext().getValue("filesDir") as string;
-    let path = fileDir.concat("/8x4x8bit-Grayscale.psd")
-      this.data.splice(0,this.data.length)
+    this.data.splice(0, this.data.length)
+    const imageData = getContext().resourceManager.getRawFileContentSync('8x4x8bit-Grayscale.psd')
+    const targetDir = getContext().filesDir + 'webResources/'
+    if (!fileIo.accessSync(targetDir)) {
+      fileIo.mkdirSync(targetDir)
+    }
+    const filePath = targetDir + '8x4x8bit-Grayscale.psd'
+    const fd = fileIo.openSync(filePath, fileIo.OpenMode.CREATE | fileIo.OpenMode.READ_WRITE)
+    fileIo.writeSync(fd.fd, imageData!.buffer)
+    fileIo.closeSync(fd)
     try {
-      let metadata: Metadata = ImageMetadataReader.readMetadata(path)
+      let metadata: Metadata = ImageMetadataReader.readMetadata(filePath)
 
       // iterate over the metadata and print to System.out
 
-      metadata.getDirectories().forEach((value:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
-        let directoryName:string = value.getName()
-        value.getTags().forEach((tag:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
-          let tagName:string = tag.getTagName()
-          let description:string = tag.getDescription()
-          this.data.push("[" + directoryName + "] " + tagName + " = " + description)
+      metadata.getDirectories().forEach((value: ESObject, vlue2: ESObject, mataSet: ESObject) => {
+        let directoryName: string = value.getName()
+        value.getTags().forEach((tag: ESObject, vlue2: ESObject, mataSet: ESObject) => {
+          let tagName: string = tag.getTagName()
+          let description: string = tag.getDescription()
+          this.data.push('[' + directoryName + '] ' + tagName + ' = ' + description)
         })
       })
-      console.info("psd sample meta all:"+JSON.stringify(this.data))
+      console.info('psd sample meta all:' + JSON.stringify(this.data))
     } catch (err) {
-      console.error("metadata error..")
+      console.error('metadata error..')
     }
 
 
@@ -54,7 +63,12 @@ struct PsdSample{
 
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
       Text($r('app.string.Extract_Psd_metadata')).fontSize(25).fontColor(Color.Gray)
-        .padding({ left:10,right:10,top:10,bottom:10 })
+        .padding({
+          left: 10,
+          right: 10,
+          top: 10,
+          bottom: 10
+        })
         .textAlign(TextAlign.Center)
 
       Text($r('app.string.Resource_path13')).fontSize(22).width('100%')
@@ -63,22 +77,26 @@ struct PsdSample{
         .textAlign(TextAlign.Start)
       Scroll(this.scroller) {
         Column() {
-          Text("" + JSON.stringify(this.data)).fontSize(20).width('100%')
+          Text('' + JSON.stringify(this.data)).fontSize(20).width('100%')
             .textAlign(TextAlign.Start)
             .visibility(this.isVisibility)
         }
-      }.scrollable(ScrollDirection.Vertical).scrollBar(BarState.On)
-      .scrollBarColor(Color.Gray).scrollBarWidth(1).height('80%')
+      }
+      .scrollable(ScrollDirection.Vertical)
+      .scrollBar(BarState.On)
+      .scrollBarColor(Color.Gray)
+      .scrollBarWidth(1)
+      .height('80%')
 
 
       Button($r('app.string.Display_metadata10'), { type: ButtonType.Normal, stateEffect: true })
-        .borderRadius(8).width("100%").height(60)
+        .borderRadius(8).width('100%').height(60)
         .onClick(() => {
           this.getMetaData()
           this.isVisibility = Visibility.Visible
         })
     }.padding(16)
     .width('100%')
-    .height("100%")
+    .height('100%')
   }
 }

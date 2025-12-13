@@ -14,11 +14,13 @@ limitations under the License.
 */
 
 
-import {Metadata} from '@ohos/metadata-extractor';
-import {ImageMetadataReader} from '@ohos/metadata-extractor'
-import {GlobalContext} from './GlobalContext'
+import { Metadata } from '@ohos/metadata-extractor';
+import { ImageMetadataReader } from '@ohos/metadata-extractor'
+import { GlobalContext } from './GlobalContext'
+import fileIo from '@ohos.file.fs';
 
-let fileDir:string;
+let fileDir: string;
+
 @Entry
 @Component
 struct PcxSample {
@@ -26,22 +28,28 @@ struct PcxSample {
   @State data: Array<string> = []
 
   private getMetaData() {
-    this.data.splice(0,this.data.length)
-
-    fileDir = GlobalContext.getContext().getValue("filesDir") as string;
-    let pathPcx = fileDir.concat("/metadata.PCX")
+    this.data.splice(0, this.data.length)
+    const imageData = getContext().resourceManager.getRawFileContentSync('metadata.PCX')
+    const targetDir = getContext().filesDir + 'webResources/'
+    if (!fileIo.accessSync(targetDir)) {
+      fileIo.mkdirSync(targetDir)
+    }
+    const filePath = targetDir + 'metadata.PCX'
+    const fd = fileIo.openSync(filePath, fileIo.OpenMode.CREATE | fileIo.OpenMode.READ_WRITE)
+    fileIo.writeSync(fd.fd, imageData!.buffer)
+    fileIo.closeSync(fd)
     try {
-      let metadata: Metadata =  ImageMetadataReader.readMetadata(pathPcx);
-      metadata.getDirectories().forEach((value:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
-        let directoryName:string = value.getName()
-        value.getTags().forEach((tag:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
-          let tagName:string = tag.getTagName()
-          let description:string = tag.getDescription()
-          this.data.push("[" + directoryName + "] " + tagName + " = " + description)
+      let metadata: Metadata = ImageMetadataReader.readMetadata(filePath);
+      metadata.getDirectories().forEach((value: ESObject, vlue2: ESObject, mataSet: ESObject) => {
+        let directoryName: string = value.getName()
+        value.getTags().forEach((tag: ESObject, vlue2: ESObject, mataSet: ESObject) => {
+          let tagName: string = tag.getTagName()
+          let description: string = tag.getDescription()
+          this.data.push('[' + directoryName + '] ' + tagName + ' = ' + description)
         })
       })
     } catch (err) {
-      console.error("metadata error..")
+      console.error('metadata error..')
     }
 
   }
@@ -50,8 +58,11 @@ struct PcxSample {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
       Column() {
 
-        Text($r('app.string.Extract_PCX_metadata')).fontSize(25).fontColor(Color.Gray)
-          .padding(20).height("10%")
+        Text($r('app.string.Extract_PCX_metadata'))
+          .fontSize(25)
+          .fontColor(Color.Gray)
+          .padding(20)
+          .height('10%')
           .textAlign(TextAlign.Center)
 
         Text($r('app.string.Resource_path11')).fontSize(22).width('100%')
@@ -60,21 +71,21 @@ struct PcxSample {
         Column() {
           Text($r('app.string.Metadata')).fontSize(20).width('100%')
             .textAlign(TextAlign.Start)
-          Text("" + JSON.stringify(this.data)).fontSize(20).width('100%')
+          Text('' + JSON.stringify(this.data)).fontSize(20).width('100%')
             .textAlign(TextAlign.Start)
             .visibility(this.isVisibility)
-        }.height("80%").padding({ bottom: 10 })
+        }.height('80%').padding({ bottom: 10 })
 
         Button($r('app.string.Display_metadata8'), { type: ButtonType.Normal, stateEffect: true })
-          .borderRadius(8).width("70%").height("8%")
+          .borderRadius(8).width('70%').height('8%')
           .onClick(() => {
             this.getMetaData()
             this.isVisibility = Visibility.Visible
           })
 
-      }.height("100%")
+      }.height('100%')
     }.padding(16)
     .width('100%')
-    .height("100%")
+    .height('100%')
   }
 }

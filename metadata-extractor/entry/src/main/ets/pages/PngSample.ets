@@ -14,12 +14,13 @@ limitations under the License.
 */
 
 
-import {Metadata} from '@ohos/metadata-extractor';
-import {ImageMetadataReader} from '@ohos/metadata-extractor'
-import {GlobalContext} from './GlobalContext'
+import { Metadata, XmpDirectory } from '@ohos/metadata-extractor';
+import { ImageMetadataReader } from '@ohos/metadata-extractor'
+import { GlobalContext } from './GlobalContext'
 import fileIo from '@ohos.file.fs';
 
-let fileDir:string;
+let fileDir: string;
+
 @Entry
 @Component
 struct PngSample {
@@ -27,35 +28,46 @@ struct PngSample {
   @State data: Array<string> = []
 
   private getMetaData() {
-    this.data.splice(0,this.data.length)
-    const imageData = getContext().resourceManager.getRawFileContentSync('pngSample.png')
-    const targetDir = getContext().filesDir + "webResources/"
+    this.data.splice(0, this.data.length)
+    const imageData = getContext().resourceManager.getRawFileContentSync('testPNG.png')
+    const targetDir = getContext().filesDir + 'webResources/'
     if (!fileIo.accessSync(targetDir)) {
       fileIo.mkdirSync(targetDir)
     }
-    const filePath = targetDir + 'pngSample.png'
-    const fd = fileIo.openSync(filePath,fileIo.OpenMode.CREATE | fileIo.OpenMode.READ_WRITE)
-    fileIo.writeSync(fd.fd,imageData!.buffer)
+    const filePath = targetDir + 'testPNG.png'
+    const fd = fileIo.openSync(filePath, fileIo.OpenMode.CREATE | fileIo.OpenMode.READ_WRITE)
+    fileIo.writeSync(fd.fd, imageData!.buffer)
     fileIo.closeSync(fd)
 
     try {
-      let metadata: Metadata =  ImageMetadataReader.readMetadata(filePath);
-      console.debug("metadata-extractor png directory count:"+metadata.getDirectoryCount())
-      metadata.getDirectories().forEach((value:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
-        console.debug("metadata-extractor png directory type:"+JSON.stringify(metadata.getDirectoriesOfType(value)))
-        console.debug("metadata-extractor png directory first type:"+metadata.getFirstDirectoryOfType(value))
-        console.debug("metadata-extractor png directory tag count:"+value.getTagCount())
-        console.debug("metadata-extractor png directory directory data:"+value.getDate(3))
-        let directoryName:string = value.getName()
-        value.getTags().forEach((tag:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
-          let tagName:string = tag.getTagName()
-          let description:string = tag.getDescription()
-          this.data.push("[" + directoryName + "] " + tagName + " = " + description)
+      let metadata: Metadata = ImageMetadataReader.readMetadata(filePath);
+      console.debug('metadata-extractor png directory count:' + metadata.getDirectoryCount())
+      metadata.getDirectories().forEach((value: ESObject, vlue2: ESObject, mataSet: ESObject) => {
+        console.debug('metadata-extractor png directory type:' + JSON.stringify(metadata.getDirectoriesOfType(value)))
+        console.debug('metadata-extractor png directory first type:' + metadata.getFirstDirectoryOfType(value))
+        console.debug('metadata-extractor png directory tag count:' + value.getTagCount())
+        console.debug('metadata-extractor png directory directory data:' + value.getDate(3))
+        let directoryName: string = value.getName()
+        value.getTags().forEach((tag: ESObject, vlue2: ESObject, mataSet: ESObject) => {
+          let tagName: string = tag.getTagName()
+          let description: string = tag.getDescription()
+          this.data.push('[' + directoryName + '] ' + tagName + ' = ' + description)
         })
+        if (value instanceof XmpDirectory) {
+          let xmpDir: XmpDirectory = value as XmpDirectory;
+          let xmpProperties = xmpDir.getXmpProperties();
+          if (xmpProperties && xmpProperties.size > 0) {
+            xmpProperties.forEach((propValue: string, path: string) => {
+              if (!path.includes('/@') && !path.endsWith('/@xml:lang')) {
+                this.data.push('[XMP] ' + path + ' = ' + propValue);
+              }
+            });
+          }
+        }
       })
-      console.info("metadata png data:"+this.data)
+      console.info('metadata png data:' + this.data)
     } catch (err) {
-      console.error("metadata error..")
+      console.error('metadata error..')
     }
 
   }
@@ -64,31 +76,36 @@ struct PngSample {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
       Column() {
 
-        Text($r('app.string.Extract_PNG_metadata')).fontSize(25).fontColor(Color.Gray)
-          .padding(20).height("10%")
+        Text($r('app.string.Extract_PNG_metadata'))
+          .fontSize(25)
+          .fontColor(Color.Gray)
+          .padding(20)
+          .height('10%')
           .textAlign(TextAlign.Center)
 
         Text($r('app.string.Resource_path12')).fontSize(22).width('100%')
           .textAlign(TextAlign.Start)
 
-        Column() {
-          Text($r('app.string.Metadata')).fontSize(20).width('100%')
-            .textAlign(TextAlign.Start)
-          Text("" + JSON.stringify(this.data)).fontSize(20).width('100%')
-            .textAlign(TextAlign.Start)
-            .visibility(this.isVisibility)
-        }.height("80%").padding({ bottom: 10 })
+        Scroll() {
+          Column() {
+            Text($r('app.string.Metadata')).fontSize(20).width('100%')
+              .textAlign(TextAlign.Start)
+            Text("" + JSON.stringify(this.data)).fontSize(20).width('100%')
+              .textAlign(TextAlign.Start)
+              .visibility(this.isVisibility)
+          }
+        }.height('80%').padding({ bottom: 10 })
 
         Button($r('app.string.Display_metadata9'), { type: ButtonType.Normal, stateEffect: true })
-          .borderRadius(8).width("70%").height("8%")
+          .borderRadius(8).width('70%').height('8%')
           .onClick(() => {
             this.getMetaData()
             this.isVisibility = Visibility.Visible
           })
 
-      }.height("100%")
+      }.height('100%')
     }.padding(16)
     .width('100%')
-    .height("100%")
+    .height('100%')
   }
 }

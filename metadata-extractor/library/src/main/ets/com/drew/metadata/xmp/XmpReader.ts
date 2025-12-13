@@ -21,19 +21,20 @@ import Directory from '../Directory';
 import SequentialReader from '../../lang/SequentialReader';
 import SequentialByteArrayReader from '../../lang/SequentialByteArrayReader';
 import LogUtil from '../../tools/LogUtils';
+import { XMPMeta } from 'xmptool';
+import { XMPMetaFactory } from 'xmptool';
+import { ParseOptions } from 'xmptool';
+import { IteratorOptions } from 'xmptool';
+import { XMPIterator } from 'xmptool';
+import { XMPPropertyInfo } from 'xmptool';
 
-const TAG: string = "XmpReader";
+const TAG: string = "[XMP] XmpReader";
 
 class XmpReader implements JpegSegmentMetadataReader {
   private static readonly XMP_JPEG_PREAMBLE: string = "http://ns.adobe.com/xap/1.0/\0";
   private static readonly XMP_EXTENSION_JPEG_PREAMBLE: string = "http://ns.adobe.com/xmp/extension/\0";
   private static readonly SCHEMA_XMP_NOTES: string = "http://ns.adobe.com/xmp/note/";
   private static readonly ATTRIBUTE_EXTENDED_XMP: string = "xmpNote:HasExtendedXMP";
-
-  // Limit photoshop:DocumentAncestors node as it can reach over 100000 items and make parsing extremely slow.
-  // This is not a typical value but it may happen https://forums.adobe.com/thread/2081839
-  //private static readonly PARSE_OPTIONS: ParseOptions = new ParseOptions().setXMPNodesToLimit(Collections.singletonMap("photoshop:DocumentAncestors", 1000));
-  private static readonly PARSE_OPTIONS: string;
 
   /**
    * Extended XMP constants
@@ -42,27 +43,43 @@ class XmpReader implements JpegSegmentMetadataReader {
   private static readonly EXTENDED_XMP_INT_LENGTH: number = 4;
 
   public getSegmentTypes(): Set<JpegSegmentType> {
-    //return Collections.singletonList(JpegSegmentType.APP1);
-    let segmentTypes: Set<JpegSegmentType> = new  Set<JpegSegmentType>();
-    return segmentTypes.add(JpegSegmentType.APP1);
+    let segmentTypes: Set<JpegSegmentType> = new Set<JpegSegmentType>();
+    segmentTypes.add(JpegSegmentType.APP1);
+    return segmentTypes;
   }
 
   public readJpegSegments(segments: Iterable<Int8Array>, metadata: Metadata, segmentType: JpegSegmentType): void {
+    LogUtil.debug(TAG, `readJpegSegments start, segmentType: ${segmentType}`);
     let preambleLength: number = XmpReader.XMP_JPEG_PREAMBLE.length;
     let extensionPreambleLength: number = XmpReader.XMP_EXTENSION_JPEG_PREAMBLE.length;
-    let extendedXMPGUID: string = null;
-    let extendedXMPBuffer: Int8Array = null;
+    let extendedXMPGUID: string | null = null;
+    let extendedXMPBuffer: Int8Array | null = null;
+    let segmentCount: number = 0;
 
     for (let segmentBytes of segments) {
+      segmentCount++;
+      LogUtil.debug(TAG, `Processing segment #${segmentCount}, length: ${segmentBytes.length}`);
+      
       // XMP in a JPEG file has an identifying preamble which is not valid XML
       if (segmentBytes.length >= preambleLength) {
         // NOTE we expect the full preamble here, but some images (such as that reported on GitHub #102)
         // start with "XMP\0://ns.adobe.com/xap/1.0/" which appears to be an error but is easily recovered
         // from. In such cases, the actual XMP data begins at the same offset.
-        if (XmpReader.XMP_JPEG_PREAMBLE == new String(segmentBytes).substring(0, preambleLength)
-        || "XMP" == new String(segmentBytes).substring(0, 3)) {
-          let xmlBytes: Int8Array = new Int8Array[segmentBytes.length - preambleLength];
-          segmentBytes.slice(preambleLength, preambleLength + xmlBytes.length);
+        let segmentString: string = XmpReader.int8ArrayToString(segmentBytes);
+        let preambleCheck: string = segmentString.substring(0, preambleLength);
+        let xmpCheck: string = segmentString.substring(0, 3);
+        
+        LogUtil.debug(TAG, `Preamble check: '${preambleCheck.substring(0, 30)}...'`);
+        LogUtil.debug(TAG, `Expected preamble: '${XmpReader.XMP_JPEG_PREAMBLE.substring(0, 30)}...'`);
+
+        if (XmpReader.XMP_JPEG_PREAMBLE.toLowerCase() === preambleCheck.toLowerCase()
+          || "XMP".toLowerCase() === xmpCheck.toLowerCase()) {
+          LogUtil.debug(TAG, `Found XMP preamble! Extracting XMP data...`);
+          let xmlBytes: Uint8Array = new Uint8Array(segmentBytes.length - preambleLength);
+          for (let i = 0; i < xmlBytes.length; i++) {
+            xmlBytes[i] = segmentBytes[preambleLength + i];
+          }
+          LogUtil.debug(TAG, `XMP data length: ${xmlBytes.length}`);
           this.extract(xmlBytes, 0, xmlBytes.length, metadata, null);
           // Check in the Standard XMP if there should be a Extended XMP part in other chunks.
           extendedXMPGUID = XmpReader.getExtendedXMPGUID(metadata);
@@ -71,25 +88,43 @@ class XmpReader implements JpegSegmentMetadataReader {
 
         // If we know that there's Extended XMP chunks, look for them.
         if (extendedXMPGUID != null
-        && segmentBytes.length >= extensionPreambleLength
-        && XmpReader.XMP_EXTENSION_JPEG_PREAMBLE == new String(segmentBytes).substring(0, extensionPreambleLength)) {
-          extendedXMPBuffer = XmpReader.processExtendedXMPChunk(metadata, segmentBytes, extendedXMPGUID, extendedXMPBuffer);
+          && segmentBytes.length >= extensionPreambleLength) {
+          let extensionPreambleCheck: string = segmentString.substring(0, extensionPreambleLength);
+          if (XmpReader.XMP_EXTENSION_JPEG_PREAMBLE.toLowerCase() === extensionPreambleCheck.toLowerCase()) {
+            extendedXMPBuffer = XmpReader.processExtendedXMPChunk(metadata, segmentBytes, extendedXMPGUID, extendedXMPBuffer);
+          }
         }
       }
     }
 
     // Now that the Extended XMP chunks have been concatenated, let's parse and merge with the Standard XMP.
     if (extendedXMPBuffer != null) {
-      this.extract(extendedXMPBuffer, 0, extendedXMPBuffer.length, metadata, null);
+      let uint8Buffer: Uint8Array = new Uint8Array(extendedXMPBuffer.length);
+      for (let i = 0; i < extendedXMPBuffer.length; i++) {
+        uint8Buffer[i] = extendedXMPBuffer[i];
+      }
+      this.extract(uint8Buffer, 0, uint8Buffer.length, metadata, null);
     }
+    LogUtil.debug(TAG, `readJpegSegments end, processed ${segmentCount} segments`);
+  }
+
+  /**
+   * Helper function to convert Int8Array to string
+   */
+  private static int8ArrayToString(arr: Int8Array): string {
+    let result = '';
+    for (let i = 0; i < arr.length; i++) {
+      result += String.fromCharCode(arr[i] & 0xFF);
+    }
+    return result;
   }
 
   /**
    * Performs the XMP data extraction, adding found values to the specified instance of {@link Metadata}.
    * <p>
-   * The extraction is done with Adobe's XMPCore library.
+   * The extraction is done with xmptool library.
    */
-  public extract(xmpBytes?: Int8Array, offset?: number, length?: number, metadata?: Metadata, parentDirectory?: Directory): void {
+  public extract(xmpBytes: Int8Array | Uint8Array, offset: number | null, length: number | null, metadata: Metadata, parentDirectory?: Directory | null): void {
     LogUtil.debug(TAG, `extract start`);
     let directory: XmpDirectory = new XmpDirectory();
     if (parentDirectory != null) {
@@ -98,28 +133,52 @@ class XmpReader implements JpegSegmentMetadataReader {
     }
 
     try {
-      /*let xmpMeta: XMPMeta;
-
-      // If all xmpBytes are requested, no need to make a new ByteBuffer
-      if (offset == 0 && length == xmpBytes.length) {
-        xmpMeta = XMPMetaFactory.parseFromBuffer(xmpBytes, XmpReader.PARSE_OPTIONS);
+      // Convert Int8Array to Uint8Array if necessary
+      let bytes: Uint8Array;
+      if (xmpBytes instanceof Int8Array) {
+        bytes = new Uint8Array(xmpBytes.buffer, xmpBytes.byteOffset, xmpBytes.byteLength);
       } else {
-        let buffer = new ByteBuffer(xmpBytes, offset, length);
-        xmpMeta = XMPMetaFactory.parse(buffer.getByteStream(), XmpReader.PARSE_OPTIONS);
+        bytes = xmpBytes;
       }
 
-      directory.setXMPMeta(xmpMeta);*/
+      // Handle null offset/length - default to full array
+      let actualOffset: number = offset ?? 0;
+      let actualLength: number = length ?? bytes.length;
+
+      let xmpMeta: XMPMeta;
+
+      // If all bytes are requested, no need to make a new buffer
+      if (actualOffset === 0 && actualLength === bytes.length) {
+        LogUtil.debug(TAG, `Calling XMPMetaFactory.parseFromBuffer with ${bytes.length} bytes`);
+        xmpMeta = XMPMetaFactory.parseFromBuffer(bytes);
+      } else {
+        let buffer: Uint8Array = bytes.slice(actualOffset, actualOffset + actualLength);
+        LogUtil.debug(TAG, `Calling XMPMetaFactory.parseFromBuffer with sliced ${buffer.length} bytes`);
+        xmpMeta = XMPMetaFactory.parseFromBuffer(buffer);
+      }
+      LogUtil.debug(TAG, `parseFromBuffer completed, xmpMeta: ${xmpMeta != null}`);
+      LogUtil.debug(TAG, `Calling directory.setXMPMeta...`);
+      directory.setXMPMeta(xmpMeta);
+      LogUtil.debug(TAG, `directory.setXMPMeta completed`);
     } catch (error) {
       LogUtil.error(TAG, `Error processing XMP data: ${JSON.stringify(error)}`);
+      LogUtil.error(TAG, `Error stack: ${(error as Error).stack}`);
       directory.addError("Error processing XMP data: " + error);
     }
+    LogUtil.debug(TAG, `directory.isEmpty(): ${directory.isEmpty()}`);
     if (!directory.isEmpty()) {
+      LogUtil.debug(TAG, `Adding XmpDirectory to metadata`);
       metadata.addDirectory(directory);
+    } else {
+      LogUtil.debug(TAG, `XmpDirectory is empty, not adding to metadata`);
     }
     LogUtil.debug(TAG, `extract end`);
   }
 
-  public extractString(xmpString: string, metadata: Metadata, parentDirectory: Directory): void {
+  /**
+   * Performs the XMP data extraction from a string.
+   */
+  public extractString(xmpString: string, metadata: Metadata, parentDirectory: Directory | null): void {
     LogUtil.debug(TAG, `extractString start`);
     let directory: XmpDirectory = new XmpDirectory();
     if (parentDirectory != null) {
@@ -128,8 +187,8 @@ class XmpReader implements JpegSegmentMetadataReader {
     }
 
     try {
-      /*let xmpMeta = XMPMetaFactory.parseFromString(xmpString, XmpReader.PARSE_OPTIONS);
-      directory.setXMPMeta(xmpMeta);*/
+      let xmpMeta: XMPMeta = XMPMetaFactory.parseFromString(xmpString);
+      directory.setXMPMeta(xmpMeta);
     } catch (error) {
       LogUtil.error(TAG, `Error processing XMP data: ${JSON.stringify(error)}`);
       directory.addError("Error processing XMP data: " + error);
@@ -144,29 +203,33 @@ class XmpReader implements JpegSegmentMetadataReader {
    * Determine if there is an extended XMP section based on the standard XMP part.
    * The xmpNote:HasExtendedXMP attribute contains the GUID of the Extended XMP chunks.
    */
-  private static getExtendedXMPGUID(metadata: Metadata): string {
-    /*let xmpDirectories = metadata.getDirectoriesOfType(XmpDirectory.class);
+  private static getExtendedXMPGUID(metadata: Metadata): string | null {
+    let directories = metadata.getDirectories();
 
-    for (let directory of xmpDirectories) {
-      let xmpMeta = directory.getXMPMeta();
+    for (let directory of directories) {
+      if (!(directory instanceof XmpDirectory)) {
+        continue;
+      }
+
+      let xmpMeta: XMPMeta = directory.getXMPMeta();
 
       try {
-        let itr = xmpMeta.iterator(XmpReader.SCHEMA_XMP_NOTES, null, null);
+        let itr: XMPIterator = xmpMeta.iterator(XmpReader.SCHEMA_XMP_NOTES, '', new IteratorOptions());
         if (itr == null) {
           continue;
         }
 
         while (itr.hasNext()) {
-          let pi = itr.next();
-          if (XmpReader.ATTRIBUTE_EXTENDED_XMP == pi.getPath()) {
+          let pi: XMPPropertyInfo = itr.next();
+          if (XmpReader.ATTRIBUTE_EXTENDED_XMP === pi.getPath()) {
             return pi.getValue();
           }
         }
       } catch (error) {
         // Fail silently here: we had a reading issue, not a decoding issue.
-        throw new Error(error);
+        LogUtil.debug(TAG, `getExtendedXMPGUID error: ${JSON.stringify(error)}`);
       }
-    }*/
+    }
 
     return null;
   }
@@ -179,12 +242,12 @@ class XmpReader implements JpegSegmentMetadataReader {
    * at page 19
    */
   private static processExtendedXMPChunk(metadata: Metadata, segmentBytes: Int8Array,
-                                         extendedXMPGUID: string, extendedXMPBuffer: Int8Array): Int8Array {
+                                         extendedXMPGUID: string, extendedXMPBuffer: Int8Array | null): Int8Array | null {
     LogUtil.debug(TAG, `processExtendedXMPChunk start`);
-                                          let extensionPreambleLength: number = XmpReader.XMP_EXTENSION_JPEG_PREAMBLE.length;
+    let extensionPreambleLength: number = XmpReader.XMP_EXTENSION_JPEG_PREAMBLE.length;
     let segmentLength: number = segmentBytes.length;
     let totalOffset: number = extensionPreambleLength + XmpReader.EXTENDED_XMP_GUID_LENGTH
-    + XmpReader.EXTENDED_XMP_INT_LENGTH + XmpReader.EXTENDED_XMP_INT_LENGTH;
+      + XmpReader.EXTENDED_XMP_INT_LENGTH + XmpReader.EXTENDED_XMP_INT_LENGTH;
 
     if (segmentLength >= totalOffset) {
       try {
@@ -201,18 +264,21 @@ class XmpReader implements JpegSegmentMetadataReader {
         reader.skip(extensionPreambleLength);
         let segmentGUID: string = reader.getString(XmpReader.EXTENDED_XMP_GUID_LENGTH);
 
-        if (extendedXMPGUID == segmentGUID) {
+        if (extendedXMPGUID === segmentGUID) {
           let fullLength: number = Number(reader.getUInt32());
           let chunkOffset: number = Number(reader.getUInt32());
 
           if (extendedXMPBuffer == null) {
             LogUtil.debug(TAG, `Creating new buffer of length ${fullLength}`);
-            extendedXMPBuffer = new Int8Array[fullLength];
+            extendedXMPBuffer = new Int8Array(fullLength);
           }
 
-          if (extendedXMPBuffer.length == fullLength) {
-            //System.arraycopy(segmentBytes, totalOffset, extendedXMPBuffer, chunkOffset, segmentLength - totalOffset);
-            //extendedXMPBuffer.slice(0, chunkOffset) + segmentBytes.slice(totalOffset, segmentLength) + extendedXMPBuffer.slice(chunkOffset, fullLength);
+          if (extendedXMPBuffer.length === fullLength) {
+            // Copy segment data to the buffer at the correct offset
+            let dataLength: number = segmentLength - totalOffset;
+            for (let i = 0; i < dataLength; i++) {
+              extendedXMPBuffer[chunkOffset + i] = segmentBytes[totalOffset + i];
+            }
           } else {
             let directory: XmpDirectory = new XmpDirectory();
             LogUtil.error(TAG, `Inconsistent length for the Extended XMP buffer: ${fullLength} instead of ${extendedXMPBuffer.length}`);
@@ -223,7 +289,7 @@ class XmpReader implements JpegSegmentMetadataReader {
       } catch (error) {
         let directory: XmpDirectory = new XmpDirectory();
         LogUtil.error(TAG, `Error processing Extended XMP chunk: ${JSON.stringify(error)}`);
-        directory.addError(error);
+        directory.addError(String(error));
         metadata.addDirectory(directory);
       }
     }

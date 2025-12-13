@@ -23,6 +23,7 @@ import JpegComponentTest from './JpegComponent.test'
 import ByteConvertTest from './ByteConvert.test'
 import ByteUtilTest from './ByteUtil.test'
 import SequentialAccessTest from './SequentialAccess.test'
+import XmpReaderTest from './XmpReader.test'
 
 
 export default function testsuite() {
@@ -36,5 +37,5 @@ export default function testsuite() {
   ByteConvertTest()
   ByteUtilTest()
   SequentialAccessTest()
-
+  XmpReaderTest()
 }

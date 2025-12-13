@@ -15,18 +15,53 @@ limitations under the License.
 
 import Metadata from '../Metadata';
 import XmpDirectory from './XmpDirectory';
+import { XMPMeta } from 'xmptool';
+import { XMPMetaFactory } from 'xmptool';
+import { SerializeOptions } from 'xmptool';
 
 class XmpWriter {
-  public static write(filePath: string, data: Metadata): boolean {
-    /*let dir: XmpDirectory = data.getFirstDirectoryOfType(XmpDirectory.class);
+  /**
+   * Helper method to find the first XmpDirectory in metadata
+   */
+  private static getFirstXmpDirectory(data: Metadata): XmpDirectory | null {
+    for (let directory of data.getDirectories()) {
+      if (directory instanceof XmpDirectory) {
+        return directory;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Serializes the XmpDirectory component of Metadata into a Uint8Array
+   * @param data populated metadata
+   * @return serialized XMP data as Uint8Array, or null if no XMP directory exists
+   */
+  public static async serializeToBuffer(data: Metadata): Promise<Uint8Array | null> {
+    let dir: XmpDirectory | null = XmpWriter.getFirstXmpDirectory(data);
     if (dir == null) {
-      return false;
+      return null;
     }
 
-    let meta = dir.getXMPMeta();
+    let meta: XMPMeta = dir.getXMPMeta();
     let so: SerializeOptions = new SerializeOptions().setOmitPacketWrapper(true);
-    XMPMetaFactory.serialize(meta, os, so);
-    return true;*/
+    return await XMPMetaFactory.serializeToBuffer(meta, so);
+  }
+
+  /**
+   * Serializes the XmpDirectory component of Metadata into a string
+   * @param data populated metadata
+   * @return serialized XMP data as string, or null if no XMP directory exists
+   */
+  public static async serializeToString(data: Metadata): Promise<string | null> {
+    let dir: XmpDirectory | null = XmpWriter.getFirstXmpDirectory(data);
+    if (dir == null) {
+      return null;
+    }
+
+    let meta: XMPMeta = dir.getXMPMeta();
+    let so: SerializeOptions = new SerializeOptions().setOmitPacketWrapper(true);
+    return await XMPMetaFactory.serializeToString(meta, so);
   }
 }
 
