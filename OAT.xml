@@ -290,6 +290,7 @@
                 <filteritem type="filepath" name="jackrabbit/LICENSE"  desc="原开源项目的LICENSE，不手动修改"/>
                 <filteritem type="filepath" name="bc_ohos/LICENSE"  desc="原开源项目的LICENSE，不手动修改"/>
 				<filteritem type="filepath" name="ohos_YYEVA/LICENSE"  desc="原开源项目的LICENSE，不手动修改"/>
+                <filteritem type="filepath" name="ohos_rive/LICENSE"  desc="原开源项目的LICENSE，不手动修改"/>
                 <filteritem type="filepath" name="socketio/socketio服务搭建.pdf" desc="服务搭建文件，无需检查"/>
                 <filteritem type="filepath" name="socketio_2.x/socketio服务搭建.pdf" desc="服务搭建文件，无需检查"/>
                 <filteritem type="filepath" name="socketio_2.x/screenshot/效果展示_登陆页面.jpg" desc="效果展示文件，无需检查"/>
@@ -323,6 +324,9 @@
                 <filteritem type="filepath" name="ohos_mammoth/entry/src/ohosTest/.*" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
                 <filteritem type="filepath" name="ohos_mammoth/entry/src/test/.*" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
                 <filteritem type="filepath" name="ohos_mammoth/library/index.d.ts" desc="第三方开源软件源码，不修改版权头，以防有修改版权风险"/>
+				<filteritem type="filepath" name="ohos_rive/library/src/main/resources/rawfile/.*" desc="动画资源文件，无需检查"/>
+				<filteritem type="filepath" name="ohos_rive/entry/src/main/resources/rawfile/.*" desc="动画资源文件，无需检查"/>
+                <filteritem type="filepath" name="ohos_rive/library/src/main/cpp/tools/.*" desc="编译工具，无需检查"/>
                 <filteritem type="filepath" name="metadata-extractor/entry/src/main/resources/rawfile/.*" desc="效果展示文件，无需检查"/>
                 <filteritem type="filepath" name="metadata-extractor/libs/xmptool.har" desc="本地依赖其他组件，无需检查"/>
             </filefilter>
@@ -392,6 +396,7 @@
                 <policyitem type="license" name="MIT" path="jackrabbit/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="bc_ohos/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
 				<policyitem type="license" name="MIT" path="ohos_YYEVA/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
+                <policyitem type="license" name="MIT" path="ohos_rive/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="本库属于示例代码，匹配原库协议，符合开源要求"/>
                 <policyitem type="copyright" name="Copyright 2010-2023 Three.js Authors" path="ThreeJs360Demo/source/.*" rule="may" group="defaultGroup" filefilter="copyrightPolicyFilter" desc="匹配源码协议，符合开源要求"/>
                 <policyitem type="license" name="SPDX:MIT" path="ThreeJs360Demo/source/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>
                 <policyitem type="license" name="MIT" path="SMTPClient/.*" group="defaultGroup" filefilter="defaultPolicyFilter" desc="匹配原库协议，符合开源要求"/>

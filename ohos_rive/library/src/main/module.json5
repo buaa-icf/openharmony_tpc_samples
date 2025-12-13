@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "rive_ohos",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

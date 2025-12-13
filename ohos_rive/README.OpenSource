@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "rive-android",
+        "License": "Apache License 2.0",
+        "License File": "LICENSE",
+        "Version Number": "10.5.0",
+        "Owner" : "xiafeng@huawei.com",
+        "Upstream URL": "https://github.com/rive-app/rive-android",
+        "Description": "Lightweight, high-performance, cross-platform runtime for interactive Rive animations on Android"
+    }
+]
