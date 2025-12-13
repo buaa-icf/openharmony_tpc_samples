@@ -20,6 +20,10 @@ else()
 endif()
 
 set(NATIVERENDER_ROOT_PATH ${CMAKE_CURRENT_SOURCE_DIR})
+
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
+set(CMAKE_C_FLAGS_RELEASE "-O3 -DNDEBUG")
+
 aux_source_directory(gloox/src SOUCE_FILES)
 include_directories(${NATIVERENDER_ROOT_PATH}
                     ${NATIVERENDER_ROOT_PATH}/include
@@ -51,3 +55,20 @@ elseif(${CMAKE_HOST_SYSTEM_NAME} MATCHES "Linux")
 endif()
 
 target_link_libraries(entry PUBLIC libace_napi.z.so libhilog_ndk.z.so)
+
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    target_link_options(entry PUBLIC -s)
+    add_compile_options(-O3)
+    add_compile_options(
+        -flto
+        -fwhole-program-vtables
+        "SHELL:-mllvm --enable-partial-inlining"
+    )
+
+    add_link_options(
+        -flto
+        -Wl,-mllvm,-wholeprogramdevirt-check=fallback
+        -Wl,-mllvm,--enable-partial-inlining
+        -Wl,-mllvm,--tail-dup-placement
+    )
+endif()
