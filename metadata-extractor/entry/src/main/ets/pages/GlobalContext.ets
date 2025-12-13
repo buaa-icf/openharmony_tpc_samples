@@ -31,7 +31,7 @@ export class GlobalContext {
   getValue(value: string): Object {
     let result = this._objects.get(value);
     if (!result) {
-      throw new Error("this value undefined")
+      throw new Error('this value undefined')
     }
     return result;
   }

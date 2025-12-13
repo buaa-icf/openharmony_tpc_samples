@@ -14,20 +14,29 @@
  */
 
 import router from '@ohos.router'
+
 @Entry
 @Component
 struct Audio {
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
       Column() {
-        Text("MP3").fontSize(25).padding(10).width("100%").textAlign(TextAlign.Center)
+        Text('MP3')
+          .fontSize(25)
+          .padding(10)
+          .width('100%')
+          .textAlign(TextAlign.Center)
           .border({ width: "2px", color: "#000000" })
           .onClick(() => {
             router.pushUrl({
               url: "pages/Mp3Sample"
             })
           })
-        Text("WAV").fontSize(25).padding(10).width("100%").textAlign(TextAlign.Center)
+        Text('WAV')
+          .fontSize(25)
+          .padding(10)
+          .width('100%')
+          .textAlign(TextAlign.Center)
           .border({ width: "2px", color: "#000000" })
           .onClick(() => {
             router.pushUrl({

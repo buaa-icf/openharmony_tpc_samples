@@ -17,9 +17,10 @@ import { Metadata } from '@ohos/metadata-extractor';
 import { AdobeJpegReader } from '@ohos/metadata-extractor'
 import { SequentialByteArrayReader } from '@ohos/metadata-extractor'
 import { FileUtil } from '@ohos/metadata-extractor'
-import {GlobalContext} from './GlobalContext'
+import { GlobalContext } from './GlobalContext'
+import fileIo from '@ohos.file.fs';
 
-let fileDir:string;
+let fileDir: string;
 
 @Entry
 @Component
@@ -28,20 +29,27 @@ struct AdobeJpeg {
   @State data: Array<string> = []
 
   private getMetaData() {
-    fileDir = GlobalContext.getContext().getValue("filesDir") as string;
-    let path = fileDir.concat("/adobeJpeg1.jpg.appe")
+    const imageData = getContext().resourceManager.getRawFileContentSync('adobeJpeg1.jpg.appe')
+    const targetDir = getContext().filesDir + "webResources/"
+    if (!fileIo.accessSync(targetDir)) {
+      fileIo.mkdirSync(targetDir)
+    }
+    const filePath = targetDir + 'adobeJpeg1.jpg.appe'
+    const fd = fileIo.openSync(filePath, fileIo.OpenMode.CREATE | fileIo.OpenMode.READ_WRITE)
+    fileIo.writeSync(fd.fd, imageData!.buffer)
+    fileIo.closeSync(fd)
     try {
-      let metadata = new  Metadata()
-      new AdobeJpegReader().extract(new SequentialByteArrayReader(FileUtil.readBytes(path)), metadata);
+      let metadata = new Metadata()
+      new AdobeJpegReader().extract(new SequentialByteArrayReader(FileUtil.readBytes(filePath)), metadata);
       for (let directory of metadata.getDirectories()) {
         for (let tag of directory.getTags()) {
           let tagName = tag.getTagName()
           let description = tag.getDescription()
-          this.data.push("[" + tagName + "] " + tagName + " = " + description)
+          this.data.push('[' + tagName + '] ' + tagName + ' = ' + description)
         }
       }
     } catch (err) {
-      console.error("metadata error..")
+      console.error('metadata error..')
     }
 
   }
@@ -54,7 +62,7 @@ struct AdobeJpeg {
           .fontSize(25)
           .fontColor(Color.Gray)
           .padding(20)
-          .height("10%")
+          .height('10%')
           .textAlign(TextAlign.Center)
 
         Text($r('app.string.Resource_path1')).fontSize(22).width('100%')
@@ -63,21 +71,21 @@ struct AdobeJpeg {
         Column() {
           Text($r('app.string.Metadata')).fontSize(20).width('100%')
             .textAlign(TextAlign.Start)
-          Text("" + JSON.stringify(this.data)).fontSize(20).width('100%')
+          Text('' + JSON.stringify(this.data)).fontSize(20).width('100%')
             .textAlign(TextAlign.Start)
             .visibility(this.isVisibility)
-        }.height("80%").padding({ bottom: 10 })
+        }.height('80%').padding({ bottom: 10 })
 
         Button($r('app.string.Extract_AdobeJpegReader_metadata'), { type: ButtonType.Normal, stateEffect: true })
-          .borderRadius(8).width("70%").height("8%")
+          .borderRadius(8).width('70%').height('8%')
           .onClick(() => {
             this.getMetaData()
             this.isVisibility = Visibility.Visible
           })
 
-      }.height("100%")
+      }.height('100%')
     }.padding(16)
     .width('100%')
-    .height("100%")
+    .height('100%')
   }
 }

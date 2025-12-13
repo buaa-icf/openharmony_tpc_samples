@@ -22,7 +22,10 @@ struct Index {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
       Column() {
         Button($r('app.string.picture'), { type: ButtonType.Normal, stateEffect: true })
-          .borderRadius(8).width("70%").height("8%").margin("2%")
+          .borderRadius(8)
+          .width('70%')
+          .height('8%')
+          .margin('2%')
           .onClick(() => {
             router.pushUrl({
               url: "pages/Picture"
@@ -30,7 +33,10 @@ struct Index {
           })
 
         Button($r('app.string.audio_frequency'), { type: ButtonType.Normal, stateEffect: true })
-          .borderRadius(8).width("70%").height("8%").margin("2%")
+          .borderRadius(8)
+          .width('70%')
+          .height('8%')
+          .margin('2%')
           .onClick(() => {
             router.pushUrl({
               url: "pages/Audio"
@@ -38,14 +44,20 @@ struct Index {
           })
 
         Button($r('app.string.video'), { type: ButtonType.Normal, stateEffect: true })
-          .borderRadius(8).width("70%").height("8%").margin("2%")
+          .borderRadius(8)
+          .width('70%')
+          .height('8%')
+          .margin('2%')
           .onClick(() => {
-            router.push({
+            router.pushUrl({
               url: "pages/Videos"
             })
           })
         Button($r('app.string.other'), { type: ButtonType.Normal, stateEffect: true })
-          .borderRadius(8).width("70%").height("8%").margin("2%")
+          .borderRadius(8)
+          .width('70%')
+          .height('8%')
+          .margin('2%')
           .onClick(() => {
             router.pushUrl({
               url: "pages/OtherSample"

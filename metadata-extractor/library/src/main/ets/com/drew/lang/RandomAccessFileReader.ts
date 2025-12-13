@@ -124,10 +124,17 @@ class RandomAccessFileReader extends RandomAccessReader {
   private getFileLength(filePath: string): number {
     LogUtil.debug(TAG, `getFileLength start, filePath: ${filePath}`);
     let fd = fileio.openSync(filePath, 0o2);
-    let nread: number = fileio.readSync(fd, this.bufArray)
-    this.bufArray = this.bufArray.slice(0, nread)
-    LogUtil.debug(TAG, `getFileLength end, nread: ${nread}, bufArray length: ${this.bufArray.length}`);
-    return nread;
+    try {
+      let nread: number = fileio.readSync(fd, this.bufArray)
+      this.bufArray = this.bufArray.slice(0, nread)
+      LogUtil.debug(TAG, `getFileLength end, nread: ${nread}, bufArray length: ${this.bufArray.length}`);
+      return nread;
+    } finally {
+      if (fd !== null) {
+        fileio.closeSync(fd);
+        fd = null;
+      }
+    }
   }
 }
 

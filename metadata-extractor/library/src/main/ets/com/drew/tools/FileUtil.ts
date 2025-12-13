@@ -30,7 +30,6 @@ export default class FileUtil{
        })
      }finally{
        stream.close()
-       fileio.close(writeFd)
      }
     }
 
@@ -47,7 +46,6 @@ export default class FileUtil{
       return new Int8Array(buf)
     }finally{
       stream.close()
-      fileio.close(readFd)
     }
   }
 }

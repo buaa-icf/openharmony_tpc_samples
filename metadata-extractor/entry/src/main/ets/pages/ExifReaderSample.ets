@@ -17,9 +17,10 @@ import { Metadata } from '@ohos/metadata-extractor';
 import { ExifReader } from '@ohos/metadata-extractor'
 import { ByteArrayReader } from '@ohos/metadata-extractor'
 import { FileUtil } from '@ohos/metadata-extractor'
-import {GlobalContext} from './GlobalContext'
+import { GlobalContext } from './GlobalContext'
+import fileIo from '@ohos.file.fs';
 
-let fileDir:string;
+let fileDir: string;
 
 @Entry
 @Component
@@ -28,25 +29,32 @@ struct ExifReaderSample {
   @State data: Array<string> = []
 
   private getMetaData() {
-    this.data.splice(0,this.data.length)
-    fileDir = GlobalContext.getContext().getValue("filesDir") as string;
-    let path = fileDir.concat("/manuallyAddedThumbnail.jpg.app1")
-
+    this.data.splice(0, this.data.length)
+    const imageData = getContext().resourceManager.getRawFileContentSync('manuallyAddedThumbnail.jpg.app1')
+    const targetDir = getContext().filesDir + 'webResources/'
+    if (!fileIo.accessSync(targetDir)) {
+      fileIo.mkdirSync(targetDir)
+    }
+    const filePath = targetDir + 'manuallyAddedThumbnail.jpg.app1'
+    const fd = fileIo.openSync(filePath, fileIo.OpenMode.CREATE | fileIo.OpenMode.READ_WRITE)
+    fileIo.writeSync(fd.fd, imageData!.buffer)
+    fileIo.closeSync(fd)
     try {
-      let metadata:Metadata = new  Metadata()
-      new ExifReader().extract(new ByteArrayReader(FileUtil.readBytes(path)), metadata, ExifReader.JPEG_SEGMENT_PREAMBLE.length, null);
+      let metadata: Metadata = new Metadata()
+      new ExifReader().extract(new ByteArrayReader(FileUtil.readBytes(filePath)), metadata,
+        ExifReader.JPEG_SEGMENT_PREAMBLE.length, null);
 
-      metadata.getDirectories().forEach((value:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
-        console.debug("metadata-extractor exif directory parent:"+value.getParent())
-        let directoryName:string = value.getName()
-        value.getTags().forEach((tag:ESObject,vlue2:ESObject,mataSet:ESObject)=>{
-          let tagName:string = tag.getTagName()
-          let description:string = tag.getDescription()
-          this.data.push("[" + directoryName + "] " + tagName + " = " + description)
+      metadata.getDirectories().forEach((value: ESObject, vlue2: ESObject, mataSet: ESObject) => {
+        console.debug('metadata-extractor exif directory parent:' + value.getParent())
+        let directoryName: string = value.getName()
+        value.getTags().forEach((tag: ESObject, vlue2: ESObject, mataSet: ESObject) => {
+          let tagName: string = tag.getTagName()
+          let description: string = tag.getDescription()
+          this.data.push('[' + directoryName + ']' + tagName + '=' + description)
         })
       })
     } catch (err) {
-      console.error("metadata error..")
+      console.error('metadata error..')
     }
 
   }
@@ -59,7 +67,7 @@ struct ExifReaderSample {
           .fontSize(25)
           .fontColor(Color.Gray)
           .padding(20)
-          .height("10%")
+          .height('10%')
           .textAlign(TextAlign.Center)
 
         Text($r('app.string.Resource_path5')).fontSize(22).width('100%')
@@ -68,21 +76,21 @@ struct ExifReaderSample {
         Column() {
           Text($r('app.string.Metadata')).fontSize(20).width('100%')
             .textAlign(TextAlign.Start)
-          Text("" + JSON.stringify(this.data)).fontSize(20).width('100%')
+          Text('' + JSON.stringify(this.data)).fontSize(20).width('100%')
             .textAlign(TextAlign.Start)
             .visibility(this.isVisibility)
-        }.height("70%").padding({ bottom: 10 })
+        }.height('70%').padding({ bottom: 10 })
 
         Button($r('app.string.Display_metadata'), { type: ButtonType.Normal, stateEffect: true })
-          .borderRadius(8).width("70%").height('8%')
+          .borderRadius(8).width('70%').height('8%')
           .onClick(() => {
             this.getMetaData()
             this.isVisibility = Visibility.Visible
           })
 
-      }.height("100%")
+      }.height('100%')
     }.padding(16)
     .width('100%')
-    .height("100%")
+    .height('100%')
   }
 }

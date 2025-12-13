@@ -14,20 +14,29 @@
  */
 
 import router from '@ohos.router'
+
 @Entry
 @Component
 struct Videos {
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
       Column() {
-        Text("AVI").fontSize(25).padding(10).width("100%").textAlign(TextAlign.Center)
+        Text('AVI')
+          .fontSize(25)
+          .padding(10)
+          .width('100%')
+          .textAlign(TextAlign.Center)
           .border({ width: "2px", color: "#000000" })
           .onClick(() => {
             router.pushUrl({
               url: "pages/AviSample"
             })
           })
-        Text("MP4").fontSize(25).padding(10).width("100%").textAlign(TextAlign.Center)
+        Text('MP4')
+          .fontSize(25)
+          .padding(10)
+          .width('100%')
+          .textAlign(TextAlign.Center)
           .border({ width: "2px", color: "#000000" })
           .onClick(() => {
             router.pushUrl({

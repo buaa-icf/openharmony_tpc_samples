@@ -75,9 +75,7 @@ abstract class Directory {
   }
 
   public isEmptyObject(list: Set<any>): boolean{
-    for (let elem in list)
-    return!1
-    return!0
+    return list.size === 0;
   }
 
   /**

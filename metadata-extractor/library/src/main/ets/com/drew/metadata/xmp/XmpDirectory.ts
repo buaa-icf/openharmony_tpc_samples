@@ -16,16 +16,20 @@ limitations under the License.
 import Directory from '../Directory';
 import XmpDescriptor from './XmpDescriptor';
 import LogUtil from '../../tools/LogUtils';
+import { XMPMeta } from 'xmptool';
+import { XMPMetaImpl } from 'xmptool';
+import { IteratorOptions } from 'xmptool';
+import { XMPIterator } from 'xmptool';
+import { XMPPropertyInfo } from 'xmptool';
 
-const TAG: string = "XmpDirectory";
+const TAG: string = "[XMP] XmpDirectory";
 
 class XmpDirectory extends Directory {
   public static readonly TAG_XMP_VALUE_COUNT: number = 0xFFFF;
   private static readonly _tagNameMap: Map<number, string> = new Map<number, string>()
     .set(XmpDirectory.TAG_XMP_VALUE_COUNT, "XMP Value Count");
 
-  //private _xmpMeta: XMPMeta;
-  private _xmpMeta: string;
+  private _xmpMeta: XMPMeta | null = null;
 
   public constructor() {
     super();
@@ -52,55 +56,56 @@ class XmpDirectory extends Directory {
 
     if (this._xmpMeta != null) {
       try {
-        //let options = new IteratorOptions().setJustLeafnodes(true);
-        let options = '';
-        /*for (let i = this._xmpMeta.iterator(options); i.hasNext();) {
-          let prop = i.next();
+        let options: IteratorOptions = new IteratorOptions().setJustLeafnodes(true);
+        let iterator: XMPIterator = this._xmpMeta.iterator(options);
+        while (iterator.hasNext()) {
+          let prop: XMPPropertyInfo = iterator.next();
           let path: string = prop.getPath();
           let value: string = prop.getValue();
           if (path != null && value != null) {
             propertyValueByPath.set(path, value);
           }
-        }*/
+        }
       } catch (error) {
         LogUtil.error(TAG, `getXmpProperties error: ${JSON.stringify(error)}`);
-        throw new Error(error);
+        // Fail silently, return empty map
       }
     }
     LogUtil.debug(TAG, `getXmpProperties end`);
     return propertyValueByPath;
   }
 
-  public setXMPMeta(xmpMeta: string): void {
+  public setXMPMeta(xmpMeta: XMPMeta): void {
     LogUtil.debug(TAG, `setXMPMeta start`);
     this._xmpMeta = xmpMeta;
 
+    let valueCount: number = 0;
     try {
-      let valueCount: number = 0;
-      //let options = new IteratorOptions().setJustLeafnodes(true);
-      let options = '';
-      /*for (let i = this._xmpMeta.iterator(options); i.hasNext();) {
-        let prop = i.next();
+      let options: IteratorOptions = new IteratorOptions().setJustLeafnodes(true);
+      let iterator: XMPIterator = this._xmpMeta.iterator(options);
+      while (iterator.hasNext()) {
+        let prop: XMPPropertyInfo = iterator.next();
         if (prop.getPath() != null) {
           valueCount++;
         }
       }
-      this.setInt(XmpDirectory.TAG_XMP_VALUE_COUNT, valueCount);*/
     } catch (error) {
       LogUtil.error(TAG, `setXMPMeta error: ${JSON.stringify(error)}`);
-      throw new Error(error);
+      // Continue - we still want to set the count even if iteration fails
     }
-    LogUtil.debug(TAG, `setXMPMeta end`);
+    // Always set the tag to ensure directory is not empty
+    this.setInt(XmpDirectory.TAG_XMP_VALUE_COUNT, valueCount);
+    LogUtil.debug(TAG, `setXMPMeta end, valueCount: ${valueCount}`);
   }
 
   /**
    * Gets the XMPMeta object used to populate this directory. It can be used for more XMP-oriented operations.
    * If one does not exist it will be created.
    */
-  public getXMPMeta(): string {
+  public getXMPMeta(): XMPMeta {
     LogUtil.debug(TAG, `getXMPMeta start`);
     if (this._xmpMeta == null) {
-      //this._xmpMeta = new XMPMetaImpl();
+      this._xmpMeta = new XMPMetaImpl() as ESObject as XMPMeta;
     }
     LogUtil.debug(TAG, `getXMPMeta end`);
     return this._xmpMeta;

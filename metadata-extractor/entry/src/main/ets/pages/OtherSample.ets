@@ -18,22 +18,39 @@ import router from '@ohos.router'
 @Entry
 @Component
 struct OtherSample {
-  build(){
+  build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
       Column() {
-        Button("AdobeJpegReader", { type: ButtonType.Normal, stateEffect: true })
-          .borderRadius(8).width("70%").height("8%").margin("2%")
+        Button('AdobeJpegReader', { type: ButtonType.Normal, stateEffect: true })
+          .borderRadius(8)
+          .width('70%')
+          .height('8%')
+          .margin('2%')
           .onClick(() => {
             router.pushUrl({
               url: "pages/AdobeJpeg"
             })
           })
 
-        Button("ExifReader", { type: ButtonType.Normal, stateEffect: true })
-          .borderRadius(8).width("70%").height("8%").margin("2%")
+        Button('ExifReader', { type: ButtonType.Normal, stateEffect: true })
+          .borderRadius(8)
+          .width('70%')
+          .height('8%')
+          .margin('2%')
           .onClick(() => {
             router.pushUrl({
               url: "pages/ExifReaderSample"
+            })
+          })
+
+        Button('XmpReader', { type: ButtonType.Normal, stateEffect: true })
+          .borderRadius(8)
+          .width('70%')
+          .height('8%')
+          .margin('2%')
+          .onClick(() => {
+            router.pushUrl({
+              url: "pages/XmpSample"
             })
           })
 
