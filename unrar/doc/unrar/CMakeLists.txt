@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.6)
 project(libunrar)
 
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
+set(CMAKE_C_FLAGS_RELEASE "-O3 -DNDEBUG")
+
 set (unrar_SOURCES
 		strlist.cpp
 		strfn.cpp
@@ -58,3 +61,11 @@ add_library(shard_unrar SHARED
 
 set(CMAKE_CXX_STANDARD 11)
 target_link_libraries(shard_unrar)
+
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    target_link_options(shard_unrar PUBLIC -s)
+    set(LTO_FLAG "-flto=thin")
+    add_compile_options(-O3 -march=native)
+    target_compile_options(shard_unrar PRIVATE ${LTO_FLAG})
+    target_link_options(shard_unrar PRIVATE ${LTO_FLAG})
+endif()
