@@ -442,59 +442,55 @@ public:
         }
     }
 
-    void on_emit_callback(std::string const &ack_name, sio::message::list const &list)
+    std::string build_emit_message_json(sio::message::list const &list)
+    {
+        if (list.size() == 0) {
+            return "{}";
+        }
+
+        std::string messageJson = "{";
+        if (list.at(0)->get_flag() == sio::message::flag_object) {
+            std::map<std::string, sio::message::ptr> messageMap = list.at(0)->get_map();
+            for (auto it : messageMap) {
+                if (messageMap.begin()->first != it.first) {
+                    messageJson += ",";
+                }
+                messageJson += "\"" + it.first + "\":" + get_message_value(it.second);
+            }
+        } else {
+            messageJson += "\"message\":" + get_message_value(list.at(0));
+        }
+        messageJson += "}";
+        return messageJson;
+    }
+
+    void on_emit_callback(SocketIOClient* client, std::string const &ackName, sio::message::list const &list)
     {
         OH_LOG_Print(LOG_APP,   LOG_INFO,   LOG_DOMAIN,   LOG_TAG, "SOCKETIO_TAG------> 0 on_emit_callback -------");
-        
-        // Find client by event name
-        SocketIOClient* client = nullptr;
-        {
-            std::lock_guard<std::mutex> lock(g_clientMapMutex);
-            for (auto& pair : g_clientMap) {
-                if (pair.second->on_emit_listener_call_ref_map.find(ack_name.c_str()) != 
-                    pair.second->on_emit_listener_call_ref_map.end()) {
-                    client = pair.second;
-                    break;
-                }
-            }
-        }
+
         if (!client) {
             OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "client not found for emit callback");
             return;
         }
         
-        napi_ref on_emit_listener_call_ref = client->on_emit_listener_call_ref_map[ack_name.c_str()];
+        napi_ref on_emit_listener_call_ref = client->on_emit_listener_call_ref_map[ackName.c_str()];
         if (on_emit_listener_call_ref == nullptr) {
             OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "on_emit_listener_call_ref is null");
             return;
         }
-        std::string message_json = std::string("{");
-        if (list.size() > 0) {
-            if (list.at(0)->get_flag() == sio::message::flag_object) {
-                std::map<std::string, sio::message::ptr> messageMap = list.at(0)->get_map();
-                for (auto it : messageMap) {
-                    if (messageMap.begin()->first != it.first) {
-                        message_json += std::string(",");
-                    }
-                    message_json += std::string("\"") + it.first.c_str() + "\":" + get_message_value(it.second);
-                }
-            } else {
-                message_json += std::string("\"") + "message" + "\":" + get_message_value(list.at(0));
-            }
-        }
-        message_json += "}";
+        std::string messageJson = build_emit_message_json(list);
         OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, LOG_TAG, "SOCKETIO_TAG------> 1 on_emit_callback %{public}s",
-                     message_json.c_str());
+                     messageJson.c_str());
 
         std::unique_ptr<ThreadSafeInfo> localThreadSafeInfo = std::make_unique<ThreadSafeInfo>();
         if (!localThreadSafeInfo) {
             OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[on_emit_callback]localThreadSafeInfo is null");
             return;
         }
-        localThreadSafeInfo->result = message_json;
+        localThreadSafeInfo->result = messageJson;
 
         // 使用与该事件名绑定的 TSFN（队列 FIFO 出队），确保同名并发 emit 分别回调
-        auto qIt = client->on_emit_tsfn_map.find(ack_name);
+        auto qIt = client->on_emit_tsfn_map.find(ackName);
         if (qIt == client->on_emit_tsfn_map.end() || qIt->second.empty()) {
             OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[on_emit_callback] tsfn queue empty for event");
             return;
@@ -1128,23 +1124,6 @@ napi_value SocketIOClient::sync_close(napi_env env, napi_callback_info info)
 
 napi_value SocketIOClient::set_proxy_basic_auth(napi_env env, napi_callback_info info)
 {
-    size_t argc = 4;
-    napi_value args[4] = {nullptr};
-    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
-    char uri[MAX_BUF_SIZE];
-    char username[MAX_BUF_SIZE];
-    char password[MAX_BUF_SIZE];
-    napi_get_value_string_utf8(env, args[0], uri, MAX_BUF_SIZE, &result);
-    napi_get_value_string_utf8(env, args[1], username, MAX_BUF_SIZE, &result);
-    napi_get_value_string_utf8(env, args[2], password, MAX_BUF_SIZE, &result);
-
-    size_t charLen = 0;
-    char classId[CLASSID_BUF_SIZE] = {0};
-    napi_get_value_string_utf8(env, args[3], classId, CLASSID_BUF_SIZE, &charLen);
-    std::string classIdStr = classId;
-    SocketIOClient *client = getClient(classIdStr);
-    if (!client) { return nullptr; }
-
     // Note: This function currently does nothing with the proxy settings
     return 0;
 }
@@ -1636,7 +1615,7 @@ napi_value SocketIOClient::emit(napi_env env, napi_callback_info info)
     auto socket = client->get_socket(std::string(classIdStr));
     if (socket) {
         socket->emit(eventName, *messageList, std::bind(&ClientSocket::on_emit_callback, &g_clientSocket,
-            std::placeholders::_1, std::placeholders::_2));
+            client, std::placeholders::_1, std::placeholders::_2));
     }
     delete messageList;
     messageList = nullptr;
