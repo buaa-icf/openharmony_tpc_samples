@@ -1,4 +1,9 @@
 # 版本记录
+## 1.1.6
+
+---
+
+1. Optimized Shared Library Compilation: O3 and LTO Support
 
 ## 1.1.6-rc.3
 
