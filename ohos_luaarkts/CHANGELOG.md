@@ -1,4 +1,6 @@
 **CHANGELOG.md**
+## 1.0.2
+- Optimized Shared Library Compilation: O3 and LTO Support
 
 ## 1.0.2-rc.1
 - Replace luaJIT with the Lua library
