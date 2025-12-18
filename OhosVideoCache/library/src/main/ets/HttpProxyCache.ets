@@ -93,7 +93,6 @@ export default class HttpProxyCache extends ProxyCache {
       await serverConnect?.send(msg);
     } catch (err) {
       LogUtil.error('[HttpProxyCache] [发送响应头] 发送失败: ' + JSON.stringify(err));
-      throw new Error(err);
     }
     this.offset = request.rangeOffset;
     this.stopped = false;

@@ -19,10 +19,8 @@ import ProxyCacheUtils from './ProxyCacheUtils';
 import Source from './Source';
 import InterruptedProxyCacheException from './InterruptedProxyCacheException';
 import { DataBackListener } from './interfaces/DataBackListener';
-import { connection } from '@kit.NetworkKit';
 import http from '@ohos.net.http';
 import { LogUtil } from './LogUtil';
-import { BusinessError } from '@kit.BasicServicesKit';
 
 
 export default class ProxyCache {
@@ -46,23 +44,8 @@ export default class ProxyCache {
   }
 
   protected async judgeHasNet(videoUrl: string): Promise<void> {
-    try {
-      let netHandle = connection.getDefaultNetSync();
-      if (!netHandle || netHandle.netId === 0) {
-        return;
-      }
-      let netCapability = connection.getNetCapabilitiesSync(netHandle);
-      let cap = netCapability.networkCap || [];
-      if (cap.includes(connection.NetCap.NET_CAPABILITY_VALIDATED)) {
-        this.netIValidated = true;
-      } else {
-        await this.judgeHasNetByHttp(videoUrl);
-        return;
-      }
-    } catch (e) {
-      let err = e as BusinessError;
-      console.error("videoCache-->" + JSON.stringify(err));
-    }
+    await this.judgeHasNetByHttp(videoUrl);
+    return;
   }
 
   protected async judgeHasNetByHttp(videoUrl: string): Promise<void> {

@@ -18,17 +18,39 @@ import Preconditions from './Preconditions';
 import util from '@ohos.util';
 import buffer from '@ohos.buffer';
 import Closeable from './interfaces/Closeable';
-import CryptoJS from "@ohos/crypto-js"
+import { cryptoFramework } from '@kit.CryptoArchitectureKit';
 export default class ProxyCacheUtils {
   static DEFAULT_BUFFER_SIZE: number = 8 * 1024;
   static MAX_ARRAY_PREVIEW: number = 16;
 
   public static computeMD5(string: string): string {
     try {
-      return CryptoJS.MD5(string).toString();
+      // 将字符串转换为 Uint8Array
+      let encoder = new util.TextEncoder('utf-8');
+      let messageData = encoder.encodeInto(string);
+      
+      // 使用鸿蒙原生加密框架计算 MD5
+      let mdAlgName = 'MD5';
+      let md = cryptoFramework.createMd(mdAlgName);
+      let updateMessageBlob: cryptoFramework.DataBlob = { data: messageData };
+      md.updateSync(updateMessageBlob);
+      let mdResult = md.digestSync();
+
+      // 将结果转换为十六进制字符串
+      return ProxyCacheUtils.uint8ArrayToHexStr(mdResult.data).toUpperCase();
     } catch (err) {
       throw new Error(err.message);
     }
+  }
+
+  // 将 Uint8Array 转换为十六进制字符串
+  private static uint8ArrayToHexStr(data: Uint8Array): string {
+    let hexString = '';
+    for (let i = 0; i < data.length; i++) {
+      let char = ('00' + data[i].toString(16)).slice(-2);
+      hexString += char;
+    }
+    return hexString;
   }
 
   static getSupposablyMime(url: string): string {
