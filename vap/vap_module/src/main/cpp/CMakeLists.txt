@@ -4,6 +4,10 @@ project(XComponent)
 
 set(CMAKE_CXX_STANDARD 17)
 set(NATIVERENDER_ROOT_PATH ${CMAKE_CURRENT_SOURCE_DIR})
+
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
+set(CMAKE_C_FLAGS_RELEASE "-O3 -DNDEBUG")
+
 add_definitions(-DOHOS_PLATFORM)
 
 include_directories(
@@ -44,6 +48,24 @@ add_library(vap SHARED
     resource_request.cpp
     vap_callback.cpp
 )
+
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    target_link_options(vap PUBLIC -s)
+    add_compile_options(-O3)
+    add_compile_options(
+        -flto
+        -fwhole-program-vtables
+        "SHELL:-mllvm --enable-partial-inlining"
+    )
+
+    add_link_options(
+        -flto
+        -Wl,-mllvm,-wholeprogramdevirt-check=fallback
+        -Wl,-mllvm,--enable-partial-inlining
+        -Wl,-mllvm,--tail-dup-placement
+    )
+endif()
+
 target_compile_definitions(vap PUBLIC -DNAPI_VERSION=16)
 target_link_libraries(vap PUBLIC EGL)
 target_link_libraries(vap PUBLIC GLESv3)
