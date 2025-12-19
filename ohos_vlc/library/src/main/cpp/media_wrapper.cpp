@@ -13,41 +13,42 @@
 # limitations under the License.
 */
 
-#include "vlc_media_wrapper.h"
-#include "vlc_wrapper.h"
+#include "media_wrapper.h"
+#include "libvlc_wrapper.h"
 #include "ohos_log.h"
 #include <string>
-#include "vlc/libvlc_media.h"
 
-napi_value VlcMediaWrapper::VLCMediaConstructor(napi_env env, napi_callback_info info)
+napi_value MediaWrapper::MediaConstructor(napi_env env, napi_callback_info info)
 {
     napi_value arkTS = nullptr;
     size_t argc = 2;
     napi_value args[2] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, &arkTS, nullptr);
-
-    VlcWrapper *vlc = nullptr;
+    
+    LibVLCWrapper* vlc = nullptr;
     napi_status status = napi_unwrap(env, args[0], reinterpret_cast<void **>(&vlc));
-    if (status != napi_ok) {
-        LOGE("unwrap failed");
-        return nullptr;
+    if (status != napi_ok || vlc == nullptr || vlc->instance_ == nullptr) {
+        LOGE("unwrap LibVLCWrapper failed");
+        return arkTS;
     }
+    
     size_t length = 0;
     status = napi_get_value_string_utf8(env, args[1], nullptr, 0, &length);
     std::string buffer(length, '\0');
     status = napi_get_value_string_utf8(env, args[1], &buffer[0], length + 1, &length);
     LOGD("buffer = %s", buffer.c_str());
-
-    VlcMediaWrapper* vlcMedia = new VlcMediaWrapper();
-    vlcMedia->instance_ = libvlc_media_new_location(vlc->instance_, buffer.c_str());
-    if (vlcMedia->instance_ == nullptr) {
+    
+    MediaWrapper* media = new MediaWrapper();
+    media->instance_ = libvlc_media_new_location(vlc->instance_, buffer.c_str());
+    if (media->instance_ == nullptr) {
         LOGE("libvlc_media_new_location failed");
-        delete vlcMedia;
-        return nullptr;
+        delete media;
+        return arkTS;
     }
-    status = napi_wrap(env, arkTS, (void *)vlcMedia,
+    
+    status = napi_wrap(env, arkTS, (void *)media,
                        [](napi_env env, void *finalize_data, void *finalize_hint) {
-                           VlcMediaWrapper *media = (VlcMediaWrapper *)finalize_data;
+                           MediaWrapper *media = (MediaWrapper *)finalize_data;
                            libvlc_media_release(media->instance_);
                            if (media->tsfn_ != nullptr) {
                                napi_release_threadsafe_function(media->tsfn_, napi_tsfn_abort);
@@ -55,20 +56,20 @@ napi_value VlcMediaWrapper::VLCMediaConstructor(napi_env env, napi_callback_info
                            delete media;
                        },
                        nullptr, nullptr);
-        if (status != napi_ok) {
-        delete vlc;
-        return nullptr;
+    if (status != napi_ok) {
+        delete media;
     }
+    LOGI("MediaConstructor success");
     return arkTS;
 }
 
-napi_value VlcMediaWrapper::Parse(napi_env env, napi_callback_info info)
+napi_value MediaWrapper::Parse(napi_env env, napi_callback_info info)
 {
     napi_value arkTSMedia = nullptr;
     size_t argc = 1;
     napi_value args[1] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, &arkTSMedia, nullptr);
-    VlcMediaWrapper *media = nullptr;
+    MediaWrapper *media = nullptr;
     napi_status status = napi_unwrap(env, arkTSMedia, reinterpret_cast<void **>(&media));
     if (status != napi_ok) {
         LOGE("unwrap VlcMediaPlayerWrapper failed!");
@@ -81,55 +82,48 @@ napi_value VlcMediaWrapper::Parse(napi_env env, napi_callback_info info)
     napi_create_int32(env, ret, &tsRet);
     return tsRet;
 }
-napi_value VlcMediaWrapper::GetDuration(napi_env env, napi_callback_info info)
+
+napi_value MediaWrapper::GetDuration(napi_env env, napi_callback_info info)
 {
     napi_value arkTSMedia = nullptr;
     napi_get_cb_info(env, info, nullptr, nullptr, &arkTSMedia, nullptr);
-    VlcMediaWrapper *media = nullptr;
+    MediaWrapper *media = nullptr;
     napi_status status = napi_unwrap(env, arkTSMedia, reinterpret_cast<void **>(&media));
     if (status != napi_ok) {
         LOGE("unwrap VlcMediaPlayerWrapper failed!");
         return nullptr;
     }
-    
+
     int64_t ret = libvlc_media_get_duration(media->instance_);
     napi_value tsRet = nullptr;
     napi_create_int64(env, ret, &tsRet);
     return tsRet;
 }
 
-struct MediaCallbackCtx {
-    VlcMediaWrapper* media = nullptr;
-    int type = 0;
-};
-
-static void CompleteWork(napi_env env, napi_value js_callback, void* context, void* data)
+static void CompleteWork(napi_env env, napi_value callback, void* context, void* data)
 {
-    MediaCallbackCtx* ctx = (MediaCallbackCtx*)data;
-    napi_value argv[1];
-    napi_create_int32(env, ctx->type, &argv[0]);
-    napi_call_function(env, nullptr, js_callback, 1, argv, nullptr);
-    delete ctx;
+    int* type = (int*)data;
+    napi_value argv[1] = { nullptr };
+    napi_create_int32(env, *type, &argv[0]);
+    napi_call_function(env, nullptr, callback, 1, argv, nullptr);
+    delete type;
 }
 
 static void MediaParsedCallback(const libvlc_event_t *event, void *userdata)
 {
-    VlcMediaWrapper* media = (VlcMediaWrapper*)userdata;
+    MediaWrapper* media = (MediaWrapper*)userdata;
     LOGD("type: %d", event->type);
-    MediaCallbackCtx* ctx = new MediaCallbackCtx {
-        .media = media,
-        .type = event->type,
-    };
-    napi_call_threadsafe_function(ctx->media->tsfn_, ctx, napi_tsfn_nonblocking);
+    int* type = new int(event->type);
+    napi_call_threadsafe_function(media->tsfn_, type, napi_tsfn_nonblocking);
 }
 
-napi_value VlcMediaWrapper::AddListener(napi_env env, napi_callback_info info)
+napi_value MediaWrapper::SetEventListener(napi_env env, napi_callback_info info)
 {
     napi_value arkTSMedia = nullptr;
     size_t argc = 1;
     napi_value args[1] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, &arkTSMedia, nullptr);
-    VlcMediaWrapper *media = nullptr;
+    MediaWrapper *media = nullptr;
     napi_status status = napi_unwrap(env, arkTSMedia, reinterpret_cast<void **>(&media));
     if (status != napi_ok) {
         LOGE("unwrap VlcMediaPlayerWrapper failed!");
@@ -164,17 +158,17 @@ napi_value VlcMediaWrapper::AddListener(napi_env env, napi_callback_info info)
     return nullptr;
 }
 
-napi_value VlcMediaWrapper::Export(napi_env env, napi_value exports)
+napi_value MediaWrapper::Export(napi_env env, napi_value exports)
 {
     napi_property_descriptor classProp[] = {
-        {"addListener", nullptr, VlcMediaWrapper::AddListener, nullptr, nullptr, nullptr, napi_default, nullptr},
-        {"parse", nullptr, VlcMediaWrapper::Parse, nullptr, nullptr, nullptr, napi_default, nullptr},
-        {"getDuration", nullptr, VlcMediaWrapper::GetDuration, nullptr, nullptr, nullptr, napi_default, nullptr},
+        {"setEventListener", nullptr, MediaWrapper::SetEventListener, nullptr, nullptr, nullptr, napi_default, nullptr},
+        {"parse", nullptr, MediaWrapper::Parse, nullptr, nullptr, nullptr, napi_default, nullptr},
+        {"getDuration", nullptr, MediaWrapper::GetDuration, nullptr, nullptr, nullptr, napi_default, nullptr},
     };
-    napi_value arkTSVLC = nullptr;
-    const char *arkTSname = "VlcMedia";
-    napi_define_class(env, arkTSname, sizeof(arkTSname), VlcMediaWrapper::VLCMediaConstructor, nullptr,
-                      sizeof(classProp) / sizeof(classProp[0]), classProp, &arkTSVLC);
-    napi_set_named_property(env, exports, arkTSname, arkTSVLC);
+    napi_value arkTSMedia = nullptr;
+    const char *arkTSname = "Media";
+    napi_define_class(env, arkTSname, NAPI_AUTO_LENGTH, MediaWrapper::MediaConstructor, nullptr,
+                      sizeof(classProp) / sizeof(classProp[0]), classProp, &arkTSMedia);
+    napi_set_named_property(env, exports, arkTSname, arkTSMedia);
     return exports;
 }

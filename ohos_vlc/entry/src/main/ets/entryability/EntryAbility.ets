@@ -1,26 +1,8 @@
-import { abilityAccessCtrl, AbilityConstant, ConfigurationConstant, UIAbility, Want } from '@kit.AbilityKit';
+import { AbilityConstant, ConfigurationConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
-import { BusinessError } from '@kit.BasicServicesKit';
 
 const DOMAIN = 0x0000;
-
-function requestPre() {
-  let atManager = abilityAccessCtrl.createAtManager()
-  try {
-    atManager.requestPermissionsFromUser(globalThis.context,
-      [
-        'ohos.permission.INTERNET',
-      ])
-      .then((data) => {
-        hilog.info(0x0000, 'testTag', '%{public}s', 'requestPermissionsFromUser 2');
-      }).catch((err:BusinessError) => {
-        hilog.info(0x0000, 'testTag', '%{public}s', 'requestPermissionsFromUser 3');
-      })
-  } catch (err) {
-    hilog.info(0x0000, 'testTag', '%{public}s', 'requestPermissionsFromUser 4');
-  }
-}
 
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
@@ -29,8 +11,6 @@ export default class EntryAbility extends UIAbility {
     } catch (err) {
       hilog.error(DOMAIN, 'testTag', 'Failed to set colorMode. Cause: %{public}s', JSON.stringify(err));
     }
-    globalThis.context = this.context
-    requestPre()
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onCreate');
   }
 

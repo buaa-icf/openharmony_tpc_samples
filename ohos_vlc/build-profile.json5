@@ -4,8 +4,8 @@
       {
         "name": "default",
         "signingConfig": "default",
-        "targetSdkVersion": 18,
-        "compatibleSdkVersion": 18,
+        "targetSdkVersion": 18,	
+        "compatibleSdkVersion": 12,	
         "compileSdkVersion": 18,
         "runtimeOS": "OpenHarmony",
         "buildOption": {
@@ -40,7 +40,7 @@
     },
     {
       "name": "vlc_napi",
-      "srcPath": "./library"
+      "srcPath": "./library",
     }
   ]
 }

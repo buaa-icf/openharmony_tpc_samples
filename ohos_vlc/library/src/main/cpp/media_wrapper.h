@@ -13,22 +13,19 @@
 # limitations under the License.
 */
 
-#ifndef VLC_MEDIA_WRAPPER_H
-#define VLC_MEDIA_WRAPPER_H
+#pragma once
 
-#include "vlc_wrapper.h"
 #include "vlc/vlc.h"
+#include "napi/native_api.h"
 
-class VlcMediaWrapper {
+class MediaWrapper {
 public:
     static napi_value Export(napi_env env, napi_value exports);
-    static napi_value VLCMediaConstructor(napi_env env, napi_callback_info info);
+    static napi_value MediaConstructor(napi_env env, napi_callback_info info);
     static napi_value Parse(napi_env env, napi_callback_info info);
     static napi_value GetDuration(napi_env env, napi_callback_info info);
-    static napi_value AddListener(napi_env env, napi_callback_info info);
+    static napi_value SetEventListener(napi_env env, napi_callback_info info);
     
     libvlc_media_t *instance_ {nullptr};
     napi_threadsafe_function tsfn_ { nullptr };
 };
-
-#endif // VLC_MEDIA_WRAPPER_H

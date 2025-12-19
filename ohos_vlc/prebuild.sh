@@ -23,14 +23,17 @@ LYCIUM_TOOLS_DIR=$LYCIUM_ROOT_DIR/lycium
 LYCIUM_THIRDPARTY_DIR=$LYCIUM_ROOT_DIR/thirdparty
 DEPENDS_DIR=$ROOT_DIR/Script                                                   # 依赖库编译脚本在仓库中的位置
 
-A52DEC_NAME=a52dec
-ARIBB24_NAME=aribb24
-LIBTHEORA_NAME=libtheora
-VLC_NAME=vlc
-LIBDCA_NAME=libdca
-FFMPEG_NAME=FFmpeg
-
-CI_OUTPUT_DIR=$ROOT_DIR/../out/tpc/                                         # hap/har安装目录
+DEPENDS_LIST=(
+  a52dec
+  aribb24
+  gnutls
+  libdca
+  libidn2
+  libtasn1
+  libtheora
+  nettle
+  vlc
+)
 
 function prepare_lycium_tools()
 {
@@ -87,23 +90,21 @@ function prepare_lycium()
 
 function copy_depends()
 {
-    local dir=$1
-    local name=$2
+    local dir="$1"
+    local name="$2"
 
-    if [ -d $LYCIUM_THIRDPARTY_DIR/$name ]
+    if [ -d "$LYCIUM_THIRDPARTY_DIR/$name" ]
     then
-        rm -rf $LYCIUM_THIRDPARTY_DIR/$name
+        rm -rf "$LYCIUM_THIRDPARTY_DIR/$name"
     fi
-    cp -arf $dir/$name $LYCIUM_THIRDPARTY_DIR/
+    cp -arf "$dir/$name" "$LYCIUM_THIRDPARTY_DIR/"
 }
 
 function prepare_depends()
 {
-    copy_depends $DEPENDS_DIR $A52DEC_NAME
-    copy_depends $DEPENDS_DIR $ARIBB24_NAME
-    copy_depends $DEPENDS_DIR $LIBTHEORA_NAME
-    copy_depends $DEPENDS_DIR $VLC_NAME
-    copy_depends $DEPENDS_DIR $LIBDCA_NAME
+  for dep in "${DEPENDS_LIST[@]}"; do
+      copy_depends "$DEPENDS_DIR" "$dep"
+  done
 }
 
 function check_sdk()
@@ -147,7 +148,7 @@ function start_build()
         return 1
     fi
 
-    bash build.sh $VLC_NAME
+    bash build.sh vlc
     result=$?
     cd $OLDPWD
     return $result
@@ -156,21 +157,20 @@ function start_build()
 function install_depends()
 {
     mkdir -p $ROOT_DIR/library/libs/arm64-v8a/
-    mkdir -p $ROOT_DIR/library/src/main/cpp/include/
-
     local install_dir=$ROOT_DIR/library/libs/arm64-v8a/
-    cp -arf $LYCIUM_TOOLS_DIR/usr/$VLC_NAME/arm64-v8a/lib/* $install_dir
-    cp -arf $LYCIUM_TOOLS_DIR/usr/$VLC_NAME/arm64-v8a/include/* $ROOT_DIR/library/src/main/cpp/include/
-    cp -arf $LYCIUM_TOOLS_DIR/usr/$FFMPEG_NAME/arm64-v8a/lib/* $install_dir
-    cp -arf $LYCIUM_TOOLS_DIR/usr/$A52DEC_NAME/arm64-v8a/lib/* $install_dir
+    local src_dir=$LYCIUM_TOOLS_DIR/usr
+    for pkg in "$src_dir"/*; do
+        [ -d "$pkg" ] || continue
+    
+        arm64_lib="$pkg/arm64-v8a/lib"
+    
+        if [ -d "$arm64_lib" ]; then
+            cp -arf "$arm64_lib"/* "$install_dir"
+        fi
+    done
 
-    if [ -d $CI_OUTPUT_DIR ]
-    then
-        cp -arf $LYCIUM_TOOLS_DIR/usr/$VLC_NAME/arm64-v8a/lib/* $CI_OUTPUT_DIR
-        cp -arf $LYCIUM_TOOLS_DIR/usr/$FFMPEG_NAME/arm64-v8a/lib/* $CI_OUTPUT_DIR
-        cp -arf $LYCIUM_TOOLS_DIR/usr/$A52DEC_NAME/arm64-v8a/lib/* $CI_OUTPUT_DIR
-    fi
-
+    mkdir -p $ROOT_DIR/library/src/main/cpp/thirdpart/include/
+    cp -arf $LYCIUM_TOOLS_DIR/usr/vlc/arm64-v8a/include/* $ROOT_DIR/library/src/main/cpp/thirdpart/include/
     return 0
 }
 

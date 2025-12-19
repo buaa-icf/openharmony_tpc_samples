@@ -7,6 +7,6 @@
   "license": "GPL-2.0",
   "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_vlc",
   "dependencies": {
-    "libvlc_napi.so": "file:./src/main/cpp/types/vlc_napi"
+    "libvlc_napi.so": "file:./src/main/cpp/types/liblibrary"
   }
 }
