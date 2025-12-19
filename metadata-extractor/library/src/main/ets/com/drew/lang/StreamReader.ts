@@ -77,7 +77,7 @@ class StreamReader extends SequentialReader {
     return new Int8Array(arrayBuffer)
   }
 
-  public skip(n: number): void
+  public async skip(n: number): Promise<void>
   {
     LogUtil.debug(TAG, `skip start, n: ${n}`);
     if (n < 0) {
@@ -85,7 +85,7 @@ class StreamReader extends SequentialReader {
       throw new Error("n must be zero or greater.");
     }
 
-    let skippedCount = this.skipInternal(n);
+    let skippedCount = await this.skipInternal(n);
 
     if (skippedCount != n) {
       LogUtil.error(TAG, `skip error: Unable to skip the requested number of bytes, skippedCount: ${skippedCount}, n: ${n}`);
@@ -94,19 +94,20 @@ class StreamReader extends SequentialReader {
     LogUtil.debug(TAG, `skip end, skippedCount: ${skippedCount}`);
   }
 
-  public trySkip(n: number): boolean
+  public async trySkip(n: number): Promise<boolean>
   {
     LogUtil.debug(TAG, `trySkip start, n: ${n}`);
     if (n < 0) {
       LogUtil.error(TAG, `trySkip error: n must be zero or greater, n: ${n}`);
       throw new Error("n must be zero or greater.");
     }
-
+    
+    const skippedCount = await this.skipInternal(n);
     LogUtil.debug(TAG, `trySkip end, this.skipInternal(n): ${this.skipInternal(n)}, n: ${n}`);
-    return this.skipInternal(n) == n;
+    return skippedCount == n;
   }
 
-  private skipInternal(n: number): number
+  private async skipInternal(n: number): Promise<number>
   {
     // It seems that for some streams, such as BufferedInputStream, that skip can return
     // some smaller number than was requested. So loop until we either skip enough, or
@@ -117,7 +118,7 @@ class StreamReader extends SequentialReader {
     LogUtil.debug(TAG, `skipInternal start, n: ${n}`);
     let skippedTotal = 0;
     while (skippedTotal != n) {
-      let skipped = this._stream.readSync(new ArrayBuffer(n), { offset: 0, length: n, position: this._pos });
+      let skipped = await this._stream.read(new ArrayBuffer(n), { offset: 0, length: n, position: this._pos });
       skippedTotal += skipped;
       if (skipped == 0)
       break;

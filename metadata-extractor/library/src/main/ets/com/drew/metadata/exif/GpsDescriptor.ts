@@ -79,7 +79,7 @@ class GpsDescriptor extends TagDescriptor<GpsDirectory> {
       case GpsDirectory.TAG_H_POSITIONING_ERROR:
         return this.getGpsHPositioningErrorDescription();
       default:
-        return this.getDescription(tagType);
+        return super.getDescription(tagType);
     }
   }
 
@@ -215,7 +215,7 @@ class GpsDescriptor extends TagDescriptor<GpsDirectory> {
   public getGpsSpeedRefDescription(): string
   {
     LogUtil.debug(TAG, `getGpsSpeedRefDescription start`);
-    let value = this._directory.getString(GpsDirectory.TAG_SPEED_REF);
+    let value = this._directory.getString(GpsDirectory.TAG_SPEED_REF, 'UTF-8');
     if (value == null) {
       LogUtil.error(TAG, `getGpsSpeedRefDescription end, value is null`);
       return null;

@@ -79,15 +79,15 @@ class TagDescriptor <T extends Directory> {
   public static convertBytesToVersionString(components: Array<number>, majorDigits: number) {
     if (components == null)
     return null;
-    let version: string;
+    let version: string = '';
     for (let i = 0; i < 4 && i < components.length; i++) {
       if (i == majorDigits)
-      version.concat('.');
+        version.concat('.');
       let c = String.fromCharCode(components[i]);
       if (c < '0')
-      c += '0';
+        c += '0';
       if (i == 0 && c == '0')
-      continue;
+        continue;
       version.concat(c);
     }
     return version;

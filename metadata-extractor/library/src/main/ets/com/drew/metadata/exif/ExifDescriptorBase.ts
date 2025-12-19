@@ -219,7 +219,7 @@ abstract class ExifDescriptorBase <T extends Directory> extends TagDescriptor<T>
   public getInteropIndexDescription(): string
   {
     LogUtil.debug(TAG, `getInteropIndexDescription enter`);
-    let value = this._directory.getString(ExifDirectoryBase.TAG_INTEROP_INDEX);
+    let value = this._directory.getString(ExifDirectoryBase.TAG_INTEROP_INDEX, 'UTF-8');
 
     if (value == null) {
       LogUtil.error(TAG, `getInteropIndexDescription end, value is null`);

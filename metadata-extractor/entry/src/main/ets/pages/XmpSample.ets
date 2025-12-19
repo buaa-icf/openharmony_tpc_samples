@@ -13,9 +13,10 @@
  * limitations under the License.
  */
 
-import { Metadata, ImageMetadataReader, XmpDirectory } from '@ohos/metadata-extractor';
+import { Metadata, ImageMetadataReader, XmpDirectory, Directory } from '@ohos/metadata-extractor';
 import { XMPMetaFactory, XMPMeta, IteratorOptions, XMPPropertyInfo } from 'xmptool';
 import fileIo from '@ohos.file.fs';
+import taskpool from '@ohos.taskpool';
 
 // Sample XMP string for testing
 const SAMPLE_XMP_STRING: string = `<?xpacket begin="" id="W5M0MpCehiHzreSzNTczkc9d"?>
@@ -49,6 +50,126 @@ const SAMPLE_XMP_STRING: string = `<?xpacket begin="" id="W5M0MpCehiHzreSzNTczkc
 </x:xmpmeta>
 <?xpacket end="w"?>`;
 
+interface MetadataResult {
+  xmpData: string[];
+  xmpProperties: string[];
+}
+
+interface ErrorResult {
+  error: string;
+}
+
+type TaskResult = MetadataResult | ErrorResult;
+
+// 处理图像元数据提取
+@Concurrent
+function extractImageMetadata(filePath: string): TaskResult {
+  try {
+    const metadata: Metadata = ImageMetadataReader.readMetadata(filePath);
+    const xmpData: string[] = [];
+    const xmpProperties: string[] = [];
+
+    let xmpDirectory: XmpDirectory | null = null;
+    const directories: Set<Directory> = metadata.getDirectories();
+
+    for (const directory of directories) {
+      if (directory instanceof XmpDirectory) {
+        xmpDirectory = directory;
+        break;
+      }
+    }
+
+    if (xmpDirectory !== null) {
+      const directoryName: string = xmpDirectory.getName();
+
+      // 获取标签信息
+      try {
+        const tags = xmpDirectory.getTags();
+
+        if (tags && tags.size > 0) {
+          for (const tag of tags) {
+            try {
+              const tagName = tag.getTagName ? tag.getTagName() : '';
+              const description = tag.getDescription ? tag.getDescription() : '';
+              if (tagName && description) {
+                xmpData.push('[' + directoryName + ']' + tagName + '=' + description);
+              }
+            } catch (e) {
+              console.warn('Unprocessable tag ' + tag.toString());
+              continue;
+            }
+          }
+        }
+      } catch (e) {
+        const error = e as Error;
+        console.error('Error getting tags: ' + error.message);
+      }
+
+      // 获取XMP属性
+      try {
+        const properties: Map<string, string> = xmpDirectory.getXmpProperties();
+        properties.forEach((value: string, key: string) => {
+          xmpProperties.push(key + '=' + value);
+        });
+      } catch (e) {
+        const error = e as Error;
+        console.error('Error getting properties: ' + error.message);
+      }
+
+      if (xmpData.length === 0 && xmpProperties.length === 0) {
+        xmpData.push('No XMP metadata found in this image');
+      }
+    } else {
+      xmpData.push('No XMP directory found in this image');
+      console.error('No XMP directory found in this image');
+    }
+    return { xmpData, xmpProperties };
+  } catch (err) {
+    const errorObj = err as Error;
+    console.error('XMP process error: ' + errorObj.message);
+    return { error: errorObj.message || JSON.stringify(err) };
+  }
+}
+
+// 处理XMP字符串解析
+@Concurrent
+function parseXmpString(xmpString: string): TaskResult {
+  try {
+    const xmpMeta: XMPMeta = XMPMetaFactory.parseFromString(xmpString);
+    const xmpData: string[] = [];
+    const xmpProperties: string[] = [];
+
+    xmpData.push('✓ XMP String parsed successfully!');
+    xmpData.push('');
+    xmpData.push('Object Name:' + xmpMeta.getObjectName());
+    xmpData.push('');
+
+    const options: IteratorOptions = new IteratorOptions()
+      .setJustLeafnodes(true)
+      .setOmitQualifiers(true);
+    const iterator = xmpMeta.iterator(options);
+
+    xmpData.push('--- XMP Properties ---');
+    while (iterator.hasNext()) {
+      const prop: XMPPropertyInfo = iterator.next();
+      const path: string = prop.getPath();
+      const value: string = prop.getValue();
+      if (path && value && path.length > 0) {
+        xmpProperties.push(path + '=' + value);
+      }
+    }
+
+    if (xmpProperties.length === 0) {
+      xmpProperties.push('(No leaf properties found)');
+    }
+
+    return { xmpData, xmpProperties };
+  } catch (err) {
+    const errorObj = err as Error;
+    return { error: errorObj.message || JSON.stringify(err) };
+  }
+}
+
 @Entry
 @Component
 struct XmpSample {
@@ -58,111 +179,95 @@ struct XmpSample {
   @State errorMessage: string = ''
   @State testMode: string = ''
   @State testResults: Array<string> = []
+  @State isLoading: boolean = false
 
-  private async getXmpMetaData() {
-    this.xmpData.splice(0, this.xmpData.length)
-    this.xmpProperties.splice(0, this.xmpProperties.length)
-    this.errorMessage = ''
-    this.testMode = 'image'
-
-    // Load sample image from raw resources
-    const imageData = getContext().resourceManager.getRawFileContentSync('xmp_test_image.jpg')
-    const targetDir = getContext().filesDir + '/xmpDemo/'
-    if (!fileIo.accessSync(targetDir)) {
-      fileIo.mkdirSync(targetDir)
-    }
-    const filePath = targetDir + 'xmp_test_image.jpg'
-    const fd = fileIo.openSync(filePath, fileIo.OpenMode.CREATE | fileIo.OpenMode.READ_WRITE)
-    fileIo.writeSync(fd.fd, imageData!.buffer)
-    fileIo.closeSync(fd)
+  private async getXmpMetaData(): Promise<void> {
+    this.clearData();
+    this.testMode = 'image';
+    this.isLoading = true;
 
     try {
-      // Read metadata from image
-      let metadata: Metadata = ImageMetadataReader.readMetadata(filePath);
+      const imageData = getContext().resourceManager.getRawFileContentSync('xmp_test_image.jpg');
+      const targetDir = getContext().filesDir + '/xmpDemo/';
 
-      // Find XmpDirectory
-      let xmpDirectory: XmpDirectory | null = null;
-      for (let directory of metadata.getDirectories()) {
-        if (directory instanceof XmpDirectory) {
-          xmpDirectory = directory;
-          break;
-        }
+      if (!fileIo.accessSync(targetDir)) {
+        fileIo.mkdirSync(targetDir);
       }
 
-      if (xmpDirectory != null) {
-        // Get all tags from XmpDirectory
-        let directoryName: string = xmpDirectory.getName();
-        xmpDirectory.getTags().forEach((tag: ESObject) => {
-          let tagName: string = tag.getTagName();
-          let description: string = tag.getDescription();
-          this.xmpData.push('[' + directoryName + ']' + tagName + '=' + description);
-        });
+      const filePath = targetDir + 'xmp_test_image.jpg';
+      const fd = fileIo.openSync(filePath, fileIo.OpenMode.CREATE | fileIo.OpenMode.READ_WRITE);
+      fileIo.writeSync(fd.fd, imageData!.buffer);
+      fileIo.closeSync(fd);
 
-        // Get XMP properties
-        let properties: Map<string, string> = xmpDirectory.getXmpProperties();
-        properties.forEach((value: string, key: string) => {
-          this.xmpProperties.push(key + '=' + value);
-        });
+      await this.readMetadataInBackground(filePath);
 
-        if (this.xmpData.length === 0 && this.xmpProperties.length === 0) {
-          this.xmpData.push('No XMP metadata found in this image');
-        }
-      } else {
-        this.xmpData.push('No XMP directory found in this image');
-        this.xmpData.push('');
-        this.xmpData.push('Tip: Try \'Test XMP String\' button to verify XMP parsing works!');
-      }
     } catch (err) {
-      console.error('XMP metadata extraction error: ' + JSON.stringify(err));
+      console.error('Error in getXmpMetaData: ' + JSON.stringify(err));
       this.errorMessage = 'Error: ' + JSON.stringify(err);
+      this.isLoading = false;
     }
   }
 
-  private testXmpStringParsing() {
-    this.xmpData.splice(0, this.xmpData.length)
-    this.xmpProperties.splice(0, this.xmpProperties.length)
-    this.errorMessage = ''
-    this.testMode = 'string'
+  private async readMetadataInBackground(filePath: string): Promise<void> {
+    try {
+      const task = new taskpool.Task(extractImageMetadata, filePath);
+      const result: TaskResult = await taskpool.execute(task) as TaskResult;
+
+      // 检查是否为错误结果
+      const errorResult = result as ErrorResult;
+      if (errorResult.error !== undefined) {
+        this.errorMessage = 'Error: ' + errorResult.error;
+      } else {
+        const metadataResult = result as MetadataResult;
+        this.xmpData = metadataResult.xmpData;
+        this.xmpProperties = metadataResult.xmpProperties;
+        this.isVisibility = Visibility.Visible;
+      }
+    } catch (err) {
+      console.error('Task execution error: ' + JSON.stringify(err));
+      this.errorMessage = 'Task execution error: ' + JSON.stringify(err);
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  private async testXmpStringParsing(): Promise<void> {
+    this.clearData();
+    this.testMode = 'string';
+    this.isLoading = true;
 
     try {
-      // Parse XMP from string using xmptool
-      let xmpMeta: XMPMeta = XMPMetaFactory.parseFromString(SAMPLE_XMP_STRING);
+      const task = new taskpool.Task(parseXmpString, SAMPLE_XMP_STRING);
+      const result: TaskResult = await taskpool.execute(task) as TaskResult;
 
-      this.xmpData.push('✓ XMP String parsed successfully!');
-      this.xmpData.push('');
-      this.xmpData.push('Object Name:' + xmpMeta.getObjectName());
-      this.xmpData.push('');
-
-      // Iterate through all properties (omit qualifiers like xml:lang)
-      let options: IteratorOptions = new IteratorOptions()
-        .setJustLeafnodes(true)
-        .setOmitQualifiers(true);
-      let iterator = xmpMeta.iterator(options);
-
-      this.xmpData.push('--- XMP Properties ---');
-      while (iterator.hasNext()) {
-        let prop: XMPPropertyInfo = iterator.next();
-        let path: string = prop.getPath();
-        let value: string = prop.getValue();
-        if (path != null && value != null && path.length > 0) {
-          this.xmpProperties.push(path + '=' + value);
-        }
+      // 检查是否为错误结果
+      const errorResult = result as ErrorResult;
+      if (errorResult.error !== undefined) {
+        this.errorMessage = 'Error parsing XMP string: ' + errorResult.error;
+      } else {
+        const metadataResult = result as MetadataResult;
+        this.xmpData = metadataResult.xmpData;
+        this.xmpProperties = metadataResult.xmpProperties;
+        this.isVisibility = Visibility.Visible;
       }
-
-      if (this.xmpProperties.length === 0) {
-        this.xmpProperties.push('(No leaf properties found)');
-      }
-
     } catch (err) {
       console.error('XMP string parsing error: ' + JSON.stringify(err));
       this.errorMessage = 'Error parsing XMP string: ' + JSON.stringify(err);
+    } finally {
+      this.isLoading = false;
     }
+  }
+
+  private clearData(): void {
+    this.xmpData = [];
+    this.xmpProperties = [];
+    this.errorMessage = '';
+    this.testResults = [];
   }
 
   build() {
     Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Start, justifyContent: FlexAlign.Start }) {
       Column() {
-        // Title
         Text('XMP Metadata Reader')
           .fontSize(25)
           .fontColor('#333333')
@@ -171,7 +276,6 @@ struct XmpSample {
           .width('100%')
           .textAlign(TextAlign.Center)
 
-        // Mode indicator
         if (this.testMode.length > 0) {
           Text(this.testMode === 'image' ? 'Mode: Image Extraction' :
             this.testMode === 'string' ? 'Mode: String Parsing Test' : 'Mode: Run Tests')
@@ -182,7 +286,19 @@ struct XmpSample {
             .padding({ bottom: 10 })
         }
 
-        // XMP Tags Section
+        if (this.isLoading) {
+          LoadingProgress()
+            .color('#1a73e8')
+            .height(50)
+            .width(50)
+            .margin({ top: 20, bottom: 20 })
+
+          Text('Processing...')
+            .fontSize(14)
+            .fontColor('#666666')
+            .margin({ bottom: 20 })
+        }
+
         Column() {
           Text('XMP Results:')
             .fontSize(16)
@@ -200,7 +316,7 @@ struct XmpSample {
                   .padding(3)
                   .textAlign(TextAlign.Start)
               }, (item: string, index?: number) => {
-                return index!.toString()
+                return index ? index.toString() : '0';
               })
             }
           }
@@ -214,7 +330,6 @@ struct XmpSample {
         }
         .padding(10)
 
-        // XMP Properties Section
         Column() {
           Text('XMP Properties:')
             .fontSize(16)
@@ -233,7 +348,7 @@ struct XmpSample {
                   .textAlign(TextAlign.Start)
                   .fontColor('#444444')
               }, (item: string, index?: number) => {
-                return index!.toString()
+                return index ? index.toString() : '0';
               })
             }
           }
@@ -247,7 +362,6 @@ struct XmpSample {
         }
         .padding(10)
 
-        // Error message
         if (this.errorMessage.length > 0) {
           Text(this.errorMessage)
             .fontSize(13)
@@ -256,7 +370,6 @@ struct XmpSample {
             .padding(10)
         }
 
-        // Test Results Section (only show when in test mode)
         if (this.testMode === 'test' && this.testResults.length > 0) {
           Column() {
             Text('Test Results:')
@@ -268,14 +381,14 @@ struct XmpSample {
 
             Scroll() {
               Column() {
-                ForEach(this.testResults, (item: string) => {
+                ForEach(this.testResults, (item: string, index?: number) => {
                   Text(item)
                     .fontSize(13)
                     .width('100%')
                     .padding(3)
                     .textAlign(TextAlign.Start)
                 }, (item: string, index?: number) => {
-                  return index!.toString()
+                  return index ? index.toString() : '0';
                 })
               }
             }
@@ -289,31 +402,28 @@ struct XmpSample {
           .padding(10)
         }
 
-        // Buttons
         Column() {
           Row() {
             Button('Extract Image', { type: ButtonType.Normal, stateEffect: true })
               .borderRadius(8)
               .width('45%')
               .height(40)
-              .backgroundColor('#1a73e8')
+              .backgroundColor(this.isLoading ? '#cccccc' : '#1a73e8')
               .fontSize(13)
+              .enabled(!this.isLoading)
               .onClick(() => {
-                this.testResults.splice(0, this.testResults.length)
                 this.getXmpMetaData()
-                this.isVisibility = Visibility.Visible
               })
 
             Button('Parse String', { type: ButtonType.Normal, stateEffect: true })
               .borderRadius(8)
               .width('45%')
               .height(40)
-              .backgroundColor('#34a853')
+              .backgroundColor(this.isLoading ? '#cccccc' : '#34a853')
               .fontSize(13)
+              .enabled(!this.isLoading)
               .onClick(() => {
-                this.testResults.splice(0, this.testResults.length)
                 this.testXmpStringParsing()
-                this.isVisibility = Visibility.Visible
               })
           }
           .width('90%')
