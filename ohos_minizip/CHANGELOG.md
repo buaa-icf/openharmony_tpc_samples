@@ -1,3 +1,7 @@
+# 1.0.3
+
+- The shared library is compiled with -O3 optimization and supports LTO
+
 ## 1.0.3-rc.0
 
 - MinizipNative add IsEncrypto() & IsUtf8() functions.
