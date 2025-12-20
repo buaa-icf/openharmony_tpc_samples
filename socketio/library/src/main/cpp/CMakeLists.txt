@@ -39,4 +39,8 @@ add_library(client_socket_c SHARED
         native-bridge.cpp
         socketio_module_napi.cpp)
 
+target_compile_options(client_socket_c PRIVATE $<$<CONFIG:Release>:-O3 -DNDEBUG -flto=thin>)
+target_compile_options(sioclient PRIVATE $<$<CONFIG:Release>:-O3 -DNDEBUG -flto=thin>)
+target_link_options(client_socket_c PRIVATE $<$<CONFIG:Release>:-s -flto=thin>)
+target_link_options(sioclient PRIVATE $<$<CONFIG:Release>:-s -flto=thin>)
 target_link_libraries(client_socket_c PUBLIC boundscheck sioclient libace_napi.z.so libc++_shared.so libhilog_ndk.z.so)
