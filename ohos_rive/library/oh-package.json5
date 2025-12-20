@@ -1,0 +1,23 @@
+{
+  "types": "",
+  "keywords": [
+    "OpenHarmony",
+    "HarmonyOS",
+    "rive"
+  ],
+  "author": "ohos_tpc",
+  "description": "Rive animation engine for HarmonyOS/OpenHarmony - Lightweight, High Performance, Cross Platform vector animation library",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_rive",
+  "main": "Index.ets",
+  "type": "module",
+  "version": "1.0.0",
+  "tags": [
+    "Animation",
+    "Rive"
+  ],
+  "license": "Apache License 2.0",
+  "dependencies": {
+    "libohos_rive.so": "file:./src/main/cpp/types/libohos_rive"
+  },
+  "name": "@ohos/rive"
+}

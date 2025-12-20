@@ -1,0 +1,28 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "label"
+    },
+    {
+      "name": "rive_url_juice",
+      "value": "https://cdn.rive.app/animations/juice_v7.riv"
+    },
+    {
+      "name": "rive_url_vehicles",
+      "value": "https://cdn.rive.app/animations/vehicles.riv"
+    },
+    {
+      "name": "lorem_image_base",
+      "value": "https://picsum.photos"
+    }
+  ]
+}

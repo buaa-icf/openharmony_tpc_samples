@@ -1,0 +1,32 @@
+{
+  "src": [
+    "pages/Index",
+    "pages/EventsPage",
+    "pages/InteractiveSamplesPage",
+    "pages/MultipleArtboardsPage",
+    "pages/SimplePage",
+    "pages/HttpPage",
+    "pages/AssetsPage",
+    "pages/RecyclerPage",
+    "pages/ViewPagerPage",
+    "pages/StateMachinePage",
+    "pages/NestedTextRunsPage",
+    "pages/ButtonPressesPage",
+    "pages/AssetLoaderPage",
+    "pages/StressTestPage",
+    "pages/RiveFontLoadPage",
+    "pages/AudioAssetsPage",
+    "pages/ExternalAudioAssetsPage",
+    "pages/FontFallbackPage",
+    "pages/TouchPassthroughPage",
+    "pages/MeshesPage",
+    "pages/DynamicTextPage",
+    "pages/BlendModesPage",
+    "pages/FramePage",
+    "pages/ComposeLegacyPage",
+    "pages/ViewStubPage",
+    "pages/FragmentPage",
+    "pages/LowLevelRendererPage",
+    "pages/MetricsPage"
+  ]
+}
