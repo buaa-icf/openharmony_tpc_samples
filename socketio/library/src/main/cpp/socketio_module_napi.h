@@ -48,6 +48,7 @@ public:
     static napi_value get_sessionid(napi_env env, napi_callback_info info);
     static napi_value set_nsp(napi_env env, napi_callback_info info);
     static napi_value on(napi_env env, napi_callback_info info);
+    static napi_value on_multi(napi_env env, napi_callback_info info);
     static napi_value on_binary(napi_env env, napi_callback_info info);
     static napi_value once(napi_env env, napi_callback_info info);
     static napi_value off(napi_env env, napi_callback_info info);

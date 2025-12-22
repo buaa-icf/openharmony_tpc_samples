@@ -61,6 +61,7 @@ export class newSocketIOClient {
   get_sessionid: (classId: number) => string;
 
   on: (event_name: string, on_event_listener: (event_json: string, classId: number) => void, classId: number) => void;
+  on_multi: (event_name: string, on_event_listener: (event_json: string, classId: number) => void, classId: number) => void;
 
   on_binary: (event_name: string, on_event_listener: (event_data: Uint8Array) => void, classId: number) => void;
 
@@ -75,9 +76,7 @@ export class newSocketIOClient {
   off_error: (classId: number) => void;
 
   on_error: (on_error_listener: (message: string) => void, classId: number) => void;
-
-  emit: (name: string, message: any,
-    on_emit_callback: (emit_callback_json: string) => void, classId: number) => void;
+  emit: (name: string, ...args:ESObject[]) => void;
 
   emitAckBinary: (name: string, message: any, b: boolean,
     on_emit_callback: (code: number, emit_callback_data: Uint8Array) => void, classId: number) => void;

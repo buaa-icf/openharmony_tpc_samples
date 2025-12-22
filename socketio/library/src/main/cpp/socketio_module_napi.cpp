@@ -9,6 +9,7 @@
  * This software is distributed without any warranty.
  */
 
+#include <sstream>
 #include <cstring>
 #include <deque>
 #include <js_native_api.h>
@@ -28,6 +29,9 @@ static constexpr const int OPTION_BUF_SIZE = 2048;
 static constexpr const int MAX_MESSAGE_SIZE = 100000;
 static constexpr const int ODD_NUMBER = 1;
 static constexpr const int EXPECT_NUMBER = 2;
+static constexpr const int EMIT_ARGC_MAX_NUM = 64;
+static constexpr const int EMIT_CALLBACK_INDEX = 2;
+
 
 static std::unordered_map<std::string, SocketIOClient *> g_clientMap;
 // client相关回调
@@ -52,6 +56,24 @@ static constexpr const int ARG_INDEX_3 = 3;
 static constexpr const int ARG_INDEX_4 = 4;
 
 static bool g_isOnce = false;
+
+static std::string BinaryToString(std::string &binary)
+{
+    std::string binaryStr;
+    std::string binaryMsg = binary;
+    binaryStr += "[";
+    std::stringstream binaryTmp;
+    for (size_t i = 0; i < binaryMsg.size(); i++) {
+        binaryTmp.str("");
+        binaryTmp << (static_cast<int32_t>(binaryMsg[i]) & 0xff);
+        binaryStr += binaryTmp.str();
+        if (i < binaryMsg.size() - 1) {
+            binaryStr += ",";
+        }
+    }
+    binaryStr += "]";
+    return binaryStr;
+}
 
 // 处理带有转义字符的字符串
 static std::string transfer_characters(const std::string &str) 
@@ -145,52 +167,67 @@ static std::string get_message_value(sio::message::ptr const &message)
 }
 
 static void handler_event_listener_aux(OHOS::SocketIO::SocketIOContext context, const std::string &name,
-                                       sio::message::ptr const &message, bool needAck,
+                                       sio::message::list const &message, bool needAck,
                                        sio::message::list &ack_message) 
 {
     napi_ref on_event_listener_call_aux_ref = on_event_listener_call_aux_ref_map[name.c_str()];
-    if (on_event_listener_call_aux_ref != nullptr) {
-        std::string message_json = std::string("{") + "\"eventName\":\"" + name + "\"";
-        OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, "LOG_TAG", "SOCKETIO_TAG_NAPI------>flag %{public}d",
-                     message->get_flag());
-        if (message->get_flag() == sio::message::flag_object) {
-            std::map<std::string, sio::message::ptr> messageMap = message->get_map();
+    std::string messageJson;
+    if (on_event_listener_call_aux_ref == nullptr) {
+        return;
+    }
+    if (message.size() == 1) {
+        messageJson += std::string("{") + "\"eventName\":\"" + name + "\"";
+        if (message.at(0)->get_flag() == sio::message::flag_object) {
+            std::map<std::string, sio::message::ptr> messageMap = message.at(0)->get_map();
             for (auto it : messageMap) {
-                message_json += std::string(",\"") + it.first.c_str() + "\":" + get_message_value(it.second);
+                messageJson += std::string(",\"") + it.first.c_str() + "\":" + get_message_value(it.second);
                 std::string message_content =
                     std::string(",\"") + it.first.c_str() + "\":" + get_message_value(it.second);
-                OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, "LOG_TAG", "SOCKETIO_TAG_NAPI------>it %{public}s",
-                             message_content.c_str());
             }
         } else {
-            message_json += std::string(",\"") + "message" + "\":" + get_message_value(message);
+            messageJson += std::string(",\"") + "message" + "\":" + get_message_value(message.at(0));
         }
-        message_json += "}";
-        OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, "LOG_TAG", "SOCKETIO_TAG_NAPI------>message_json %{public}s",
-                     message_json.c_str());
-        std::unique_ptr<ThreadSafeInfo> localThreadSafeInfo = std::make_unique<ThreadSafeInfo>();
-        if (localThreadSafeInfo == nullptr) {
-            OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[event_listener]localThreadSafeInfo is null");
-            return;
+        messageJson += "}";
+    } else {
+        messageJson += "[";
+        for (int16_t index = 0; index < message.size(); index++) {
+            std::string tmp;
+            if ((message.at(index)->get_flag() == sio::message::flag_binary)) {
+                tmp = std::string("\"") + *(message.at(index)->get_binary()) + "\"";
+            } else {
+                tmp = get_message_value(message.at(index));
+            }
+            messageJson += tmp;
+            if (index < message.size() - 1) {
+                messageJson += ",";
+            }
         }
-        localThreadSafeInfo->result = message_json;
-        context.CallTsFunction(static_cast<void *>(localThreadSafeInfo.release()));
+        messageJson += "]";
+    }
+    std::unique_ptr<ThreadSafeInfo> localThreadSafeInfo = std::make_unique<ThreadSafeInfo>();
+    if (localThreadSafeInfo == nullptr) {
+        OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[event_listener]localThreadSafeInfo is null");
+        return;
+    }
+    localThreadSafeInfo->result = messageJson;
+    context.CallTsFunction(static_cast<void *>(localThreadSafeInfo.release()));
 
-        if (g_isOnce) {
-            on_event_listener_call_aux_ref_map[name.c_str()] = nullptr;
-        }
+    if (g_isOnce) {
+        on_event_listener_call_aux_ref_map[name.c_str()] = nullptr;
     }
 }
 
 static void handler_binary_event_listener_aux(OHOS::SocketIO::SocketIOContext context, const std::string &name,
-                                              sio::message::ptr const &message, bool needAck,
+                                              sio::message::list const &message, bool needAck,
                                               sio::message::list &ack_message)
 {
     napi_ref on_event_listener_call_aux_ref = on_event_listener_call_aux_ref_map[name.c_str()];
-    if (on_event_listener_call_aux_ref != nullptr) {
-        if (message->get_flag() == sio::message::flag_binary) {
-            auto binary_str = *message->get_binary();
-
+    if (on_event_listener_call_aux_ref == nullptr) {
+        return;
+    }
+    if (message.size() == 1) {
+        if (message.at(0)->get_flag() == sio::message::flag_binary) {
+            auto binary_str = *(message.at(0)->get_binary());
             std::unique_ptr<BinaryInfo> localBinaryInfo = std::make_unique<BinaryInfo>();
             if (localBinaryInfo == nullptr) {
                 OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[event_listener]localBinaryInfo is null");
@@ -203,6 +240,45 @@ static void handler_binary_event_listener_aux(OHOS::SocketIO::SocketIOContext co
                 on_event_listener_call_aux_ref_map[name.c_str()] = nullptr;
             }
         }
+    }
+}
+
+static void handler_multi_event_listener_aux(OHOS::SocketIO::SocketIOContext context, const std::string &name,
+                                             sio::message::list const &message, bool needAck,
+                                             sio::message::list &ack_message)
+{
+    napi_ref on_event_listener_call_aux_ref = on_event_listener_call_aux_ref_map[name.c_str()];
+    std::string messageJson;
+    if (on_event_listener_call_aux_ref == nullptr) {
+        return;
+    }
+    messageJson += "[";
+    std::string tmp;
+    for (int16_t index = 0; index < message.size(); index++) {
+        if (message.at(index)->get_flag() == sio::message::flag_binary) {
+            std::string binaryMsg = *(message.at(index)->get_binary());
+            tmp = BinaryToString(binaryMsg);
+        } else {
+            tmp = get_message_value(message.at(index));
+        }
+        messageJson += tmp;
+        if (index < message.size() -1) {
+            messageJson += ",";
+        }
+    }
+    messageJson += "]";
+    OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, "LOG_TAG", "SOCKETIO_TAG_NAPI------>messageJson %{public}s",
+        messageJson.c_str());
+    std::unique_ptr<ThreadSafeInfo> localThreadSafeInfo = std::make_unique<ThreadSafeInfo>();
+    if (localThreadSafeInfo == nullptr) {
+        OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, LOG_TAG, "[event_listener]localThreadSafeInfo is null");
+        return;
+    }
+    localThreadSafeInfo->result = messageJson;
+    context.CallTsFunction(static_cast<void *>(localThreadSafeInfo.release()));
+
+    if (g_isOnce) {
+        on_event_listener_call_aux_ref_map[name.c_str()] = nullptr;
     }
 }
 
@@ -296,21 +372,28 @@ public:
     }
 
     void on_event_listener_aux(const OHOS::SocketIO::SocketIOContext &context, const std::string &name,
-                               sio::message::ptr const &message, bool needAck, sio::message::list &ack_message)
+                               sio::message::list const &message, bool needAck, sio::message::list &ack_message)
     {
         g_isOnce = false;
         handler_event_listener_aux(context, name, message, needAck, ack_message);
     }
 
     void on_binary_event_listener_aux(const OHOS::SocketIO::SocketIOContext &context, const std::string &name,
-                                      sio::message::ptr const &message, bool needAck, sio::message::list &ack_message)
+                                      sio::message::list const &message, bool needAck, sio::message::list &ack_message)
     {
         g_isOnce = false;
         handler_binary_event_listener_aux(context, name, message, needAck, ack_message);
     }
 
+    void on_multi_event_listener_aux(const OHOS::SocketIO::SocketIOContext &context, const std::string &name,
+                                    sio::message::list const &message, bool needAck, sio::message::list &ack_message)
+    {
+        g_isOnce = false;
+        handler_multi_event_listener_aux(context, name, message, needAck, ack_message);
+    }
+
     void once_event_listener_aux(const OHOS::SocketIO::SocketIOContext &context, const std::string &name,
-                                 sio::message::ptr const &message, bool needAck, sio::message::list &ack_message)
+                                 sio::message::list const &message, bool needAck, sio::message::list &ack_message)
     {
         g_isOnce = true;
         handler_event_listener_aux(context, name, message, needAck, ack_message);
@@ -351,11 +434,12 @@ public:
         } else {
             str += "[";
             for (int16_t index = 0; index < list.size(); index++) {
-                OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, "LOG_TAG",
-                            "SOCKETIO_TAG_NAPI------>list[%{public}d].flag = %{public}d", index, list.at(index)->get_flag());
-                std::string tmp = get_message_value(list.at(index));
-                OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, "LOG_TAG",
-                             "SOCKETIO_TAG_NAPI------>get_message_value[%{public}d] = %{public}s", index, tmp.c_str());
+                std::string tmp;
+                if ((list.at(index)->get_flag() == sio::message::flag_binary)) {
+                    tmp = std::string("\"") + *(list.at(index)->get_binary()) + "\"";
+                } else {
+                    tmp = get_message_value(list.at(index));
+                }
                 str += tmp;
                 if (index < list.size() - 1) {
                     str += ",";
@@ -1121,7 +1205,6 @@ napi_value SocketIOClient::on(napi_env env, napi_callback_info info)
     auto tsfunc_context = new OHOS::SocketIO::SocketIOContext(env);
 
     tsfunc_context->CreateTsFunction(on_event_listener_call_aux, "on", tsfunc_context, CallJsEmit);
-
     get_socket(classIdStr)
         ->on(eventName, *tsfunc_context,
              std::bind(&ClientSocket::on_event_listener_aux, &g_clientSocket, std::placeholders::_1,
@@ -1154,6 +1237,35 @@ napi_value SocketIOClient::on_binary(napi_env env, napi_callback_info info)
     get_socket(classIdStr)
         ->on(eventName, *tsfunc_context,
              std::bind(&ClientSocket::on_binary_event_listener_aux, &g_clientSocket, std::placeholders::_1,
+                       std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5));
+    return 0;
+}
+
+napi_value SocketIOClient::on_multi(napi_env env, napi_callback_info info)
+{
+    size_t argc = 3;
+    napi_value args[3] = {nullptr};
+    OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, "LOG_TAG", "SOCKETIO_TAG_NAPI------>on_multi %{public}d");
+    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+    char eventName[MAX_BUF_SIZE];
+    napi_get_value_string_utf8(env, args[0], eventName, MAX_BUF_SIZE, &result);
+    napi_value on_event_listener_call_aux = args[1];
+    napi_ref on_event_listener_call_aux_ref;
+    napi_create_reference(env, on_event_listener_call_aux, 1, &on_event_listener_call_aux_ref);
+    on_event_listener_call_aux_ref_map.insert({eventName, on_event_listener_call_aux_ref});
+
+    size_t charLen = 0;
+    char classId[CLASSID_BUF_SIZE] = {0};
+    napi_get_value_string_utf8(env, args[ARG_INDEX_2], classId, CLASSID_BUF_SIZE, &charLen);
+    std::string classIdStr = classId;
+
+    auto tsfunc_context = new OHOS::SocketIO::SocketIOContext(env);
+
+    tsfunc_context->CreateTsFunction(on_event_listener_call_aux, "on_multi", tsfunc_context, CallJsEmit);
+
+    get_socket(classIdStr)
+        ->on(eventName, *tsfunc_context,
+             std::bind(&ClientSocket::on_multi_event_listener_aux, &g_clientSocket, std::placeholders::_1,
                        std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5));
     return 0;
 }
@@ -1361,83 +1473,79 @@ sio::message::ptr handle_array_value(napi_env env, napi_value value)
     return array;
 }
 
+static std::string GetClassId(napi_env env, napi_value val)
+{
+    size_t charLen = 0;
+    char classId[CLASSID_BUF_SIZE] = {0};
+    napi_get_value_string_utf8(env, val, classId, CLASSID_BUF_SIZE, &charLen);
+    std::string classIdStr = classId;
+    return classIdStr;
+}
+
 napi_value SocketIOClient::emit(napi_env env, napi_callback_info info)
 {
-    OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, "LOG_TAG", "SOCKETIO_TAG_NAPI------>emit");
-    // 四个参数: eventName, message, callback, classId
-    size_t argc = 4;
-    napi_value args[4] = {nullptr};
+    size_t argc = EMIT_ARGC_MAX_NUM;
+    napi_value args[EMIT_ARGC_MAX_NUM] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
-
     // 获取参数1: 事件名称
     char eventName[MAX_BUF_SIZE];
     napi_get_value_string_utf8(env, args[0], eventName, MAX_BUF_SIZE, &result);
-
     // 获取参数3: 回调函数
-    napi_value on_emit_listener_call = args[2];
+    napi_value on_emit_listener_call = args[argc-EMIT_CALLBACK_INDEX];
     napi_ref on_emit_listener_call_ref;
     napi_create_reference(env, on_emit_listener_call, 1, &on_emit_listener_call_ref);
     // 使用赋值，避免 insert 因键已存在不覆盖
     on_emit_listener_call_ref_map[std::string(eventName)] = on_emit_listener_call_ref;
-
     sio::message::list *messageList = new sio::message::list();
-
-    // 检测参数2是否为TypedArray(二进制数据)
-    bool is_arraybuffer;
-    napi_is_typedarray(env, args[1], &is_arraybuffer);
-
-    // 处理消息数据
-    if (is_arraybuffer) {
-        // TypedArray二进制数据处理
-        void *data;
-        size_t byte_length;
-        napi_typedarray_type type;
-        napi_value array_buffer;
-        size_t offset;
-        napi_get_typedarray_info(env, args[1], &type, &byte_length, &data, &array_buffer, &offset);
-
-        // 将TypedArray数据转换为std::string
-        std::string uint8Array_str(static_cast<char *>(data), byte_length);
-        std::shared_ptr<std::string> message_binary = std::make_shared<std::string>(uint8Array_str);
-        messageList->push(message_binary);
-        message_binary = nullptr;
-    } else {
-        // 非二进制数据处理
-        napi_valuetype messageType;
-        napi_typeof(env, args[1], &messageType);
-
-        if (messageType == napi_string) {
-            char message[MAX_MESSAGE_SIZE];
-            napi_get_value_string_utf8(env, args[1], message, MAX_MESSAGE_SIZE, &result);
-            messageList->push(message);
-        } else if (messageType == napi_object) {
-            sio::object_message::ptr message_item = get_object_message(env, args[1]);
-            messageList->push(message_item);
-            message_item = nullptr;
+    for (int index = 1; index < argc - EMIT_CALLBACK_INDEX; index++) {
+        // 检测参数2是否为TypedArray(二进制数据)
+        bool isArraybuffer;
+        napi_is_typedarray(env, args[index], &isArraybuffer);
+        // 处理消息数据
+        if (isArraybuffer) {
+            // TypedArray二进制数据处理
+            void *data;
+            size_t byteLength;
+            napi_typedarray_type type;
+            napi_value array_buffer;
+            size_t offset;
+            napi_get_typedarray_info(env, args[index], &type, &byteLength, &data, &array_buffer, &offset);
+            // 将TypedArray数据转换为std::string
+            std::string uint8ArrayStr(static_cast<char *>(data), byteLength);
+            std::shared_ptr<std::string> message_binary = std::make_shared<std::string>(uint8ArrayStr);
+            messageList->push(message_binary);
+            message_binary = nullptr;
+        } else {
+            // 非二进制数据处理
+            napi_valuetype messageType;
+            napi_typeof(env, args[index], &messageType);
+            if (messageType == napi_string) {
+                char message[MAX_MESSAGE_SIZE];
+                napi_get_value_string_utf8(env, args[index], message, MAX_MESSAGE_SIZE, &result);
+                messageList->push(message);
+            } else if (messageType == napi_object) {
+                sio::object_message::ptr message_item = get_object_message(env, args[index]);
+                messageList->push(message_item);
+                message_item = nullptr;
+            }
         }
     }
-
     // 获取参数4: classId
-    size_t charLen = 0;
-    char classId[CLASSID_BUF_SIZE] = {0};
-    napi_get_value_string_utf8(env, args[3], classId, CLASSID_BUF_SIZE, &charLen);
-    std::string classIdStr = classId;
-
+    std::string id = GetClassId(env, args[argc-1]);
     // 为本次 emit 创建独立 TSFN，并按事件名入队
     napi_threadsafe_function tsfn_this_emit = nullptr;
     NapiCreateThreadsafe(env, on_emit_listener_call, CallJsEmit, &tsfn_this_emit);
     on_emit_tsfn_map[std::string(eventName)].push_back(tsfn_this_emit);
 
     // 通过classId获取socket并发送消息
-    get_socket(classIdStr)
-        ->emit(
-            eventName, *messageList,
-            std::bind(&ClientSocket::on_emit_callback, &g_clientSocket, std::placeholders::_1, std::placeholders::_2));
+    get_socket(id)->emit(eventName, *messageList,
+        std::bind(&ClientSocket::on_emit_callback, &g_clientSocket, std::placeholders::_1, std::placeholders::_2));
 
     delete messageList;
     messageList = nullptr;
     return 0;
 }
+
 
 napi_value SocketIOClient::emitAckBinary(napi_env env, napi_callback_info info)
 {
