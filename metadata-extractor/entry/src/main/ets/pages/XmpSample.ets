@@ -105,7 +105,6 @@ function extractImageMetadata(filePath: string): TaskResult {
         console.error('Error getting tags: ' + error.message);
       }
 
-      // 获取XMP属性
       try {
         const properties: Map<string, string> = xmpDirectory.getXmpProperties();
         properties.forEach((value: string, key: string) => {
