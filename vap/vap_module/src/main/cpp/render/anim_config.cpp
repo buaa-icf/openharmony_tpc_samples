@@ -33,7 +33,7 @@ void AnimConfig::ParseBoxHead(std::vector<char> &boxHead, BoxHead &head)
 {
     int32_t length = ZERO;
     length |= (boxHead[ZERO] & ONE_EIGHT_HEX) << THREE_TIME_EIGHT;
-    length |= (boxHead[ZERO] & ONE_EIGHT_HEX) << TWO_TIME_EIGHT;
+    length |= (boxHead[ONE] & ONE_EIGHT_HEX) << TWO_TIME_EIGHT;
     length |= (boxHead[TWO] & ONE_EIGHT_HEX) << EIGHT;
     length |= (boxHead[THREE] & ONE_EIGHT_HEX);
     head.length = length;
@@ -56,6 +56,7 @@ int AnimConfig::GetJson(std::string &jsonStr, std::string &uri)
         }
         BoxHead boxHead;
         ParseBoxHead(buffer, boxHead);
+        LOGD("boxHead type: %{public}s, length: %{public}d", boxHead.type.c_str(), boxHead.length);
 
         if (boxHead.type.compare("vapc") == ZERO) { // memcmp(boxHead.type.data(), "vapc", 4) == 0
             LOGD("json length: %{public}d", boxHead.length);
@@ -71,6 +72,30 @@ int AnimConfig::GetJson(std::string &jsonStr, std::string &uri)
     return ret;
 }
 
+bool AnimConfig::ParseBaseData(json& info)
+{
+    try {
+        this->width = info.at("w").get<int>();
+        this->height = info.at("h").get<int>();
+        this->totalFrames = info.at("f").get<int>();
+        this->videoWidth = info.at("videoW").get<int>();
+        this->videoHeight = info.at("videoH").get<int>();
+        this->orien = info.at("orien").get<Orien>();
+        this->fps = info.at("fps").get<int>();
+        this->isMix = info.at("isVapx").get<int>() == ONE;
+        const auto& a = info.at("aFrame");
+        this->alphaPointRect = std::move(PointRect(a.at(ZERO).get<int>(), a.at(ONE).get<int>(),
+            a.at(TWO).get<int>(), a.at(THREE).get<int>()));
+        const auto& c = info.at("rgbFrame");
+        this->rgbPointRect = std::move(PointRect(c.at(ZERO).get<int>(), c.at(ONE).get<int>(),
+            c.at(TWO).get<int>(), c.at(THREE).get<int>()));
+    } catch (const json::exception &e) {
+        LOGE("json parse error: %{public}s", e.what());
+        return false;
+    }
+    return true;
+}
+
 bool AnimConfig::ParseJson(std::string uri, bool isNeedParseFrame)
 {
     LOGD("Enter ParseJson");
@@ -79,7 +104,6 @@ bool AnimConfig::ParseJson(std::string uri, bool isNeedParseFrame)
         return true;
     }
     std::string strJson;
-    json jsonObj;
     if (GetJson(strJson, uri) == NEGATIVE_ONE) {
         LOGE("AnimConfig::String2Json failed");
         return false;
@@ -88,32 +112,18 @@ bool AnimConfig::ParseJson(std::string uri, bool isNeedParseFrame)
         LOGE("AnimConfig not get json");
         return false;
     }
-    jsonObj = json::parse(strJson);
+    json jsonObj = json::parse(strJson);
     if (jsonObj.find("info") == jsonObj.end()) {
         LOGE("jsonObj: not find info");
         return false;
     }
-    const auto &info = jsonObj.at("info");
 
-    this->width = info.at("w").get<int>();
-    this->height = info.at("h").get<int>();
-    this->totalFrames = info.at("f").get<int>();
-    this->videoWidth = info.at("videoW").get<int>();
-    this->videoHeight = info.at("videoH").get<int>();
-    this->orien = info.at("orien").get<Orien>();
-    this->fps = info.at("fps").get<int>();
-    this->isMix = info.at("isVapx").get<int>() == ONE;
-    const auto& a = info.at("aFrame");
-    this->alphaPointRect = std::move(PointRect(a.at(ZERO).get<int>(), a.at(ONE).get<int>(),
-        a.at(TWO).get<int>(), a.at(THREE).get<int>()));
-    const auto& c = info.at("rgbFrame");
-    this->rgbPointRect = std::move(PointRect(c.at(ZERO).get<int>(), c.at(ONE).get<int>(),
-        c.at(TWO).get<int>(), c.at(THREE).get<int>()));
+    if (!ParseBaseData(jsonObj.at("info"))) {
+        return false;
+    }
 
     if (jsonObj.find("src") != jsonObj.end()) {
         srcMapPtr = std::make_shared<SrcMap>(jsonObj);
-    } else {
-        LOGW("json: not find src");
     }
 
     if (isNeedParseFrame && jsonObj.find("frame") != jsonObj.end()) {
@@ -121,7 +131,7 @@ bool AnimConfig::ParseJson(std::string uri, bool isNeedParseFrame)
     } else {
         LOGW("json: not find frame");
     }
-    
+
     isInit = true;
     LOGD("end ParseJson");
     return true;

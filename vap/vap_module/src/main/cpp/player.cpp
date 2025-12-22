@@ -41,8 +41,7 @@ Player::~Player()
     Stop();
     StartRelease();
     if (renderThread_ && renderThread_->joinable()) {
-        // renderThread_->join();
-        renderThread_->detach();
+        renderThread_->join();
     }
 }
 

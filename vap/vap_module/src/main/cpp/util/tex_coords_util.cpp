@@ -15,6 +15,7 @@
 
 #include "tex_coords_util.h"
 #include "common_const.h"
+#include "log.h"
 
 using namespace CommonConst;
 
@@ -41,6 +42,8 @@ void TexCoordsUtil::Create(int32_t width, int32_t height, PointRect rect, float 
         // y3
         array[SEVEN] = (static_cast<float>(rect.y) + rect.h) / height;
     }
+    LOGD("TexCoordsUtil::Create: %{public}d, %{public}d, %{public}d, %{public}d, %{public}d, %{public}d, %{public}f, \
+        %{public}f", width, height, rect.x, rect.y, rect.w, rect.h, array[0], array[1]);
 }
 
 void TexCoordsUtil::Rotate90(float *array)
