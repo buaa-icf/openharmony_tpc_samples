@@ -102,7 +102,6 @@ class StreamReader extends SequentialReader {
       LogUtil.error(TAG, `trySkip error: n must be zero or greater, n: ${n}`);
       throw new Error("n must be zero or greater.");
     }
-    
     LogUtil.debug(TAG, `trySkip end, this.skipInternal(n): ${this.skipInternal(n)}, n: ${n}`);
     return this.skipInternal(n) == n;
   }
