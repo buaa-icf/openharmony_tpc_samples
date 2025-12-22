@@ -215,7 +215,7 @@ class GpsDescriptor extends TagDescriptor<GpsDirectory> {
   public getGpsSpeedRefDescription(): string
   {
     LogUtil.debug(TAG, `getGpsSpeedRefDescription start`);
-    let value = this._directory.getString(GpsDirectory.TAG_SPEED_REF, 'UTF-8');
+    let value = this._directory.getString(GpsDirectory.TAG_SPEED_REF);
     if (value == null) {
       LogUtil.error(TAG, `getGpsSpeedRefDescription end, value is null`);
       return null;
