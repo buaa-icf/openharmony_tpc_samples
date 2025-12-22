@@ -6,7 +6,7 @@
     "7zip"
   ],
   "name": "@ohos/oh7zip",
-  "version": "1.0.2-rc.0",
+  "version": "1.0.2",
   "description": "封装7zip命令行，支持压缩和解压文件到沙箱路径",
   "main": "Index.ets",
   "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_7zip",
