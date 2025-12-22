@@ -1,3 +1,7 @@
+## v2.1.3
+
+-  Optimized Shared Library Compilation: O3 and LTO Support
+
 ## v2.1.3-rc.2
 
 - Fixed the issue of the number of callback function parameters in the on and emit methods and made improvements
