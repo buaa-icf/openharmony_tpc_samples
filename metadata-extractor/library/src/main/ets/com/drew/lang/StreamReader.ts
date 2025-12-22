@@ -23,6 +23,7 @@ class StreamReader extends SequentialReader {
   private readonly _stream;
   private _pos: number;
   private fileSize:number =0;
+  private _skipBuffer: ArrayBuffer | null = null;
 
   public getPosition(): number
   {
@@ -77,7 +78,7 @@ class StreamReader extends SequentialReader {
     return new Int8Array(arrayBuffer)
   }
 
-  public async skip(n: number): Promise<void>
+  public skip(n: number): void
   {
     LogUtil.debug(TAG, `skip start, n: ${n}`);
     if (n < 0) {
@@ -85,7 +86,7 @@ class StreamReader extends SequentialReader {
       throw new Error("n must be zero or greater.");
     }
 
-    let skippedCount = await this.skipInternal(n);
+    let skippedCount = this.skipInternal(n);
 
     if (skippedCount != n) {
       LogUtil.error(TAG, `skip error: Unable to skip the requested number of bytes, skippedCount: ${skippedCount}, n: ${n}`);
@@ -94,7 +95,7 @@ class StreamReader extends SequentialReader {
     LogUtil.debug(TAG, `skip end, skippedCount: ${skippedCount}`);
   }
 
-  public async trySkip(n: number): Promise<boolean>
+  public trySkip(n: number): boolean
   {
     LogUtil.debug(TAG, `trySkip start, n: ${n}`);
     if (n < 0) {
@@ -102,12 +103,11 @@ class StreamReader extends SequentialReader {
       throw new Error("n must be zero or greater.");
     }
     
-    const skippedCount = await this.skipInternal(n);
     LogUtil.debug(TAG, `trySkip end, this.skipInternal(n): ${this.skipInternal(n)}, n: ${n}`);
-    return skippedCount == n;
+    return this.skipInternal(n) == n;
   }
 
-  private async skipInternal(n: number): Promise<number>
+  private skipInternal(n: number): number
   {
     // It seems that for some streams, such as BufferedInputStream, that skip can return
     // some smaller number than was requested. So loop until we either skip enough, or
@@ -116,13 +116,27 @@ class StreamReader extends SequentialReader {
     // See http://stackoverflow.com/questions/14057720/robust-skipping-of-data-in-a-java-io-inputstream-and-its-subtypes
     //
     LogUtil.debug(TAG, `skipInternal start, n: ${n}`);
-    let skippedTotal = 0;
-    while (skippedTotal != n) {
-      let skipped = await this._stream.read(new ArrayBuffer(n), { offset: 0, length: n, position: this._pos });
-      skippedTotal += skipped;
-      if (skipped == 0)
-      break;
+    if (this._skipBuffer === null) {
+      this._skipBuffer = new ArrayBuffer(8192);
     }
+
+    let skippedTotal = 0;
+    while (skippedTotal < n) {
+      const remaining = n - skippedTotal;
+      const bytesToRead = Math.min(remaining, 8192);
+
+      let skipped = this._stream.readSync(this._skipBuffer, {
+        offset: 0,
+        length: bytesToRead,
+        position: this._pos + skippedTotal
+      });
+
+      skippedTotal += skipped;
+      if (skipped === 0) {
+        break;
+      }
+    }
+
     this._pos += skippedTotal;
     LogUtil.debug(TAG, `skipInternal end, skippedTotal: ${skippedTotal}`);
     return skippedTotal;

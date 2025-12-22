@@ -14,7 +14,7 @@
  */
 
 import { Metadata, ImageMetadataReader, XmpDirectory, Directory } from '@ohos/metadata-extractor';
-import { XMPMetaFactory, XMPMeta, IteratorOptions, XMPPropertyInfo } from 'xmptool';
+import { XMPMetaFactory, XMPMeta, IteratorOptions, XMPPropertyInfo } from '@ohos/xmptool';
 import fileIo from '@ohos.file.fs';
 import taskpool from '@ohos.taskpool';
 

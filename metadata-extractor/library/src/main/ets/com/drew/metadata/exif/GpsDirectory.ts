@@ -148,8 +148,8 @@ class GpsDirectory extends ExifDirectoryBase {
     LogUtil.debug(TAG,`getGeoLocation start`);
     let latitudes: Rational[] = this.getRationalArray(GpsDirectory.TAG_LATITUDE);
     let longitudes: Rational[] = this.getRationalArray(GpsDirectory.TAG_LONGITUDE);
-    let latitudeRef = this.getString(GpsDirectory.TAG_LATITUDE_REF, 'UTF-8');
-    let longitudeRef = this.getString(GpsDirectory.TAG_LONGITUDE_REF, 'UTF-8');
+    let latitudeRef = this.getString(GpsDirectory.TAG_LATITUDE_REF);
+    let longitudeRef = this.getString(GpsDirectory.TAG_LONGITUDE_REF);
 
     // Make sure we have the required values
     if (latitudes == null || latitudes.length != 3) {

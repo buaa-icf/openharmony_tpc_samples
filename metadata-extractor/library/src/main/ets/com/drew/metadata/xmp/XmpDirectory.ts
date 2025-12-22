@@ -16,11 +16,11 @@ limitations under the License.
 import Directory from '../Directory';
 import XmpDescriptor from './XmpDescriptor';
 import LogUtil from '../../tools/LogUtils';
-import { XMPMeta } from 'xmptool';
-import { XMPMetaImpl } from 'xmptool';
-import { IteratorOptions } from 'xmptool';
-import { XMPIterator } from 'xmptool';
-import { XMPPropertyInfo } from 'xmptool';
+import { XMPMeta } from '@ohos/xmptool';
+import { XMPMetaImpl } from '@ohos/xmptool';
+import { IteratorOptions } from '@ohos/xmptool';
+import { XMPIterator } from '@ohos/xmptool';
+import { XMPPropertyInfo } from '@ohos/xmptool';
 
 const TAG: string = "[XMP] XmpDirectory";
 

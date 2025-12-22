@@ -15,9 +15,9 @@ limitations under the License.
 
 import Metadata from '../Metadata';
 import XmpDirectory from './XmpDirectory';
-import { XMPMeta } from 'xmptool';
-import { XMPMetaFactory } from 'xmptool';
-import { SerializeOptions } from 'xmptool';
+import { XMPMeta } from '@ohos/xmptool';
+import { XMPMetaFactory } from '@ohos/xmptool';
+import { SerializeOptions } from '@ohos/xmptool';
 
 class XmpWriter {
   /**
