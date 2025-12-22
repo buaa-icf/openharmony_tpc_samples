@@ -6,19 +6,11 @@
 
 ## 第一部分: 后端编译指南
 
-### 下载代码
+## 下载代码
 
-#### 内部开发（使用dev分支）
 ```bash
-git clone --recursive -b dev git@gitee.com:yp9522/ohos_rive.git
+git clone git@gitcode.com:openharmony-tpc/openharmony_tpc_samples.git
 ```
-
-#### 客户联调（使用master分支）
-```bash
-git clone --recursive -b master git@gitee.com:yp9522/ohos_rive.git
-```
-
-> 说明：dev分支包含最新开发代码，用于内部团队开发和测试；master分支包含稳定版本，用于客户集成和使用。
 
 ### 编译前准备
 
@@ -238,7 +230,7 @@ ohos_rive/
 │   │   ├── ets/         # ArkTS文件
 │   │   ├── cpp/         # C++原生代码
 │   │   └── resources/   # 库资源文件
-└── README.md                  # 项目说明
+└── README_zh.md                  # 项目说明
 ```
 
 ### API接口说明
@@ -265,49 +257,48 @@ ohos_rive/
 
 ##### 方法
 
-| 方法 | 说明 |
-| --- | --- |
-| `play(animationName?: string, loop?: Loop, direction?: Direction, isStateMachine?: boolean, settleInitialState?: boolean)` | 播放动画，可选指定动画名称。返回 void。 |
-| `pause()` | 暂停动画。返回 void。 |
-| `stop()` | 停止动画。返回 void。 |
-| `reset()` | 重置动画到初始状态。返回 void。 |
-| `isPlaying()` | 检查动画是否正在播放。返回 boolean。 |
-| `setRiveFile(file: File, artboardName?: string, animationName?: string, stateMachineName?: string, autoplay?: boolean, autoBind?: boolean, fit?: Fit, alignment?: Alignment, loop?: Loop)` | 设置Rive文件对象。返回 void。 |
-| `setRiveBytes(bytes: ArrayBuffer, artboardName?: string, animationName?: string, stateMachineName?: string, autoplay?: boolean, autoBind?: boolean, fit?: Fit, alignment?: Alignment, loop?: Loop)` | 从字节数组加载Rive动画。返回 void。 |
-| `setNumberState(stateMachineName: string, inputName: string, value: number)` | 设置数字状态。返回 void。 |
-| `pauseAnimation(animationName: string, isStateMachine?: boolean)` | 暂停指定名称的动画。返回 void。 |
-| `stopAnimation(animationName: string, isStateMachine?: boolean)` | 停止指定名称的动画。返回 void。 |
-| `setBooleanState(stateMachineName: string, inputName: string, value: boolean)` | 设置布尔状态。返回 void。 |
-| `setBooleanStateAtPath(inputName: string, value: boolean, path: string)` | 在路径上设置布尔状态。返回 void。 |
-| `setTextRunValue(textRunName: string, textValue: string, path?: string)` | 设置文本运行值。返回 void。 |
-| `setRiveResource(resId: number\string, artboardName?: string, animationName?: string, stateMachineName?: string, autoplay?: boolean, autoBind?: boolean, fit?: Fit, alignment?: Alignment, loop?: Loop)` | 设置Rive资源。返回 void。 |
-| `setArtboardName(name: string\null)` | 设置当前画板名称。返回 void。 |
-| `setAutoplay(value: boolean)` | 设置自动播放状态。返回 void。 |
-| `getFit()` | 获取Fit。返回 Fit。 |
-| `setFit(value: Fit)` | 设置Fit。返回 void。 |
-| `setAlignment(value: Alignment)` | 设置Alignment。返回 void。 |
-| `getLayoutScaleFactor()` | 获取布局缩放因子。返回 number\null。 |
-| `setLayoutScaleFactor(value: number\null)` | 设置布局缩放因子。返回 void。 |
-| `registerListener(listener: RiveFileControllerListener)` | 注册监听器。返回 void。 |
-| `unregisterListener(listener: RiveFileControllerListener)` | 取消注册监听器。返回 void。 |
-| `addEventListener(listener: RiveEventListener)` | 添加事件监听器。返回 void。 |
-| `removeEventListener(listener: RiveEventListener)` | 移除事件监听器。返回 void。 |
-| `getRenderer()` | 获取渲染器对象。返回 Renderer\null。 |
-| `getArtboard()` | 获取当前活动的画板对象。返回 Artboard\null。 |
-| `Alignment.fromIndex(index: number)` | 根据输入得到Alignment枚举值。返回 Alignment。 |
-| `Fit.fromString(fitString: string)` | 根据输入得到Fit枚举值。返回 Fit。 |
-| `RiveManager.getInstance()` | 获取RiveManager实例。返回 RiveManager。 |
-| `RiveManager.init(context: Context, defaultRenderer?: RendererType)` | 初始化RiveManager。返回 void。 |
-| `RiveManager.setFallbackFont(context: Context, byteArray?: Uint8Array, opts?: FontOpts)` | 为Rive runtime设置备用字体。返回 boolean。 |
+| 方法 | 说明                                                    |
+| --- |-------------------------------------------------------|
+| `play(animationName?: string, loop?: Loop, direction?: Direction, isStateMachine?: boolean, settleInitialState?: boolean)` | 播放动画，可选指定动画名称。                                        |
+| `pause()` | 暂停动画。                                                 |
+| `stop()` | 停止动画。                                                 |
+| `reset()` | 重置动画到初始状态。                                            |
+| `isPlaying()` | 检查动画是否正在播放。返回 boolean。                                |
+| `setRiveFile(file: File,artboardName?: string, animationName?: string,stateMachineName?: string,autoplay?: boolean,autoBind?: boolean,fit?: Fit,alignment?: Alignment,loop?: Loop)` | 设置Rive文件对象。                                           |
+| `setRiveBytes(bytes: ArrayBuffer, artboardName?: string, animationName?: string, stateMachineName?: string, autoplay?: boolean, autoBind?: boolean, fit?: Fit, alignment?: Alignment, loop?: Loop)` | 从字节数组加载Rive动画。                                        |
+| `setNumberState(stateMachineName: string, inputName: string, value: number)` | 设置数字状态。                                               |
+| `pauseAnimation(animationName: string, isStateMachine?: boolean)` | 暂停指定名称的动画。                                            |
+| `stopAnimation(animationName: string, isStateMachine?: boolean)` | 停止指定名称的动画。                                            |
+| `setBooleanState(stateMachineName: string, inputName: string, value: boolean)` | 设置布尔状态。                                               |
+| `setBooleanStateAtPath(inputName: string, value: boolean, path: string)` | 在路径上设置布尔状态。                                           |
+| `setTextRunValue(textRunName: string, textValue: string, path?: string)` | 设置文本运行值。                                              |
+| `setRiveResource(resId: number\|string, artboardName?: string, animationName?: string, stateMachineName?: string, autoplay?: boolean, autoBind?: boolean, fit?: Fit, alignment?: Alignment, loop?: Loop)` | 设置Rive资源。                                             |
+| `setArtboardName(name: string)` | 设置当前画板名称。                                             |
+| `getFit()` | 获取Fit。返回 Fit。                                         |
+| `setFit(value: Fit)` | 设置Fit。                                                |
+| `setAlignment(value: Alignment)` | 设置Alignment。                                          |
+| `getLayoutScaleFactor()` | 获取布局缩放因子。返回 number。                                   |
+| `setLayoutScaleFactor(value: number)` | 设置布局缩放因子。                                             |
+| `registerListener(listener: RiveFileControllerListener)` | 注册监听器。                                                |
+| `unregisterListener(listener: RiveFileControllerListener)` | 取消注册监听器。                                              |
+| `addEventListener(listener: RiveEventListener)` | 添加事件监听器。                                              |
+| `removeEventListener(listener: RiveEventListener)` | 移除事件监听器。                                              |
+| `getRenderer()` | 获取渲染器对象。返回 Renderer。                                  |
+| `getArtboard()` | 获取当前活动的画板对象。返回 Artboard。                              |
+| `Alignment.fromIndex(index: number)` | 根据输入得到Alignment枚举值。返回 Alignment。                      |
+| `Fit.fromString(fitString: string)` | 根据输入得到Fit枚举值。返回 Fit。                                  |
+| `RiveManager.getInstance()` | 获取RiveManager实例。返回 RiveManager。                       |
+| `RiveManager.getInstance().init(context: Context, defaultRenderer?: RendererType)` | 初始化RiveManager。                                       |
+| `RiveManager.getInstance().setFallbackFont(context: Context, byteArray?: Uint8Array, opts?: FontOpts)` | 为Rive runtime设置备用字体。返回 boolean。                       |
 | `RiveRenderImage.fromEncoded(encodedBytes: Uint8Array, rendererType?: RendererType, premultiplied?: boolean)` | 通过解码encodedBytes创建RiveRenderImage。返回 RiveRenderImage。 |
-| `RiveRenderImage.fromARGBInts(pixels: Uint32Array, width: number, height: number, rendererType?: RendererType, premultiplied?: boolean)` | 通过ARGB创建RiveRenderImage。返回 RiveRenderImage。 |
-| `RiveRenderImage.fromRGBABytes(pixelBytes: Uint8Array, width: number, height: number, rendererType?: RendererType, premultiplied?: boolean)` | 通过RGBA创建RiveRenderImage。返回 RiveRenderImage。 |
-| `artboardByName(name: string)` | 在File中获取名为name的画板。返回 Artboard。 |
-| `animationIndex(index: number)` | 在Artboard中根据index获取动画。返回 LinearAnimationInstance。 |
-| `restoreControllerState(state: ControllerState)` | 恢复控制器状态。返回 void。 |
-| `saveControllerState()` | 保存控制器状态。返回 ControllerState\null。 |
-| `release()` | 减少引用计数。返回 number。 |
-| `RiveFont.make(bytes: Uint8Array, rendererType?: RendererType)` | 创建RiveFont。返回 RiveFont。 |
+| `RiveRenderImage.fromARGBInts(pixels: Uint32Array, width: number, height: number, rendererType?: RendererType, premultiplied?: boolean)` | 通过ARGB创建RiveRenderImage。返回 RiveRenderImage。           |
+| `RiveRenderImage.fromRGBABytes(pixelBytes: Uint8Array, width: number, height: number, rendererType?: RendererType, premultiplied?: boolean)` | 通过RGBA创建RiveRenderImage。返回 RiveRenderImage。           |
+| `artboardByName(name: string)` | 在File中获取名为name的画板。返回 Artboard。                        |
+| `animationIndex(index: number)` | 在Artboard中根据index获取动画。返回 LinearAnimationInstance。    |
+| `restoreControllerState(state: ControllerState)` | 恢复控制器状态。                                              |
+| `saveControllerState()` | 保存控制器状态。返回 ControllerState。                          |
+| `release()` | 减少引用计数。返回 number。                                     |
+| `RiveFont.make(bytes: Uint8Array, rendererType?: RendererType)` | 创建RiveFont。返回 RiveFont。                                |
 
 
 #### initializeRive
@@ -339,7 +330,7 @@ initializeRive();
 
 ## 开源协议
 
-本项目基于 [Apache License 2.0](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ohos_rive/LICENSE) ，请自由地享受和参与开源。
+本项目基于 [MIT](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/blob/master/ohos_rive/LICENSE) ，请自由地享受和参与开源。
 
 ## 贡献代码
 
