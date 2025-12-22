@@ -1,3 +1,7 @@
+## v2.1.4-rc.0
+
+-  Optimized Shared Library Compilation: O3 and LTO Support
+
 ## v2.1.3
 
 -  Optimized Shared Library Compilation: O3 and LTO Support
