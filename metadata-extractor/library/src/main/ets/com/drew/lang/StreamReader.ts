@@ -114,6 +114,7 @@ class StreamReader extends SequentialReader {
     //
     // See http://stackoverflow.com/questions/14057720/robust-skipping-of-data-in-a-java-io-inputstream-and-its-subtypes
     //
+    LogUtil.debug(TAG, `skipInternal start, n: ${n}`);
     if (this._skipBuffer === null) {
       this._skipBuffer = new ArrayBuffer(8192);
     }
@@ -136,6 +137,7 @@ class StreamReader extends SequentialReader {
     }
 
     this._pos += skippedTotal;
+    LogUtil.debug(TAG, `skipInternal end, skippedTotal: ${skippedTotal}`);
     return skippedTotal;
   }
 
