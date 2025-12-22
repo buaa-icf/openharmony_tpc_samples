@@ -633,7 +633,7 @@ abstract class Directory {
     if (o == null)
     return null;
 
-    return o;
+    return String(o);
   }
 
   public getStringValue(tagType: number): StringValue

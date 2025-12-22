@@ -266,7 +266,7 @@ class TiffReader {
         if (componentCount == 1) {
           handler.setRational(tagId, new Rational(reader.getInt32(tagValueOffset), reader.getInt32(tagValueOffset + 4)));
         } else if (componentCount > 1) {
-          let array: Rational[] = new Rational[componentCount];
+          let array: Rational[] = new Array(componentCount);
           for (let i: number = 0; i < componentCount; i++)
           array[i] = new Rational(reader.getInt32(tagValueOffset + (8 * i)), reader.getInt32(tagValueOffset + 4 + (8 * i)));
           handler.setRationalArray(tagId, array);
@@ -276,7 +276,7 @@ class TiffReader {
         if (componentCount == 1) {
           handler.setRational(tagId, new Rational(reader.getUInt32(tagValueOffset), reader.getUInt32(tagValueOffset + 4)));
         } else if (componentCount > 1) {
-          let array: Rational[] = new Rational[componentCount];
+          let array: Rational[] = new Array(componentCount);
           for (let i: number = 0; i < componentCount; i++)
           array[i] = new Rational(reader.getUInt32(tagValueOffset + (8 * i)), reader.getUInt32(tagValueOffset + 4 + (8 * i)));
           handler.setRationalArray(tagId, array);

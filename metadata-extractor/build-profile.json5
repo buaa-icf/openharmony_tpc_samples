@@ -9,7 +9,13 @@
         "compileSdkVersion": 12,
         "compatibleSdkVersion": 12,
         "targetSdkVersion": 12,
-        "runtimeOS": "OpenHarmony"
+        "runtimeOS": "OpenHarmony",
+        "buildOption": {
+          "strictMode": {
+            "useNormalizedOHMUrl": true
+
+          }
+        }
       }
     ]
   },

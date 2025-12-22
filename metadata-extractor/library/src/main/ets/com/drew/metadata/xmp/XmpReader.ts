@@ -21,12 +21,12 @@ import Directory from '../Directory';
 import SequentialReader from '../../lang/SequentialReader';
 import SequentialByteArrayReader from '../../lang/SequentialByteArrayReader';
 import LogUtil from '../../tools/LogUtils';
-import { XMPMeta } from 'xmptool';
-import { XMPMetaFactory } from 'xmptool';
-import { ParseOptions } from 'xmptool';
-import { IteratorOptions } from 'xmptool';
-import { XMPIterator } from 'xmptool';
-import { XMPPropertyInfo } from 'xmptool';
+import { XMPMeta } from '@ohos/xmptool';
+import { XMPMetaFactory } from '@ohos/xmptool';
+import { ParseOptions } from '@ohos/xmptool';
+import { IteratorOptions } from '@ohos/xmptool';
+import { XMPIterator } from '@ohos/xmptool';
+import { XMPPropertyInfo } from '@ohos/xmptool';
 
 const TAG: string = "[XMP] XmpReader";
 

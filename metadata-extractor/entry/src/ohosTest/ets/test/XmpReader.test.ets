@@ -15,7 +15,7 @@
 
 import { describe, it, expect, beforeEach } from '@ohos/hypium';
 import { XmpReader, XmpDirectory, Metadata, JpegSegmentType } from '@ohos/metadata-extractor';
-import { XMPMeta } from 'xmptool';
+import { XMPMeta } from '@ohos/xmptool';
 
 /**
  * XmpReader测试套件

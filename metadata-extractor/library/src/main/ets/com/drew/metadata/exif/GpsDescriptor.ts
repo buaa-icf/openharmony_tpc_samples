@@ -79,7 +79,7 @@ class GpsDescriptor extends TagDescriptor<GpsDirectory> {
       case GpsDirectory.TAG_H_POSITIONING_ERROR:
         return this.getGpsHPositioningErrorDescription();
       default:
-        return this.getDescription(tagType);
+        return super.getDescription(tagType);
     }
   }
 

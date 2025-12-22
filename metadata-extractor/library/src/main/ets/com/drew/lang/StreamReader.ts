@@ -23,6 +23,7 @@ class StreamReader extends SequentialReader {
   private readonly _stream;
   private _pos: number;
   private fileSize:number =0;
+  private _skipBuffer: ArrayBuffer | null = null;
 
   public getPosition(): number
   {
@@ -101,7 +102,6 @@ class StreamReader extends SequentialReader {
       LogUtil.error(TAG, `trySkip error: n must be zero or greater, n: ${n}`);
       throw new Error("n must be zero or greater.");
     }
-
     LogUtil.debug(TAG, `trySkip end, this.skipInternal(n): ${this.skipInternal(n)}, n: ${n}`);
     return this.skipInternal(n) == n;
   }
@@ -115,13 +115,27 @@ class StreamReader extends SequentialReader {
     // See http://stackoverflow.com/questions/14057720/robust-skipping-of-data-in-a-java-io-inputstream-and-its-subtypes
     //
     LogUtil.debug(TAG, `skipInternal start, n: ${n}`);
-    let skippedTotal = 0;
-    while (skippedTotal != n) {
-      let skipped = this._stream.readSync(new ArrayBuffer(n), { offset: 0, length: n, position: this._pos });
-      skippedTotal += skipped;
-      if (skipped == 0)
-      break;
+    if (this._skipBuffer === null) {
+      this._skipBuffer = new ArrayBuffer(8192);
     }
+
+    let skippedTotal = 0;
+    while (skippedTotal < n) {
+      const remaining = n - skippedTotal;
+      const bytesToRead = Math.min(remaining, 8192);
+
+      let skipped = this._stream.readSync(this._skipBuffer, {
+        offset: 0,
+        length: bytesToRead,
+        position: this._pos + skippedTotal
+      });
+
+      skippedTotal += skipped;
+      if (skipped === 0) {
+        break;
+      }
+    }
+
     this._pos += skippedTotal;
     LogUtil.debug(TAG, `skipInternal end, skippedTotal: ${skippedTotal}`);
     return skippedTotal;
