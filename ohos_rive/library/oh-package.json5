@@ -15,7 +15,7 @@
     "Animation",
     "Rive"
   ],
-  "license": "Apache License 2.0",
+  "license": "MIT",
   "dependencies": {
     "libohos_rive.so": "file:./src/main/cpp/types/libohos_rive"
   },
