@@ -12,7 +12,6 @@ set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
 set(CMAKE_SKIP_RPATH TRUE)
-
 add_library(oh7zip SHARED napi_init.cpp
                           uncompress/uncompress.cpp
                           uncompress/uncompress_bridge.cpp
@@ -20,6 +19,7 @@ add_library(oh7zip SHARED napi_init.cpp
                           compress/compress_bridge.cpp
                           napi_help/napi_help.cpp
                           task_pool/task_pool.cpp)
+
 
 target_link_libraries(oh7zip PUBLIC libace_napi.z.so libffrt.z.so)
 target_link_libraries(oh7zip PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../../../libs/${OHOS_ARCH}/lib7zz.so)
@@ -39,10 +39,12 @@ target_include_directories(oh7zip PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/
 
 
 target_compile_definitions(oh7zip PUBLIC -DNAPI_VERSION=16)
-target_compile_options(oh7zip PUBLIC -fvisibility=hidden)
+target_compile_options(oh7zip PRIVATE -fvisibility=hidden)
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
 target_link_options(oh7zip PRIVATE -s)
 target_link_libraries(oh7zip PRIVATE "-Wl,--version-script=${CMAKE_CURRENT_SOURCE_DIR}/oh7zip.expmap")
+target_compile_options(oh7zip PRIVATE $<$<CONFIG:Release>:-O3 -DNDEBUG -flto=thin>)
+target_link_options(oh7zip PRIVATE $<$<CONFIG:Release>:-s -flto=thin>)
 endif()
 add_custom_command(TARGET oh7zip POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/../../../include

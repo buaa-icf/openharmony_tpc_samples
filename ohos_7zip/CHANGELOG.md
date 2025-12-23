@@ -1,3 +1,7 @@
+## v1.0.2
+
+- perf: optimize library with O3 optimization level
+
 ## v1.0.2-rc.0
 
 modify docs

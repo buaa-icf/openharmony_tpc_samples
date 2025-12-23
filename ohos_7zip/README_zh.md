@@ -12,6 +12,19 @@ ohpm install @ohos/oh7zip
 
 OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony har包](https://gitcode.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) 。
 
+### 编译运行
+
+本项目依赖7zip、bzip2、minizip-ng、openssl、xz、zstd库，编译产物.so文件和头文件需要自行编译，
+参考[bzip2本地编译脚本](https://gitcode.com/openharmony-sig/tpc_c_cplusplus/tree/master/thirdparty/bzip2)
+参考[minizip-ng本地编译脚本](https://gitcode.com/openharmony-sig/tpc_c_cplusplus/tree/master/community/minizip-ng)
+参考[openssl本地编译脚本](https://gitcode.com/openharmony-sig/tpc_c_cplusplus/tree/master/thirdparty/openssl)
+参考[xz本地编译脚本](https://gitcode.com/openharmony-sig/tpc_c_cplusplus/tree/master/community/xz)
+参考[zstd本地编译脚本](https://gitcode.com/openharmony-sig/tpc_c_cplusplus/tree/master/thirdparty/zstd)
+
+在cpp目录下新增thirdparty目录，并将编译生成的7zip、bzip2、minizip-ng、openssl、xz、zstd库拷贝到该目录下，如下图所示：
+
+![image-20250611153322646](./dir.png)
+
 ## 使用说明
 
 - C++
@@ -108,11 +121,6 @@ uncompress.extractSync(config)
 | std::shared_future\<ErrorInfo> CompressAsync(std::shared_ptr\<Config7z> config) | 异步操作，压缩文件或目录到沙箱路径 |
 
 
-## 源码下载
-  本项目依赖 minizip-ng、OpenSSL、bzip2、xz、zstd 库，通过`git submodule`引入，下载代码时需加上`--recursive`参数。
-  ```
-  git clone --recursive https://gitcode.com/openharmony-tpc/openharmony_tpc_samples.git
-  ```
 
 ## 关于混淆
 - 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)
@@ -130,13 +138,13 @@ uncompress.extractSync(config)
 ## 目录结构
 
 ````
-|---- net_snmp
+|---- ohos_7zip
 |     |---- entry  # 示例代码文件夹
 |     |---- library  # ohos_7zip库文件夹
-|	    |----libs    #so库
-|	    |----src
-          |----main
-              |----cpp   #cpp 核心功能实现模块
+|	    |---- libs    #so库
+|	    |---- src
+          |---- main
+              |---- cpp   #cpp 核心功能实现模块
 |     |---- README.md  # 安装使用方法                    
 ````
 
