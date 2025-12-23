@@ -19,5 +19,7 @@
     "extractor",
     "HarmonyOS"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "@ohos/xmptool": "1.0.0-rc.0"
+  }
 }
