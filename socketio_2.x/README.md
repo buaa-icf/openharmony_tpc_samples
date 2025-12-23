@@ -40,8 +40,10 @@ import { client_socket } from '@ohos/socketio_2.x';
 ```typescript
 client: client_socket = new client_socket(uri); // uri: socket.io server address
 ```
+3. [Compile OpenSSL](https://gitcode.com/openharmony-sig/tpc_c_cplusplus/blob/master/thirdparty/openssl/README_zh.md)  Replace the compiled artifacts into socket.io-client-cpp/lib/openssl
 
-3. Set listening events.
+
+4. Set listening events.
 
 ```typescript
 this.client.set_open_listener(this.on_open.bind(this));

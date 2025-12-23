@@ -235,7 +235,10 @@ this.client.on("ping_pong", data: string => {
   git clone --recursive https://gitcode.com/openharmony-tpc/openharmony_tpc_samples.git
   ```
 2. Linux环境无需执行该步骤，如果是windows环境下，代码下载完成后合入OHOS适配的代码，cd 进入到socketio_2.x/library/src/main/cpp/thirdModule 目录下，执行 modify.sh 脚本，将本目录下的 patch 文件合入到 socket.io-client-cpp 源码中。
-3. 开始编译项目。
+
+3. [编译openssl](https://gitcode.com/openharmony-sig/tpc_c_cplusplus/blob/master/thirdparty/openssl/README_zh.md) 将编译好的产物替换到socket.io-client-cpp/lib/openssl
+
+4. 开始编译项目。
 
 ## 约束与限制
 在下述版本验证通过：

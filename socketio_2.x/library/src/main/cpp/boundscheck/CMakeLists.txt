@@ -22,7 +22,8 @@ add_library(boundscheck
             ${TAGET_BOUNDSCHECK_SRC_PATH}/sprintf_s.c
             ${TAGET_BOUNDSCHECK_SRC_PATH}/secureprintoutput_a.c
             ${TAGET_BOUNDSCHECK_SRC_PATH}/securecutil.c)
-
+target_compile_options(boundscheck PRIVATE $<$<CONFIG:Release>:-O3 -DNDEBUG -flto=thin>)
+target_link_options(boundscheck PRIVATE $<$<CONFIG:Release>:-s -flto=thin>)
 include_directories(${TAGET_BOUNDSCHECK_SRC_PATH}
                     ${CMAKE_CURRENT_SOURCE_DIR}/third_party_bounds_checking_function/include
                     )

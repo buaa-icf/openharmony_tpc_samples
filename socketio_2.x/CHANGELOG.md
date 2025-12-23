@@ -1,3 +1,7 @@
+## v1.0.6
+
+- Optimized Shared Library Compilation: O3 and LTO Support
+
 ## v1.0.6-rc.2
 
 - Fixed the issue in Socket.IO 2.x where, when emitting same-named events to different servers, the callback gets overwritten and messages are overwritten.

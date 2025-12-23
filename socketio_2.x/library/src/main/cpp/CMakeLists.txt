@@ -37,5 +37,6 @@ include_directories(${NATIVERENDER_ROOT_PATH}
 
 add_library(client_socket_c SHARED
         client_socket.cpp)
-
+target_compile_options(client_socket_c PRIVATE $<$<CONFIG:Release>:-O3 -DNDEBUG -flto=thin>)
+target_link_options(client_socket_c PRIVATE $<$<CONFIG:Release>:-s -flto=thin>)
 target_link_libraries(client_socket_c PUBLIC boundscheck sioclient sioclient_tls libace_napi.z.so libc++_shared.so libhilog_ndk.z.so)
