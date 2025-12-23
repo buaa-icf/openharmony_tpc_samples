@@ -1,0 +1,48 @@
+{
+  "string": [
+    {
+      "name": "shared_desc",
+      "value": "description"
+    },
+    {
+      "name": "preview_text",
+      "value": "预览"
+    },
+    {
+      "name": "back_text",
+      "value": "返回"
+    },
+    {
+      "name": "original_image_text",
+      "value": "原图"
+    },
+    {
+      "name": "button_apply_default",
+      "value": "使用"
+    },
+    {
+      "name": "button_apply",
+      "value": "使用(%d)"
+    },
+    {
+      "name": "dialog_confirm",
+      "value": "确认"
+    },
+    {
+      "name": "photo_size_exceeded_message",
+      "value": "该照片大于%dM，无法上传将取消勾选原图"
+    },
+    {
+      "name": "gif_only_message",
+      "value": "仅支持选择 GIF 图片"
+    },
+    {
+      "name": "media_type_exclusive_message",
+      "value": "不能同时选择图片和视频"
+    },
+    {
+      "name": "app_name",
+      "value": "matisse"
+    }
+  ]
+}
