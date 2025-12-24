@@ -18,8 +18,8 @@ import Preconditions from './Preconditions';
 import { LogUtil } from './LogUtil';
 
 export default class GetRequest {
-  private RANGE_HEADER_PATTERN: RegExp = new RegExp("range:[ ]?bytes=(\\d*)-", "i");
-  private URL_PATTERN: RegExp = new RegExp("(GET|HEAD) /(.*) HTTP");
+  private RANGE_HEADER_PATTERN: RegExp = new RegExp('range:[ ]?bytes=(\\d*)-', 'i');
+  private URL_PATTERN: RegExp = new RegExp('(GET|HEAD) /(.*) HTTP');
   public uri: string;
   public rangeOffset: number;
   public partial: boolean;
@@ -35,7 +35,7 @@ export default class GetRequest {
   }
 
   public static read(inputStream: ArrayBuffer): GetRequest {
-    let stringRequest: string = buffer.from(inputStream).toString("UTF-8");
+    let stringRequest: string = buffer.from(inputStream).toString('UTF-8');
     return new GetRequest(stringRequest);
   }
 
@@ -57,7 +57,8 @@ export default class GetRequest {
     // matcher[1]: 请求方法 (GET|HEAD)
     // matcher[2]: URL路径
     if (!matcher || matcher.length < 2 || (matcher.length >= 2 && !matcher[1])) {
-      throw new Error('Invalid request: method not found!');
+      LogUtil.error('Invalid request: method not found! request = ' + request);
+      return '';
     }
     return matcher[1];
   }
@@ -68,7 +69,8 @@ export default class GetRequest {
     // matcher[1]: 请求方法 (GET|HEAD)
     // matcher[2]: URL路径
     if (!matcher || matcher.length < 3 || (matcher.length >= 3 && !matcher[2])) {
-      throw new Error("Invalid request `" + request + "`: url not found!");
+      LogUtil.error('Invalid request `' + request + '`: url not found!');
+      return '';
     }
     return matcher[2];
   }

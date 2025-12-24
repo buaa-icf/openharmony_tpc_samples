@@ -1,3 +1,7 @@
+## 1.0.7-rc.1
+1. Remove @ohos/crypto js references to reduce package size
+2. Remove the permissions of GET_WIFI_INFO and GET_NETWORK_INFO
+
 ## 1.0.7-rc.0
 1. Fix the issue where HEAD requests cannot be processed
 

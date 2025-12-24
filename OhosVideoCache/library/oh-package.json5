@@ -11,9 +11,7 @@
   },
   "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/OhosVideoCache",
   "license": "Apache-2.0 license",
-  "dependencies": {
-    "@ohos/crypto-js": "2.0.4"
-  },
+  "dependencies": {},
   "keywords": [
     "Video Cache",
     "Http Proxy",
