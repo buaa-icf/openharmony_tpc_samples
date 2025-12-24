@@ -1,4 +1,16 @@
 # 版本记录
+
+## 1.1.7-rc.1
+
+---
+
+1. Fixed the color issue at the edge of the picture.
+2. Fixed the issue where color blocks automatically appeared when not filled.
+3. Fixed the issue where emojis were not displayed.
+4. Fixed the issue of json parsing crash.
+5. Fixed the issue of incorrect data length reading.
+6. Fixed the crash issue when the stop interface and XComponent destruction occurred simultaneously.
+
 ## 1.1.6
 
 ---
