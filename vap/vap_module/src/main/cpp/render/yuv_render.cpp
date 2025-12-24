@@ -45,8 +45,8 @@ void YuvRender::InitRender(std::string uri)
     glGenTextures(THREE, textureId_);
     for (auto &it : textureId_) {
         glBindTexture(GL_TEXTURE_2D, it);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     }
@@ -61,8 +61,12 @@ void YuvRender::SetYUVData(int32_t width, int32_t height, const std::vector<unsi
     this->y_ = std::move(y);
     this->u_ = std::move(u);
     this->v_ = std::move(v);
-    if ((widthYUV_ / TWO) % FOUR != ZERO) {
-        this->unpackAlign_ = (widthYUV_ / TWO) % TWO == ZERO? TWO : ONE;
+
+    int uvWidth = widthYUV_ / TWO;
+    if (uvWidth % FOUR != ZERO) {
+        this->unpackAlign_ = (uvWidth % TWO == ZERO) ? TWO : ONE;
+    } else {
+        this->unpackAlign_ = FOUR;
     }
 }
 
@@ -87,15 +91,15 @@ void YuvRender::Draw()
         vertex_.EnableVertexAttrib(avPosition_);
         alpha_.EnableVertexAttrib(alphaPosition_);
         rgb_.EnableVertexAttrib(rgbPosition_);
-
-        glPixelStorei(GL_UNPACK_ALIGNMENT, unpackAlign_);
         
         // 激活纹理0来绑定y数据
+        glPixelStorei(GL_UNPACK_ALIGNMENT, (widthYUV_ % FOUR == ZERO) ? FOUR : ONE);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textureId_[ZERO]);
         glTexImage2D(GL_TEXTURE_2D, ZERO, GL_LUMINANCE,
             widthYUV_, heightYUV_, ZERO, GL_LUMINANCE, GL_UNSIGNED_BYTE, y_.data());
 
+        glPixelStorei(GL_UNPACK_ALIGNMENT, unpackAlign_);
         // 激活纹理1来绑定u数据
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, textureId_[ONE]);

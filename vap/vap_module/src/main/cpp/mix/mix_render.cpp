@@ -94,32 +94,27 @@ void MixRender::Init()
     }
     haveSrc = true;
     int idx = ZERO;
-    bool isEnough = true;
     std::shared_ptr<SrcMap> srcPtr = m_animConfig->srcMapPtr;
-    m_textureIds.resize(srcPtr->srcSMap.size());
+    m_textureIds.resize(m_mixData.size());
     for (auto it = srcPtr->srcSMap.begin(); it != srcPtr->srcSMap.end(); ++it) {
-        std::string key = it->first; // id
         Src src = it->second;
         BitMap bitmap;
-        
+
         if (m_mixData.find(it->second.srcTag) == m_mixData.end()) {
-            LOGW("MixRender Data tag: %{public}s not find.", it->second.srcTag.c_str());
-            isEnough = false;
-            bitmap.pixelsData.resize(src.w * src.h * FOUR);
-            fill(bitmap.pixelsData.begin(), bitmap.pixelsData.end(), 0xaa);
-        } else {
-            MixInputData mixData = m_mixData.at(it->second.srcTag);
-            LOGD("Init tag %{public}s fw ta: %{public}d-%{public}d", it->second.srcTag.c_str(),
-                mixData.fontWeight, mixData.textAlign);
-            if (src.srcType == SrcType::TXT && (mixData.isSet & SET_COLOR)) {
-                ColorARGB color = mixData.color;
-                it->second.color =
-                    ((color.alpha & 0xff) << THREE_TIME_EIGHT) | ((color.red & 0xff) << TWO_TIME_EIGHT) |
-                    ((color.green & 0xff) << EIGHT) | (color.blue & 0xff);
-            }
-            GenSrcTexture(src, bitmap, mixData);
+            continue;
         }
-            
+
+        MixInputData mixData = m_mixData.at(it->second.srcTag);
+        LOGD("Init tag %{public}s fw ta: %{public}d-%{public}d", it->second.srcTag.c_str(),
+            mixData.fontWeight, mixData.textAlign);
+        if (src.srcType == SrcType::TXT && (mixData.isSet & SET_COLOR)) {
+            ColorARGB color = mixData.color;
+            it->second.color =
+                ((color.alpha & 0xff) << THREE_TIME_EIGHT) | ((color.red & 0xff) << TWO_TIME_EIGHT) |
+                ((color.green & 0xff) << EIGHT) | (color.blue & 0xff);
+        }
+        GenSrcTexture(src, bitmap, mixData);
+
         GLuint textureId;
         bitmap.imgWidth = src.w;
         bitmap.imgHeight = src.h;
@@ -127,7 +122,6 @@ void MixRender::Init()
         it->second.srcTextureId = textureId;
         it->second.drawWidth = it->second.w;
         it->second.drawHeight = it->second.h;
-        
         m_textureIds[idx] = textureId;
         idx++;
         LOGD("MixRender srcTextureId :%{public}d", textureId);
@@ -156,6 +150,10 @@ void MixRender::RenderFrame(MixConfigSize config, Frame frame, Src src)
         LOGE("MixRender RenderFrame externalTexture error");
         return;
     }
+
+    if (src.srcTextureId == 0) {
+        return;
+    }
     m_shader->UseProgram();
     m_vertexArray.Create(config.width, config.height, frame.frame, m_vertexArray.array.get());
     m_vertexArray.SetArray(m_vertexArray.array.get());
@@ -180,16 +178,6 @@ void MixRender::RenderFrame(MixConfigSize config, Frame frame, Src src)
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, videoTextureId);
     glUniform1i(m_shader->m_uTextureMaskUnitLocation, ONE);
-    
-    if (src.srcType == SrcType::TXT) {
-        glUniform1i(m_shader->m_uIsFillLocation, ONE);
-        std::vector<float> argb;
-        transColor(src.color, argb);
-        glUniform4f(m_shader->m_uColorLocation, argb[ONE], argb[TWO], argb[THREE], argb[ZERO]);
-    } else {
-        glUniform1i(m_shader->m_uIsFillLocation,  ZERO);
-        glUniform4f(m_shader->m_uColorLocation, 0.0f, 0.0f, 0.0f, 0.0f);
-    }
     
     glEnable(GL_BLEND);
     glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);

@@ -75,6 +75,7 @@ public:
     std::shared_ptr<FrameAll> frameAllPtr = nullptr;
 private:
 	void ParseBoxHead(std::vector<char> &boxHead, BoxHead &head);
+    bool ParseBaseData(json& info);
     int GetJson(std::string &jsonStr, std::string &uri);
     
     bool isInit = false;

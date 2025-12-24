@@ -31,6 +31,8 @@ void VertexUtil::Create(int32_t width, int32_t height, const PointRect &rect, fl
         array[SIX] = SwitchX((static_cast<float>(rect.x) + rect.w) / width);
         array[SEVEN] = SwitchY((static_cast<float>(rect.y) + rect.h) / height);
     }
+    LOGD("VertexUtil::Create %{public}d, %{public}d, %{public}d, %{public}d, %{public}d, %{public}d, %{public}f, \
+        %{public}f", width, height, rect.x, rect.y, rect.w, rect.h, array[0], array[1]);
 }
 
 float VertexUtil::SwitchX(float x)
