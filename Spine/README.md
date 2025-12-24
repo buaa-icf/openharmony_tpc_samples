@@ -459,6 +459,9 @@ import {
 | Skeleton  | getBoundsRect             | clipper       | Aligns the bounding box of the region and mesh attachment with the current posture and returns the result.|
 | SkeletonJson  | readSkeletonData      | json         | Reads and parses the skeleton animation data file, and generates skeletonData.    |
 
+## Attention
+- This library has limitations in implementing logic (based on image cropping), and there may be residual skeletal framework lines when rendering animations, which are difficult to completely eliminate. It is recommended to switch to the [Spinec](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/spinec) library, which has solved this problem from the bottom and can achieve smooth animation without skeletal lines.
+
 ## Constraints
 
 This project has been verified in the following versions:

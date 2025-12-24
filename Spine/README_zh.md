@@ -459,6 +459,9 @@ import {
 | Skeleton  | getBoundsRect             | clipper       | 将当前姿势的区域和网格附件的轴对齐边界框并返回 |
 | SkeletonJson  | readSkeletonData      | json         | 读取并解析骨骼动画数据文件，生成 skeletonData     |
 
+
+## 注意
+- 该库因实现逻辑（基于图片裁剪）存在局限，渲染动画时会残留骨骼框架线，难以完全消除。推荐改用 [Spinec](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/spinec) 库，其已从底层解决该问题，可实现无骨骼线的流畅动画。
 ## 约束与限制
 
 在下述版本验证通过：
@@ -477,6 +480,8 @@ import {
 ├── README.md     # 安装使用方法    
                    
 ````
+
+
 
 ## 贡献代码
 
