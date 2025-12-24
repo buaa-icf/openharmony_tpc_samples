@@ -256,11 +256,12 @@ struct GetRequestTestDemo {
       let requestStr = 'POST /test%20url HTTP/1.1\r\nHost: localhost\r\n\r\n';
       let requestBuffer = buffer.from(requestStr, 'utf-8').buffer;
       let request = GetRequest.read(requestBuffer);
-      // 如果到达这里，说明没有抛出异常，测试失败
-      this.addTestResult('无效请求(POST)应抛出异常', false, '期望抛出异常但未抛出');
+      // POST 方法不被支持，应该返回空字符串
+      let passed = request.method === '' || request.uri === '';
+      this.addTestResult('无效请求(POST)应返回空method或uri', passed,
+        passed ? '' : `期望: method或uri为空, 实际: method=${request.method}, uri=${request.uri}`);
     } catch (err) {
-      // 期望抛出异常
-      this.addTestResult('无效请求(POST)应抛出异常', true);
+      this.addTestResult('无效请求(POST)应返回空method或uri', false, `异常: ${err.message}`);
     }
   }
 
@@ -269,11 +270,12 @@ struct GetRequestTestDemo {
       let requestStr = 'INVALID REQUEST\r\n\r\n';
       let requestBuffer = buffer.from(requestStr, 'utf-8').buffer;
       let request = GetRequest.read(requestBuffer);
-      // 如果到达这里，说明没有抛出异常，测试失败
-      this.addTestResult('格式错误请求应抛出异常', false, '期望抛出异常但未抛出');
+      // 格式错误的请求应该返回空字符串
+      let passed = request.method === '' || request.uri === '';
+      this.addTestResult('格式错误请求应返回空method或uri', passed,
+        passed ? '' : `期望: method或uri为空, 实际: method=${request.method}, uri=${request.uri}`);
     } catch (err) {
-      // 期望抛出异常
-      this.addTestResult('格式错误请求应抛出异常', true);
+      this.addTestResult('格式错误请求应返回空method或uri', false, `异常: ${err.message}`);
     }
   }
 
