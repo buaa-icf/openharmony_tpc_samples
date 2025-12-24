@@ -12,9 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 */
-#ifndef XCOMPONENT_MANAGER_H
-#define XCOMPONENT_MANAGER_H
 
+#pragma once
 #include <mutex>
 #include <string>
 #include <ace/xcomponent/native_interface_xcomponent.h>
@@ -47,5 +46,3 @@ private:
 };
 
 #define xMgr XcomponentManager::GetInstance()
-
-#endif // XCOMPONENT_MANAGER_H

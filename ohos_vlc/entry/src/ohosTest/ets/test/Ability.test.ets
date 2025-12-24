@@ -1,7 +1,6 @@
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium';
-import { LibVLC, MediaPlayer, Media, MediaPlayerListener, MediaListener } from '@ohos/vlc'
-import { ArrayList } from '@kit.ArkTS';
+import { LibVLC, libvlc_event_e, Media, MediaPlayer } from '@ohos/vlc';
 
 export default function abilityTest() {
   describe('ActsAbilityTest', () => {
@@ -25,7 +24,7 @@ export default function abilityTest() {
       // This API supports only one parameter: clear action function.
     })
     it('test_base', 0, () => {
-      let vlc: LibVLC = new LibVLC(new ArrayList<string>(), "");
+      let vlc: LibVLC = new LibVLC([], "");
       let mediaPlayer: MediaPlayer = new MediaPlayer(vlc);
       let path = "file://" + getContext().resourceDir + "/5.mp4";
       let media: Media = new Media(vlc, path)
@@ -34,14 +33,16 @@ export default function abilityTest() {
     })
 
     it('test_Characteristics', 0, () => {
-      let vlc: LibVLC = new LibVLC(new ArrayList<string>(), "");
+      let vlc: LibVLC = new LibVLC([], "");
       let mediaPlayer: MediaPlayer = new MediaPlayer(vlc);
       let path = "file://" + getContext().resourceDir + "/5.mp4";
       let media: Media = new Media(vlc, path)
       let parsed: boolean = false;
-      media.addListener({
-        onMediaParsedChanged: () => {
-          parsed = true
+      media.setEventListener({
+        onMediaEventCallback: (type: libvlc_event_e) => {
+          if (type === libvlc_event_e.libvlc_MediaParsedChanged) {
+            parsed = true
+          }
         }
       })
       expect(media.parse()).assertEqual(0)
@@ -49,7 +50,7 @@ export default function abilityTest() {
     })
 
     it('test3_value', 0, () => {
-      let vlc: LibVLC = new LibVLC(new ArrayList<string>(), "");
+      let vlc: LibVLC = new LibVLC([], "");
       let mediaPlayer: MediaPlayer = new MediaPlayer(vlc);
       let path = "file://" + getContext().resourceDir + "/5.mp4";
       let media: Media = new Media(vlc, path)

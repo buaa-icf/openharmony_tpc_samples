@@ -1,33 +1,34 @@
 /*
- * Copyright (c) 2025 Huawei Device Co., Ltd.
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+# Copyright (c) 2025 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+*/
 
 #include "napi/native_api.h"
-#include "vlc_wrapper.h"
-#include "vlc_media_player_wrapper.h"
-#include "vlc_media_wrapper.h"
+#include "libvlc_wrapper.h"
+#include "media_player_wrapper.h"
+#include "media_wrapper.h"
 #include <ace/xcomponent/native_interface_xcomponent.h>
 #include "xcomponent_manager.h"
 #include "ohos_log.h"
-
+#include "dialog_wrapper.h"
 
 EXTERN_C_START
 static napi_value Init(napi_env env, napi_value exports)
 {
-    VlcWrapper::Export(env, exports);
-    VlcMediaPlayerWrapper::Export(env, exports);
-    VlcMediaWrapper::Export(env, exports);
+    LibVLCWrapper::Export(env, exports);
+    MediaPlayerWrapper::Export(env, exports);
+    MediaWrapper::Export(env, exports);
+    DialogWrapper::Export(env, exports);
 
     napi_status status;
     napi_value xComponentInstance = nullptr;
@@ -54,7 +55,7 @@ static napi_value Init(napi_env env, napi_value exports)
 }
 EXTERN_C_END
 
-static napi_module vlcModule = {
+static napi_module vlc_napi = {
     .nm_version = 1,
     .nm_flags = 0,
     .nm_filename = nullptr,
@@ -64,7 +65,7 @@ static napi_module vlcModule = {
     .reserved = { 0 },
 };
 
-extern "C" __attribute__((constructor)) void RegisterEntryModule(void)
+extern "C" __attribute__((constructor)) void RegisterLibraryModule(void)
 {
-    napi_module_register(&vlcModule);
+    napi_module_register(&vlc_napi);
 }

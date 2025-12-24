@@ -6,7 +6,7 @@
   "author": "",
   "license": "",
   "dependencies": {
-    "@ohos/aki": "^1.2.14",
     "@ohos/vlc": "file:../library"
   }
 }
+

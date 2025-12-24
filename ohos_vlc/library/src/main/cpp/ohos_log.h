@@ -12,8 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef VLC_OHOS_LOG_H
-#define VLC_OHOS_LOG_H
+
+#pragma once
 
 #include <hilog/log.h>
 
@@ -27,5 +27,3 @@
 
 #define OHOS_LOG_BUF_SIZE (4096)
 void OhosLogPrint(LogLevel level, const char* tag, const char* fmt, ...);
-
-#endif // VLC_OHOS_LOG_H

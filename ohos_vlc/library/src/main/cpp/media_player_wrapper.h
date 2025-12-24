@@ -12,22 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 */
-#ifndef VLC_MEDIA_PLAYER_WRAPPER_H
-#define VLC_MEDIA_PLAYER_WRAPPER_H
 
-#include "vlc_wrapper.h"
+#pragma once
+
 #include "vlc/vlc.h"
-#include <atomic>
-#include <mutex>
+#include "napi/native_api.h"
+#include <unordered_map>
 
-class VlcMediaPlayerWrapper {
+class MediaPlayerWrapper {
 public:
     static napi_value Export(napi_env env, napi_value exports);
-    static napi_value VLCMediaPlayerConstructor(napi_env env, napi_callback_info info);
+    static napi_value MediaPlayerConstructor(napi_env env, napi_callback_info info);
     static napi_value SetMedia(napi_env env, napi_callback_info info);
     static napi_value SetVideoOut(napi_env env, napi_callback_info info);
     static napi_value Play(napi_env env, napi_callback_info info);
-    static napi_value SetEventCallback(napi_env env, napi_callback_info info);
+    static napi_value SetEventListener(napi_env env, napi_callback_info info);
     static napi_value Stop(napi_env env, napi_callback_info info);
     static napi_value Pause(napi_env env, napi_callback_info info);
     static napi_value GetLength(napi_env env, napi_callback_info info);
@@ -44,9 +43,16 @@ public:
     static napi_value GetPosition(napi_env env, napi_callback_info info);
     static napi_value GetRate(napi_env env, napi_callback_info info);
     static napi_value SetRate(napi_env env, napi_callback_info info);
+    static napi_value SetAudioTrack(napi_env env, napi_callback_info info);
+    static napi_value GetAudioTrack(napi_env env, napi_callback_info info);
+    static napi_value SetTextTrack(napi_env env, napi_callback_info info);
+    static napi_value GetTextTrack(napi_env env, napi_callback_info info);
+    static napi_value SetAspectRatio(napi_env env, napi_callback_info info);
+    static napi_value GetSize(napi_env env, napi_callback_info info);
+    static napi_value GetSpuDescription(napi_env env, napi_callback_info info);
+    static napi_value GetAudioDescription(napi_env env, napi_callback_info info);
     
     napi_threadsafe_function tsfn_ { nullptr };
     libvlc_media_player_t *instance_ {nullptr};
+    std::unordered_map<libvlc_event_e, napi_ref> listener_;
 };
-
-#endif // VLC_MEDIA_PLAYER_WRAPPER_H

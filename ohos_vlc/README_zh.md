@@ -21,19 +21,16 @@ git submodule update --init --recursive
 
 1. 将`ohos_vlc/Script/`目录下的所有文件拷贝到`tpc_c_cplusplus/thirdparty/`下。
 2. 在`tpc_c_cplusplus/lycium/`目录下执行`./build.sh vlc`命令编译。
-3. 编译结束后的将`tpc_c_cplusplus/ycium/usr/FFmpeg/arm64-v8a/lib`下所有文件拷贝到`ohos_vlc/library/libs/arm64-v8a/`下。
-4. 将`tpc_c_cplusplus/ycium/usr/a52dec/arm64-v8a/lib`下所有文件拷贝到`ohos_vlc/library/libs/arm64-v8a/`下。
-5. 将`tpc_c_cplusplus/ycium/usr/vlc/arm64-v8a/include`下所有文件拷贝到`ohos_vlc/library/src/main/cpp/include/`下。
-6. 将`tpc_c_cplusplus/ycium/usr/vlc/arm64-v8a/lib`下所有文件拷贝到`ohos_vlc/library/libs/arm64-v8a/`下，如下图所示：
+3. 编译结束后，将`tpc_c_cplusplus/lycium/usr/`下所有目录中`/arm64-v8a/lib/`的文件拷贝到`ohos_vlc/library/libs/arm64-v8a/`。
+4. 将`tpc_c_cplusplus/lycium/usr/vlc/arm64-v8a/include`下所有文件拷贝到`ohos_vlc/library/src/main/cpp/thirdpart/include/`下，如下图所示：
 ![img.png](image/libs.png)
-
 
 ## 下载安装
 
 ```shell
 ohpm install @ohos/vlc
 ```
-OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md) .
+OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony ohpm包](https://gitee.com/openharmony-tpc/docs/blob/master/OpenHarmony_har_usage.md)。
 
 
 ## 使用说明
@@ -42,9 +39,8 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
 
 ```typescript
 import { LibVLC, MediaPlayer, Media, MediaPlayerListener, MediaListener } from '@ohos/vlc'
-import { ArrayList } from '@kit.ArkTS';
 
-vlc: LibVLC = new LibVLC(new ArrayList<string>(), "");
+vlc: LibVLC = new LibVLC([], "");
 mediaPlayer: MediaPlayer = new MediaPlayer(this.vlc);
 path = "file://" + getContext().resourceDir + "/5.mp4";
 media: Media = new Media(this.vlc, this.path)
@@ -53,6 +49,7 @@ xcomponentId = 'myxcomponentid';
 XComponent({ id: this.xcomponentId, type: 'surface', libraryname: 'vlc_napi' })
   .onLoad(() => {
     this.mediaPlayer.setVideoOut(this.xcomponentId)
+    this.mediaPlayer.play()
   })
   .id('videoXComponent')
   .width('100%')
@@ -65,8 +62,8 @@ XComponent({ id: this.xcomponentId, type: 'surface', libraryname: 'vlc_napi' })
 mediaPlayerListener: MediaPlayerListener = {}
 mediaListener: MediaListener = {}
 
-this.mediaPlayer.addListener(mediaPlayerListener);
-this.media.addListener(this.mediaListener);
+this.mediaPlayer.setEventListener(mediaPlayerListener);
+this.media.setEventListener(this.mediaListener);
 this.media.parse();
 this.mediaPlayer.setMedia(this.media)
 ```
@@ -91,19 +88,18 @@ this.mediaPlayer.setRate(1)
 this.media.getDuration()
 ```
 
-
 ## 接口说明
 
 ### MediaPlayer接口
-- addListener -- 添加事件监听
+- setEventListener -- 添加事件监听
 - setVideoOut -- 设置视频输出的XComponentID
 - setMedia -- 设置Media对象
 - play -- 开始播放或者恢复暂停
 - pause -- 暂停播放
 - stop -- 停止播放
-- getLength -- 获取视频时长
+- getLength -- 获取视频时长，单位为ms
 - addSlave -- 给当前媒体播放器添加从属媒体（slave media）
-- getState -- 获取当前状态
+- getState -- 获取当前状态, Opening = 1; Playing = 3; Paused = 4; Stopped = 5; Ended = 6; Error = 7;
 - setScale -- 设置视频缩放倍率
 - isPlaying -- 是否在播放
 - setTime -- 设置播放时间点
@@ -114,13 +110,12 @@ this.media.getDuration()
 - setRate -- 设置播放速率
 
 ### Media接口
-- addListener -- 添加事件监听
+- setEventListener -- 添加事件监听
 - parse -- 异步解析媒体资源
 - getDuration -- 获取视频时长
 
 ### LibVLC
-- getVLC -- 获取VLC对象
-
+- constructor(stringArray: string[], homePath: string) -- 构造VLC对象
 
 ## 约束与限制
 在下述版本验证通过：
@@ -162,7 +157,7 @@ ohos_vlc
 
 ## 贡献代码
 
-使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建
+使用过程中发现任何问题都可以提 [Issue](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/issues) 给组件，当然，也非常欢迎发 [PR](https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/pulls)共建。
 
 ## 开源协议
 
