@@ -10,23 +10,24 @@
 
 ```bash
 git clone git@gitcode.com:openharmony-tpc/openharmony_tpc_samples.git
+git submodule update --init --recursive ohos_rive/submodules/rive-runtime
 ```
 
 ### 编译前准备
 
-#### 1. 配置 OPENHARMONY_NDK_PATH 环境变量
+#### 1. 配置 OHOS_NDK 环境变量
 
 - 确保已安装 OpenHarmony SDK
 - 找到 SDK 中的 native 目录，通常路径类似于 `D:\OpenHarmonySDK\api_version\native`
 
 - 配置环境变量：
   1. 在「系统变量」中点击「新建」
-  2. 变量名输入 `OPENHARMONY_NDK_PATH`
+  2. 变量名输入 `OHOS_NDK`
   3. 变量值输入 OpenHarmony SDK 中 native 目录的完整路径
   4. 点击「确定」保存设置
 - 验证环境变量：
   1. 打开新的命令提示符窗口
-  2. 输入 `echo %OPENHARMONY_NDK_PATH%` 验证环境变量是否正确设置
+  2. 输入 `echo %OHOS_NDK%` 验证环境变量是否正确设置
 
 > 注意：如果您的 OpenHarmony SDK 安装在非默认路径，请确保使用正确的路径。
 
@@ -35,23 +36,23 @@ git clone git@gitcode.com:openharmony-tpc/openharmony_tpc_samples.git
 #### 2. 安装 MSYS2 并配置环境
 - 下载并安装 MSYS2（推荐安装到默认路径 `C:\msys64`）
   - 下载地址：https://www.msys2.org/
-  - 安装完成后，运行 MSYS2 UCRT64 终端
+  - 安装完成后，运行 MSYS2 终端
 
 - 在 MSYS2 终端中执行以下命令安装所需工具：
   ```bash
-  pacman -S mingw-w64-x86_64-ninja mingw-w64-x86_64-premake mingw-w64-x86_64-python-ply mingw-w64-x86_6-make --noconfirm
+  pacman -S mingw-w64-x86_64-ninja mingw-w64-x86_64-premake mingw-w64-x86_64-python-ply make --noconfirm
   ```
 
 - 配置环境变量：
   1. 找到系统变量中的 `Path` 变量并点击「编辑」
   2. 添加以下两个路径（假设 MSYS2 安装在默认路径）：
    - `C:\msys64\mingw64\bin`
-    C:\msys64\usr\bin`
+   - `C:\msys64\usr\bin`
   3. 点击「确定」保存设置
 
 - 验证环境变量：
   1. 打开提示符窗口
-  2. 输入 `premake5 --version` 和 `make --version` 验证工具是否可用
+  2. 输入 `premake5 --version` , `python3 --version`, `sh --version`, `ninja --version`和 `make --version` 验证工具是否可用
 
 ## 第二部分: 前端 Rive 动画库 HarmonyOS 版本
 

@@ -465,7 +465,7 @@ napi_value ArtboardInputByNameAtPath(napi_env env, napi_callback_info info)
         LOGE("Failed to create result");
         return nullptr;
     }
-    LOGI("Input sucess: %{public}s, path: %{public}s", inputName.c_str(), inputPath.c_str());
+    LOGI("Input success: %{public}s, path: %{public}s", inputName.c_str(), inputPath.c_str());
     return result;
 }
 
