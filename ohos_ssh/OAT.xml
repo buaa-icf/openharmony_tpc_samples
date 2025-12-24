@@ -33,6 +33,12 @@
                 <filteritem type="filename" name="NOTICE" desc="NOTICE说明，不需要添加版权头"/>
                 <filteritem type="filename" name="LICENSE" desc="LICENSE说明，不需要添加版权头"/>
                 <filteritem type="filename" name="hvigor-wrapper.js" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filepath" name="scripts/libssh/HPKBUILD" desc="编译脚本文件，有版权头"/>
+                <filteritem type="filepath" name="scripts/libssh/libssh_oh_pkg.patch" desc="patch文件，不添加版权头"/>
+                <filteritem type="filepath" name="scripts/openssl-3.5.0-fix-CVE/SHA512SUM" desc="SHA512SUM文件，不添加版权头"/>
+                <filteritem type="filepath" name="scripts/openssl-3.5.0-fix-CVE/HPKBUILD" desc="编译脚本文件，有版权头"/>
+                <filteritem type="filepath" name="scripts/openssl-3.5.0-fix-CVE/SHA512SUM" desc="SHA512SUM文件，不添加版权头"/>
+                <filteritem type="filepath" name="scripts/openssl-3.5.0-fix-CVE/fix_CVE.patch" desc="patch文件，不添加版权头"/>
 
                 <filteritem type="filepath" name="library/BuildProfile.ets" desc="项目工程默认文件，不需要添加版权头"/>
                 <filteritem type="filepath" name="entry/src/ohosTest/ets/test/*.*" desc="项目工程默认文件，不需要添加版权头"/>

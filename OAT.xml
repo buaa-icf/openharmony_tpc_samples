@@ -10,6 +10,9 @@
                 <filteritem type="filename" name="userjson" desc="JSON数据文件，不支持注释方式添加版权头"/>
                 <filteritem type="filename" name="*.proto" desc="protobuf文件，不支持注释方式添加版权头"/>
                 <filteritem type="filename" name="*.mib" desc="mib文件，不支持注释方式添加版权头"/>
+                <filteritem type="filename" name="*.patch" desc="patch文件，不添加版权头"/>
+                <filteritem type="filename" name="HPKBUILD" desc="编译脚本文件，有版权头"/>
+                <filteritem type="filename" name="SHA512SUM" desc="SHA512SUM文件，不添加版权头"/>
                 <filteritem type="filename" name="hvigorw" desc="工程构建文件，不支持注释方式添加版权头"/>
                 <filteritem type="filename" name="LICENSE" desc="版权文件，不添加版权头"/>
                 <filteritem type="filename" name="LICENSE-BSD-2-Clause-Simplified-License-nodeCache" desc="版权文件，不添加版权头" />
@@ -144,6 +147,8 @@
                 <filteritem type="filename" name="hvigorfile.js" desc="IDE生成的默认构建脚本文件，建议无需手动修改"/>
                 <filteritem type="filename" name="hvigorfile.ts" desc="IDE生成的默认构建脚本文件，建议无需手动修改"/>
                 <filteritem type="filename" name="*.json5" desc="IDE生成的构建配置文件，格式为JSON，不支持注释方式添加许可头"/>
+                <filteritem type="filename" name="HPKBUILD" desc="编译脚本文件，有版权头"/>
+                <filteritem type="filename" name="SHA512SUM" desc="SHA512SUM文件，不添加版权头"/>
                 <filteritem type="filepath" name="jsDiffDemo/LICENSE" desc="原开源库的LICENSE文件，维持原样"/>
                 <filteritem type="filepath" name="ForgeDemo/LICENSE" desc="原开源库的LICENSE文件，维持原样"/>
                 <filteritem type="filepath" name="CaverPhone/LICENSE" desc="原开源库的LICENSE文件，维持原样"/>

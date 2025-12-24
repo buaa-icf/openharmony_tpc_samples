@@ -12,14 +12,19 @@ ohpm install @ohos/libssh
 
 ### 编译运行
 
-本项目依赖libssh库，编译产物.so文件和头文件通过`git submodule`引入，下载代码时需加上`--recursive`参数。
-  ```
-  git clone --recursive https://gitcode.com/openharmony-tpc/openharmony_tpc_samples.git
-  ```
+本项目依赖openssl、libssh库，需要自行编译[openssl、libssh集成到应用hap](https://gitcode.com/openharmony-sig/tpc_c_cplusplus/blob/master/lycium/README.md)。
 
-如果想要在本地编译libssh，参考[libssh本地编译脚本](https://gitee.com/han_jin_fei/lycium/tree/master/main/libssh)。
+1.编译之前将[scripts目录](scripts)下的文件拷贝到tpc_c_cplusplus/thirdparty下。
 
-在cpp目录下新增thirdparty目录，并将编译生成的库拷贝到该目录下，如下图所示：
+2.开始编译openssl、libssh。
+
+```shell
+ # 在lycium目录执行
+ build.sh openssl-3.5.0-fix-CVE
+ build.sh libssh
+```
+
+3.在cpp目录下新增thirdparty目录，并将编译生成的库拷贝到该目录下，如下图所示：
 
 ![image-20250611153322646](./dir.png)
 
