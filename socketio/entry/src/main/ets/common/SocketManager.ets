@@ -193,6 +193,9 @@ class SocketManager {
   //配置socket
   private initSocket() {
     hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX initSocket');
+    this.client?.on_multi("on multi", (...event_json: ESObject)=>{
+      hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX 接受到 on_multi -- event_json: ' + event_json);
+    });
     this.client?.on("new message", (event_json: string)=>{
       this.on_new_message_listener(event_json);
     });

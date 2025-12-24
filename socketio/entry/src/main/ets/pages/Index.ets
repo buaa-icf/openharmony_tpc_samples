@@ -154,44 +154,6 @@ struct Index {
           }
           .width('100%')
           Row() {
-            Button('setNsp')
-              .onClick(() => {
-                if (this.message == "") {
-                  prompt.showToast({ message: $r('app.string.Enter_messages') });
-                  return
-                }
-                socketManager.setNsp(this.message)
-              })
-              .width('20%')
-            Button('setHeaders')
-              .onClick(() => {
-                if (this.message == "") {
-                  prompt.showToast({ message: $r('app.string.Enter_messages') });
-                  return
-                }
-                socketManager.setHeaders(this.message)
-              })
-              .width('20%')
-            Button('socketClose')
-              .onClick(() => {
-                socketManager.socketClose()
-                socketManager.close()
-                this.login_finish = socketManager.login_finish
-                chatDetailData.delData()
-              })
-              .width('20%')
-            Button('emitAckBinary')
-              .onClick(() => {
-                if (this.message == "") {
-                  prompt.showToast({ message: $r('app.string.Enter_messages') });
-                  return
-                }
-                socketManager.sendEmitAckBinaryMessage(this.message)
-              })
-              .width('20%')
-          }
-          .width('100%')
-          Row() {
             TextInput({ placeholder: $r('app.string.Enter_message'), text: this.message })
               .width('80%')
               .onChange((message) => {

@@ -12,6 +12,21 @@ import { newSocketIOClient } from 'libclient_socket_c.so';
 
 import { buffer_util } from './buffer_util';
 
+// 1. 定义支持的数据类型
+type SocketDataType =
+  | string
+  | number
+  | boolean
+  | null
+  | undefined
+  | object
+  | ArrayBuffer
+  | Function
+  | Array<SocketDataType>;
+
+// 2. 定义回调函数类型
+type EmitCallbackType = (response: ESObject) => void;
+
 export class client_socket {
   private mSocketIOClient: newSocketIOClient;
   private classId = 0;
@@ -128,12 +143,38 @@ export class client_socket {
         on_event_listener(JSON.stringify(params));
       } catch (e) {
         console.log( '接收到on回调参数----on',  event_json);
-        on_event_listener('Transmission data parsing error');
+        const match: string = event_json.match(/"username"\s*:\s*"([^"]*)"/);
+        on_event_listener(
+          JSON.stringify({
+            'eventName': event_name,
+            'message': 'Transmission data parsing error',
+            'username': match ? match[1] : null
+          })
+        );
       }
     };
     this.mSocketIOClient.on(event_name, wrapper, this.classId);
   }
-
+  public on_multi(event_name: string, on_event_listener: (...args: ESObject[]) => void) {
+    const wrapper = (event_json: ESObject) => {
+      try {
+        console.log( '接收到on回调参数----on_multi',  event_json);
+        const params: ESObject[]  = JSON.parse(event_json)
+        on_event_listener( ...params );
+      } catch (e) {
+        console.log( '接收到on回调参数----on_multi catch',  event_json);
+        const match: string = event_json.match(/"username"\s*:\s*"([^"]*)"/);
+        on_event_listener(
+          JSON.stringify({
+            'eventName': event_name,
+            'message': 'Transmission data parsing error',
+            'username': match ? match[1] : null
+          })
+        );
+      }
+    };
+    this.mSocketIOClient.on_multi(event_name, wrapper, this.classId);
+  }
   public on_binary(event_name: string, on_event_listener: (event_data: Uint8Array) => void) {
     this.mSocketIOClient.on_binary(event_name, on_event_listener, this.classId);
   }
@@ -161,19 +202,33 @@ export class client_socket {
   public off_error() {
     this.mSocketIOClient.off_error(this.classId);
   }
-
-  public emit(name: string, message: ESObject, on_emit_callback?: (emit_callback_json: string) => void) {
-    const wrapper = (event_json: ESObject) => {
-      try {
-        console.log( '接收到emit回调参数----emit',  event_json);
-        const params:ESObject  = JSON.parse(event_json)
-        on_emit_callback&&on_emit_callback(JSON.stringify(params));
-      } catch (e) {
-        console.log( '接收到emit回调参数----emit',  event_json);
-        on_emit_callback&&on_emit_callback('Transmission data parsing error');
+  public emit(name: string, ...args:Array<SocketDataType | EmitCallbackType>) {
+    try {
+      const finalArgs: (ESObject | ((event_json: string) => void))[] = [];
+      let callbackWrapper: EmitCallbackType | undefined;
+      if (args.length > 0 && typeof args[args.length - 1] === 'function') {
+        callbackWrapper = args[args.length - 1] as EmitCallbackType;
+        finalArgs.push(...args.slice(0, -1));
+      } else {
+        finalArgs.push(...args);
       }
-    };
-    this.mSocketIOClient.emit(name, message,  wrapper, this.classId);
+      const wrapper = (event_json: ESObject) => {
+        try {
+          console.log('接收到 ...wrapper， ... emit 回调参数:', event_json);
+          const params: ESObject = JSON.parse(event_json as ESObject);
+          callbackWrapper && callbackWrapper(JSON.stringify(params));
+        } catch (e) {
+          const match: string = event_json.match(/"username"\s*:\s*"([^"]*)"/);
+          callbackWrapper && callbackWrapper(JSON.stringify({
+            'eventName': name,
+            'message': 'Transmission data parsing error',
+            'username': match ? match[1] : null
+          }));
+        }
+      };
+      this.mSocketIOClient.emit(name, ...finalArgs, wrapper, this.classId);
+    } catch (e) {
+    }
   }
 
   public emitAckBinary(name: string, message: ESObject,

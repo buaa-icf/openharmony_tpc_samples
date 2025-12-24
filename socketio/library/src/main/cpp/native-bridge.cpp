@@ -54,6 +54,7 @@ static napi_property_descriptor classProp[] = {
     {"get_sessionid", nullptr, SocketIOClient::get_sessionid, nullptr, nullptr, nullptr, napi_default, nullptr},
     {"set_nsp", nullptr, SocketIOClient::set_nsp, nullptr, nullptr, nullptr, napi_default, nullptr},
     {"on", nullptr, SocketIOClient::on, nullptr, nullptr, nullptr, napi_default, nullptr},
+    {"on_multi", nullptr, SocketIOClient::on_multi, nullptr, nullptr, nullptr, napi_default, nullptr},
     {"on_binary", nullptr, SocketIOClient::on_binary, nullptr, nullptr, nullptr, napi_default, nullptr},
     {"once", nullptr, SocketIOClient::once, nullptr, nullptr, nullptr, napi_default, nullptr},
     {"off", nullptr, SocketIOClient::off, nullptr, nullptr, nullptr, napi_default, nullptr},
