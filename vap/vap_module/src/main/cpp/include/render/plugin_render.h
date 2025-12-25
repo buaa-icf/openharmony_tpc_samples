@@ -55,10 +55,10 @@ public:
     void Export(napi_env env, napi_value exports);
 
 public:
+    static napi_threadsafe_function CreateThreadsafeFun(napi_env env, napi_value callback);
     static std::unordered_map<std::string, std::shared_ptr<PluginRender>> m_instance; // 标个点
     static OH_NativeXComponent_Callback m_callback;
-    void ParseCallback(napi_ref &callbackRef, napi_env env, napi_value val, std::string type);
-    
+
     std::string m_id;
     std::function<void(const std::string&)> deleteRenderCallback_ {nullptr};
     void *m_window = nullptr;
@@ -66,8 +66,7 @@ public:
     uint64_t m_width;
     uint64_t m_height;
     std::unique_ptr<Player> player_ = nullptr;
-    
-    napi_env env_ = nullptr;
+
     bool surfaceDestroyed_ = false;
 };
 #endif // VAP_PLUGIN_RENDER_H

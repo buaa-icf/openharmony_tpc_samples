@@ -74,6 +74,13 @@ struct Index{
               router.pushUrl({ url: "pages/ParallelStopDemo" });
             }).margin({ top: 15 })
         }.width('100%').height(60)
+
+        Flex({ direction: FlexDirection.Row, alignItems: ItemAlign.Center, justifyContent: FlexAlign.Center }) {
+          Button("测试播放时创建销毁XComponent")
+            .onClick(() => {
+              router.pushUrl({ url: "pages/DestroyXComponent" });
+            }).margin({ top: 15 })
+        }.width('100%').height(60)
       }.backgroundColor(Color.Pink)
       .margin(10)
       .padding(20)

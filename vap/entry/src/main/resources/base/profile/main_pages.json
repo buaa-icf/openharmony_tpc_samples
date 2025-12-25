@@ -6,6 +6,7 @@
     "pages/NewOn",
     "pages/MultiAnimation",
     "pages/AsyncStopDemo",
-    "pages/ParallelStopDemo"
+    "pages/ParallelStopDemo",
+    "pages/DestroyXComponent"
   ]
 }

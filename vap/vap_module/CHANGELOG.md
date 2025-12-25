@@ -10,6 +10,7 @@
 4. Fixed the issue of json parsing crash.
 5. Fixed the issue of incorrect data length reading.
 6. Fixed the crash issue when the stop interface and XComponent destruction occurred simultaneously.
+7. Fix the issue where callback scenarios have a probability of crashing.
 
 ## 1.1.6
 
