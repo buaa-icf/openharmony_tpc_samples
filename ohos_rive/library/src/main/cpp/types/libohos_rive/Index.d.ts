@@ -70,7 +70,7 @@ declare namespace rive {
     ENUMTYPE = 6,
     TRIGGER = 7,
     VIEWMODEL = 8,
-    INTERGER = 9,
+    INTEGER = 9,
     SYMBOLLISTINDEX = 10,
     ASSETIMAGE = 11,
     ARTBOARD = 12,
