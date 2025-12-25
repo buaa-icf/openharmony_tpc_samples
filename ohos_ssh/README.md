@@ -12,14 +12,19 @@ ohpm install @ohos/libssh
 
 ### How to Build
 
-This project depends on the libssh library. The build products, .so file and header file, are imported through git submodule. The --recursive parameter must be carried in the command used to download the project code.
-  ```
-  git clone --recursive https://gitcode.com/openharmony-tpc/openharmony_tpc_samples.git
-  ```
+This project depends on the openssl and libssh library.It needs to be compiled by yourself[openssl and libssh Integrate into the application hap](https://gitcode.com/openharmony-sig/tpc_c_cplusplus/blob/master/lycium/README.md).
 
-For details about how to build minizip_ng locally, see[Integrating libssh build](https://gitee.com/han_jin_fei/lycium/tree/master/main/libssh)。
+1.Before compiling, copy the files under [scripts](scripts) to tpc_c_cplusplus/thirdparty.
 
-Add the third_party directory to the cpp directory, and copy the library generated after compilation to the thirdparty directory.
+2.Start compiling openssl and libssh.
+
+```shell
+ # Execute in the lycium directory
+ build.sh openssl-3.5.0-fix-CVE
+ build.sh libssh
+```
+
+3.Add the third_party directory to the cpp directory, and copy the library generated after compilation to the thirdparty directory.
 
 ![image-20250611153322646](./dir.png)
 

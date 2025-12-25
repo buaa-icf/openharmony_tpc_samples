@@ -1,0 +1,74 @@
+diff -Naur libssh-0.11.1/examples/ssh_X11_client.c libssh-0.11.1-new/examples/ssh_X11_client.c
+--- libssh-0.11.1/examples/ssh_X11_client.c	2024-08-08 15:50:28.000000000 +0800
++++ libssh-0.11.1-new/examples/ssh_X11_client.c	2025-05-22 17:03:24.246543432 +0800
+@@ -195,6 +195,20 @@
+ struct termios _saved_tio;
+
+
++#ifdef __OHOS__
++/* The getpass function is not supported on the OHOS platform, so define it here */
++char *getpass(const char *prompt) {
++    static char password[128];
++    printf("%s", prompt);
++    fflush(stdout);  // Flush the output buffer to avoid password echo
++    if (fgets(password, sizeof(password), stdin) == NULL) {
++        return NULL;  // Return NULL on end-of-file or error
++    }
++    password[strcspn(password, "\n")] = '\0';  // Remove the newline character at the end
++    return password;
++}
++#endif
++
+ /*
+  * Internal functions
+  */
+diff -Naur libssh-0.11.1/src/pki.c libssh-0.11.1-new/src/pki.c
+--- libssh-0.11.1/src/pki.c	2024-08-29 21:01:56.000000000 +0800
++++ libssh-0.11.1-new/src/pki.c	2025-05-22 17:04:57.450594912 +0800
+@@ -2252,40 +2252,35 @@
+     char *user;
+     FILE *fp;
+     int rc;
+-
+     if (key == NULL || filename == NULL || *filename == '\0') {
+         return SSH_ERROR;
+     }
+-
+-    user = ssh_get_local_username();
++    // user = ssh_get_local_username();
++    user = "root";
+     if (user == NULL) {
+         return SSH_ERROR;
+     }
+-
+     rc = gethostname(host, sizeof(host));
+     if (rc < 0) {
+-        free(user);
++        // free(user);
+         return SSH_ERROR;
+     }
+-
+     rc = ssh_pki_export_pubkey_base64(key, &b64_key);
+     if (rc < 0) {
+-        free(user);
++        // free(user);
+         return SSH_ERROR;
+     }
+-
+     rc = snprintf(key_buf, sizeof(key_buf),
+                   "%s %s %s@%s\n",
+                   key->type_c,
+                   b64_key,
+                   user,
+                   host);
+-    free(user);
+-    free(b64_key);
++    // free(user);
++    // free(b64_key);
+     if (rc < 0) {
+         return SSH_ERROR;
+     }
+-
+     fp = fopen(filename, "wb+");
+     if (fp == NULL) {
+         return SSH_ERROR;
