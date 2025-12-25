@@ -1,6 +1,7 @@
 ## v2.1.4-rc.0
-
--  Optimized Shared Library Compilation: O3 and LTO Support
+- Send supports the transmission of multiple parameters.
+- Added support for receiving multiple parameters in the on_rulti function.
+- Change the dependency library address.
 
 ## v2.1.3
 
