@@ -42,7 +42,7 @@ struct Index {
 
           Row() {
             TextInput({ placeholder: "请输入消息,退出聊天室请输入exit", text: this.message })
-              .width('80%')
+              .width('60%')
               .onChange((message) => {
                 this.message = message
               })
@@ -55,6 +55,21 @@ struct Index {
                   prompt.showToast({ message: "请输入消息" });
                 } else {
                   socketManager.sendMessage(this.message)
+                  let clientMessage: Message = { username: socketManager.username, message: this.message, id: MessageType.SELF }
+                  chatDetailData.pushData(clientMessage)
+                  this.message = ""
+                }
+              })
+              .width('20%')
+            Button('Send Multi')
+              .onClick(() => {
+                if (this.message == "exit") {
+                  socketManager.close()
+                  this.login_finish = socketManager.login_finish
+                } else if (this.message == "") {
+                  prompt.showToast({ message: "请输入消息" });
+                } else {
+                  socketManager.sendMultiMessage(this.message)
                   let clientMessage: Message = { username: socketManager.username, message: this.message, id: MessageType.SELF }
                   chatDetailData.pushData(clientMessage)
                   this.message = ""
