@@ -39,6 +39,7 @@ struct Index {
           this.btn('Assets', () => router.pushUrl({ url: 'pages/AssetsPage' }))
           this.btn('Recycler', () => router.pushUrl({ url: 'pages/RecyclerPage' }))
           this.btn('ViewPager', () => router.pushUrl({ url: 'pages/ViewPagerPage' }))
+          this.btn('Meshes', () => router.pushUrl({ url: 'pages/MeshesPage' }))
           this.btn('ViewStub', () => router.pushUrl({ url: 'pages/ViewStubPage' }))
           this.btn('Compose (Legacy)', () => router.pushUrl({ url: 'pages/ComposeLegacyPage' }))
           this.btn('Frame', () => router.pushUrl({ url: 'pages/FramePage' }))

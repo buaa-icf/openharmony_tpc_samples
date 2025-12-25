@@ -189,7 +189,7 @@ rcp<RenderBuffer> OhosRiveRenderFactory::makeRenderBuffer(RenderBufferType type,
 
 rcp<RenderImage> OhosRiveRenderFactory::decodeImage(Span<const uint8_t> encodedBytes)
 {
-    return renderImageFromNapiDecode(this->env, encodedBytes, false);
+    return renderImageFromNapiDecode(this->env, encodedBytes, true);
 }
 
 rive::rcp<rive::RenderBuffer> OhosCanvasFactory::makeRenderBuffer(rive::RenderBufferType type,

@@ -247,6 +247,7 @@ find_library(native_drawing libnative_drawing.so)
 find_library(image_source libimage_source.so)
 find_library(pixelmap libpixelmap.so)
 find_library(native_window libnative_window.so)
+find_library(ohaudio libohaudio.so)
 
 # Link additional libraries
 target_link_libraries(ohos_rive PUBLIC
@@ -259,4 +260,5 @@ target_link_libraries(ohos_rive PUBLIC
         ${image_source}
         ${pixelmap}
         ${native_window}
+        ${ohaudio}
 )

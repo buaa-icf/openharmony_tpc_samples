@@ -119,19 +119,19 @@ void CanvasRenderer::drawImage(const rive::RenderImage *image,
     }
 
     OH_Drawing_Rect *rect = OH_Drawing_RectCreate(0, 0, image->width(), image->height());
-    OH_Drawing_SamplingOptions *samplingOpts = OH_Drawing_SamplingOptionsCreate(FILTER_MODE_LINEAR, MIPMAP_MODE_NONE);
+    OH_Drawing_SamplingOptions *sampOpts = OH_Drawing_SamplingOptionsCreate(FILTER_MODE_LINEAR, MIPMAP_MODE_LINEAR);
 
     if (ohosPaint->style == OhosPaint::PaintStyle::STROKE) {
         OH_Drawing_CanvasAttachPen(m_ohCanvas, ohosPaint->pen);
-        OH_Drawing_CanvasDrawImageRect(m_ohCanvas, drawingImage, rect, samplingOpts);
+        OH_Drawing_CanvasDrawImageRect(m_ohCanvas, drawingImage, rect, sampOpts);
         OH_Drawing_CanvasDetachPen(m_ohCanvas);
     } else {
         OH_Drawing_CanvasAttachBrush(m_ohCanvas, ohosPaint->brush);
-        OH_Drawing_CanvasDrawImageRect(m_ohCanvas, drawingImage, rect, samplingOpts);
+        OH_Drawing_CanvasDrawImageRect(m_ohCanvas, drawingImage, rect, sampOpts);
         OH_Drawing_CanvasDetachBrush(m_ohCanvas);
     }
 
-    OH_Drawing_SamplingOptionsDestroy(samplingOpts);
+    OH_Drawing_SamplingOptionsDestroy(sampOpts);
     OH_Drawing_RectDestroy(rect);
     OH_Drawing_ImageDestroy(drawingImage);
 }
