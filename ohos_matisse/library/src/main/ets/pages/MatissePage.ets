@@ -367,29 +367,6 @@ export struct MatissePage {
   }
 
   /**
-   * Handles selected items deleted event
-   * @param baseItemInfos - Deleted item information array
-   */
-  private onSelectedItemsDeleted(baseItemInfos: Array<BaseItemInfo>): void {
-    // Implementation can be added if needed
-  }
-
-  /**
-   * Handles exceed max selected event
-   * @param exceedMaxCountType - Exceed max count type
-   */
-  private onExceedMaxSelected(exceedMaxCountType: MaxCountType): void {
-    // Implementation can be added if needed
-  }
-
-  /**
-   * Handles current album deleted event
-   */
-  private onCurrentAlbumDeleted(): void {
-    // Implementation can be added if needed
-  }
-
-  /**
    * Updates bottom toolbar state
    */
   private updateBottomToolbar(): void {
@@ -505,15 +482,6 @@ export struct MatissePage {
           },
           onPhotoBrowserChanged: (browserItemInfo: BaseItemInfo): boolean => {
             return this.onPhotoBrowserChanged(browserItemInfo);
-          },
-          onSelectedItemsDeleted: (baseItemInfos: Array<BaseItemInfo>) => {
-            this.onSelectedItemsDeleted(baseItemInfos);
-          },
-          onExceedMaxSelected: (exceedMaxCountType: MaxCountType) => {
-            this.onExceedMaxSelected(exceedMaxCountType);
-          },
-          onCurrentAlbumDeleted: () => {
-            this.onCurrentAlbumDeleted();
           },
           pickerController: this.pickerController,
         })
