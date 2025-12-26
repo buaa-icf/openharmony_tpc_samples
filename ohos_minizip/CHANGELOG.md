@@ -1,6 +1,7 @@
 # 1.0.3
 
 - The shared library is compiled with -O3 optimization and supports LTO
+- Fix CVE-2019-12900, CVE-2016-3189
 
 ## 1.0.3-rc.0
 
