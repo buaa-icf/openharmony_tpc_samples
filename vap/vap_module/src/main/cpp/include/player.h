@@ -28,13 +28,6 @@
 #include "egl_core.h"
 #include "data_info.h"
 
-enum class CallbackType {
-    UNKNOWN = -1,
-    PLAY_DONE,
-    STATE_CHANGE,
-    CLICK,
-};
-
 static constexpr int64_t MICROSECOND = 1000000;
 static constexpr int32_t DEFAULT_FRAME_RATE = 30;
 static constexpr int32_t AUDIO_SLEEP_TIME = 100;
@@ -66,16 +59,14 @@ public:
         isContainerDestroy_ = true;
         Stop();
     };
-    void SetCallback(CallbackType type, napi_ref callbackJS, void (*callbackFn)(void *context));
+    void SetCallback(CallbackType type, napi_threadsafe_function tsFun);
     void ClearCallback(CallbackType type);
-    
+
     std::unique_ptr<EGLCore> eglCore_ = nullptr;
-    napi_env env_ = nullptr;
 private:
-    void (*callbackAll_)(void *context) = nullptr;
     std::mutex callbackRefsMutex_;
-    std::map<CallbackType, napi_ref> callbackRefs_;
-    
+    std::map<CallbackType, napi_threadsafe_function> callbackRefs_;
+
     bool isContainerDestroy_ = false;
     bool isSetVideoMode_ = false;
     VideoMode defaultVideoMode_ = VIDEO_MODE_SPLIT_HORIZONTAL;
@@ -87,11 +78,11 @@ private:
     std::mutex pauseMutex_;
     std::condition_variable pauseCond_;
     bool isPause_{false};
-    
+
     void InitAudioPlayer(AudioInitData audioInitData);
     OH_AudioRenderer *audioRenderer_ = nullptr;
     OH_AudioStreamBuilder *builder_ = nullptr;
-    
+
     void Release();
     void ReleaseAudio();
     void DecInputThread();
@@ -133,11 +124,11 @@ private:
     std::unique_ptr<std::thread> decInputThread_ = nullptr;
     std::unique_ptr<std::thread> decOutputThread_ = nullptr;
     VAPInfo sampleInfo_;
-    
+
     int32_t stride_ = 0;
     int32_t sliceHeight_ = 0;
     int32_t frameCurIdx_ = 0;
-    
+
     int32_t renderFrameCurIdx_ = 0;
     VideoFitType fitType_ = VideoFitType::FIT_XY;
 };

@@ -545,7 +545,6 @@ void PluginRender::Export(napi_env env, napi_value exports)
         LOGE("Export: env or exports is null");
         return;
     }
-    this->env_ = env;
 
     napi_property_descriptor desc[] = {
         { "play", nullptr, PluginRender::Play, nullptr, nullptr, nullptr, napi_default, nullptr },
@@ -847,98 +846,60 @@ static void CreateAnimConfig(napi_env env, JSAnimConfig &jsAnimConfig, NVal &ani
     animConfig.AddProp("currentFrame", currentFrame.val_);
 }
 
-void Callback(void *asyncContext)
+static void CompleteWork(napi_env env, napi_value callback, void* ctx, void* data)
 {
-    LOGD("enter Callback");
-    if (asyncContext == nullptr) {
-        LOGE("Callback asyncContext is nullptr");
-        return;
-    }
-    uv_loop_s *loop = nullptr;
-    CallbackContext *context = (CallbackContext *)asyncContext;
-    napi_status status = napi_get_uv_event_loop(context->env, &loop);
-    if (status != napi_ok) {
-        LOGE("Callback con not napi_get_uv_event_loop %{public}d", status);
+    napi_status status = napi_ok;
+    CallbackContext *context = (CallbackContext *)data;
+    if (context->type == CallbackType::CLICK) {
+        napi_value resTxt;
+        napi_create_string_utf8(env, context->clickData.c_str(), context->clickData.size(), &resTxt);
+        status = napi_call_function(env, nullptr, callback, 1, &resTxt, nullptr);
         delete context;
         return;
     }
-    uv_work_t *work = new uv_work_t;
-    work->data = context;
-    uv_queue_work(loop, work, [](uv_work_t *work) { LOGD("enter uv_work_t Callback"); },
-        [](uv_work_t *work, int state) {
-            LOGD("enter complete Callback");
-            std::unique_ptr<uv_work_t> workTmp(work);
-            std::unique_ptr<CallbackContext> context((CallbackContext *)work->data);
-            napi_handle_scope scope = nullptr;
-            napi_status status = napi_open_handle_scope(context->env, &scope);
-            if (status != napi_ok) {
-                LOGE("callback napi_open_handle_scope error %{public}d", status);
-                return;
-            }
 
-            struct ScopeGuard {
-                napi_env env;
-                napi_handle_scope scope;
-                ~ScopeGuard() {
-                    napi_status status = napi_close_handle_scope(env, scope);
-                    if (status != napi_ok) {
-                        LOGE("callback napi_close_handle_scope error %{public}d", status);
-                    }
-                }
-            };
-            ScopeGuard scopeGuard {context->env, scope};
-                    
-            napi_value callback = nullptr;
-            status = napi_get_reference_value(context->env, context->callbackRef, &callback);
-            if (status != napi_ok) {
-                LOGE("callback napi_get_reference_value error %{public}d", status);
-                return;
-            } else if (context && context->vapState == VapState::FAILED) {
-                napi_value ret[2];
-                ret[0] = NVal::CreateInt64(context->env, context->vapState).val_;
-                ret[1] = NVal::CreateInt64(context->env, context->vapState).val_;
-                napi_value res = nullptr;
-                status = napi_call_function(context->env, nullptr, callback, 2, ret, &res);
-            } else if (context && (context->vapState == VapState::RENDER || context->vapState == VapState::START)) {
-                auto animConfig = NVal::CreateObject(context->env);
-                CreateAnimConfig(context->env, context->jsAnimConfig, animConfig);
-                napi_value ret[2];
-                ret[0] = NVal::CreateInt64(context->env, context->vapState).val_;
-                ret[1] = animConfig.val_;
-                napi_value res = nullptr;
-                status = napi_call_function(context->env, nullptr, callback, 2, ret, &res);
-            } else if (context) {
-                napi_value rev = NVal::CreateInt64(context->env, context->vapState).val_;
-                napi_value res = nullptr;
-                status = napi_call_function(context->env, nullptr, callback, 1, &rev, &res);
-            }
-            if (status != napi_ok) {
-                LOGE("callback napi_call_function error %{public}d", status);
-                return;
-            }
-
-            if (context->vapState == VapState::UNKNOWN) {
-                status = napi_delete_reference(context->env, context->callbackRef);
-                if (status != napi_ok) {
-                    LOGE("callback napi_delete_reference error %{public}d", status);
-                }
-            }
-        });
+    if (context && context->vapState == VapState::FAILED) {
+        constexpr int32_t paramSize = 2;
+        napi_value ret[paramSize];
+        ret[0] = NVal::CreateInt64(env, context->vapState).val_;
+        ret[1] = NVal::CreateInt64(env, context->vapState).val_;
+        napi_value res = nullptr;
+        status = napi_call_function(env, nullptr, callback, paramSize, ret, &res);
+    } else if (context && (context->vapState == VapState::RENDER || context->vapState == VapState::START)) {
+        auto animConfig = NVal::CreateObject(env);
+        CreateAnimConfig(env, context->jsAnimConfig, animConfig);
+        constexpr int32_t paramSize = 2;
+        napi_value ret[paramSize];
+        ret[0] = NVal::CreateInt64(env, context->vapState).val_;
+        ret[1] = animConfig.val_;
+        napi_value res = nullptr;
+        status = napi_call_function(env, nullptr, callback, paramSize, ret, &res);
+    } else if (context) {
+        napi_value rev = NVal::CreateInt64(env, context->vapState).val_;
+        napi_value res = nullptr;
+        status = napi_call_function(env, nullptr, callback, 1, &rev, &res);
+    }
+    delete context;
 }
 
-void PluginRender::ParseCallback(napi_ref &callbackRef, napi_env env, napi_value val, std::string type)
+napi_threadsafe_function PluginRender::CreateThreadsafeFun(napi_env env, napi_value callback)
 {
-    LOGD("enter ParseCallback %{public}s", type.c_str());
-    if (!val) {
-        LOGE("not get callback param");
-        return;
-    }
-    
-    napi_status createRet = napi_create_reference(env, val, 1, &callbackRef);
-    if (createRet != napi_ok) {
-        LOGE("napi_create_reference error-%{public}d", createRet);
-        return;
-    }
+    napi_threadsafe_function tsfn_ { nullptr };
+    napi_value resource_name;
+    napi_create_string_utf8(env, "VapCallback", NAPI_AUTO_LENGTH, &resource_name);
+    napi_create_threadsafe_function(
+        env,
+        callback,
+        nullptr,
+        resource_name,
+        0,
+        1,
+        nullptr,
+        [](napi_env env, void* finalize_data, void* finalize_hint) {},
+        nullptr,
+        CompleteWork,
+        &tsfn_);
+    return tsfn_;
 }
 
 napi_value PluginRender::Play(napi_env env, napi_callback_info info)
@@ -982,19 +943,14 @@ napi_value PluginRender::Play(napi_env env, napi_callback_info info)
             return nullptr;
         }
         if (funcArg.GetMaxArgc() >= THREE) {
-            std::string type = "playDone";
-            napi_value v3 = funcArg.GetArg(NARG_POS::THIRD);
-            napi_ref callbackRef = nullptr;
-            render->ParseCallback(callbackRef, env, v3, type);
-            render->env_ = env;
-            render->player_->SetCallback(CallbackType::PLAY_DONE, callbackRef, &Callback);
+            render->player_->SetCallback(CallbackType::PLAY_DONE,
+                                         CreateThreadsafeFun(env, funcArg.GetArg(NARG_POS::THIRD)));
         }
         info.uri = uri;
         info.window = static_cast<NativeWindow*>(render->m_window);
         info.width = render->m_width;
         info.height = render->m_height;
         info.iptData = mixData;
-        render->player_->env_ = env;
         render->player_->Init(info);
         LOGD("Player Start executed");
     }
@@ -1028,21 +984,13 @@ napi_value PluginRender::On(napi_env env, napi_callback_info info)
             LOGE("not support event");
             return nullptr;
         }
-        void (*callback)(void *context) = nullptr;
-        napi_ref callbackRef = nullptr;
-        if (funcArg.GetMaxArgc() >= TWO) {
-            napi_value v2 = funcArg.GetArg(NARG_POS::SECOND);
-            callback = &Callback;
-            render->ParseCallback(callbackRef, env, v2, str);
-            render->env_ = env;
-        }
-        if (callback && callbackRef) {
-            render->player_->env_ = env;
-            if (str == "click") {
-                render->player_->SetCallback(CallbackType::CLICK, callbackRef, callback);
-            } else if (str == "stateChange") {
-                render->player_->SetCallback(CallbackType::STATE_CHANGE, callbackRef, callback);
-            }
+
+        if (str == "click") {
+            render->player_->SetCallback(CallbackType::CLICK,
+                                         CreateThreadsafeFun(env, funcArg.GetArg(NARG_POS::SECOND)));
+        } else if (str == "stateChange") {
+            render->player_->SetCallback(CallbackType::STATE_CHANGE,
+                                         CreateThreadsafeFun(env, funcArg.GetArg(NARG_POS::SECOND)));
         }
     }
     return nullptr;

@@ -36,12 +36,15 @@ using namespace std::chrono_literals;
 Player::~Player()
 {
     WaitForAsyncStop();
-
-    callbackAll_ = nullptr;
     Stop();
     StartRelease();
     if (renderThread_ && renderThread_->joinable()) {
         renderThread_->join();
+    }
+    
+    std::unique_lock<std::mutex> lock(callbackRefsMutex_);
+    for (const auto& item : callbackRefs_) {
+        napi_release_threadsafe_function(item.second, napi_tsfn_abort);
     }
 }
 
@@ -304,11 +307,9 @@ void Player::ResetControlSignal()
     isAsyncStopRequested_ = false;
     CallBackJS(VapState::DESTROY, CallbackType::STATE_CHANGE);
     std::unique_lock<std::mutex> lock(callbackRefsMutex_);
-    if (callbackRefs_.find(CallbackType::PLAY_DONE) != callbackRefs_.end() && callbackAll_) {
+    if (callbackRefs_.find(CallbackType::PLAY_DONE) != callbackRefs_.end()) {
         CallbackContext *context = new CallbackContext;
-        context->callbackRef = callbackRefs_[CallbackType::PLAY_DONE];
-        context->env = env_;
-        callbackAll_(context);
+        napi_call_threadsafe_function(callbackRefs_[CallbackType::PLAY_DONE], context, napi_tsfn_nonblocking);
         callbackRefs_.erase(CallbackType::PLAY_DONE);
         LOGD("play end callback");
     }
@@ -614,17 +615,14 @@ void Player::XComponentClick(int32_t eventX, int32_t eventY)
     if (eglCore_) {
         eglCore_->GetCurrentClickTxt(eventX, eventY, clickRes);
     }
-    std::unique_lock<std::mutex> lock(callbackRefsMutex_);
-    if (callbackRefs_.find(CallbackType::CLICK) != callbackRefs_.end()) {
-        CallbackContext *context = new CallbackContext();
-        context->callbackRef = callbackRefs_[CallbackType::CLICK];
-        context->env = env_;
-        napi_value jsCallback = nullptr;
-        napi_get_reference_value(context->env, context->callbackRef, &jsCallback);
-        napi_value resTxt;
-        napi_create_string_utf8(context->env, clickRes.c_str(), clickRes.size(), &resTxt);
-        napi_call_function(context->env, nullptr, jsCallback, 1, &resTxt, nullptr);
+    if (callbackRefs_.find(CallbackType::CLICK) == callbackRefs_.end() || clickRes.empty()) {
+        return;
     }
+
+    CallbackContext *context = new CallbackContext();
+    context->type = CallbackType::CLICK;
+    context->clickData = clickRes;
+    napi_call_threadsafe_function(callbackRefs_[CallbackType::CLICK], context, napi_tsfn_nonblocking);
 }
 
 void Player::PauseAndResume()
@@ -695,33 +693,26 @@ void Player::WaitForAsyncStop()
 void Player::CallBackJS(VapState state, CallbackType type, int32_t err)
 {
     std::unique_lock<std::mutex> lock(callbackRefsMutex_);
-    if ((callbackRefs_.find(type) != callbackRefs_.end()) && callbackAll_ && isContainerDestroy_ == false) {
+    if ((callbackRefs_.find(type) != callbackRefs_.end()) && !isContainerDestroy_) {
         CallbackContext *context = new CallbackContext;
-        context->callbackRef = callbackRefs_[type];
-        context->env = env_;
         context->vapState = state;
         context->err = err;
         jsAnimConfig_.currentFrame = renderFrameCurIdx_;
         context->jsAnimConfig = jsAnimConfig_;
-        callbackAll_(context);
+        napi_call_threadsafe_function(callbackRefs_[type], context, napi_tsfn_nonblocking);
     }
 }
 
-void Player::SetCallback(CallbackType type, napi_ref callbackJS, void (*callbackFn)(void *context))
+void Player::SetCallback(CallbackType type, napi_threadsafe_function tsFun)
 {
-    if (!callbackAll_ && callbackFn) { // c侧函数为同一个 js侧回收在上层
-        callbackAll_ = callbackFn;
-    }
+    LOGD("SetCallback %{public}d", type);
     std::unique_lock<std::mutex> lock(callbackRefsMutex_);
-    auto it = callbackRefs_.find(type);
-    if (it != callbackRefs_.end()) {
-        napi_ref ref = callbackRefs_.at(type);
-        napi_delete_reference(env_, ref);
-        callbackRefs_.erase(type);
+    auto item = callbackRefs_.find(type);
+    if (item != callbackRefs_.end()) {
+        LOGD("napi_release_threadsafe_function %{public}d", type);
+        napi_release_threadsafe_function(item->second, napi_tsfn_abort);
     }
-    if (type != CallbackType::UNKNOWN) {
-        callbackRefs_.insert(std::make_pair(type, callbackJS));
-    }
+    callbackRefs_[type] = tsFun;
 }
 
 void Player::ClearCallback(CallbackType type)
@@ -729,8 +720,7 @@ void Player::ClearCallback(CallbackType type)
     std::unique_lock<std::mutex> lock(callbackRefsMutex_);
     auto it = callbackRefs_.find(type);
     if (it != callbackRefs_.end()) {
-        napi_ref ref = callbackRefs_.at(type);
-        napi_delete_reference(env_, ref);
+        napi_release_threadsafe_function(it->second, napi_tsfn_abort);
         callbackRefs_.erase(it);
         LOGD("ClearCallback key: %{public}d", type);
     } else {

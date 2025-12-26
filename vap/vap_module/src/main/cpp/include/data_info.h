@@ -222,12 +222,19 @@ enum class VideoFitType {
     CENTER_CROP
 };
 
+enum class CallbackType {
+    UNKNOWN = -1,
+    PLAY_DONE,
+    STATE_CHANGE,
+    CLICK,
+};
+
 typedef struct CallbackContext {
-    napi_env env = nullptr;
-    napi_ref callbackRef = nullptr;
+    CallbackType type;
     VapState vapState = VapState::UNKNOWN;
     int32_t err;
     JSAnimConfig jsAnimConfig;
+    std::string clickData;
 } CallbackContext;
 
 #endif // VAP_DATATYPE_INFO_H
