@@ -90,50 +90,50 @@ class MenuCreator implements SwipeMenuCreator {
         // VIP用户菜单 - 设置viewType为1
         menu.setViewType(1);
 
-        // VIP专属：视频通话
+        // VIP专属：视频通话（大尺寸突出显示）
         const videoCallItem = new SwipeMenuItem({
           id: 'video_call',
           title: '视频',
           background: '#9C27B0',
           titleColor: '#FFFFFF',
-          titleSize: 14,
-          width: 90,
+          titleSize: 16,
+          width: 100,
           icon: $r('app.media.phonecall')
         });
         menu.addMenuItem(videoCallItem);
 
-        // VIP专属：优先消息
+        // VIP专属：优先消息（大尺寸突出显示）
         const priorityMessageItem = new SwipeMenuItem({
           id: 'priority_message',
           title: '优先',
           background: '#FF9800',
           titleColor: '#FFFFFF',
-          titleSize: 14,
-          width: 90,
+          titleSize: 16,
+          width: 100,
           icon: $r('app.media.message')
         });
         menu.addMenuItem(priorityMessageItem);
 
-        // 通话菜单项
+        // 通话菜单项（中等尺寸）
         const callItem = new SwipeMenuItem({
           id: 'call',
           title: '通话',
           background: '#4CAF50',
           titleColor: '#FFFFFF',
           titleSize: 14,
-          width: 90,
+          width: 85,
           icon: $r('app.media.phonecall')
         });
         menu.addMenuItem(callItem);
 
-        // 删除菜单项
+        // 删除菜单项（紧凑尺寸）
         const deleteItem = new SwipeMenuItem({
           id: 'delete',
           title: '删除',
           background: '#F44336',
           titleColor: '#FFFFFF',
-          titleSize: 14,
-          width: 90,
+          titleSize: 12,
+          width: 70,
           icon: $r('app.media.close')
         });
         menu.addMenuItem(deleteItem);
@@ -142,26 +142,26 @@ class MenuCreator implements SwipeMenuCreator {
         // 普通用户菜单 - 设置viewType为0
         menu.setViewType(0);
 
-        // 消息菜单项
+        // 消息菜单项（普通用户标准尺寸）
         const messageItem = new SwipeMenuItem({
           id: 'message',
           title: '消息',
           background: '#2196F3',
           titleColor: '#FFFFFF',
-          titleSize: 14,
-          width: 90,
+          titleSize: 13,
+          width: 80,
           icon: $r('app.media.message')
         });
         menu.addMenuItem(messageItem);
 
-        // 删除菜单项
+        // 删除菜单项（普通用户紧凑尺寸）
         const deleteItem = new SwipeMenuItem({
           id: 'delete',
           title: '删除',
           background: '#F44336',
           titleColor: '#FFFFFF',
-          titleSize: 14,
-          width: 90,
+          titleSize: 12,
+          width: 70,
           icon: $r('app.media.close')
         });
         menu.addMenuItem(deleteItem);

@@ -209,32 +209,32 @@ struct InterpolatorDemo {
     switch (interpolatorType) {
       case InterpolatorType.LINEAR:
         // 线性：匀速机械感，使用短时长
-        this.openAnimConfig = new AnimationConfig().setInterpolator(interpolatorType).setDuration(400);
-        this.closeAnimConfig = new AnimationConfig().setInterpolator(interpolatorType).setDuration(300);
+        this.openAnimConfig = new AnimationConfig().setInterpolator(interpolatorType).setDuration(4000);
+        this.closeAnimConfig = new AnimationConfig().setInterpolator(interpolatorType).setDuration(3000);
         break;
 
       case InterpolatorType.ACCELERATE:
         // 加速：开始慢后来快，短时长突出加速
-        this.openAnimConfig = new AnimationConfig().setInterpolator(interpolatorType).setDuration(300);
-        this.closeAnimConfig = new AnimationConfig().setInterpolator(interpolatorType).setDuration(250);
+        this.openAnimConfig = new AnimationConfig().setInterpolator(interpolatorType).setDuration(3000);
+        this.closeAnimConfig = new AnimationConfig().setInterpolator(interpolatorType).setDuration(2500);
         break;
 
       case InterpolatorType.DECELERATE:
         // 减速：开始快后来慢，短时长突出减速
-        this.openAnimConfig = new AnimationConfig().setInterpolator(interpolatorType).setDuration(350);
-        this.closeAnimConfig = new AnimationConfig().setInterpolator(interpolatorType).setDuration(300);
+        this.openAnimConfig = new AnimationConfig().setInterpolator(interpolatorType).setDuration(3500);
+        this.closeAnimConfig = new AnimationConfig().setInterpolator(interpolatorType).setDuration(3000);
         break;
 
       case InterpolatorType.ACCELERATE_DECELERATE:
         // 加速减速：经典曲线，标准时长
-        this.openAnimConfig = new AnimationConfig().setInterpolator(interpolatorType).setDuration(300);
-        this.closeAnimConfig = new AnimationConfig().setInterpolator(interpolatorType).setDuration(250);
+        this.openAnimConfig = new AnimationConfig().setInterpolator(interpolatorType).setDuration(3000);
+        this.closeAnimConfig = new AnimationConfig().setInterpolator(interpolatorType).setDuration(2500);
         break;
 
       case InterpolatorType.SPRING:
         // 弹簧：物理动画，使用较短时长
-        this.openAnimConfig = new AnimationConfig().setInterpolator(interpolatorType).setDuration(500);
-        this.closeAnimConfig = new AnimationConfig().setInterpolator(interpolatorType).setDuration(400);
+        this.openAnimConfig = new AnimationConfig().setInterpolator(interpolatorType).setDuration(800);
+        this.closeAnimConfig = new AnimationConfig().setInterpolator(interpolatorType).setDuration(800);
         break;
 
       case InterpolatorType.BOUNCE:
@@ -334,11 +334,6 @@ struct InterpolatorDemo {
       Column({ space: 8 }) {
         Text('动画插值器演示').fontSize(24).fontWeight(FontWeight.Bold)
         Text('先选择插值器类型，再滑动下方列表项体验效果').fontSize(14).fontColor('#666666')
-        if (this.showAnimationInfo && this.lastTriggeredAnimation) {
-          Text(this.lastTriggeredAnimation)
-            .fontSize(12).fontColor('#FF6B6B').backgroundColor('#FFF0F0').padding(8).borderRadius(4).margin({ top: 4 })
-            .transition(TransitionEffect.opacity(1).animation({ duration: 300, curve: Curve.EaseOut }))
-        }
       }.padding({ top: 20, left: 16, right: 16, bottom: 12 }).width('100%').backgroundColor('#FFFFFF')
 
       // 插值器选择按钮
