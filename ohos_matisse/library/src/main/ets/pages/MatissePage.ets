@@ -15,15 +15,10 @@
 
 import {
   PhotoPickerComponent,
-  PickerController,
   PickerOptions,
-  BaseItemInfo,
-  ItemInfo,
-  PhotoBrowserInfo,
   ItemType,
   ClickType,
   MaxCountType,
-  PhotoBrowserRange,
   ReminderMode,
   photoAccessHelper
 } from '@kit.MediaLibraryKit';
@@ -32,7 +27,14 @@ import router from '@ohos.router';
 import { PhotoMetadataUtils } from '../internal/utils/PhotoMetadataUtils';
 import { fileUri } from '@kit.CoreFileKit';
 import { common } from '@kit.AbilityKit';
-import { PhotoBrowserUIElement } from '@ohos.file.PhotoPickerComponent';
+import {
+  BaseItemInfo,
+  ItemInfo,
+  PhotoBrowserRange,
+  PhotoBrowserInfo,
+  // PhotoBrowserUIElement,
+  PickerController,
+} from '@ohos.file.PhotoPickerComponent';
 
 /**
  * Matisse media selection page component
@@ -352,8 +354,8 @@ export struct MatissePage {
    * Handles picker controller ready event
    */
   private onPickerControllerReady(): void {
-    const elements: number[] = [PhotoBrowserUIElement.BACK_BUTTON];
-    this.pickerController.setPhotoBrowserUIElementVisibility(elements, false);
+    // const elements: number[] = [PhotoBrowserUIElement.BACK_BUTTON];
+    // this.pickerController.setPhotoBrowserUIElementVisibility(elements, false);
   }
 
   /**
@@ -496,11 +498,11 @@ export struct MatissePage {
                 if (this.isVisibilityToggleAllowed && !this.mItemClickedStatus) {
                   this.mainVisibility =
                     this.mainVisibility === Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
-                  const elements: number[] = [PhotoBrowserUIElement.CHECKBOX];
-                  this.pickerController.setPhotoBrowserUIElementVisibility(
-                    elements,
-                    this.mainVisibility === Visibility.Visible
-                  );
+                  // const elements: number[] = [PhotoBrowserUIElement.CHECKBOX];
+                  // this.pickerController.setPhotoBrowserUIElementVisibility(
+                  //   elements,
+                  //   this.mainVisibility === Visibility.Visible
+                  // );
                 }
               }
               this.isVisibilityToggleAllowed = true;
@@ -517,7 +519,7 @@ export struct MatissePage {
           .opacity(this.mButtonPreviewStatus ? 1 : 0.4)
           .onClick(() => {
             if (this.isBrowserShow) {
-              this.pickerController.exitPhotoBrowser();
+              // this.pickerController.exitPhotoBrowser();
             } else if (this.mButtonPreviewStatus) {
               this.pickerController.setPhotoBrowserItem(
                 this.selectUris[0],
