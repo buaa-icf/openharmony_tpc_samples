@@ -56,6 +56,17 @@ struct Index {
             .onClick(() => {
               this.navigateToPage('pages/InterpolatorDemo');
             })
+
+          // TouchConfig演示按钮
+          Button('TouchConfig 演示')
+            .width('70%')
+            .height(50)
+            .fontSize(16)
+            .backgroundColor('#FF5722')
+            .borderRadius(8)
+            .onClick(() => {
+              this.navigateToPage('pages/TouchConfigDemo');
+            })
         }
         .width('100%')
         .alignItems(HorizontalAlign.Center)
