@@ -4,9 +4,9 @@
     "products": [
       {
         "name": "default",
-        "targetSdkVersion": 12,
-        "compatibleSdkVersion": 12,
-        "compileSdkVersion": 12,
+        "targetSdkVersion": 13,
+        "compatibleSdkVersion": 13,
+        "compileSdkVersion": 13,
         "runtimeOS": "OpenHarmony",
         "buildOption": {
           "strictMode": {
