@@ -98,7 +98,19 @@ export function UnitTest(context:CanvasRenderingContext2D, canvasWidth:number, c
     hilog.info(0x0000, 'testTag', '8.测试arkts->lua接口,无返回值');
     harNAPI.T2lCallFunction("testLuaHelloWorld");
 
-    hilog.info(0x0000, 'testTag', '8.测试arkts->lua接口,无返回值');
-    harNAPI.T2lCallFunction("testcallback", 100, 200);
-    hilog.info(0x0000, 'testTag', '8.返回值 =%{public}d');
+    hilog.info(0x0000, 'testTag', '8.测试arkts->lua接口,传入 number，返回number');
+    let res: number = harNAPI.T2lCallFunction("testcallback", 100, 200);
+    hilog.info(0x0000, 'testTag', '8.返回值 = ' + res);
+
+    hilog.info(0x0000, 'testTag', '9.测试arkts->lua接口,传入 string，返回string');
+    let res1: string = harNAPI.T2lCallFunction("testcallstring", "100", "200");
+    hilog.info(0x0000, 'testTag', '9.返回值 = ' + res1);
+
+    hilog.info(0x0000, 'testTag', '10.测试arkts->lua接口,传入 boolean，返回boolean');
+    let res2: boolean = harNAPI.T2lCallFunction("testcallbool", true);
+    hilog.info(0x0000, 'testTag', '10.返回值 = ' + res2);
+
+    hilog.info(0x0000, 'testTag', '10.测试arkts->lua接口,传入 boolean，返回boolean');
+    res2 = harNAPI.T2lCallFunction("testcallbool", false);
+    hilog.info(0x0000, 'testTag', '10.返回值 = ' + res2);
 }
