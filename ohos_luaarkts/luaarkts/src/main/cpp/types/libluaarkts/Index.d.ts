@@ -34,7 +34,7 @@ export const T2lGetTableDouble: (luaTable: string, tableVarName:string) => numbe
 export const T2lGetTableChar: (luaTable: string, tableVarName:string) => number;
 export const T2lGetTableBool: (luaTable: string, tableVarName:string) => number;
 
-export const T2lCallFunction: (luaFunc: string, ...numbers: ESObject[]) => void;
+export const T2lCallFunction: (luaFunc: string, ...numbers: ESObject[]) => ESObject;
 export const TestNAPI: (a: number, b: number) => number;
 
 export const T2lSetTableInt:(tab:string, field:string, val:number) => void;

@@ -51,12 +51,16 @@ void InitLuaEnv(std::string sPath)
     // 2.加载Lua文件
     int bRet = luaL_loadfile(L, sPath.c_str());
     if (bRet) {
+        OH_LOG_Print(LOG_APP, LOG_ERROR, 0, "ohos_luaarkts", "InitLuaEnv loadfile failed: %{public}s",
+                     lua_tostring(L, -1));
         return;
     }
 
     // 3.运行Lua文件
     bRet = lua_pcall(L, 0, 0, 0);
     if (bRet) {
+        OH_LOG_Print(LOG_APP, LOG_ERROR, 0, "ohos_luaarkts", "InitLuaEnv pcall failed: %{public}s",
+                     lua_tostring(L, -1));
         return;
     }
 
@@ -156,6 +160,11 @@ void T2lSetTableInt(std::string tab, std::string field, int32_t intValue)
 {
     auto L = g_L; /* variable in Lua */
     lua_getglobal(L, tab.c_str());
+    if (!lua_istable(L, -1)) {
+        OH_LOG_Print(LOG_APP, LOG_ERROR, 0, "ohos_luaarkts", "T2lSetTableInt: %{public}s is not a table",
+                     tab.c_str());
+        return;
+    }
     lua_pushinteger(L, intValue); // 入栈
     int parStackOne = -2;         // 栈从-2开始
     lua_setfield(L, parStackOne, field.c_str());
@@ -165,6 +174,11 @@ void T2lSetTableLong(std::string tab, std::string field, int64_t intValue)
 {
     auto L = g_L; /* variable in Lua */
     lua_getglobal(L, tab.c_str());
+    if (!lua_istable(L, -1)) {
+        OH_LOG_Print(LOG_APP, LOG_ERROR, 0, "ohos_luaarkts", "T2lSetTableLong: %{public}s is not a table",
+                     tab.c_str());
+        return;
+    }
     lua_pushnumber(L, intValue); // 入栈
     int parStackOne = -2;        // 栈从-2开始
     lua_setfield(L, parStackOne, field.c_str());
@@ -174,6 +188,11 @@ void T2lSetTableDouble(std::string tab, std::string field, double intValue)
 {
     auto L = g_L; /* variable in Lua */
     lua_getglobal(L, tab.c_str());
+    if (!lua_istable(L, -1)) {
+        OH_LOG_Print(LOG_APP, LOG_ERROR, 0, "ohos_luaarkts", "T2lSetTableDouble: %{public}s is not a table",
+                     tab.c_str());
+        return;
+    }
     lua_pushnumber(L, intValue); // 入栈
     int parStackOne = -2;        // 栈从-2开始
     lua_setfield(L, parStackOne, field.c_str());
@@ -183,6 +202,11 @@ void T2lSetTableString(std::string tab, std::string field, std::string intValue)
 {
     auto L = g_L; /* variable in Lua */
     lua_getglobal(L, tab.c_str());
+    if (!lua_istable(L, -1)) {
+        OH_LOG_Print(LOG_APP, LOG_ERROR, 0, "ohos_luaarkts", "T2lSetTableString: %{public}s is not a table",
+                     tab.c_str());
+        return;
+    }
     lua_pushstring(L, intValue.c_str()); // 入栈
     int parStackOne = -2;                // 栈从-2开始
     lua_setfield(L, parStackOne, field.c_str());
@@ -192,6 +216,11 @@ void T2lSetTableBool(std::string tab, std::string field, bool intValue)
 {
     auto L = g_L; /* variable in Lua */
     lua_getglobal(L, tab.c_str());
+    if (!lua_istable(L, -1)) {
+        OH_LOG_Print(LOG_APP, LOG_ERROR, 0, "ohos_luaarkts", "T2lSetTableBool: %{public}s is not a table",
+                     tab.c_str());
+        return;
+    }
     lua_pushboolean(L, intValue); // 入栈
     int parStackOne = -2;         // 栈从-2开始
     lua_setfield(L, parStackOne, field.c_str());
@@ -202,6 +231,11 @@ int T2lGetTableInt(string strTableName, string strVarInt)
 {
     auto L = g_L; /* variable in Lua */
     lua_getglobal(L, strTableName.c_str());
+    if (!lua_istable(L, -1)) {
+        OH_LOG_Print(LOG_APP, LOG_ERROR, 0, "ohos_luaarkts", "T2lGetTableInt: %{public}s is not a table",
+                     strTableName.c_str());
+        return 0;
+    }
     lua_getfield(L, -1, strVarInt.c_str());
     auto valInt = lua_tointeger(L, -1);
 
@@ -212,6 +246,11 @@ int64_t T2lGetTableLong(string strTableName, string strVarLong)
 {
     auto L = g_L; /* variable in Lua */
     lua_getglobal(L, strTableName.c_str());
+    if (!lua_istable(L, -1)) {
+        OH_LOG_Print(LOG_APP, LOG_ERROR, 0, "ohos_luaarkts", "T2lGetTableLong: %{public}s is not a table",
+                     strTableName.c_str());
+        return 0;
+    }
     lua_getfield(L, -1, strVarLong.c_str());
     int64_t valLong = lua_tonumber(L, -1);
 
@@ -222,6 +261,11 @@ double T2lGetTableDouble(string strTableName, string strVarDouble)
 {
     auto L = g_L; /* variable in Lua */
     lua_getglobal(L, strTableName.c_str());
+    if (!lua_istable(L, -1)) {
+        OH_LOG_Print(LOG_APP, LOG_ERROR, 0, "ohos_luaarkts", "T2lGetTableDouble: %{public}s is not a table",
+                     strTableName.c_str());
+        return 0.0;
+    }
     lua_getfield(L, -1, strVarDouble.c_str());
     auto valDouble = lua_tonumber(L, -1);
 
@@ -232,6 +276,11 @@ const char *T2lGetTableChar(string strTableName, string strVarChar)
 {
     auto L = g_L; /* variable in Lua */
     lua_getglobal(L, strTableName.c_str());
+    if (!lua_istable(L, -1)) {
+        OH_LOG_Print(LOG_APP, LOG_ERROR, 0, "ohos_luaarkts", "T2lGetTableChar: %{public}s is not a table",
+                     strTableName.c_str());
+        return "";
+    }
     lua_getfield(L, -1, strVarChar.c_str());
     size_t sizeLen;
     auto valChar = lua_tolstring(L, -1, &sizeLen);
@@ -243,8 +292,12 @@ int T2lGetTableBool(string strTableName, string strVarBool)
 {
     auto L = g_L; /* variable in Lua */
     lua_getglobal(L, strTableName.c_str());
+    if (!lua_istable(L, -1)) {
+        OH_LOG_Print(LOG_APP, LOG_ERROR, 0, "ohos_luaarkts", "T2lGetTableBool: %{public}s is not a table",
+                     strTableName.c_str());
+        return 0;
+    }
     lua_getfield(L, -1, strVarBool.c_str());
-    size_t sizeLen;
     auto valBool = lua_toboolean(L, -1);
 
     return valBool;
@@ -319,21 +372,21 @@ napi_value T2lCallFunction(napi_env env, napi_callback_info info)
                 int resultInt;
                 napi_get_value_int32(g_env, it, &resultInt);
                 lua_pushinteger(L, resultInt);
-            }
                 break;
+            }
             case napi_string: {
                 char tmpChar[2048];
                 size_t size = sizeof(tmpChar);
                 napi_get_value_string_utf8(g_env, it, tmpChar, size, &size);
                 lua_pushlstring(L, tmpChar, size);
-            }
                 break;
+            }
             case napi_bigint: {
                 int64_t resultInt;
                 napi_get_value_int64(g_env, it, &resultInt);
                 lua_pushnumber(L, resultInt);
-            }
                 break;
+            }
             default: { }
             }
     }
@@ -345,17 +398,27 @@ napi_value T2lCallFunction(napi_env env, napi_callback_info info)
         OH_LOG_Print(LOG_APP, LOG_INFO, 0, "ohos_luaarkts", "pErrorMsg = %{public}s", pErrorMsg);
     } else {
         napi_value result = nullptr;
-        if (lua_isnumber(L, -1)) {
-            int value = lua_tointeger(L, -1); // 将堆栈顶部的值转换为数字
-
-            status = napi_create_int32(g_env, value, &result);
-        } else if (lua_isstring(L, -1)) {
-            string value = lua_tostring(L, -1); // 将堆栈顶部的值转换为数字
-
-            napi_value ntag;
-            status = napi_create_string_utf8(g_env, value.c_str(), value.size(), &result);
-        } else {
-            return nullptr;
+        int type = lua_type(L, -1);
+        switch (type) {
+            case LUA_TSTRING: {
+                string value = lua_tostring(L, -1); // 将堆栈顶部的值转换为字符串
+                status = napi_create_string_utf8(g_env, value.c_str(), value.size(), &result);
+                break;
+            }
+            case LUA_TNUMBER: {
+                int value = lua_tointeger(L, -1); // 将堆栈顶部的值转换为数字
+                status = napi_create_int32(g_env, value, &result);
+                break;
+            }
+            case LUA_TBOOLEAN: {
+                bool value = lua_toboolean(L, -1);
+                status = napi_get_boolean(g_env, value, &result);
+                napi_valuetype napiType;
+                napi_typeof(g_env, result, &napiType);
+                break;
+            }
+            default:
+                break;
         }
         return result;
     }

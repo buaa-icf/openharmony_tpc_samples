@@ -65,6 +65,20 @@ function testcallback(a, b)
     return c
 end
 
+function testcallstring(a, b)
+    local c = a .. b
+	cc.l2tLogDebug("lua触发testcallback=" .. c)
+    return c
+end
+
+function testcallbool(a)
+    if a then
+        return false
+    else
+        return true
+    end
+end
+
 cc.l2tLogDebug("测试lua回调匿名函数1")
 cc.l2cTestCallBack("testLuaHelloWorld") -- right
 
