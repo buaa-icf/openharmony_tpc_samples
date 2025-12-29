@@ -997,6 +997,7 @@ static spAnimation *_spSkeletonBinary_readAnimation(spSkeletonBinary *self, cons
 }
 
 static float *_readFloatArray(_dataInput *input, int n, float scale) {
+	if (n < 0) n = 0;
 	float *array = MALLOC(float, n);
 	int i;
 	if (scale == 1)
@@ -1009,6 +1010,7 @@ static float *_readFloatArray(_dataInput *input, int n, float scale) {
 }
 
 static unsigned short *_readShortArray(_dataInput *input, int n) {
+	if (n < 0) n = 0;
 	unsigned short *array = MALLOC(unsigned short, n);
 	int i;
 	for (i = 0; i < n; ++i) {
@@ -1027,24 +1029,52 @@ static int _readVertices(_dataInput *input, float **vertices, int *verticesLengt
 		return *verticesLength;
 	}
 
-	float *v = MALLOC(float, (*verticesLength) * 3 * 3);
-	int *b = MALLOC(int, (*verticesLength) * 3);
+	// 对于加权顶点，使用不同的方法来避免内存分配错误
+	// 我们使用动态增长的缓冲区来确保有足够的内存
+	
+	// 初始分配
+	int initialCapacity = vertexCount * 3; // 假设每个顶点平均3个骨骼
+	float *v = MALLOC(float, initialCapacity * 3); // 每个骨骼权重有3个浮点数（x, y, weight）
+	int *b = MALLOC(int, initialCapacity + vertexCount); // 每个顶点1个骨骼数量 + 每个骨骼1个索引
 	int boneIdx = 0;
 	int vertexIdx = 0;
+	int currentVCapacity = initialCapacity * 3;
+	int currentBCapacity = initialCapacity + vertexCount;
+	
 	for (int i = 0; i < vertexCount; ++i) {
 		int boneCount = readVarint(input, 1);
+		
+		// 检查并扩展骨骼缓冲区
+		if (boneIdx + 1 + boneCount >= currentBCapacity) {
+			currentBCapacity = (boneIdx + 1 + boneCount) * 2;
+			b = REALLOC(b, int, currentBCapacity);
+		}
+		
 		b[boneIdx++] = boneCount;
+		
 		for (int ii = 0; ii < boneCount; ++ii) {
+			// 检查并扩展顶点缓冲区
+			if (vertexIdx + 3 >= currentVCapacity) {
+				currentVCapacity = (vertexIdx + 3) * 2;
+				v = REALLOC(v, float, currentVCapacity);
+			}
+			
 			b[boneIdx++] = readVarint(input, 1);
 			v[vertexIdx++] = readFloat(input) * scale;
 			v[vertexIdx++] = readFloat(input) * scale;
 			v[vertexIdx++] = readFloat(input);
 		}
 	}
+	
+	// 收缩缓冲区到实际使用大小
+	v = REALLOC(v, float, vertexIdx);
+	b = REALLOC(b, int, boneIdx);
+	
 	*vertices = v;
 	*bones = b;
 	*bonesCount = boneIdx;
-	*verticesLength = vertexIdx;
+	// verticesLength should always be vertexCount * 2 for compatibility
+	*verticesLength = vertexCount << 1;
 	return vertexCount << 1;
 }
 
@@ -1124,6 +1154,7 @@ spAttachment *spSkeletonBinary_readAttachment(spSkeletonBinary *self, _dataInput
 			uvsCount = verticesLength;
 			uvs = _readFloatArray(input, uvsCount, 1);
 			trianglesCount = (verticesLength - hullLength - 2) * 3;
+			if (trianglesCount < 0) trianglesCount = 0;
 			triangles = _readShortArray(input, trianglesCount);
 
 			if (nonessential) {

@@ -51,7 +51,7 @@ struct Index {
 
   // 播放控制相关状态（内部使用，不在UI显示）
   private playCount: number = 0; // 当前播放次数
-  private maxPlayCount: number = 20; // 最大播放次数
+  private maxPlayCount: number = 2000; // 最大播放次数
   private isPlaying: boolean = false; // 是否正在播放
   private checkInterval: number = -1; // 检查播放次数的定时器
 
@@ -462,7 +462,7 @@ struct Index {
         Spine.setPosition(XCOMPONENT_ID, instanceName, 540, 200);
 
         // 设置缩放
-        Spine.setScale(XCOMPONENT_ID, instanceName, 0.5, 0.5);
+        Spine.setScale(XCOMPONENT_ID, instanceName, 2, 2);
 
         // 设置默认动画
         if (this.animationList.length > 0) {
