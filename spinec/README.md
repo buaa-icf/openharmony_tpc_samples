@@ -139,6 +139,10 @@ private setTimeoutSafe(callback: () => void, delay: number): number {
 | getAnimations| xComponentId: string, instanceName: string | string[]| 获取动画列表 |
 | removeInstance| xComponentId: string, instanceName: string | void| 移除实例 |
 
+## 注意
+
+- 建议使用 .json 格式的动画资源，不推荐使用 .skel 格式，因其在播放时可能存在兼容性或稳定性问题。
+
 在下述版本验证通过：
 - DevEco Studio: NEXT Release(6.0.1.251), SDK: API12 (5.0.0.71)
 - DevEco Studio: NEXT Developer Beta(6.0.1), SDK: API12 (5.0.0.25)
