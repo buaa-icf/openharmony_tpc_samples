@@ -23,7 +23,8 @@ LYCIUM_TOOLS_DIR=$LYCIUM_ROOT_DIR/lycium
 LYCIUM_THIRDPARTY_DIR=$LYCIUM_ROOT_DIR/thirdparty
 LYCIUM_COMMUNITY_DIR=$LYCIUM_ROOT_DIR/community
 DEPENDS_DIR=$ROOT_DIR/doc                                                   # 依赖库编译脚本在仓库中的位置
-BZIP2_NAME=bzip2                                                            # 依赖库名
+LIB7ZIP_NAME=7zip                                                           # 依赖库名
+BZIP2_NAME=bzip2_1_0_8                                                      # 依赖库名
 MINIZIP_NAME=minizip-ng                                                     # 依赖库名
 OPENSSL_NAME=openssl                                                        # 依赖库名
 XZ_NAME=xz                                                                  # 依赖库名
@@ -31,8 +32,8 @@ ZSTD_NAME=zstd                                                              # �
 
 CI_OUTPUT_DIR=$ROOT_DIR/../out/tpc/                                         # hap/har安装目录
 
-LIBS_NAME=("bzip2" "minizip-ng" "openssl" "xz" "zstd")
-PACKAGE_NAME=("bzip2-1_0_6.tar.gz" "minizip-ng-4.0.0.tar.gz" "openssl-OpenSSL_1_1_1u.zip" "xz-v5.4.1.zip" "facebook-zstd-v1.5.4.zip")
+LIBS_NAME=("7zip" "minizip-ng" "openssl" "xz" "zstd")
+PACKAGE_NAME=("7zip2409-src.tar.xz" "minizip-ng-4.0.0.tar.gz" "openssl-OpenSSL_1_1_1u.zip" "xz-v5.4.1.zip" "facebook-zstd-v1.5.4.zip")
 
 function prepare_lycium_tools()
 {
@@ -101,6 +102,7 @@ function copy_depends()
 
 function prepare_depends()
 {
+    copy_depends $LYCIUM_COMMUNITY_DIR $LIB7ZIP_NAME
     copy_depends $LYCIUM_COMMUNITY_DIR $MINIZIP_NAME
     copy_depends $LYCIUM_COMMUNITY_DIR $XZ_NAME
 }
@@ -134,7 +136,7 @@ function check_copy_shasum()
 
 function install_shasum()
 {
-    check_copy_shasum $BZIP2_NAME ${PACKAGE_NAME[0]} $BZIP2_NAME
+    check_copy_shasum $LIB7ZIP_NAME ${PACKAGE_NAME[0]} $LIB7ZIP_NAME
     check_copy_shasum $MINIZIP_NAME ${PACKAGE_NAME[1]} $MINIZIP_NAME
     check_copy_shasum $OPENSSL_NAME ${PACKAGE_NAME[2]} $OPENSSL_NAME  
     check_copy_shasum $XZ_NAME ${PACKAGE_NAME[3]} $XZ_NAME
@@ -149,7 +151,7 @@ function start_build()
         return 1
     fi
 
-    bash build.sh $BZIP2_NAME $MINIZIP_NAME $OPENSSL_NAME $XZ_NAME $ZSTD_NAME
+    bash build.sh $LIB7ZIP_NAME $BZIP2_NAME $MINIZIP_NAME $OPENSSL_NAME $XZ_NAME $ZSTD_NAME
     result=$?
     cd $OLDPWD
     return $result
@@ -190,8 +192,34 @@ function install_depends()
         return 1
     fi
 
+    mkdir -p $ROOT_DIR/library/libs/arm64-v8a
+    mkdir -p $ROOT_DIR/library/libs/armeabi-v7a
+    mkdir -p $ROOT_DIR/library/libs/x86_64
+
+    cp -arf $LYCIUM_TOOLS_DIR/usr/$LIB7ZIP_NAME/arm64-v8a/libs/lib7zz.so $ROOT_DIR/library/libs/arm64-v8a
+    if [ $? -ne 0 ]
+    then
+        echo "7zip build failed!"
+        return 1
+    fi
+
+    cp -arf $LYCIUM_TOOLS_DIR/usr/$LIB7ZIP_NAME/armeabi-v7a/libs/lib7zz.so $ROOT_DIR/library/libs/armeabi-v7a
+    if [ $? -ne 0 ]
+    then
+        echo "7zip build failed!"
+        return 1
+    fi
+
+    cp -arf $LYCIUM_TOOLS_DIR/usr/$LIB7ZIP_NAME/x86_64/libs/lib7zz.so $ROOT_DIR/library/libs/x86_64
+    if [ $? -ne 0 ]
+    then
+        echo "7zip build failed!"
+        return 1
+    fi
+
     if [ -d $CI_OUTPUT_DIR ]
     then
+        cp -arf $LYCIUM_TOOLS_DIR/usr/$LIB7ZIP_NAME $CI_OUTPUT_DIR
         cp -arf $LYCIUM_TOOLS_DIR/usr/$BZIP2_NAME $CI_OUTPUT_DIR
         cp -arf $LYCIUM_TOOLS_DIR/usr/$MINIZIP_NAME $CI_OUTPUT_DIR
         cp -arf $LYCIUM_TOOLS_DIR/usr/$OPENSSL_NAME $CI_OUTPUT_DIR
