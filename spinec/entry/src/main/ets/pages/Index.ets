@@ -668,7 +668,7 @@ struct Index {
       })
         .width('100%')
         .height('60%')
-        .backgroundColor('#333333')
+        .backgroundColor(Color.Transparent)
         .onLoad((context) => {
           const regResult: boolean = Spine.registerXComponent(XCOMPONENT_ID);
           // 延迟设置就绪状态，确保 Native 层完全初始化

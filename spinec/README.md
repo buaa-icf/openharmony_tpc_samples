@@ -143,9 +143,13 @@ private setTimeoutSafe(callback: () => void, delay: number): number {
 
 - 建议使用 .json 格式的动画资源，不推荐使用 .skel 格式，因其在播放时可能存在兼容性或稳定性问题。
 
+## 约束与限制
+
 在下述版本验证通过：
 - DevEco Studio: NEXT Release(6.0.1.251), SDK: API12 (5.0.0.71)
 - DevEco Studio: NEXT Developer Beta(6.0.1), SDK: API12 (5.0.0.25)
+
+## 目录结构
 
 ````
 |---- spinec
