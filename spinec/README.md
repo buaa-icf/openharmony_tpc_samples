@@ -141,6 +141,7 @@ private setTimeoutSafe(callback: () => void, delay: number): number {
 
 ## 注意
 
+- spinec库有严格的版本检查，使用该库请使用4.2版本的资源。
 - 建议使用 .json 格式的动画资源，不推荐使用 .skel 格式，因其在播放时可能存在兼容性或稳定性问题。
 
 ## 约束与限制
