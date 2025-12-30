@@ -1,3 +1,7 @@
+## 1.0.1
+
+- Modify the optimization level of dynamic libraries.
+
 ## 1.0.1-rc.0
 - openssl has been updated to version 3.5.0 and vulnerabilities have been fixed:
 1. CVE-2025-9230: Fix vulnerabilities using Patches

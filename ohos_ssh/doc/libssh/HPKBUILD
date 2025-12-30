@@ -21,7 +21,7 @@ pkgdesc="libssh is a multiplatform C library implementing the SSHv2 protocol on 
 url="https://www.libssh.org/"
 archs=("armeabi-v7a" "arm64-v8a")
 license=("LGPL-2.1" "BSDv2")
-depends=("openssl")
+depends=("openssl-3.5.0")
 makedepends=()
 
 source="https://www.libssh.org/files/${pkgver:0:4}/$pkgname-$pkgver.tar.xz"

@@ -14,7 +14,7 @@ ohpm install @ohos/libssh
 
 This project depends on the openssl and libssh library.It needs to be compiled by yourself[openssl and libssh Integrate into the application hap](https://gitcode.com/openharmony-sig/tpc_c_cplusplus/blob/master/lycium/README.md).
 
-1.Before compiling, copy the files under [scripts](scripts) to tpc_c_cplusplus/thirdparty.
+1.Before compiling, copy the files under [doc](doc) to tpc_c_cplusplus/thirdparty.
 
 2.Start compiling openssl and libssh.
 

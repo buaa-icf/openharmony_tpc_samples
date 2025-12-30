@@ -14,7 +14,7 @@ ohpm install @ohos/libssh
 
 本项目依赖openssl、libssh库，需要自行编译[openssl、libssh集成到应用hap](https://gitcode.com/openharmony-sig/tpc_c_cplusplus/blob/master/lycium/README.md)。
 
-1.编译之前将[scripts目录](scripts)下的文件拷贝到tpc_c_cplusplus/thirdparty下。
+1.编译之前将[doc目录](doc)下的文件拷贝到tpc_c_cplusplus/thirdparty下。
 
 2.开始编译openssl、libssh。
 
