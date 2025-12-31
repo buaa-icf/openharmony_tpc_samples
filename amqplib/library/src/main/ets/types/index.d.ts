@@ -10,13 +10,12 @@
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 3.2
 
-/// <reference types="node" />
 
-import * as events from '@ohos/node-polyfill';
+import { EventEmitter } from './node-polyfill-events';
 import { Replies, Options, Message, GetMessage, ConsumeMessage, ServerProperties } from './properties';
 export * from './properties';
 
-export interface Connection extends events.EventEmitter {
+export interface Connection extends EventEmitter {
     close(): Promise<void>;
     createChannel(): Promise<Channel>;
     createConfirmChannel(): Promise<ConfirmChannel>;
@@ -25,7 +24,7 @@ export interface Connection extends events.EventEmitter {
     };
 }
 
-export interface Channel extends events.EventEmitter {
+export interface Channel extends EventEmitter {
     close(): Promise<void>;
 
     assertQueue(queue: string, options?: Options.AssertQueue): Promise<Replies.AssertQueue>;

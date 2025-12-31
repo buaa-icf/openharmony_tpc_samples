@@ -29,6 +29,9 @@ let Buffer = buffer.Buffer
 
 const CONNECT_ERROR_CODE_TIMEOUT = 115;
 
+function nop() {
+}
+
 export function connect(options: ConnectionOptions, connectionListener?: () => void): Socket {
     const socket: Socket = new Socket();
     socket.connect(options, connectionListener);
@@ -148,7 +151,7 @@ export class Socket extends Duplex {
 
     _write(data, encoding, cb) {
         if (typeof cb != 'function') {
-            cb = 'nop';
+            cb = nop;
         }
         if (this.connecting || !this.tlsSocket) {
             this.once('connect', () => this._write(data, encoding, cb));
@@ -163,12 +166,11 @@ export class Socket extends Duplex {
         }
     }
 
-    write(data, encoding, cb) {
+    write(data, encoding?, cb?) {
         if (encoding == undefined) {
             encoding = 'buffer';
         }
-        let result = this._write(data, encoding, cb);
-        return true;
+        return super.write(data, encoding, cb);
     }
 
     on(event: string, callback: (...any) => void) {
@@ -229,7 +231,11 @@ export class Socket extends Duplex {
             })
         }
     }
-    private messageDispatcher = (message: any) => {
+    private messageDispatcher = (message: socket.SocketMessageInfo) => {
+        if (message && message.message) {
+            const buffer = Buffer.from(message.message);
+            this.push(buffer);
+        }
         this.messageListeners.forEach((callback) => {
             callback(message)
         })

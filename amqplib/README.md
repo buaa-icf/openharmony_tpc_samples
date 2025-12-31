@@ -88,6 +88,41 @@
 
 ---
 
+## EventListener
+
+The Connection and Channel objects inherit from EventEmitter and support listening for events using methods such as' on 'and' off '
+
+**Connection event:**
+Events consistent with the source repository, to view/source library interface documentation (https://amqp-node.github.io/amqplib/channel_api.html#model_events)
+- 'error' : Triggered when an error occurs in the connection, with the callback parameter being the error object
+- 'close' : Triggered when the connection is closed
+- 'blocked' : Triggered when the connection is blocked by the server
+- 'unblocked' : Triggered when the connection is unblocked
+- 'update-secret-ok' : Triggered after receiving confirmation from the agent that the connection secret has been successfully updated
+
+**Channel event:**
+Events consistent with the source repository, to view/source library interface documentation (https://amqp-node.github.io/amqplib/channel_api.html#channel_events)
+- 'error' : Triggered when the channel is closed by the server (such as parameter conflicts, permission errors, etc.), the callback parameter is the error object. Note: Promise rejection does not trigger this event
+- 'close' : Triggered when the channel is closed
+- 'return' : Triggered when the message cannot be routed (a 'mandatory' flag needs to be set)
+- 'drain' : Triggered when the write buffer is emptied (message sending can be resumed)
+
+**Usage example:**
+```javascript
+// Listen for connection errors
+connection.on('error', (err) => {
+  console.error('Connection error:', err);
+});
+
+// Listen for connection close
+channel.on('close', () => {
+  console.log('Channel closed');
+});
+
+// Remove event listening
+channel.off('close', closeHandler);
+```
+
 
 ## About obfuscation
 - Code obfuscation, please see[Code Obfuscation](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)

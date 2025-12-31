@@ -8,6 +8,6 @@
   "name": "amqplib",
   "description": "Please describe the basic information.",
   "main": "",
-  "version": "1.0.2-rc.0",
+  "version": "1.0.2-rc.1",
   "dependencies": {}
 }
