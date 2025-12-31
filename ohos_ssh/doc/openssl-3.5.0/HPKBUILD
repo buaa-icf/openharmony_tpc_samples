@@ -14,8 +14,8 @@
 # Contributor: Jeff Han <hanjinfei@foxmail.com>
 # Maintainer: Jeff Han <hanjinfei@foxmail.com>
 
-pkgname=openssl
-pkgver=openssl-3.5.0
+pkgname=openssl-3.5.0
+pkgver=3.5.0
 pkgrel=0
 pkgdesc="OpenSSL is a robust, commercial-grade, full-featured Open Source Toolkit for the Transport Layer Security (TLS) protocol formerly known as the Secure Sockets Layer (SSL) protocol."
 url="https://www.openssl.org/"
@@ -25,13 +25,13 @@ depends=()
 makedepends=()
 
 # 官方下载地址https://github.com/openssl/$pkgname/archive/refs/tags/$pkgver.zip受网络影响可能存在下载失败的情况，现使用gitee镜像可以与官方仓库保持同步
-source="https://gitee.com/mirrors/$pkgname/repository/archive/$pkgver.zip"
+source="https://gitee.com/mirrors/openssl/repository/archive/$pkgname.zip"
 
 autounpack=true
 downloadpackage=true
 buildtools="configure"
 
-builddir=$pkgname-${pkgver}
+builddir=openssl-${pkgname}
 packagename=$builddir.zip
 patchflag=true
 
@@ -39,9 +39,8 @@ source envset.sh
 
 host=
 prepare() {
+    unset MAKE
     if $patchflag
-    unset make
-    export MAKE=make
     then
         cd $builddir
         # 屏蔽测试bug
@@ -70,7 +69,7 @@ build() {
     cd $builddir/$ARCH-build
     PKG_CONFIG_LIBDIR="${pkgconfigpath}" \
     ../Configure "$@" $host shared > $buildlog 2>&1
-    $MAKE -j32 >> $buildlog 2>&1
+    make -j8 >> $buildlog 2>&1
     ret=$?
     cd $OLDPWD
     return $ret
@@ -78,13 +77,13 @@ build() {
 
 package() {
     cd $builddir/$ARCH-build
-    $MAKE install >> $buildlog 2>&1
+    make -j8 install >> $buildlog 2>&1
     cd $OLDPWD
 }
 
 check() {
     cd $builddir/$ARCH-build
-    $MAKE depend >> $buildlog 2>&1
+    make -j8 depend >> $buildlog 2>&1
     cd $OLDPWD
     unset host
     if [ $ARCH == "armeabi-v7a" ]
