@@ -20,8 +20,7 @@
  * THE SOFTWARE.
  */
 
-import * as amqplib from '@ohos/amqplib/src/main/ets/callback_api';
-import { Options, Channel, Connection, ConsumeMessage } from '@ohos/amqplib';
+import { Options, Channel, Connection, ConsumeMessage, connect } from '@ohos/amqplib';
 import { buffer } from '@ohos/node-polyfill';
 import { Unit8ArrayUtils } from './Unit8ArrayUtils';
 import ConsoleN from '../components/ConsoleN';
@@ -47,39 +46,68 @@ struct WorkQueues {
   channel: Channel | null = null
 
   async connect() {
-    amqplib.connect('amqp://' + this.serverIp, async (err: Error, conn: Connection) => {
-      if (err){
-        console.info('onConnection--------------err:' + err.message)
-        return
-      }
-      this.connection = conn
-      this.channel = await this.connection.createChannel();
-
-      // 定义交换机
-      const exchangeOptions: Options.AssertExchange = { durable: true };
-      await this.channel.assertExchange(exchangeName, exchangeType, exchangeOptions);
-
-      // 定义队列
-      const queueOptions: Options.AssertQueue = { durable: true };
-      await this.channel.assertQueue(queueName, queueOptions);
-
-      // 绑定队列到交换机
-      await this.channel.bindQueue(queueName, exchangeName, routingKey);
-    });
+    this.connection = await connect(`amqp://admin:123456@${this.serverIp}:5672`);
+    this.connection?.on('close', () => {
+      console.log('on close: Connection closed');
+    })
+    this.connection?.on('error', (err: Error) => {
+      console.log('on error: Connection error: ' + err.message);
+    })
+    this.connection?.on('blocked', (reason: string) => {
+      console.log('Connection blocked: ' + reason);
+    })
+    this.connection?.on('unblocked', () => {
+      console.log('Connection unblocked');
+    })
+    this.connection?.on('update-secret-ok', () => {
+      console.log('Connection secret updated');
+    })
     console.log('Connected to RabbitMQ server');
+    this.channel = await this.connection.createChannel();
+    this.channel?.on('error', (err: Error) => {
+      console.log('Channel error: ' + err.message);
+    })
+    this.channel?.on('close', () => {
+      console.log('Channel closed event');
+    })
+    this.channel?.on('return', (msg: ESObject) => {
+      console.log('Message returned: ' + JSON.stringify(msg));
+    })
+    this.channel?.on('drain', () => {
+      console.log('Channel drained');
+    })
+
+    // 定义交换机
+    const exchangeOptions: Options.AssertExchange = { durable: true };
+    await this.channel.assertExchange(exchangeName, exchangeType, exchangeOptions);
+
+    // 定义队列
+    const queueOptions: Options.AssertQueue = { durable: true };
+    await this.channel.assertQueue(queueName, queueOptions);
+
+    // 绑定队列到交换机
+    await this.channel.bindQueue(queueName, exchangeName, routingKey);
   };
 
   aboutToAppear() {
     this.connect()
   }
   aboutToDisappear(){
-    this.connection?.close()
-    this.channel?.close()
+    this.channel?.close().then(()=>{
+      console.log('Channel closed');
+      this.connection?.close().then(()=>{
+        console.log('then close: Connection closed');
+      }).catch((err: Error)=>{
+        console.log('catch close:Connection close err:' + err.message)
+      })
+    }).catch(( err: Error)=>{
+      console.log('Channel close err:' + err.message)
+    })
   }
   build() {
     Row() {
       Column() {
-        Console({ model: $consoleSend }).height('40%')
+        Console({ model: $consoleSend }).height('30%')
         Button($r('app.string.Publish_a_message')).onClick(async () => {
           // 发布消息
           const message = 'Hello, World!';
@@ -89,7 +117,25 @@ struct WorkQueues {
           this.consoleSend.info('publish message:' + isPush)
           this.consoleSend.info('publish message:' + isPush2)
         })
-        Console({ model: $consoleReceive }).height('40%')
+        Button('触发return事件').onClick(async () => {
+          // 发送到不存在的路由键，触发return事件
+          const publishOptions: Options.Publish = { mandatory: true };
+          this.channel?.publish(exchangeName, 'nonexistent-key', Buffer.from('test'), publishOptions);
+          this.consoleSend.info('已发送mandatory消息到不存在的路由')
+        })
+        Button('触发channel error').onClick(async () => {
+          // 声明一个已存在但参数不同的队列，会导致服务器关闭channel并触发error
+          try {
+            const conflictOptions: Options.AssertQueue = { 
+              durable: false,  // 与原队列的durable:true冲突
+              exclusive: true 
+            };
+            await this.channel?.assertQueue(queueName, conflictOptions);
+          } catch (err) {
+            this.consoleSend.info('catch到错误，同时应该触发error事件')
+          }
+        })
+        Console({ model: $consoleReceive }).height('30%')
         Button($r('app.string.Consumer_News')).onClick(async () => {
           // 消费消息
           const consumeOptions: Options.Consume = { noAck: false };

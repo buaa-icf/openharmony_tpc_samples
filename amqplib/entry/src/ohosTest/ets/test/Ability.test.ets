@@ -21,20 +21,24 @@
  */
 
 import { describe, beforeAll, beforeEach, afterEach, afterAll, it, expect } from '@ohos/hypium';
-import * as amqp from '@ohos/amqplib';
-import { Channel, Connection, ConsumeMessage, GetMessage, Replies, ConfirmChannel } from '@ohos/amqplib';
+import { Channel, Connection, ConsumeMessage, connect, ConfirmChannel, Replies,
+  GetMessage } from '@ohos/amqplib';
+
 import { buffer } from '@ohos/node-polyfill';
+import { Contents } from '../../../main/ets/Contents';
 
 export default function abilityTest() {
   let connection: Connection;
   let channel: Channel;
   let confirmChannel: ConfirmChannel;
-  describe('AbilityTest', () => {
+  let url: string;
+    describe('AbilityTest', () => {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
     beforeAll(async () => {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
-      connection = await amqp.connect('amqp://192.168.1.100');
+      url = Contents.serverIp;
+      connection = await connect(`amqp://admin:123456@${url}:5672`);
       channel = await connection.createChannel();
       confirmChannel = await connection.createConfirmChannel()
     })

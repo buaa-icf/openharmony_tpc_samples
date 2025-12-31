@@ -20,8 +20,7 @@
  * THE SOFTWARE.
  */
 
-import * as amqplib from '@ohos/amqplib/src/main/ets/callback_api';
-import { Options, Channel, Connection, ConsumeMessage } from '@ohos/amqplib';
+import { Options, Channel, Connection, ConsumeMessage, connect } from '@ohos/amqplib';
 import { buffer } from '@ohos/node-polyfill';
 import { Unit8ArrayUtils } from './Unit8ArrayUtils';
 import ConsoleN from '../components/ConsoleN';
@@ -47,26 +46,23 @@ struct PubSub {
   channel: Channel | null = null
 
   async connect() {
-    amqplib.connect('amqp://' + this.serverIp, async (err: Error, conn: Connection) => {
-      if (err){
-        console.info('onConnection--------------err:' + err.message)
-        return
-      }
-      this.connection = conn
-      this.channel = await this.connection.createChannel();
-
-      // 定义交换机
-      const exchangeOptions: Options.AssertExchange = { durable: true };
-      await this.channel.assertExchange(exchangeName, exchangeType, exchangeOptions);
-
-      // 定义队列
-      const queueOptions: Options.AssertQueue = { durable: true };
-      await this.channel.assertQueue(queueName, queueOptions);
-
-      // 绑定队列到交换机
-      await this.channel.bindQueue(queueName, exchangeName, routingKey);
-    });
+    this.connection = await connect(`amqp://admin:123456@${this.serverIp}:5672`);
+    this.connection?.on('close', () => {
+      console.log('on close: Connection closed');
+    })
+    this.connection?.on('error', (err: Error) => {
+      console.log('on error: Connection error: ' + err.message);
+    })
     console.log('Connected to RabbitMQ server');
+    this.channel = await this.connection.createChannel();
+    // 定义交换机
+    const exchangeOptions: Options.AssertExchange = { durable: true };
+    await this.channel.assertExchange(exchangeName, exchangeType, exchangeOptions);
+    // 定义队列
+    const queueOptions: Options.AssertQueue = { durable: true };
+    await this.channel.assertQueue(queueName, queueOptions);
+    // 绑定队列到交换机
+    await this.channel.bindQueue(queueName, exchangeName, routingKey);
   };
 
   aboutToAppear() {

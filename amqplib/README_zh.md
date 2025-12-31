@@ -89,6 +89,40 @@
 
 ---
 
+## 事件监听
+
+Connection 和 Channel 对象继承自 EventEmitter，支持使用 `on` 和 `off` 等方法监听事件：
+
+**Connection 事件：**
+事件与源库保持一致,可查看[源库接口文档](https://amqp-node.github.io/amqplib/channel_api.html#model_events)
+- `error`：连接发生错误时触发，回调参数为错误对象
+- `close`：连接关闭时触发
+- `blocked`：连接被服务器阻塞时触发
+- `unblocked`：连接解除阻塞时触发
+- `update-secret-ok`: 在收到代理确认连接秘密成功更新后触发
+
+**Channel 事件：**
+事件与源库保持一致,可查看[源库接口文档](https://amqp-node.github.io/amqplib/channel_api.html#channel_events)
+- `error`：通道被服务器关闭时触发（如参数冲突、权限错误等），回调参数为错误对象。注意：Promise rejection不会触发此事件
+- `close`：通道关闭时触发
+- `return`：消息无法路由时触发（需设置 `mandatory` 标志）
+- `drain`：写缓冲区排空时触发（可恢复发送消息）
+
+**使用示例：**
+```javascript
+// 监听连接错误
+connection.on('error', (err) => {
+  console.error('Connection error:', err);
+});
+
+// 监听通道关闭
+channel.on('close', () => {
+  console.log('Channel closed');
+});
+
+// 移除事件监听
+channel.off('close', closeHandler);
+```
 
 
 

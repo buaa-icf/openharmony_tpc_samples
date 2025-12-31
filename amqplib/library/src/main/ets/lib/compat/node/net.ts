@@ -89,9 +89,9 @@ export class Socket extends Duplex {
             if (err) {
                 if (err.code == CONNECT_ERROR_CODE_TIMEOUT && this.timeoutCallback) {
                     this.timeoutCallback();
+                } else {
+                    this.errorDispatcher(err);
                 }
-            } else {
-
             }
         })
     }
@@ -164,12 +164,11 @@ export class Socket extends Duplex {
         }
     }
 
-    write(data, encoding, cb) {
+    write(data, encoding?, cb?) {
         if (encoding == undefined) {
             encoding = 'buffer';
         }
-        let result = this._write(data, encoding, cb);
-        return true;
+        return super.write(data, encoding, cb);
     }
 
     on(event: string, callback: (...any) => void) {
@@ -230,7 +229,11 @@ export class Socket extends Duplex {
             })
         }
     }
-    private messageDispatcher = (message: any) => {
+    private messageDispatcher = (message: socket.SocketMessageInfo) => {
+        if (message && message.message) {
+            const data = Buffer.from(message.message);
+            this.push(data);
+        }
         this.messageListeners.forEach((callback) => {
             callback(message)
         })

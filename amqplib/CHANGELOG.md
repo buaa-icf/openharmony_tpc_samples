@@ -1,3 +1,7 @@
+## v1.0.2-rc.1
+- Export the EventEmitter method
+- Fixed the issue where the socket message did not pass in the amqp message channel
+
 ## v1.0.2-rc.0
 - Modify the document to a GitCode address and add parameter instructions.
 - Fix the issue of package compilation errors when generating har on the latest IDE.
