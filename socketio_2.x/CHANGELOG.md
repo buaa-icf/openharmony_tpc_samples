@@ -1,3 +1,9 @@
+## v1.0.7-rc.0
+
+- Modify the multi parameter issue of the on callback function in socketio2. x
+- Add the on_rulti interface to socketio2. x
+- Modify the emit multi parameter data transmission of socketio2. x
+
 ## v1.0.6
 
 - Optimized Shared Library Compilation: O3 and LTO Support
