@@ -61,6 +61,9 @@ package() {
     $MAKE -C $ARCH-build install >> $buildlog 2>&1
     ret=$?
     cd $OLDPWD
+    rm ${LYCIUM_ROOT}/usr/$pkgname/$ARCH/lib/libssh.so
+    rm ${LYCIUM_ROOT}/usr/$pkgname/$ARCH/lib/libssh.so.4
+    mv ${LYCIUM_ROOT}/usr/$pkgname/$ARCH/lib/libssh.so.4.10.1 ${LYCIUM_ROOT}/usr/$pkgname/$ARCH/lib/libssh.so.4
     return $ret
 }
 
