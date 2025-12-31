@@ -94,11 +94,6 @@ DevEco Studio: NEXT Beta1-5.0.3.806, SDK: API12 Release(5.0.0.66)
 
 - DevEco Studio: (5.0.3.122), SDK: API 12 (5.0.0.17)
 
-- DevEco Studio: 4.0 (4.0.3.512), SDK: API 10 (4.0.10.9)
-
-- DevEco Studio: 4.0 Canary1 (4.0.0.112), SDK: API 10 (4.0.7.2)
-
-
 ## Directory Structure
 ```javascript
 |---- ohosunrar
