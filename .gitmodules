@@ -52,9 +52,6 @@
 [submodule "vap/vap_module/src/main/cpp/include/util/json"]
 	path = vap/vap_module/src/main/cpp/include/util/json
 	url = https://gitee.com/lycium_pkg_mirror/json.git
-[submodule "ohos_7zip/library/src/main/cpp/thirdparty"]
-	path = ohos_7zip/library/src/main/cpp/thirdparty
-	url = https://gitcode.com/wahaha949/thirdparty.git
 	
 [submodule "ohos_pjsip/library/src/main/cpp/thirdparty/pjsip"]
 	path = ohos_pjsip/library/src/main/cpp/thirdparty/pjsip

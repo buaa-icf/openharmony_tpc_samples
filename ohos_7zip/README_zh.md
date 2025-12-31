@@ -21,7 +21,8 @@ OpenHarmony ohpm环境配置等更多内容，请参考 [如何安装OpenHarmony
 参考[xz本地编译脚本](https://gitcode.com/openharmony-sig/tpc_c_cplusplus/tree/master/community/xz)
 参考[zstd本地编译脚本](https://gitcode.com/openharmony-sig/tpc_c_cplusplus/tree/master/thirdparty/zstd)
 
-在cpp目录下新增thirdparty目录，并将编译生成的7zip、bzip2、minizip-ng、openssl、xz、zstd库拷贝到该目录下，如下图所示：
+在library下新增libs目录，并将编译生成的7zip库拷贝到该目录下，
+在cpp目录下新增thirdparty目录，并将编译生成的bzip2、minizip-ng、openssl、xz、zstd库拷贝到该目录下，如下图所示：
 
 ![image-20250611153322646](./dir.png)
 
