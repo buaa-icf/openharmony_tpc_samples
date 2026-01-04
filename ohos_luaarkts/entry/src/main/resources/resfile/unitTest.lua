@@ -79,6 +79,18 @@ function testcallbool(a)
     end
 end
 
+function testcallbackwithtype(a, b, c, d)
+    if a then
+	    cc.l2tLogDebug("lua触发testcallbackwithtype, bool = true")
+    else
+	    cc.l2tLogDebug("lua触发testcallbackwithtype, bool = false")
+    end
+	cc.l2tLogDebug("lua触发testcallbackwithtype, int64 = " .. b)
+	cc.l2tLogDebug("lua触发testcallbackwithtype, double = " .. c)
+	cc.l2tLogDebug("lua触发testcallbackwithtype, string = " .. d)
+    return c
+end
+
 cc.l2tLogDebug("测试lua回调匿名函数1")
 cc.l2cTestCallBack("testLuaHelloWorld") -- right
 

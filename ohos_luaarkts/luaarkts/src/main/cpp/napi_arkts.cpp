@@ -329,100 +329,323 @@ napi_value TestNAPI(napi_env env, napi_callback_info info)
     return sum;
 }
 
+// 辅助函数：获取函数名
+static std::string GetFunctionName(napi_env env, napi_value argv0)
+{
+    char buf[512] = {0};
+    size_t sizeBuff = sizeof(buf);
+    size_t result = 0;
+    auto status = napi_get_value_string_utf8(env, argv0, buf, sizeBuff, &result);
+    if (status != napi_ok) {
+        return "";
+    }
+    return std::string(buf);
+}
+
+// 辅助函数：处理基本类型参数
+static bool PushBasicTypeParameter(lua_State* L, napi_value arg)
+{
+    napi_valuetype resultType;
+    napi_typeof(g_env, arg, &resultType);
+    
+    switch (resultType) {
+        case napi_boolean: {
+            bool resultBool;
+            napi_get_value_bool(g_env, arg, &resultBool);
+            lua_pushboolean(L, resultBool);
+            return true;
+        }
+        case napi_number: {
+            int64_t resultInt;
+            napi_get_value_int64(g_env, arg, &resultInt);
+            lua_pushinteger(L, resultInt);
+            return true;
+        }
+        case napi_bigint: {
+            uint64_t resultInt;
+            bool lossless;
+            napi_get_value_bigint_uint64(g_env, arg, &resultInt, &lossless);
+            if (!lossless) {
+                return false;
+            }
+            lua_pushnumber(L, resultInt);
+            return true;
+        }
+        case napi_undefined:
+        case napi_null:
+            return false;
+        default:
+            return false;
+    }
+}
+
+// 辅助函数：处理字符串参数
+static bool PushStringParameter(lua_State* L, napi_value arg)
+{
+    size_t size = 0;
+    napi_status status = napi_get_value_string_utf8(g_env, arg, nullptr, 0, &size);
+    if (status != napi_ok) {
+        return false;
+    }
+    
+    char *tmpChar = new char[size + 1];
+    status = napi_get_value_string_utf8(g_env, arg, tmpChar, size + 1, &size);
+    if (status != napi_ok) {
+        delete[] tmpChar;
+        tmpChar = nullptr;
+        return false;
+    }
+    
+    tmpChar[size] = '\0';
+    lua_pushlstring(L, tmpChar, size);
+    delete[] tmpChar;
+    tmpChar = nullptr;
+    return true;
+}
+
+// 辅助函数：处理参数（T2lCallFunction版本）
+static bool PushParameters(lua_State* L, napi_value argv[], int argc)
+{
+    for (int i = 1; i < argc; i++) {
+        auto arg = argv[i];
+        napi_valuetype resultType;
+        napi_typeof(g_env, arg, &resultType);
+        
+        switch (resultType) {
+            case napi_undefined:
+            case napi_null:
+                return false;
+            case napi_boolean:
+            case napi_number:
+            case napi_bigint:
+                if (!PushBasicTypeParameter(L, arg)) {
+                    return false;
+                }
+                break;
+            case napi_string:
+                if (!PushStringParameter(L, arg)) {
+                    return false;
+                }
+                break;
+            default:
+                return false;
+        }
+    }
+    return true;
+}
+
+// 辅助函数：处理带类型格式的参数（T2lCallFunctionWithType版本）
+static bool ParseTypeFormat(const std::string& typeStr, int& curPos, std::string& format)
+{
+    int startPos = typeStr.find("%", curPos);
+    if (startPos == std::string::npos) {
+        return false;
+    }
+    
+    int endPos = typeStr.find("%", startPos + 1);
+    if (endPos == std::string::npos) {
+        endPos = typeStr.size();
+    }
+    
+    format = typeStr.substr(startPos, endPos - startPos);
+    curPos = endPos;
+    return true;
+}
+
+// 辅助函数：处理带类型检查的参数
+static bool PushTypedParameter(lua_State* L, napi_value arg, const std::string& format)
+{
+    napi_valuetype resultType;
+    napi_typeof(g_env, arg, &resultType);
+    
+    switch (resultType) {
+        case napi_boolean:
+            if (format == "%d") {
+                bool resultBool;
+                napi_get_value_bool(g_env, arg, &resultBool);
+                lua_pushboolean(L, resultBool);
+                return true;
+            }
+            break;
+        case napi_number:
+            if (format == "%d") {
+                int64_t resultInt;
+                napi_get_value_int64(g_env, arg, &resultInt);
+                lua_pushinteger(L, resultInt);
+                return true;
+            } else if (format == "%f" || format == "%lf") {
+                double resultDouble;
+                napi_get_value_double(g_env, arg, &resultDouble);
+                lua_pushnumber(L, resultDouble);
+                return true;
+            }
+            break;
+        case napi_string:
+            if (format == "%s") {
+                return PushStringParameter(L, arg);
+            }
+            break;
+        default:
+            break;
+    }
+    return false;
+}
+
+// 辅助函数：处理带类型格式的参数
+static bool PushTypedParameters(lua_State* L, napi_value argv[], int argc, const std::string& typeStr)
+{
+    int curPos = 0;
+    
+    for (int i = 2; i < argc; i++) {
+        std::string format;
+        if (!ParseTypeFormat(typeStr, curPos, format)) {
+            return false;
+        }
+        
+        if (!PushTypedParameter(L, argv[i], format)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+// 辅助函数：处理Lua函数调用结果
+static napi_value HandleLuaCallResult(lua_State* L, int argc, int paramOffset)
+{
+    int iRet = lua_pcall(L, argc - paramOffset, 1, 0);
+    if (iRet) {
+        const char *pErrorMsg = lua_tostring(L, -1);
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "ohos_luaarkts", "pErrorMsg = %{public}s", pErrorMsg);
+        return nullptr;
+    }
+    
+    napi_value result = nullptr;
+    napi_status status;
+    
+    int type = lua_type(L, -1);
+    switch (type) {
+        case LUA_TSTRING: {
+            string value = lua_tostring(L, -1); // 将堆栈顶部的值转换为字符串
+            status = napi_create_string_utf8(g_env, value.c_str(), value.size(), &result);
+            break;
+        }
+        case LUA_TNUMBER: {
+            int value = lua_tointeger(L, -1); // 将堆栈顶部的值转换为数字
+            status = napi_create_int32(g_env, value, &result);
+            break;
+        }
+        case LUA_TBOOLEAN: {
+            bool value = lua_toboolean(L, -1);
+            status = napi_get_boolean(g_env, value, &result);
+            napi_valuetype napiType;
+            napi_typeof(g_env, result, &napiType);
+            break;
+        }
+        default:
+            break;
+    }
+    
+    return (status == napi_ok) ? result : nullptr;
+}
+
+// 辅助函数：处理带类型格式的Lua函数调用结果
+static napi_value HandleTypedLuaCallResult(lua_State* L, int argc)
+{
+    int iRet = lua_pcall(L, argc - 2, 1, 0);
+    if (iRet) {
+        const char *pErrorMsg = lua_tostring(L, -1);
+        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "ohos_luaarkts", "pErrorMsg = %{public}s", pErrorMsg);
+        return nullptr;
+    }
+    
+    napi_value result = nullptr;
+    napi_status status;
+    
+    if (lua_isinteger(L, -1)) {
+        int64_t value = lua_tointeger(L, -1);
+        status = napi_create_int64(g_env, value, &result);
+    } else if (lua_isnumber(L, -1)) {
+        double value = lua_tonumber(L, -1);
+        status = napi_create_double(g_env, value, &result);
+    } else if (lua_isstring(L, -1)) {
+        string value = lua_tostring(L, -1);
+        status = napi_create_string_utf8(g_env, value.c_str(), value.size(), &result);
+    } else {
+        return nullptr;
+    }
+    
+    return (status == napi_ok) ? result : nullptr;
+}
+
 napi_value T2lCallFunction(napi_env env, napi_callback_info info)
 {
-    auto L = g_L; /* variable in Lua */
+    auto L = g_L;
     size_t argc = 0;
     napi_value argv[20] = {nullptr};
     napi_get_cb_info(env, info, &argc, nullptr, nullptr, nullptr);
     napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr);
 
-    string strFunc = "";
     if (argc == 0) {
         return nullptr;
     }
 
-    char buf[512] = {0};
-    size_t sizeBuff = sizeof(buf);
-    size_t result = 0;
-    auto status = napi_get_value_string_utf8(env, argv[0], buf, sizeBuff, &result);
-    strFunc = std::string(buf);
-    if (strFunc == "") {
+    std::string strFunc = GetFunctionName(env, argv[0]);
+    if (strFunc.empty()) {
         return nullptr;
     }
-    lua_getglobal(L, strFunc.c_str()); // 获取函数，压入栈中
 
-    // 开始压入参数
-    for (int i = 1; i < argc; i++) {
-        auto it = argv[i];
-        napi_valuetype resultType;
-        napi_typeof(g_env, it, &resultType);
-        switch (resultType) {
-            case napi_undefined:
-                return 0;
-            case napi_null:
-                return 0;
-            case napi_boolean: {
-                bool resultBool;
-                napi_get_value_bool(g_env, it, &resultBool);
-                lua_pushboolean(L, resultBool);
-            }
-                break;
-            case napi_number: {
-                int resultInt;
-                napi_get_value_int32(g_env, it, &resultInt);
-                lua_pushinteger(L, resultInt);
-                break;
-            }
-            case napi_string: {
-                char tmpChar[2048];
-                size_t size = sizeof(tmpChar);
-                napi_get_value_string_utf8(g_env, it, tmpChar, size, &size);
-                lua_pushlstring(L, tmpChar, size);
-                break;
-            }
-            case napi_bigint: {
-                int64_t resultInt;
-                napi_get_value_int64(g_env, it, &resultInt);
-                lua_pushnumber(L, resultInt);
-                break;
-            }
-            default: { }
-            }
+    lua_getglobal(L, strFunc.c_str());
+
+    if (!PushParameters(L, argv, argc)) {
+        return nullptr;
     }
 
-    // 调用函数，调用完成以后，会将返回值压入栈中，2表示参数个数，1表示返回结果个数。
-    int iRet = lua_pcall(L, argc - 1, 1, 0);
-    if (iRet) {
-        const char *pErrorMsg = lua_tostring(L, -1);
-        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "ohos_luaarkts", "pErrorMsg = %{public}s", pErrorMsg);
-    } else {
-        napi_value result = nullptr;
-        int type = lua_type(L, -1);
-        switch (type) {
-            case LUA_TSTRING: {
-                string value = lua_tostring(L, -1); // 将堆栈顶部的值转换为字符串
-                status = napi_create_string_utf8(g_env, value.c_str(), value.size(), &result);
-                break;
-            }
-            case LUA_TNUMBER: {
-                int value = lua_tointeger(L, -1); // 将堆栈顶部的值转换为数字
-                status = napi_create_int32(g_env, value, &result);
-                break;
-            }
-            case LUA_TBOOLEAN: {
-                bool value = lua_toboolean(L, -1);
-                status = napi_get_boolean(g_env, value, &result);
-                napi_valuetype napiType;
-                napi_typeof(g_env, result, &napiType);
-                break;
-            }
-            default:
-                break;
-        }
-        return result;
+    return HandleLuaCallResult(L, argc, 1);
+}
+
+napi_value T2lCallFunctionWithType(napi_env env, napi_callback_info info)
+{
+    auto L = g_L;
+    size_t argc = 0;
+    napi_value argv[20] = {nullptr};
+    napi_get_cb_info(env, info, &argc, nullptr, nullptr, nullptr);
+    napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr);
+
+    if (argc == 0) {
+        return nullptr;
     }
 
-    return nullptr;
+    std::string strFunc = GetFunctionName(env, argv[0]);
+    if (strFunc.empty()) {
+        return nullptr;
+    }
+
+    lua_getglobal(L, strFunc.c_str());
+
+    // 获取类型格式字符串
+    size_t typeSize = 0;
+    napi_status status = napi_get_value_string_utf8(env, argv[1], nullptr, 0, &typeSize);
+    if (status != napi_ok) {
+        return nullptr;
+    }
+    
+    char *typeBuff = new char[typeSize + 1];
+    status = napi_get_value_string_utf8(env, argv[1], typeBuff, typeSize + 1, &typeSize);
+    if (status != napi_ok) {
+        delete[] typeBuff;
+        typeBuff = nullptr;
+        return nullptr;
+    }
+    
+    typeBuff[typeSize] = '\0';
+    std::string typeStr = std::string(typeBuff);
+    delete[] typeBuff;
+    typeBuff = nullptr;
+
+    if (!PushTypedParameters(L, argv, argc, typeStr)) {
+        return nullptr;
+    }
+
+    return HandleTypedLuaCallResult(L, argc);
 }
 } // namespace Ohos_LuaArkts

@@ -24,6 +24,7 @@ extern napi_env g_env;
 
 napi_value TestNAPI(napi_env env, napi_callback_info info);
 napi_value T2lCallFunction(napi_env env, napi_callback_info info);
+napi_value T2lCallFunctionWithType(napi_env env, napi_callback_info info);
 
 std::string TestHelloWorld(std::string msg);
 void InitLuaEnv(std::string sPath);

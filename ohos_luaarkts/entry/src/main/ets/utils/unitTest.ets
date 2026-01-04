@@ -113,4 +113,7 @@ export function UnitTest(context:CanvasRenderingContext2D, canvasWidth:number, c
     hilog.info(0x0000, 'testTag', '10.测试arkts->lua接口,传入 boolean，返回boolean');
     res2 = harNAPI.T2lCallFunction("testcallbool", false);
     hilog.info(0x0000, 'testTag', '10.返回值 = ' + res2);
+
+    hilog.info(0x0000, 'testTag', '9.测试arkts->lua接口,无返回值');
+    harNAPI.T2lCallFunctionWithType("testcallbackwithtype", "%d%d%f%s", true, 200, 100.0, "hello world");
 }

@@ -45,6 +45,58 @@ static int l2tLoadModule(lua_State *L)
     return 0;
 }
 
+static int PushReturnParameters(lua_State* L, napi_value resultCall)
+{
+    napi_valuetype resultType;
+    napi_typeof(g_env, resultCall, &resultType);
+    switch (resultType) {
+        case napi_undefined:
+        case napi_null:
+            return 0;
+        case napi_boolean: {
+            bool resultBool;
+            napi_get_value_bool(g_env, resultCall, &resultBool);
+            lua_pushboolean(L, resultBool);
+        }
+            return 1;
+        case napi_number: {
+            int64_t resultInt;
+            napi_get_value_int64(g_env, resultCall, &resultInt);
+            lua_pushinteger(L, resultInt);
+        }
+            return 1;
+        case napi_string: {
+            size_t size = 0;
+            napi_status status = napi_get_value_string_utf8(g_env, resultCall, nullptr, 0, &size);
+            if (status != napi_ok) {
+                return 0;
+            }
+            char *tmpChar = new char[size + 1];
+            status = napi_get_value_string_utf8(g_env, resultCall, tmpChar, size + 1, &size);
+            if (status != napi_ok) {
+                delete[] tmpChar;
+                tmpChar = nullptr;
+                return 0;
+            }
+            tmpChar[size] = '\0';
+            lua_pushlstring(L, tmpChar, size);
+            delete[] tmpChar;
+            tmpChar = nullptr;
+        }
+            return 1;
+        case napi_bigint: {
+            uint64_t resultInt;
+            bool lossless;
+            napi_get_value_bigint_uint64(g_env, resultCall, &resultInt, &lossless);
+            lua_pushnumber(L, resultInt);
+        }
+            return 1;
+        default:
+            lua_pushinteger(L, 0);
+            return 1;
+    }
+}
+
 static int l2tCallModuleFunc(lua_State *L)
 {
     string pathModuleTs = lua_tostring(L, 1);
@@ -68,9 +120,9 @@ static int l2tCallModuleFunc(lua_State *L)
     int parInitIndex = 3;
     for (int i = parInitIndex; i < parCount + 1; i++) {
         if (lua_isnumber(L, i)) {
-            int value = lua_tointeger(L, i); // 将堆栈顶部的值转换为数字
+            int64_t value = lua_tointeger(L, i); // 将堆栈顶部的值转换为数字
 
-            status = napi_create_int32(g_env, value, &pArgs[i - parInitIndex]);
+            status = napi_create_int64(g_env, value, &pArgs[i - parInitIndex]);
         } else if (lua_isstring(L, i)) {
             string value = lua_tostring(L, i); // 将堆栈顶部的值转换为数字
             status = napi_create_string_utf8(g_env, value.c_str(), value.size(), &pArgs[i - parInitIndex]);
@@ -84,69 +136,34 @@ static int l2tCallModuleFunc(lua_State *L)
     if (resultCall == nullptr) {
         return 0;
     }
-    napi_valuetype resultType;
-    napi_typeof(g_env, resultCall, &resultType);
-    switch (resultType) {
-        case napi_undefined:
-            return 0;
-        case napi_null:
-            return 0;
-        case napi_boolean: {
-            bool resultBool;
-            napi_get_value_bool(g_env, resultCall, &resultBool);
-            lua_pushboolean(L, resultBool);
-        }
-            return 1;
-        case napi_number: {
-            int resultInt;
-            napi_get_value_int32(g_env, resultCall, &resultInt);
-            lua_pushinteger(L, resultInt);
-        }
-            return 1;
-        case napi_string: {
-            char tmpChar[2048];
-            size_t size = sizeof(tmpChar);
-            napi_get_value_string_utf8(g_env, resultCall, tmpChar, size, &size);
-            lua_pushlstring(L, tmpChar, size);
-        }
-            return 1;
-        case napi_bigint: {
-            int64_t resultInt;
-            napi_get_value_int64(g_env, resultCall, &resultInt);
-            lua_pushnumber(L, resultInt);
-        }
-            return 1;
-        default:
-            lua_pushinteger(L, 0);
-            return 1;
-    }
-        return 0;
+
+    return PushReturnParameters(L, resultCall);
 }
 
 static int l2tCallClass(lua_State *L)
 {
-        string pathModuleTs = lua_tostring(L, 1);
-        string strClass = lua_tostring(L, 2);
-        string strFunction = lua_tostring(L, 3);
-        napi_value result;
-        napi_status status = LoadModule(pathModuleTs, &result);
-        OH_LOG_Print(LOG_APP, LOG_INFO, 0, "ohos_luaarkts", "result of l2tCallClass=%{public}d,\
-            pathModuleTs=%{public}s", status, pathModuleTs.c_str());
-        napi_value infoClass;
-        status = napi_get_named_property(g_env, result, strClass.c_str(), &infoClass);
-        napi_value infoFn;
-        status = napi_get_named_property(g_env, infoClass, strFunction.c_str(), &infoFn);
-        int parCount = lua_gettop(L);
-        napi_value *pArgs = nullptr;
-        int parIndexOne = 2; // 参数从2开始
-        if (parCount > parIndexOne) {
-            pArgs = new napi_value[parCount - parIndexOne];
+    string pathModuleTs = lua_tostring(L, 1);
+    string strClass = lua_tostring(L, 2);
+    string strFunction = lua_tostring(L, 3);
+    napi_value result;
+    napi_status status = LoadModule(pathModuleTs, &result);
+    OH_LOG_Print(LOG_APP, LOG_INFO, 0, "ohos_luaarkts", "result of l2tCallClass=%{public}d,\
+        pathModuleTs=%{public}s", status, pathModuleTs.c_str());
+    napi_value infoClass;
+    status = napi_get_named_property(g_env, result, strClass.c_str(), &infoClass);
+    napi_value infoFn;
+    status = napi_get_named_property(g_env, infoClass, strFunction.c_str(), &infoFn);
+    int parCount = lua_gettop(L);
+    napi_value *pArgs = nullptr;
+    int parIndexOne = 2; // 参数从2开始
+    if (parCount > parIndexOne) {
+        pArgs = new napi_value[parCount - parIndexOne];
     }
     parIndexOne = 4; // 参数从4开始
     for (int i = parIndexOne; i < parCount + 1; i++) {
         if (lua_isnumber(L, i)) {
-            int value = lua_tointeger(L, i); // 将堆栈顶部的值转换为数字
-            status = napi_create_int32(g_env, value, &pArgs[i - parIndexOne]);
+            int64_t value = lua_tointeger(L, i); // 将堆栈顶部的值转换为数字
+            status = napi_create_int64(g_env, value, &pArgs[i - parIndexOne]);
         } else if (lua_isstring(L, i)) {
             string value = lua_tostring(L, i); // 将堆栈顶部的值转换为数字
             napi_value ntag;
@@ -159,43 +176,8 @@ static int l2tCallClass(lua_State *L)
     if (resultCall == nullptr) {
         return 0;
     }
-    napi_valuetype resultType;
-    napi_typeof(g_env, resultCall, &resultType);
-    switch (resultType) {
-        case napi_undefined:
-            return 0;
-        case napi_null:
-            return 0;
-        case napi_boolean: {
-            bool resultBool;
-            napi_get_value_bool(g_env, resultCall, &resultBool);
-            lua_pushboolean(L, resultBool);
-        }
-            return 1;
-        case napi_number: {
-            int resultInt;
-            napi_get_value_int32(g_env, resultCall, &resultInt);
-            lua_pushinteger(L, resultInt);
-        }
-            return 1;
-        case napi_string: {
-            char tmpChar[2048];
-            size_t size = sizeof(tmpChar);
-            napi_get_value_string_utf8(g_env, resultCall, tmpChar, size, &size);
-            lua_pushlstring(L, tmpChar, size);
-        }
-            return 1;
-        case napi_bigint: {
-            int64_t resultInt;
-            napi_get_value_int64(g_env, resultCall, &resultInt);
-            lua_pushnumber(L, resultInt);
-        }
-            return 1;
-        default:
-            lua_pushinteger(L, 0);
-            return 1;
-        }
-        return 0;
+    
+    return PushReturnParameters(L, resultCall);
 }
 
 static int l2tSetModuleVarInt(lua_State *L)
