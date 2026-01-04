@@ -170,8 +170,7 @@ public:
     static napi_value emit(napi_env env, napi_callback_info info);
     static napi_value set_connection_mode(napi_env env, napi_callback_info info);
     static napi_value get_current_state(napi_env env, napi_callback_info info);
-
-
+    static napi_value on_multi(napi_env env, napi_callback_info info);
     sio::socket::ptr get_socket(const std::string& classIdStr) const;
 
     std::string classIdStr;

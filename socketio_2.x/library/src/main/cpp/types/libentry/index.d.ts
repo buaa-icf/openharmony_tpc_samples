@@ -64,6 +64,7 @@ export class newSocketIOClient {
   get_sessionid: (classId: number) => string;
 
   on: (event_name: string, on_event_listener: (event_json: string) => void, classId: number) => void;
+  on_multi: (event_name: string, on_event_listener: (event_json: string) => void, classId: number) => void;
 
   once: (event_name: string, on_event_listener: (event_json: string) => void, classId: number) => void;
 
@@ -79,8 +80,7 @@ export class newSocketIOClient {
 
   on_error: (on_error_listener: (message: string) => void, classId: number) => void;
 
-  emit: (name: string, message: any,
-    on_emit_callback: (emit_callback_json: string) => void, classId: number) => void;
+  emit: (name: string, ...args:ESObject[]) => void;
 
   get_current_state: (classId: number) => number;
 }

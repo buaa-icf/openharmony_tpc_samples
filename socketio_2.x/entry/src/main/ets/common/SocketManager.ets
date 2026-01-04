@@ -222,7 +222,9 @@ class SocketManager {
   //配置socket
   initSocket() {
     hilog.info(0x0000, 'testTag', '%{public}s', "SOCKET_IO_INDEX initSocket");
-
+    this.client?.on_multi("on multi", (...event_json: ESObject)=>{
+      hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX 接受到 on_multi -- event_json: ' + event_json);
+    });
     this.client?.on("new message", (event_json: string) => {
       this.on_new_message_listener(event_json);
     });
@@ -258,14 +260,23 @@ class SocketManager {
 
   //发送消息
   sendMessage(message: string) {
-    hilog.info(0x0000, 'testTag', '%{public}s', "SOCKET_IO_INDEX sendMessage");
+    hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX sendMessage');
     if (!this.connect_finish) {
-      hilog.info(0x0000, 'testTag', '%{public}s', "SOCKET_IO_INDEX 暂未连接服务器");
+      hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX 暂未连接服务器');
       return;
     }
     this.client?.emit("new message", message, this.on_emit_callback);
   }
-
+  //发送on_multi消息
+  sendMultiMessage(message: string) {
+    hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX sendMessage');
+    if (!this.connect_finish) {
+      hilog.info(0x0000, 'testTag', '%{public}s', 'SOCKET_IO_INDEX 暂未连接服务器');
+      return;
+    }
+    console.log( '发送MultiMessage --- 接收到', message );
+    this.client?.emit('on multi', message, this.on_emit_callback);
+  }
   //退出连接
   close() {
     hilog.info(0x0000, 'testTag', '%{public}s', "SOCKET_IO_INDEX close");
