@@ -1,0 +1,20 @@
+{
+  "float": [
+    {
+      "name": "page_text_font_size",
+      "value": "50fp"
+    },
+    {
+      "name": "grid_expected_size",
+      "value": "120fp"
+    },
+    {
+      "name": "item_margin_horizontal",
+      "value": "24fp"
+    },
+    {
+      "name": "item_margin_vertical",
+      "value": "8fp"
+    }
+  ]
+}

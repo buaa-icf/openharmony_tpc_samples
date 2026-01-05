@@ -1,0 +1,20 @@
+{
+  "types": "",
+  "keywords": [
+    "OpenHarmony",
+    "HarmonyOS",
+    "Matisse"
+  ],
+  "author": "ohos_tpc",
+  "description": "Matisse media selector for HarmonyOS/OpenHarmony - Configurable photo and video picker with multi-selection, preview and original-quality options",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_matisse",
+  "main": "Index.ets",
+  "type": "module",
+  "version": "1.0.0",
+  "tags": [
+    "Animation",
+    "Rive"
+  ],
+  "license": "Apache License 2.0",
+  "name": "@ohos/matisse"
+}

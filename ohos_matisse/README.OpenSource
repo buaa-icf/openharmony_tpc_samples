@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "Matisse",
+        "License": "Apache License 2.0",
+        "License File": "LICENSE",
+        "Version Number": "0.4.3",
+        "Owner" : "xiafeng@huawei.com",
+        "Upstream URL": "https://gitcode.com/gh_mirrors/mati/Matisse",
+        "Description": "Android image and video picker library by Zhihu"
+    }
+]

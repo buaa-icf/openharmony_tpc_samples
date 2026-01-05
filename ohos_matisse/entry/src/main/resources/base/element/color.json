@@ -1,0 +1,12 @@
+{
+  "color": [
+    {
+      "name": "start_window_background",
+      "value": "#FFFFFF"
+    },
+    {
+      "name": "list_bg",
+      "value": "#3B3B3B"
+    }
+  ]
+}
