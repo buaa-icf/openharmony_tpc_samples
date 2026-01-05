@@ -78,6 +78,9 @@ export class Socket extends Duplex {
     private connecting: boolean = false;
     private address: string = 'localhost'
 
+    // 显式声明 push 方法以解决类型问题
+    push: (chunk: any, encoding?: string) => boolean;
+
     constructor() {
         super({ allowHalfOpen: false, emitClose: false, autoDestroy: true, decodeStrings: false });
         let ipInfo = wifiManager.getIpInfo()
