@@ -13,9 +13,6 @@
  * limitations under the License.
  */
 
-#ifndef OHOS_FILE_ASSET_LOADER_HPP
-#define OHOS_FILE_ASSET_LOADER_HPP
-
 #include "models/file_asset_loader.h"
 #include "helpers/exception_handler.h"
 #include "helpers/factories.h"
@@ -303,4 +300,3 @@ RendererType FileAssetLoader::getRendererType() const
     return m_rendererType;
 }
 } // namespace ohos_rive
-#endif // OHOS_FILE_ASSET_LOADER_HPP

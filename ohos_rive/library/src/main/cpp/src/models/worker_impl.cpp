@@ -64,7 +64,7 @@ void WorkerImpl::start(std::chrono::high_resolution_clock::time_point frameTime)
     m_lastFrameTime = frameTime; // 保存当前帧时间，用于后续帧间时间差计算
     m_isStarted = true;          // 设置启动标志，表示 Worker 已开始运行
 
-#ifdef WITH_AUDIO
+#ifdef WITH_RIVE_AUDIO
     // 若编译时开启音频支持，则启动 Rive 音频引擎
     if (auto engine = rive::AudioEngine::RuntimeEngine(false)) {
         engine->start();

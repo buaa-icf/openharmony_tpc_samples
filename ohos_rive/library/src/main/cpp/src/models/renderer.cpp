@@ -216,6 +216,7 @@ void Renderer::Start()
 
         auto now = std::chrono::steady_clock::now();
         m_fpsLastFrameTime = now;
+        m_lastMeshFrameTime = now;
         m_workerImpl->start(now);
     });
 }
