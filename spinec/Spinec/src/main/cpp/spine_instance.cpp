@@ -498,7 +498,7 @@ void SpineContextRender(SpineContext* context, float deltaTime)
     eglMakeCurrent(context->display, context->surface, context->surface, context->context);
     
     // 清屏
-    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     
     // 更新和绘制所有实例
