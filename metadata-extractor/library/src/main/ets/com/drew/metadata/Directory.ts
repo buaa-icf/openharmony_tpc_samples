@@ -419,7 +419,17 @@ abstract class Directory {
     if (o == null)
     return null;
 
-    return o;
+    // 如果是数组，直接返回
+    if (Array.isArray(o)) {
+      return o;
+    }
+
+    // 包装成数组返回
+    if (typeof o === 'string' || (typeof o === 'object' && o != null && typeof o.getBytes === 'function' && typeof o.getCharset === 'function')) {
+      return [o];
+    }
+
+    return null;
   }
 
   /**
@@ -434,7 +444,17 @@ abstract class Directory {
     if (o == null)
     return null;
 
-    return o;
+    // 如果是数组，直接返回
+    if (Array.isArray(o)) {
+      return o;
+    }
+
+    // 包装成数组返回
+    if (typeof o === 'string' || (typeof o === 'object' && o != null && typeof o.getBytes === 'function' && typeof o.getCharset === 'function')) {
+      return [o];
+    }
+
+    return null;
   }
 
   /**

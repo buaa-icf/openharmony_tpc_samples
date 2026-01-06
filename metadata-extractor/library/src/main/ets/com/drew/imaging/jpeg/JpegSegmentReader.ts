@@ -29,9 +29,13 @@ class JpegSegmentReader {
 
   public static readSegments(filePath: string, reader?: SequentialReader, segmentTypes?: Set<JpegSegmentType>): JpegSegmentData {
     LogUtil.debug(TAG, `readSegments start, filePath: ${filePath}, segmentTypes: ${segmentTypes}`);
-    let stream = fileio.createStreamSync(filePath, 'r+');
+    let isNewReader = false;
     try {
-      reader = new StreamReader(filePath);
+      if(!reader){
+        reader = new StreamReader(filePath);
+        isNewReader = true;
+      }
+
       let magicNumber: number = reader.getUInt16();
       if (magicNumber != 0xFFD8) {
         throw new Error("JPEG data is expected to begin with 0xFFD8 (ÿØ) not 0x")
@@ -84,9 +88,12 @@ class JpegSegmentReader {
 
       } while (true);
     } finally {
-      stream.closeSync();
+      // isNewReader 防止把传入的reader关掉
+      if(isNewReader && reader && reader instanceof StreamReader){
+        reader.streamCloseSync();
+      }
+      LogUtil.debug(TAG, `readSegments end`);
     }
-    LogUtil.debug(TAG, `readSegments end`);
   }
 
   constructor() {

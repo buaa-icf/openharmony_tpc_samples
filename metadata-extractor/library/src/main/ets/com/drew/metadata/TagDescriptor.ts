@@ -271,7 +271,7 @@ class TagDescriptor <T extends Directory> {
     if (values == null || values.length != 4 || (values[0].isZero() && values[2].isZero()))
     return null;
 
-    let sb: string;
+    let sb: string = '';
 
     if (values[0].equals(values[1]))
     sb.concat(values[0].toSimpleString(true)).concat("mm");
