@@ -8,7 +8,7 @@
   "name": "metadata_extractor",
   "description": "Please describe the basic information.",
   "main": "",
-  "version": "2.0.2",
+  "version": "2.0.4",
   "dependencies": {
     "@ohos/xmptool": "1.0.0-rc.0"
   }
