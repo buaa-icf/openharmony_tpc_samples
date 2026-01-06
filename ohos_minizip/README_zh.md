@@ -129,6 +129,8 @@ if (minizipCompressEntry.Create() == 0) {
 
 - **创建对象**之后**一定要调用Open函数**，并且每一次new minizipNative**只能调用一次Open**，若Open函数返回值非0则是打开文件失败。
 
+- 当Zip文件中存在内容为空（大小为0字节）的文件时，会导致unzipToDirectory接口在执行解压过程中触发异常，最终使执行流进入 catch 代码块。
+
 ## 关于混淆
 - 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)。
 - 如果希望minizip库在代码混淆过程中不会被混淆，需要在混淆规则配置文件obfuscation-rules.txt中添加相应的排除规则：
