@@ -134,11 +134,8 @@ export class IptcReader implements JpegSegmentMetadataReader {
     switch (tagIdentifier) {
       case IptcDirectory.TAG_CODED_CHARACTER_SET:
         let bytes = reader.getBytes(tagByteCount);
-        let tem:number[]=[]
-        bytes.forEach((value,index,array)=>{
-          tem[index]=value
-        })
-        let charsetName: string = Iso2022Converter.convertISO2022CharsetToJavaCharset(tem);
+        let byteArray: number[] = Array.from(bytes);
+        let charsetName: string = Iso2022Converter.convertISO2022CharsetToJavaCharset(byteArray);
         if (charsetName == null) {
           // Unable to determine the charset, so fall through and treat tag as a regular string
           charsetName = this.byteToString(bytes);
@@ -183,11 +180,8 @@ export class IptcReader implements JpegSegmentMetadataReader {
       string = reader.getStringValue(tagByteCount, charset);
     } else {
       let bytes:Int8Array = reader.getBytes(tagByteCount);
-      let tem :number[]=[]
-      bytes.forEach((value,index,array)=>{
-        tem[index]=value;
-      })
-      let charSet = Iso2022Converter.guessCharSet(tem);
+      let byteArray: number[] = Array.from(bytes)
+      let charSet = Iso2022Converter.guessCharSet(byteArray);
       string = charSet != null ? new StringValue(bytes, charSet) : new StringValue(bytes, null);
     }
 
@@ -195,17 +189,8 @@ export class IptcReader implements JpegSegmentMetadataReader {
       // this fancy StringValue[] business avoids using an ArrayList for performance reasons
       let oldStrings = directory.getStringValueArray(tagIdentifier);
       let newStrings: StringValue[];
-      if (oldStrings == null) {
-        // TODO hitting this block means any prior value(s) are discarded
-        newStrings = new StringValue[1];
-      } else {
-        newStrings = new StringValue[oldStrings.length + 1];
-        for (var index = 0; index < newStrings.length; index++) {
-          const element = newStrings[index];
-          newStrings[index] = element
-        }
-      }
-      newStrings[newStrings.length - 1] = string;
+      const validOldStrings = Array.isArray(oldStrings) ? oldStrings : [];
+      newStrings = [...validOldStrings, string];
       directory.setStringValueArray(tagIdentifier, newStrings);
     } else {
       directory.setStringValue(tagIdentifier, string);

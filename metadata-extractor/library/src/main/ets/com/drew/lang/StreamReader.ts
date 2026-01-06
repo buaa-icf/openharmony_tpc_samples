@@ -20,9 +20,8 @@ import LogUtil from '../tools/LogUtils';
 const TAG: string = "StreamReader";
 
 class StreamReader extends SequentialReader {
-  private readonly _stream;
+  private readonly _stream:fileio.Stream;
   private _pos: number;
-  private fileSize:number =0;
   private _skipBuffer: ArrayBuffer | null = null;
 
   public getPosition(): number
@@ -33,10 +32,7 @@ class StreamReader extends SequentialReader {
   constructor(filePath: string) {
     super();
     LogUtil.debug(TAG, `StreamReader constructor start, filePath: ${filePath}`);
-    let stream = fileio.createStreamSync(filePath, 'r+');
-    fileio.stat(filePath).then(stat=>{
-      this.fileSize = stat.size
-    })
+    let stream = fileio.createStreamSync(filePath, 'r');
     if (stream == null) {
       LogUtil.error(TAG, `StreamReader constructor error: stream is null, filePath: ${filePath}`);
       throw new Error('StreamReader constructor Error');
@@ -102,8 +98,9 @@ class StreamReader extends SequentialReader {
       LogUtil.error(TAG, `trySkip error: n must be zero or greater, n: ${n}`);
       throw new Error("n must be zero or greater.");
     }
-    LogUtil.debug(TAG, `trySkip end, this.skipInternal(n): ${this.skipInternal(n)}, n: ${n}`);
-    return this.skipInternal(n) == n;
+    let skipn = this.skipInternal(n);
+    LogUtil.debug(TAG, `trySkip end, skipn: ${skipn}, n: ${n}`);
+    return skipn == n;
   }
 
   private skipInternal(n: number): number
@@ -150,6 +147,15 @@ class StreamReader extends SequentialReader {
       return 0;
     }
   }
+
+  public streamCloseSync(){
+    try {
+      this._stream.closeSync();
+    }catch (e) {
+      LogUtil.error(TAG, `stream close error: ` + JSON.stringify(e));
+    }
+  }
+
 }
 
 export default StreamReader

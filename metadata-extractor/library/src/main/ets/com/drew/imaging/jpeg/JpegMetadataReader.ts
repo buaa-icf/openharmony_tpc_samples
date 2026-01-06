@@ -83,7 +83,9 @@ class JpegMetadataReader {
         segmentTypes.add(segmentType)
       })
     })
-    let segmentData:JpegSegmentData = JpegSegmentReader.readSegments(filePath, new StreamReader(filePath), segmentTypes);
+    let reader = new StreamReader(filePath);
+    let segmentData:JpegSegmentData = JpegSegmentReader.readSegments(filePath, reader, segmentTypes);
+    reader.streamCloseSync();
     JpegMetadataReader.processJpegSegmentData(metadata, readers, segmentData);
     LogUtil.debug(TAG, `process end`);
   }
