@@ -1,3 +1,6 @@
+## 2.0.4
+- Fix the errors and time-consuming issues in obtaining iptc data reports
+
 ## 2.0.3
 - Fix the issue of being unable to parse image EXIF attributes
 - Fix the issue where AIGC data cannot be retrieved from the comment tag of PNG images
