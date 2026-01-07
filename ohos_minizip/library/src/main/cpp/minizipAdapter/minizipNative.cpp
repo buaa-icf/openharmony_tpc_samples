@@ -220,12 +220,15 @@ napi_value MinizipNative::ExtractFileToJS(std::string entryName, std::string pas
     napi_value napiArrayBuffer = nullptr;
     napi_env env = aki::JSBind::GetScopedEnv();
     napi_create_arraybuffer(env, size, (void **)(&buffer), &napiArrayBuffer);
+    if (size == 0) {
+        return napiArrayBuffer;
+    }
     int32_t err = this->ExtractFileToMemory(entryName.c_str(), buffer, &size, password.c_str());
     if (err != MZ_OK) {
         OH_LOG_Print(LOG_APP, LOG_WARN, LOG_DOMAIN, LOGNAME, "ExtractFileToMemory Failed: %{public}d", err);
-        napi_value undefined = nullptr;
-        napi_get_undefined(env, &undefined);
-        return undefined;
+        napi_value napiErrorCode;
+        napi_create_int32(env, err, &napiErrorCode);
+        return napiErrorCode;
     }
     return napiArrayBuffer;
 }
