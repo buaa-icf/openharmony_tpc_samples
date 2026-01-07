@@ -45,18 +45,14 @@ export function unzipToDirectory(selectPath: string, targetPath: string, passwor
         } else {
           createFolders(path);
           let file = fs.openSync(path, fs.OpenMode.READ_WRITE | fs.OpenMode.CREATE);
-          let arrBuffer: ArrayBuffer | undefined | number = minizipEntry.ExtractFileToJS(entryNames[i], password);
-          if(arrBuffer instanceof ArrayBuffer) {
+          let arrBuffer: ArrayBuffer | undefined = minizipEntry.ExtractFileToJS(entryNames[i], password);
+          if(arrBuffer != undefined) {
             try {
               fs.writeSync(file.fd,arrBuffer)
             }catch (err){
               reject("fs.write failed: " + entryNames[i])
             }
             fs.closeSync(file);
-          }else if(typeof arrBuffer === 'number'){
-            LogUtil.debug("minizip ExtractFileToJS failed:" + entryNames[i])
-            fs.closeSync(file)
-            reject(arrBuffer)
           } else {
             LogUtil.debug("minizip ExtractFileToJS failed:" + entryNames[i])
             fs.closeSync(file)
@@ -77,7 +73,11 @@ function createFolders(path: string) {
     return
   }
   const folders = parts.slice(0, -1).join('/');
-  if (!fs.accessSync(folders)) {
-    fs.mkdirSync(folders, true);
+  try {
+    if (!fs.accessSync(folders)) {
+      fs.mkdirSync(folders, true);
+    }
+  }catch (err) {
+    LogUtil.debug('minizip mkdir failed:' + JSON.stringify(err));
   }
 }
