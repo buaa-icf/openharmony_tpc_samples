@@ -1,3 +1,7 @@
+# 1.0.4-rc.0
+
+- Fixed the issue where decompressing a Zip file with empty content would cause the execution flow to enter the catch block.
+
 # 1.0.3
 
 - The shared library is compiled with -O3 optimization and supports LTO
