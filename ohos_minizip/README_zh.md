@@ -85,6 +85,9 @@ if (minizipCompressEntry.Create() == 0) {
 CompressToJS(entryname, "");
 ```
 
+### 错误码
+错误码详见[minizip-ng 错误码](https://github.com/zlib-ng/minizip-ng/blob/develop/doc/mz_error.md)
+
 ### 压缩zip包到磁盘
 
 ```typescript
@@ -128,8 +131,6 @@ if (minizipCompressEntry.Create() == 0) {
 - 创建minizipNative对象需要传入完整的文件路径:**文件路径**+**文件名**。
 
 - **创建对象**之后**一定要调用Open函数**，并且每一次new minizipNative**只能调用一次Open**，若Open函数返回值非0则是打开文件失败。
-
-- 当Zip文件中存在内容为空（大小为0字节）的文件时，会导致unzipToDirectory接口在执行解压过程中触发异常，最终使执行流进入 catch 代码块。
 
 ## 关于混淆
 - 代码混淆，请查看[代码混淆简介](https://docs.openharmony.cn/pages/v5.0/zh-cn/application-dev/arkts-utils/source-obfuscation.md)。
