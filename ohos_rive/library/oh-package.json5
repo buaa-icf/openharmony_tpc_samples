@@ -10,7 +10,7 @@
   "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_rive",
   "main": "Index.ets",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "tags": [
     "Animation",
     "Rive"

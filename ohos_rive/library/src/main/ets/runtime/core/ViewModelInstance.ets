@@ -22,8 +22,7 @@ import { BindableArtboard } from './BindableArtboard';
 import { RiveRenderImage } from './FileAsset';
 
 type PropertyFactory<
-  T extends
-    | ViewModelNumberProperty
+  T extends ViewModelNumberProperty
     | ViewModelStringProperty
     | ViewModelBooleanProperty
     | ViewModelColorProperty

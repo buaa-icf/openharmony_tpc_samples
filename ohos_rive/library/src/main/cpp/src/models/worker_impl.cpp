@@ -263,7 +263,6 @@ void CanvasWorkerImpl::destroy(DrawableThreadState *)
     OH_Drawing_BitmapDestroy(cScreenBitmap_);
     cScreenBitmap_ = nullptr;
 
-    OH_NativeWindow_DestroyNativeWindow(m_nativeWindow);
     m_nativeWindow = nullptr;
 }
 
@@ -292,17 +291,28 @@ void CanvasWorkerImpl::getDrawingCanvas()
 
 void CanvasWorkerImpl::prepareForDraw(DrawableThreadState *) const
 {
+    int32_t currentWidth = 0;
+    int32_t currentHeight = 0;
+    OH_NativeWindow_NativeWindowHandleOpt(m_nativeWindow, GET_BUFFER_GEOMETRY, &currentHeight, &currentWidth);
+
+    if (width_ != currentWidth || height_ != currentHeight || !cScreenCanvas_ || !cScreenBitmap_) {
+        OH_Drawing_Canvas *oldCanvas = cScreenCanvas_;
+        OH_Drawing_Bitmap *oldBitmap = cScreenBitmap_;
+
+        const_cast<CanvasWorkerImpl *>(this)->getDrawingCanvas();
+        if (oldCanvas && oldCanvas != cScreenCanvas_) {
+            OH_Drawing_CanvasDestroy(oldCanvas);
+        }
+        if (oldBitmap && oldBitmap != cScreenBitmap_) {
+            OH_Drawing_BitmapDestroy(oldBitmap);
+        }
+    }
+
     if (!cScreenCanvas_) {
         return;
     }
-
-    // 若窗口尺寸发生变化，重新将画布绑定到渲染器，确保绘制区域正确
-    if (m_canvasRenderer->Width() != width_ || m_canvasRenderer->Height() != height_) {
-        m_canvasRenderer->BindCanvas(cScreenCanvas_);
-    } else {
-        // 尺寸未变，仅清空画布背景为白色（0xFFFFFFFF），准备新一帧绘制
-        OH_Drawing_CanvasClear(cScreenCanvas_, 0xFFFFFFFF);
-    }
+    OH_Drawing_CanvasClear(cScreenCanvas_, 0xFFFFFFFF);
+    m_canvasRenderer->BindCanvas(cScreenCanvas_);
 }
 
 bool CanvasWorkerImpl::requestAndPrepareBuffer(NativeWindowBuffer **outBuffer,

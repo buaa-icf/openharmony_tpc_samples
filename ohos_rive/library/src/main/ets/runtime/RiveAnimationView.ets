@@ -448,14 +448,16 @@ export struct RiveAnimationView {
       }
       this.updateTargetBounds();
       this.onSurfaceReady();
-
-      this.renderer?.stop()
-      this.renderer?.setSharedSurface(new SharedSurface(surfaceId))
     });
 
     this.xComponentController.setOnSurfaceChanged((surfaceId: string, rect: SurfaceRect) => {
       console.info(`${TAG}: Surface changed: ${surfaceId}, offsetX: ${rect.offsetX}, offsetY: ${rect.offsetY}`);
       this.updateTargetBounds(rect);
+      if (this.renderer) {
+        this.renderer.stop();
+        const newSurface = new SharedSurface(surfaceId);
+        this.renderer.setSharedSurface(newSurface);
+      }
     });
 
     this.xComponentController.setOnSurfaceDestroyed((surfaceId: string) => {
