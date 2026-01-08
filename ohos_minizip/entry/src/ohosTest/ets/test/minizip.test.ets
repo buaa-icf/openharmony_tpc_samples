@@ -18,14 +18,17 @@ import { MinizipNative, unzipToDirectory, MinizipCompressNative } from '@ohos/mi
 import { GlobalContext } from './globalThis'
 
 export default function miniZipTest() {
-  let filesDir : string = ""
+  let filesDir : string = "";
+  let resourceDir: string = "";
   describe('miniZipTestTest', () => {
     // Defines a test suite. Two parameters are supported: test suite name and test suite function.
     beforeAll(() => {
       // Presets an action, which is performed only once before all test cases of the test suite start.
       // This API supports only one parameter: preset action function.
       let gloContext: Context = GlobalContext.getContext().getObject("context") as Context
-      filesDir = gloContext.createModuleContext('entry_test').filesDir
+      let moduleContext: Context = gloContext.createModuleContext('entry_test')
+      filesDir = moduleContext.filesDir
+      resourceDir = moduleContext.resourceDir
     })
     beforeEach(() => {
       // Presets an action, which is performed before each unit test case starts.
@@ -88,6 +91,17 @@ export default function miniZipTest() {
       let charEncoding: number = 936
       let result: string = await unzipToDirectory(selectFilePath, targetPath, password, charEncoding)
       expect(result).assertEqual("unzip success")
+    })
+
+    it('unzipToDirectory_containsEmptyFile', 0, async () => {
+      let selectFilePath : string = resourceDir + '/testpwd.zip';
+      let targetPath: string = filesDir + "/testpwd";
+      let password: string = "123";
+      unzipToDirectory(selectFilePath, targetPath, password).then((result: string)=>{
+        expect(result).assertEqual("unzip success")
+      }).catch((err: string)=>{
+        expect().assertFail()
+      })
     })
 
     it('unzipToDirectoryPasswordFails', 0, async () => {

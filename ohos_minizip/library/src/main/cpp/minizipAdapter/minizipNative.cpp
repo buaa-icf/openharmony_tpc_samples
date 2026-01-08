@@ -226,9 +226,9 @@ napi_value MinizipNative::ExtractFileToJS(std::string entryName, std::string pas
     int32_t err = this->ExtractFileToMemory(entryName.c_str(), buffer, &size, password.c_str());
     if (err != MZ_OK) {
         OH_LOG_Print(LOG_APP, LOG_WARN, LOG_DOMAIN, LOGNAME, "ExtractFileToMemory Failed: %{public}d", err);
-        napi_value napiErrorCode;
-        napi_create_int32(env, err, &napiErrorCode);
-        return napiErrorCode;
+        napi_value undefined = nullptr;
+        napi_get_undefined(env, &undefined);
+        return undefined;
     }
     return napiArrayBuffer;
 }

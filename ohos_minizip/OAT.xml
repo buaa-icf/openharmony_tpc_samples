@@ -55,6 +55,7 @@
                 <filteritem type="filepath" name="entry/src/ohosTest/resources/base/media/icon.png" desc="图片"/>
                 <filteritem type="filepath" name="AppScope/resources/base/media/app_icon.png" desc="图片"/>
                 <filteritem type="filepath" name="entry/src/main/resources/rawfile/test.zip" desc="测试资源"/>
+                <filteritem type="filepath" name="entry/src/main/resources/resfile/testpwd.zip" desc="测试资源"/>
                 <filteritem type="filepath" name="image/ima.png" desc="测试资源"/>
             </filefilter>
         </filefilterlist>

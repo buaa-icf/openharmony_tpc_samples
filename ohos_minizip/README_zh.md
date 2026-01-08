@@ -85,9 +85,6 @@ if (minizipCompressEntry.Create() == 0) {
 CompressToJS(entryname, "");
 ```
 
-### 错误码
-错误码详见[minizip-ng 错误码](https://github.com/zlib-ng/minizip-ng/blob/develop/doc/mz_error.md)
-
 ### 压缩zip包到磁盘
 
 ```typescript

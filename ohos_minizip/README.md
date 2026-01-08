@@ -97,9 +97,6 @@ if (minizipCompressEntry.Create() == 0) {
 }
 ```
 
-### Error Code
-For error codes, see [minizip-ng error codes](https://github.com/zlib-ng/minizip-ng/blob/develop/doc/mz_error.md)
-
 ## Available APIs
 
 | API            | Parameter                                                        | Parameter Description                                                                                                                                                                                                               | Return Value                                                                                                                                                                 | API Description            |
