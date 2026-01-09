@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (c) 2026 Huawei Device Co., Ltd.
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+
+-->
+<configuration>
+    <oatconfig>
+        <filefilterlist>
+            <filefilter name="copyrightPolicyFilter" desc="Filters for compatibility，license header policies">
+                <filteritem type="filename" name="hvigorfile.ts" desc="hvigor构建脚本，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filename" name="*.json5" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filename" name="hvigorw" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filename" name="hvigorw.bat" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filename" name="hvigor-wrapper.js" desc="项目工程默认文件，不需要添加版权头"/>
+            </filefilter>
+
+            <filefilter name="defaultPolicyFilter" desc="Filters for compatibility，license header policies">
+                <filteritem type="filename" name="hvigorfile.ts" desc="hvigor构建脚本，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filename" name="*.json5" desc="hvigor配置文件，DevEco Studio自动生成，不手动修改"/>
+                <filteritem type="filename" name="hvigorw" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filename" name="hvigorw.bat" desc="项目工程默认文件，不需要添加版权头"/>
+                <filteritem type="filename" name="hvigor-wrapper.js" desc="项目工程默认文件，不需要添加版权头"/>
+            </filefilter>
+
+            <filefilter name="binaryFileTypePolicyFilter" desc="Filters for copyright header policies">
+                <filteritem type="filename" name="oh-package.*" desc="DevEco Studio自动生成"/>
+                <filteritem type="filename" name="*.jpg" desc="测试图片"/>
+            </filefilter>
+        </filefilterlist>
+    </oatconfig>
+</configuration>

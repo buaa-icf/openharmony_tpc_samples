@@ -334,6 +334,7 @@
                 <filteritem type="filepath" name="ohos_rive/library/src/main/cpp/tools/.*" desc="编译工具，无需检查"/>
                 <filteritem type="filepath" name="metadata-extractor/entry/src/main/resources/rawfile/.*" desc="效果展示文件，无需检查"/>
                 <filteritem type="filepath" name="metadata-extractor/libs/xmptool.har" desc="本地依赖其他组件，无需检查"/>
+                <filteritem type="filepath" name="xmpToolkit/entry/src/main/resources/rawfile/.*" desc="效果展示文件，无需检查"/>
             </filefilter>
         </filefilterlist>
         <policylist>

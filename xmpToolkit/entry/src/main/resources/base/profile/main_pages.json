@@ -1,0 +1,14 @@
+{
+  "src": [
+    "pages/Index",
+    "pages/Meta",
+    "pages/ExtractXmpData",
+    "pages/SchemaRegistry",
+    "pages/DateTime",
+    "pages/VersionInfo",
+    "pages/MetaFactory",
+    "pages/PathFactory",
+    "pages/Utils",
+    "pages/Property"
+  ]
+}

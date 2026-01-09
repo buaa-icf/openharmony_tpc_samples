@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "xmp_toolkit for ArkTS",
+        "License": "Apache-2.0 License",
+        "License File": "LICENSE",
+        "Version Number": "1.0.0",
+        "Owner": "xiafeng@huawei.com",
+        "Upstream URL": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/xmp_toolkit",
+        "Description": "For extracting XMP metadata from image, video, and audio files."
+    }
+]
