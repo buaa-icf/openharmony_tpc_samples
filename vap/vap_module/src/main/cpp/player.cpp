@@ -471,8 +471,13 @@ void Player::DecOutputThread()
         CodecBufferInfo bufferInfo = signal_->outputBufferInfoQueue.front();
         signal_->outputBufferInfoQueue.pop();
         if (bufferInfo.attr.flags & AVCODEC_BUFFER_FLAGS_EOS) {
-            LOGE("Catch EOS, out thread out");
-            isVideoEndOfFile_ = true;
+            if (stopAtLast_) {
+                LOGD("Player stop at last.");
+                CallBackJS(VapState::ATLAST, CallbackType::STATE_CHANGE);
+            } else {
+                LOGE("Catch EOS, out thread out");
+                isVideoEndOfFile_ = true;
+            }
             break;
         }
         

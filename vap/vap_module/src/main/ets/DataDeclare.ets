@@ -59,6 +59,8 @@ export interface MixData {
   color?: VAPColor
   fontWeight?: VAPFontWeight
   textAlign?: VAPTextAlign
+  fontSize?: number
+  maxLines?: number
 }
 ;
 
@@ -75,7 +77,8 @@ export enum VapState {
   RENDER,
   COMPLETE,
   DESTROY,
-  FAILED
+  FAILED,
+  ATLAST
 }
 ;
 
@@ -174,6 +177,8 @@ export interface XComponentContext {
   setVideoMode(videoMode: VideoMode, id?: string): void
 
   setSpeed(speed: VAPSpeed, id?: string): void
+
+  setStopAtLast(id?: string): void
 };
 
 export class DownloadData {

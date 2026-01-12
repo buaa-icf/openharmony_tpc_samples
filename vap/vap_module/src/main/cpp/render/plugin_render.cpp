@@ -539,6 +539,29 @@ napi_value PluginRender::SetSpeed(napi_env env, napi_callback_info info)
     return nullptr;
 }
 
+napi_value PluginRender::SetStopAtLast(napi_env env, napi_callback_info info)
+{
+    LOGD("enter SetStopAtLast");
+    NFuncArg funcArg(env, info);
+    if (!funcArg.InitArgs(NARG_CNT::ZERO, NARG_CNT::ONE)) {
+        return nullptr;
+    }
+    napi_value v1 = funcArg.GetArg(NARG_POS::FIRST);
+    NVal nVal(env, v1);
+    auto [succ, resData, length] = nVal.ToUTF8String();
+    std::string id = resData.get();
+    std::shared_ptr<PluginRender> render = PluginRender::GetInstance(id);
+    if (!render) {
+        LOGE("Not get render");
+        return nullptr;
+    }
+    if (render->player_) {
+        render->player_->SetStopAtLast();
+    }
+    LOGD("end SetStopAtLast");
+    return nullptr;
+}
+
 void PluginRender::Export(napi_env env, napi_value exports)
 {
     if ((nullptr == env) || (nullptr == exports)) {
@@ -558,6 +581,7 @@ void PluginRender::Export(napi_env env, napi_value exports)
         { "setVideoMode", nullptr, PluginRender::SetVideoMode, nullptr, nullptr, nullptr, napi_default, nullptr },
         { "getVideoInfo", nullptr, PluginRender::GetVideoInfo, nullptr, nullptr, nullptr, napi_default, nullptr },
         { "setSpeed", nullptr, PluginRender::SetSpeed, nullptr, nullptr, nullptr, napi_default, nullptr },
+        { "setStopAtLast", nullptr, PluginRender::SetStopAtLast, nullptr, nullptr, nullptr, napi_default, nullptr },
         { "stopAsync", nullptr, PluginRender::AsyncStop, nullptr, nullptr, nullptr, napi_default, nullptr },
     };
     if (napi_ok != napi_define_properties(env, exports, sizeof(desc) / sizeof(desc[0]), desc)) {
@@ -756,6 +780,30 @@ static void ParseMixParamTextAlign(NVal &nValOneOpt, MixInputData &mixInputData)
     }
 }
 
+static void ParseMixParamFontSize(NVal &nValOneOpt, MixInputData &mixInputData)
+{
+    if (nValOneOpt.HasProp(PROP_FONT_SIZE)) {
+        auto [succ, resData] = nValOneOpt.GetProp(PROP_FONT_SIZE).ToDouble();
+        if (succ && resData > 0) {
+            mixInputData.fontSize = resData;
+            mixInputData.isSet |= SET_FONT_SIZE;
+            LOGD("parse mix fontsize %{public}x ta: %{public}d", mixInputData.isSet, resData);
+        }
+    }
+}
+
+static void ParseMixParamMaxLines(NVal &nValOneOpt, MixInputData &mixInputData)
+{
+    if (nValOneOpt.HasProp(PROP_MAX_LINES)) {
+        auto [succ, resData] = nValOneOpt.GetProp(PROP_MAX_LINES).ToInt32();
+        if (succ && resData > 0) {
+            mixInputData.maxLines = resData;
+            mixInputData.isSet |= SET_MAX_LINES;
+            LOGD("parse mix maxLines %{public}x ta: %{public}d", mixInputData.isSet, resData);
+        }
+    }
+}
+
 static void ParseMixParam(std::map<std::string, MixInputData> &mixData, napi_env env, NFuncArg &funcArg)
 {
     napi_value v2 = funcArg.GetArg(NARG_POS::SECOND);
@@ -793,6 +841,8 @@ static void ParseMixParam(std::map<std::string, MixInputData> &mixData, napi_env
         ParseMixParamColor(nValOneOpt, mixInputData);
         ParseMixParamFontWeight(nValOneOpt, mixInputData);
         ParseMixParamTextAlign(nValOneOpt, mixInputData);
+        ParseMixParamFontSize(nValOneOpt, mixInputData);
+        ParseMixParamMaxLines(nValOneOpt, mixInputData);
         
         LOGD("parse mix data tag%{public}s ta: %{public}d fw: %{public}d", tag.c_str(),
             mixInputData.textAlign, mixInputData.fontWeight);
