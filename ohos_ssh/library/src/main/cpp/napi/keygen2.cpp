@@ -246,6 +246,5 @@ int Keygen2(const std::string &privateKeyPath, const std::string &publicKeyPath,
         LOGE("Error: Failed to write public key file");
         return KEY_GEN_FAILED;
     }
-    LOGE("导出私钥公钥成功");
     return KEY_GEN_SUCCESS;
 }

@@ -47,7 +47,7 @@ void CallJs(uv_work_t *work) {
     napi_create_int32(callJsContext->env, callJsContext->type, &typeNV);
     napi_value ret = 0;
     napi_value callback = nullptr;
-    LOGE("napi-->uv_queue_work type: %d", callJsContext->type);
+    LOGD("napi-->uv_queue_work type: %d", callJsContext->type);
     if (!callJsContext->callbackRef) {
         delete work;
         return;
@@ -93,11 +93,11 @@ napi_value SSH2Napi::ClassConstructor(napi_env env, napi_callback_info info) {
     napi_value args[PARAM_COUNT_1] = {nullptr};
     napi_get_cb_info(env, info, &argc, args, &targetObj, nullptr);
     SSH2Napi *ssh2Napi = new SSH2Napi();
-    LOGE("new ClassConstructor");
+    LOGD("new ClassConstructor");
     napi_wrap(
         env, targetObj, ssh2Napi,
         [](napi_env env, void *data, void *hint) {
-            LOGE("ClassConstructor end");
+            LOGD("ClassConstructor end");
             SSH2Napi *ssh2NapiObj = static_cast<SSH2Napi *>(data);
             delete ssh2NapiObj;
             ssh2NapiObj = nullptr;
@@ -131,8 +131,6 @@ napi_value SSH2Napi::StartSSHClient(napi_env env, napi_callback_info info) {
     if (!ssh2Napi) {
         return nullptr;
     }
-    LOGE("StartSSHClient ip %s port %s privateKeyPath %s ss2Client %p", ip.c_str(), port.c_str(),
-         privateKeyPath.c_str(), ss2Client);
     ssh2Napi->_ssh2Client = ss2Client;
     ssh2Napi->_ip = ip;
     ssh2Napi->_port = port;
@@ -165,7 +163,7 @@ napi_value SSH2Napi::StartSSHClient(napi_env env, napi_callback_info info) {
             g_postEvent(ssh2ClientContext->ssh2Napi, SSH2_START_SUCCESS);
             while (!ssh2ClientContext->ssh2Client->isStop) {
                 sleep(1);
-                LOGE("sshclient runing ...");
+                LOGD("sshclient runing ...");
             }
         },
         [](napi_env env, napi_status status, void *data) {
@@ -222,7 +220,6 @@ napi_value SSH2Napi::ExecuteSSHCommand(napi_env env, napi_callback_info info) {
                 LOGE("Error ssh2Client NULL");
                 return;
             }
-            LOGE("ssh2Client %p user %s ", ssh2ClientContext->ssh2Client, ssh2ClientContext->user.c_str());
             ssh2ClientContext->buffer =
                 ssh2ClientContext->ssh2Client->ExecuteSSHCommd(ssh2ClientContext->command, ssh2ClientContext->time_ms);
             // 发送失败重连一次再发
@@ -238,7 +235,6 @@ napi_value SSH2Napi::ExecuteSSHCommand(napi_env env, napi_callback_info info) {
         },
         [](napi_env env, napi_status status, void *data) {
             SSH2ClientContext *ssh2ClientContext = (SSH2ClientContext *)data;
-            LOGE("发送命令结束");
             napi_value result = NapiUtil::SetNapiCallString(
                 ssh2ClientContext->env, ssh2ClientContext->buffer.length() > 0 ? ssh2ClientContext->buffer : "");
             napi_resolve_deferred(ssh2ClientContext->env, ssh2ClientContext->deferred, result);
@@ -290,23 +286,19 @@ napi_value SSH2Napi::StartSFTPServer(napi_env env, napi_callback_info info) {
             SSH2ServerContext *ssh2ServerContext = (SSH2ServerContext *)data;
             ServerCallbacks serverCallBack{.onStartSuccess =
                                                [&ssh2ServerContext]() {
-                                                   LOGE("启动Server成功");
                                                    g_postEvent(ssh2ServerContext->ssh2Napi, SFTP_SERVER_START_SUCCESS);
                                                },
                                            .onStartFailed =
                                                [&ssh2ServerContext]() {
-                                                   LOGE("启动Server失败");
                                                    g_postEvent(ssh2ServerContext->ssh2Napi, SFTP_SERVER_START_FAILED);
                                                },
                                            .onConnectSuccess =
                                                [&ssh2ServerContext]() {
-                                                   LOGE("连接Server成功");
                                                    g_postEvent(ssh2ServerContext->ssh2Napi,
                                                                SFTP_SERVER_CONNECT_SUCCESS);
                                                },
                                            .onConnectFailed =
                                                [&ssh2ServerContext]() {
-                                                   LOGE("连接Server失败");
                                                    g_postEvent(ssh2ServerContext->ssh2Napi, SFTP_SERVER_CONNECT_FAILED);
                                                }};
             StartServer(ssh2ServerContext->privateKeyPath, ssh2ServerContext->port, serverCallBack);
@@ -375,7 +367,7 @@ napi_value SSH2Napi::SetUser(napi_env env, napi_callback_info info) {
         ssh2Napi->_pass = pass;
     }
     SetUserPass(user, pass);
-    LOGE("SetUser success user: %s pass: %s", user.c_str(), pass.c_str());
+    LOGD("SetUser success");
     return NapiUtil::SetNapiCallInt32(env, NAPI_SUCCESS);
 }
 
@@ -402,7 +394,7 @@ napi_value SSH2Napi::StopSFTPServer(napi_env env, napi_callback_info info) {
     napi_value thisVal = nullptr;
     napi_get_cb_info(env, info, &argc, args, &thisVal, nullptr);
     StopServer();
-    LOGE("StopSFTPServer success");
+    LOGD("StopSFTPServer success");
     return NapiUtil::SetNapiCallInt32(env, NAPI_SUCCESS);
 }
 
@@ -414,7 +406,7 @@ napi_value SSH2Napi::SetSFTPKeyexChangeCer(napi_env env, napi_callback_info info
     std::string param;
     NapiUtil::JsValueToString(env, args[INDEX_0], STR_DEFAULT_SIZE, param);
     SetSFTPKeyexChangeCerOption(param);
-    LOGE("SetSFTPKeyexChangeCer %s", param.c_str());
+    LOGD("SetSFTPKeyexChangeCer");
     return NapiUtil::SetNapiCallInt32(env, NAPI_SUCCESS);
 }
 
@@ -426,7 +418,7 @@ napi_value SSH2Napi::SetSFTPServerCer(napi_env env, napi_callback_info info) {
     std::string param;
     NapiUtil::JsValueToString(env, args[INDEX_0], STR_DEFAULT_SIZE, param);
     SetSFTPServerCerOption(param);
-    LOGE("SetSFTPServerCer %s", param.c_str());
+    LOGD("SetSFTPServerCer");
     return NapiUtil::SetNapiCallInt32(env, NAPI_SUCCESS);
 }
 
@@ -438,7 +430,7 @@ napi_value SSH2Napi::SetSFTPMessageCer(napi_env env, napi_callback_info info) {
     std::string param;
     NapiUtil::JsValueToString(env, args[INDEX_0], STR_DEFAULT_SIZE, param);
     SetSFTPMessageCerOption(param);
-    LOGE("SetSFTPMessageCer %s", param.c_str());
+    LOGD("SetSFTPMessageCer");
     return NapiUtil::SetNapiCallInt32(env, NAPI_SUCCESS);
 }
 
@@ -466,8 +458,6 @@ napi_value SSH2Napi::SftpRequestRead(napi_env env, napi_callback_info info) {
     if (!ssh2Napi) {
         return nullptr;
     }
-    LOGE("StartSSHClient ip %s port %s privateKeyPath %s fileDir %s", ip.c_str(), port.c_str(), privateKeyPath.c_str(),
-         fileDir.c_str());
     ssh2Napi->_ssh2Client = ss2Client;
     ssh2Napi->_ip = ip;
     ssh2Napi->_port = port;
@@ -526,7 +516,6 @@ napi_value SSH2Napi::GetPublicKeyFingerprint(napi_env env, napi_callback_info in
     if (!ssh2Napi) {
         return nullptr;
     }
-    LOGE("GetPublicKeyFingerprint publicKeyPath %s ss2Client %p", publicKeyPath.c_str(), ss2Client);
     SSH2ClientContext *ssh2ClientContext = new SSH2ClientContext{.env = env,
                                                                  .asyncWork = nullptr,
                                                                  .deferred = deferred,
