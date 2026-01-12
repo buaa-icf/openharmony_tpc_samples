@@ -1,0 +1,9 @@
+{
+  "module": {
+    "name": "xmp_toolkit",
+    "type": "har",
+    "deviceTypes": [
+      "default"
+    ]
+  }
+}

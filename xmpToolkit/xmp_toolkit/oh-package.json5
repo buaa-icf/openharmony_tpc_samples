@@ -1,0 +1,25 @@
+{
+  "name": "@ohos/xmp_toolkit",
+  "keywords": [
+    "OpenHarmony",
+    "HarmonyOS",
+    "xmp_toolkit"
+  ],
+  "author": "ohos_tpc",
+  "ohos": {
+    "org": "opensource"
+  },
+  "version": "1.0.0-rc.0",
+  "description": "For extracting XMP metadata from image, video, and audio files",
+  "main": "Index.ets",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/xmp_toolkit",
+  "type": "module",
+  "license": "Apache-2.0",
+  "tags": [
+    "OpenHarmony",
+    "xmp_toolkit",
+    "HarmonyOS"
+  ],
+  "dependencies": {
+  }
+}
