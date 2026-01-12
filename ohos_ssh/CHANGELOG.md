@@ -1,3 +1,7 @@
+## 1.0.2
+
+- Optimize the level and content of log printing.
+
 ## 1.0.1
 
 - Modify the optimization level of dynamic libraries.

@@ -14,7 +14,7 @@
  */
 #ifndef HTTP2_OHOS_LOG_H
 #define HTTP2_OHOS_LOG_H
-#define OHOS_LOG_TAG    "libssh_1.0.0-rc.2"
+#define OHOS_LOG_TAG    "libssh_1.0.2"
 enum LibsshLogLevel {
     IL_INFO,
     IL_DEBUG,

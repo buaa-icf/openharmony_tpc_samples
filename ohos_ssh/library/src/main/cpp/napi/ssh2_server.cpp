@@ -70,13 +70,12 @@ bool FindUserComparison(const std::string &username, std::string &password) {
 
 static int AuthPassword(ssh_session session, const char *user, const char *pass, void *userdata) {
     struct session_data_struct *sdata = (struct session_data_struct *)userdata;
-    LOGE("auth_password");
     (void)session;
     std::string userStr = user;
     std::string passStr = pass;
     if (FindUserComparison(userStr, passStr)) {
         sdata->authenticated = 1;
-        LOGE("密码认证成功");
+        LOGD("密码认证成功");
         return SSH_AUTH_SUCCESS;
     }
     sdata->auth_attempts++;
@@ -88,7 +87,6 @@ static int AuthPublicKey(ssh_session session, const char *user, struct ssh_key_s
     struct session_data_struct *sdata = (struct session_data_struct *)userdata;
     (void)session;
     (void)user;
-    LOGE("auth_publickey");
     if (signature_state == SSH_PUBLICKEY_STATE_NONE) {
         return SSH_AUTH_SUCCESS;
     }
@@ -102,13 +100,13 @@ static int AuthPublicKey(ssh_session session, const char *user, struct ssh_key_s
             int result;
             result = ssh_pki_import_pubkey_file(authorizedkeys, &key);
             if ((result != SSH_OK) || (key == NULL)) {
-                LOGE("Unable to import public key file %s\n", authorizedkeys);
+                LOGE("Unable to import public key file");
             } else {
                 result = ssh_key_cmp(key, pubkey, SSH_KEY_CMP_PUBLIC);
                 ssh_key_free(key);
                 if (result == 0) {
                     sdata->authenticated = 1;
-                    LOGE("公钥认证成功");
+                    LOGD("公钥认证成功");
                     return SSH_AUTH_SUCCESS;
                 }
             }
@@ -154,7 +152,6 @@ void HandleSession(ssh_event event, ssh_session session) {
     ssh_set_server_callbacks(session, &server_cb);
 
     if (ssh_handle_key_exchange(session) != SSH_OK) {
-        LOGE("%s\n", ssh_get_error(session));
         return;
     }
     ssh_event_add_session(event, session);
@@ -164,7 +161,6 @@ void HandleSession(ssh_event event, ssh_session session) {
             return;
         }
         if (ssh_event_dopoll(event, 100) == SSH_ERROR) {
-            LOGE("%s\n", ssh_get_error(session));
             return;
         }
         n++;
@@ -207,7 +203,6 @@ void SetPublicKeyPath(const std::string &publicKeyPath) {
 }
 
 void StartServer(std::string privateKeyPath, std::string port, ServerCallbacks serverCallbacks) {
-    LOGE("StartServer privateKeyPath %s port %s", privateKeyPath.c_str(), port.c_str());
     isStopServer = false;
     if (privateKeyPath.empty() || port.empty()) {
         serverCallbacks.onStartFailed();
@@ -225,31 +220,24 @@ void StartServer(std::string privateKeyPath, std::string port, ServerCallbacks s
         serverCallbacks.onStartFailed();
         return;
     }
-    LOGE("SFTP 服务端已启动，监听端口 %s ...", port.c_str());
     serverCallbacks.onStartSuccess();
     while (!isStopServer) {
-        LOGE("服务端执行");
         session = ssh_new();
         if (!OPTIONS_CIPHERS_C_S.empty()) {
-            LOGE("服务端加密算法SSH_OPTIONS_CIPHERS_C_S: %s", OPTIONS_CIPHERS_C_S.c_str());
             ssh_options_set(session, SSH_OPTIONS_CIPHERS_C_S, OPTIONS_CIPHERS_C_S.c_str());
         }
         if (!OPTIONS_HMAC_C_S.empty()) {
-            LOGE("消息认证算法SSH_OPTIONS_HMAC_C_S: %s", OPTIONS_HMAC_C_S.c_str());
             ssh_options_set(session, SSH_OPTIONS_HMAC_C_S, OPTIONS_HMAC_C_S.c_str());
         }
         if (!OPTIONS_KEY_EXCHANGE.empty()) {
-            LOGE("私钥交互算法SSH_OPTIONS_KEY_EXCHANGE: %s", OPTIONS_KEY_EXCHANGE.c_str());
             ssh_options_set(session, SSH_OPTIONS_KEY_EXCHANGE, OPTIONS_KEY_EXCHANGE.c_str());
         }
         if (ssh_bind_accept(sshbind, session) != SSH_OK) {
-            LOGE("接受连接失败: %s", ssh_get_error(sshbind));
             serverCallbacks.onConnectFailed();
             ssh_free(session);
             continue;
         }
         auto task = [](const ssh_session &session, const ServerCallbacks &serverCallbacks) {
-            LOGE("HandleSession start");
             serverCallbacks.onConnectSuccess();
             ssh_event event = ssh_event_new();
             HandleSession(event, session);

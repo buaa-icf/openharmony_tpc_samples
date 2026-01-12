@@ -43,7 +43,6 @@ int SSH2Client::Start(std::string ip, std::string port, std::string privateKeyPa
         return NAPI_FAILED;
     }
     ssh_options_set(ssh_session, SSH_OPTIONS_HOST, ip.c_str());
-    LOGE("SSH_OPTIONS_USER %s", user.c_str());
     ssh_options_set(ssh_session, SSH_OPTIONS_USER, user.c_str());
     int _port = NapiUtil::StringToInt(port);
     ssh_options_set(ssh_session, SSH_OPTIONS_PORT, &_port);
@@ -82,10 +81,10 @@ int SSH2Client::Start(std::string ip, std::string port, std::string privateKeyPa
             ssh_free(ssh_session);
             return NAPI_FAILED;
         } else {
-            LOGE("密码认证成功");
+            LOGD("密码认证成功");
         }
     } else {
-        LOGE("客户端收到回调公钥认证成功");
+        LOGD("客户端收到回调公钥认证成功");
     }
     return NAPI_SUCCESS;
 }
@@ -112,13 +111,12 @@ int SSH2Client::CreateShell(){
 
     this->_ssh_channel = channel;
     
-    LOGE("CreateShell: 创建 shell 成功,可以开始交互了...");
+    LOGD("CreateShell: 创建 shell 成功");
     
     return NAPI_SUCCESS;
 }
 
 std::string SSH2Client::ExecuteSSHCommd(std::string command,int timeout_ms) {
-    LOGE("ExecuteSSHCommd timeout_ms: %d", timeout_ms);
     if (!ssh_channel_is_open(this->_ssh_channel)) {
         LOGE("channel 异常或者已经关闭。");
         return "channel 异常或者已经关闭，尝试重新启动。";
@@ -130,9 +128,6 @@ std::string SSH2Client::ExecuteSSHCommd(std::string command,int timeout_ms) {
         LOGE("执行命令失败");
         return "执行命令失败";
     }
-
-    LOGE("已发送命令: %s", command.c_str());
-
     // 读取输出直到看到自定义提示符 CMD_OUTPUT_END
     std::string output;
     if(timeout_ms > 0){
@@ -159,9 +154,6 @@ std::string SSH2Client::ReadUntilPrompt(int timeout_ms) {
     while (ssh_channel_is_open(this->_ssh_channel) && !ssh_channel_is_eof(this->_ssh_channel)) {
         usleep(timeout_ms * 1000);
         int nbytes = ssh_channel_read_nonblocking(this->_ssh_channel, buffer, sizeof(buffer), 0);
-        
-        LOGE("ssh_channel_read_nonblocking: %d", nbytes);
-
         if (nbytes == SSH_OK) {  // 读完了
             LOGE("读取数据结束");
             break;
@@ -169,13 +161,12 @@ std::string SSH2Client::ReadUntilPrompt(int timeout_ms) {
 
         if (nbytes > 0) {  // 没读完
             output.append(buffer, nbytes);
-            LOGE("读取数据: %d_%s", output.size(), output.c_str());
         }
         
         memset(buffer, 0, 1024);
 
         if (nbytes == SSH_AGAIN) {  // 超时/非阻塞模式下也能代表数据已读完
-            LOGW("SSH_AGAIN: 读取数据结束");
+            LOGD("SSH_AGAIN: 读取数据结束");
             break;
         }
         
@@ -186,13 +177,13 @@ std::string SSH2Client::ReadUntilPrompt(int timeout_ms) {
         }
         
         if (nbytes == SSH_EOF) {  // 超时/非阻塞模式下也能代表数据已读完
-            LOGW("SSH_EOF: 读取数据结束");
+            LOGD("SSH_EOF: 读取数据结束");
             break;
         }
     }
     
     if(!ssh_channel_is_open(this->_ssh_channel)){
-        LOGW("SSH_EOF: ssh_channel_is_open");
+        LOGD("SSH_EOF: ssh_channel_is_open");
         ssh_channel_free(this->_ssh_channel);
         this->_ssh_channel = NULL;
         
@@ -232,7 +223,6 @@ std::string SSH2Client::SftpRequestRead(std::string ip, std::string port, std::s
         } else {
             sftp_attributes file;
             while ((file = sftp_readdir(sftp_session, dir)) != NULL) {
-                LOGE("读取sftp数据:%s", file->name);
                 readResult.append(file->name);
                 readResult.append(",");
                 sftp_attributes_free(file);
@@ -266,7 +256,7 @@ char* SSH2Client::GetPublicKeyFingerprint(std::string publicKeyPath) {
     size_t hash_len;
     char *sha256 = NULL;
     if (ssh_pki_import_pubkey_file(publicKeyPath.c_str(), &key) != SSH_OK) {
-        LOGE("Failed to import public key %s", publicKeyPath.c_str());
+        LOGE("Failed to import public key ");
         return "";
     }
     if (ssh_get_publickey_hash(key, SSH_PUBLICKEY_HASH_SHA256, &hash, &hash_len) != SSH_OK) {
@@ -277,7 +267,6 @@ char* SSH2Client::GetPublicKeyFingerprint(std::string publicKeyPath) {
     sha256 = ssh_get_fingerprint_hash(SSH_PUBLICKEY_HASH_SHA256,
                                       (unsigned char *)hash,
                                       hash_len);
-    LOGE("服务器公钥指纹: %s", sha256);
     ssh_clean_pubkey_hash(&hash);
     ssh_key_free(key);
     return sha256;
