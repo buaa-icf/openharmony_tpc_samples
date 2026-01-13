@@ -49,6 +49,7 @@ public:
     void SetLoop(int32_t loops = 1) { loops_ = loops; }
     void SetFitType(VideoFitType fitType) { fitType_ = fitType; }
     void SetSpeed(float speed) { speed_ = speed; }
+    void SetStopAtLast() { stopAtLast_ = true; }
     void SetVideoMode(VideoMode videoMode);
     bool IsRunning() { return isStarted_; }
     
@@ -74,6 +75,7 @@ private:
     void InitJSAnimConfig();
     int32_t loops_ = 1;
     float speed_ = 1.0;
+    bool stopAtLast_ = false;
 
     std::mutex pauseMutex_;
     std::condition_variable pauseCond_;

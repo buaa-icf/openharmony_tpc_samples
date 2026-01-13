@@ -198,7 +198,8 @@ enum VapState {
     RENDER,
     COMPLETE,
     DESTROY,
-    FAILED
+    FAILED,
+    ATLAST
 };
 
 struct JSAnimConfig {

@@ -141,6 +141,12 @@ void ResourceRequest::DrawText(TextOption &txtOpt)
     OH_Drawing_TypographyStyle *typoStyle = OH_Drawing_CreateTypographyStyle();
     OH_Drawing_SetTypographyTextDirection(typoStyle, TEXT_DIRECTION_LTR);
     OH_Drawing_SetTypographyTextAlign(typoStyle, txtOpt.textAlign);
+    
+    if (txtOpt.maxLines > 0) {
+        OH_Drawing_SetTypographyTextMaxLines(typoStyle, txtOpt.maxLines);
+        OH_Drawing_SetTypographyTextEllipsisModal(typoStyle, ELLIPSIS_MODAL_TAIL);
+        OH_Drawing_SetTypographyTextEllipsis(typoStyle, "...");
+    }
 
     ColorARGB color = txtOpt.color;
     LOGD("DrawText color argb: %{public}02x-%{public}02x-%{public}02x-%{public}02x",
@@ -151,8 +157,8 @@ void ResourceRequest::DrawText(TextOption &txtOpt)
     double maxWidth = width_;
     double maxHeight = height_;
 
-    double fontSize = CalculateFittingFontSize(txtOpt, typoStyle, fontCollection,
-        maxWidth, maxHeight);
+    double fontSize = txtOpt.fontSize > 0 ? txtOpt.fontSize :
+        CalculateFittingFontSize(txtOpt, typoStyle, fontCollection, maxWidth, maxHeight);
     DrawFinalText(txtOpt, typoStyle, fontCollection, fontSize, maxWidth);
 
     OH_Drawing_DestroyFontCollection(fontCollection);

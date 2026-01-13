@@ -241,4 +241,8 @@ export class VAPPlayer implements XComponentContext {
   setSpeed(speed: VAPSpeed): void {
     this.vapContext?.setSpeed(speed, this.id);
   }
+
+  setStopAtLast(): void {
+    this.vapContext?.setStopAtLast(this.id);
+  }
 }

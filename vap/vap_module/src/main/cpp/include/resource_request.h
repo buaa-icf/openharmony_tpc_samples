@@ -40,6 +40,9 @@ struct TextOption {
     ColorARGB color;
     OH_Drawing_TextAlign textAlign;
     OH_Drawing_FontWeight fontWeight;
+    
+    double fontSize = -1;
+    int32_t maxLines = -1;
 };
 struct ImageOption {
     const char *uri;

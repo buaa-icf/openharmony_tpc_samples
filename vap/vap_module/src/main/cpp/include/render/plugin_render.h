@@ -31,6 +31,8 @@ const std::string PROP_IMAGE = "imgUri";
 const std::string PROP_COLOR = "color";
 const std::string PROP_FONT_WEIGHT = "fontWeight";
 const std::string PROP_TEXT_ALIGN = "textAlign";
+const std::string PROP_FONT_SIZE = "fontSize";
+const std::string PROP_MAX_LINES = "maxLines";
 
 class PluginRender {
 public:
@@ -50,6 +52,7 @@ public:
     static napi_value GetVideoInfo(napi_env env, napi_callback_info info);
     static napi_value SetVideoMode(napi_env env, napi_callback_info info);
     static napi_value SetSpeed(napi_env env, napi_callback_info info);
+    static napi_value SetStopAtLast(napi_env env, napi_callback_info info);
     static napi_value Off(napi_env env, napi_callback_info info);
     
     void Export(napi_env env, napi_value exports);
