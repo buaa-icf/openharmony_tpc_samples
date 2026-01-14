@@ -1,5 +1,12 @@
 # 版本记录
 
+## 1.1.7-rc.2
+
+---
+
+1. 'MixData' add optional parameter 'fontSize' and 'maxLines' for adjusting text font size and limiting maximum line.
+2. Add 'setStopAtLast' to support stopping at the last frame of animation without destroying the screen and sending the 'Vapstate.ATLAST' event. After manually calling 'stop', the screen will be destroyed.
+
 ## 1.1.7-rc.1
 
 ---
