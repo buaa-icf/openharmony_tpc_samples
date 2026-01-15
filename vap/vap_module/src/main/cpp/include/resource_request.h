@@ -43,6 +43,7 @@ struct TextOption {
     
     double fontSize = -1;
     int32_t maxLines = -1;
+    double textHeightMarginRatio = -1;
 };
 struct ImageOption {
     const char *uri;
@@ -76,8 +77,8 @@ private:
     OH_PixelmapNative *resPixMap_ = nullptr;
 
     static constexpr double DEFAULT_FONT_SIZE = 31.0;
-    static constexpr double TEXT_HEIGHT_MARGIN_RATIO = 0.95;  // 文本高度余量比例
-    static constexpr double FONT_SIZE_REDUCE_RATIO = 0.9;     // 字体大小减小比例
+    static constexpr double DEFAULT_TEXT_HEIGHT_MARGIN_RATIO = 0.95;    // 默认文本高度余量比例
+    static constexpr double FONT_SIZE_REDUCE_RATIO = 0.9;               // 字体大小减小比例
 
 private:
     double CalculateFittingFontSize(TextOption &txtOpt, OH_Drawing_TypographyStyle *typoStyle,

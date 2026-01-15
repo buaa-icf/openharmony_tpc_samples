@@ -94,6 +94,8 @@ double ResourceRequest::CalculateFittingFontSize(TextOption &txtOpt,
     bool textFits = false;
     int maxIterations = 50;
     int iteration = 0;
+    double textHeightMarginRatio = txtOpt.textHeightMarginRatio > 0 ?
+        txtOpt.textHeightMarginRatio : DEFAULT_TEXT_HEIGHT_MARGIN_RATIO;
 
     while (!textFits && iteration < maxIterations && fontSize >= minFontSize) {
         OH_Drawing_TextStyle *txtStyle = CreateTextStyle(txtOpt.color, fontSize, txtOpt.fontWeight);
@@ -104,7 +106,7 @@ double ResourceRequest::CalculateFittingFontSize(TextOption &txtOpt,
         OH_Drawing_DestroyTypography(typography);
         OH_Drawing_DestroyTextStyle(txtStyle);
 
-        if (textHeight <= maxHeight * TEXT_HEIGHT_MARGIN_RATIO) {
+        if (textHeight <= maxHeight * textHeightMarginRatio) {
             textFits = true;
         } else {
             fontSize = fontSize * FONT_SIZE_REDUCE_RATIO;

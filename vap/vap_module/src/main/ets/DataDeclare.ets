@@ -61,6 +61,7 @@ export interface MixData {
   textAlign?: VAPTextAlign
   fontSize?: number
   maxLines?: number
+  textHeightMarginRatio?: number
 }
 ;
 
