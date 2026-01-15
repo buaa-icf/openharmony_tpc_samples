@@ -1,5 +1,4 @@
-import { XMPMeta, XMPProperty } from '@ohos/xmp_toolkit';
-import { XMPMetaFactory } from '@ohos/xmp_toolkit';
+import { XMPMeta, XMPProperty, XMPMetaFactory } from '@ohos/xmp_toolkit';
 import { util } from '@kit.ArkTS';
 import { common } from '@kit.AbilityKit';
 

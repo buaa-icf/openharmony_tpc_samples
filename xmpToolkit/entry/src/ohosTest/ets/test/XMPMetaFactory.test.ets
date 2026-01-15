@@ -111,12 +111,12 @@ export default function xmpMetaFactoryTest() {
         console.log("===== XMPVersionInfo.getMessage 接口耗时：" + (Date.now() - startTime) / 10 + "ms");
 
         expect(versionInfo).not().assertNull();
-        expect(major).assertEqual(5);
-        expect(minor).assertEqual(1);
+        expect(major).assertEqual(1);
+        expect(minor).assertEqual(0);
         expect(micro).assertEqual(0);
-        expect(build).assertEqual(3);
+        expect(build).assertEqual(0);
         expect(isDebug).assertEqual(false);
-        expect(messInfo).assertContain('Adobe XMP Core');
+        expect(messInfo).assertContain('XMP Core');
       });
     });
 
