@@ -73,6 +73,9 @@ void MixRender::GenSrcTexture(Src src, BitMap &bitmap, const MixInputData mixDat
         if (mixData.isSet & SET_MAX_LINES) {
             txtOpt.maxLines = mixData.maxLines;
         }
+        if (mixData.isSet & SET_TEXT_HEIGHT_MARGIN_RATIO) {
+            txtOpt.textHeightMarginRatio = mixData.textHeightMarginRatio;
+        }
         LOGD("GenSrcTexture tag %{public}s ta ta: %{public}d-%{public}d", src.srcTag.c_str(),
             txtOpt.textAlign, mixData.textAlign);
 

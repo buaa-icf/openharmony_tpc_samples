@@ -803,6 +803,18 @@ static void ParseMixParamMaxLines(NVal &nValOneOpt, MixInputData &mixInputData)
     }
 }
 
+static void ParseMixParamTextHeightMarginRatio(NVal &nValOneOpt, MixInputData &mixInputData)
+{
+    if (nValOneOpt.HasProp(PROP_TEXT_HEIGHT_MARGIN_RATIO)) {
+        auto [succ, resData] = nValOneOpt.GetProp(PROP_TEXT_HEIGHT_MARGIN_RATIO).ToDouble();
+        if (succ && resData > 0) {
+            mixInputData.textHeightMarginRatio = resData;
+            mixInputData.isSet |= SET_TEXT_HEIGHT_MARGIN_RATIO;
+            LOGD("parse mix textHeightMarginRatio %{public}x ta: %{public}d", mixInputData.isSet, resData);
+        }
+    }
+}
+
 static void ParseMixParam(std::map<std::string, MixInputData> &mixData, napi_env env, NFuncArg &funcArg)
 {
     napi_value v2 = funcArg.GetArg(NARG_POS::SECOND);
@@ -842,6 +854,7 @@ static void ParseMixParam(std::map<std::string, MixInputData> &mixData, napi_env
         ParseMixParamTextAlign(nValOneOpt, mixInputData);
         ParseMixParamFontSize(nValOneOpt, mixInputData);
         ParseMixParamMaxLines(nValOneOpt, mixInputData);
+        ParseMixParamTextHeightMarginRatio(nValOneOpt, mixInputData);
         
         LOGD("parse mix data tag%{public}s ta: %{public}d fw: %{public}d", tag.c_str(),
             mixInputData.textAlign, mixInputData.fontWeight);

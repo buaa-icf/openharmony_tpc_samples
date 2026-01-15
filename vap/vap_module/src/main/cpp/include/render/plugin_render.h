@@ -33,6 +33,7 @@ const std::string PROP_FONT_WEIGHT = "fontWeight";
 const std::string PROP_TEXT_ALIGN = "textAlign";
 const std::string PROP_FONT_SIZE = "fontSize";
 const std::string PROP_MAX_LINES = "maxLines";
+const std::string PROP_TEXT_HEIGHT_MARGIN_RATIO = "textHeightMarginRatio";
 
 class PluginRender {
 public:

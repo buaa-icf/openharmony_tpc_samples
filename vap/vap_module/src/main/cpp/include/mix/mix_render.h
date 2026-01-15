@@ -40,6 +40,7 @@ struct MixConfigSize {
 #define SET_FONT_WEIGHT 0x04
 #define SET_FONT_SIZE 0x08
 #define SET_MAX_LINES 0x10
+#define SET_TEXT_HEIGHT_MARGIN_RATIO 0x20
 
 struct MixInputData {
     std::string txt = "DEFAULT_TEXT";
@@ -51,6 +52,7 @@ struct MixInputData {
     OH_PixelmapNative* pixelMap = nullptr;
     double fontSize = 0;
     int32_t maxLines = 0;
+    double textHeightMarginRatio = 0;
 };
 
 class MixRender {

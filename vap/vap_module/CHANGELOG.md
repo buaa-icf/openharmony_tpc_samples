@@ -6,6 +6,7 @@
 
 1. 'MixData' add optional parameter 'fontSize' and 'maxLines' for adjusting text font size and limiting maximum line.
 2. Add 'setStopAtLast' to support stopping at the last frame of animation without destroying the screen and sending the 'Vapstate.ATLAST' event. After manually calling 'stop', the screen will be destroyed.
+3. 'MixData' add optional parameter 'textHeightMarginRatio' for adjusting text height margin ratio which is 0.95 defaultly.
 
 ## 1.1.7-rc.1
 
