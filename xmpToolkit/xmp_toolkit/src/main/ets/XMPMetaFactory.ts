@@ -24,6 +24,7 @@ import XMPMetaParser from './impl/XMPMetaParser';
 import XMPSerializerHelper from './impl/XMPSerializerHelper';
 import XMPMetaImpl from './impl/XMPMetaImpl';
 import { XMPSchemaRegistryImpl } from './impl/XMPSchemaRegistryImpl';
+import versionData from '../resources/base/profile/version.json';
 
 /**
  * Creates XMPMeta-instances from an InputStream or other sources
@@ -180,14 +181,33 @@ export default class XMPMetaFactory {
   public static  getVersionInfo(): XMPVersionInfo {
     if (XMPMetaFactory.versionInfo == null) {
       try {
-        const major = 5;
-        const minor = 1;
-        const micro = 0;
-        const engBuild = 3;
-        const debug = false;
+        const versionStr = versionData.version;
+        let major: number = 1;
+        let minor: number = 0;
+        let micro: number = 0;
+        let engBuild: number = 0;
+        let debug: boolean = versionData.isDebug;
+        const message = 'XMP Core' + versionStr;
 
-        // Adobe XMP Core 5.0-jc001 DEBUG-<branch>.<changelist>, 2009 Jan 28 15:22:38-CET
-        const message = 'Adobe XMP Core 5.1.0-jc003';
+        const dashIndex = versionStr.indexOf('-');
+        const versionPart = dashIndex >= 0 ? versionStr.substring(0, dashIndex) : versionStr;
+        const engBuildStr = dashIndex >= 0 ? versionStr.substring(dashIndex + 1) : "";
+        const dotParts = versionPart.split('.');
+        if (dotParts.length >= 1) {
+          major = parseInt(dotParts[0]) || 0;
+        }
+        if (dotParts.length >= 2) {
+          minor = parseInt(dotParts[1]) || 0;
+        }
+        if (dotParts.length >= 3) {
+          micro = parseInt(dotParts[2]) || 0;
+        }
+        if (engBuildStr) {
+          const match = engBuildStr.match(/\d+/);
+          if (match) {
+            engBuild = parseInt(match[0]) || 0;
+          }
+        }
 
         class VersionInfoImpl implements XMPVersionInfo {
           getMajor(): number {

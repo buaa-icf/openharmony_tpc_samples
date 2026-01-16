@@ -1,191 +1,384 @@
 import { XMPMetaFactory } from '@ohos/xmp_toolkit';
-
-/**
- * 测试结果项
- */
-class TestResult {
-  public name: string = '';
-  public passed: boolean = false;
-  public message: string = '';
-
-  constructor(name: string, passed: boolean, message: string) {
-    this.name = name;
-    this.passed = passed;
-    this.message = message;
-  }
-}
+import type { XMPVersionInfo } from '@ohos/xmp_toolkit';
 
 @Entry
 @Component
-struct Index {
-  @State message: string = '点击运行测试';
-  @State isRunning: boolean = false;
-  @State testResults: TestResult[] = [];
-  @State totalTests: number = 0;
-  @State passedTests: number = 0;
-  @State failedTests: number = 0;
-  @State currentTest: string = '';
+struct VersionInfoPage {
+  @State message: string = 'XMP工具包版本信息';
 
-  addResult(name: string, passed: boolean, message: string) {
-    this.testResults.push(new TestResult(name, passed, message));
-    this.totalTests++;
-    if (passed) {
-      this.passedTests++;
-    } else {
-      this.failedTests++;
-    }
-  }
+  // 版本信息状态
+  @State versionInfo: XMPVersionInfo | null = null;
+  @State isLoading: boolean = false;
+  @State errorMessage: string = '';
 
-  async runAllTests() {
-    this.testResults = [];
-    this.totalTests = 0;
-    this.passedTests = 0;
-    this.failedTests = 0;
+  // 版本信息详情
+  @State majorVersion: number = 0;
+  @State minorVersion: number = 0;
+  @State microVersion: number = 0;
+  @State buildNumber: number = 0;
+  @State isDebugBuild: boolean = false;
+  @State fullVersionMessage: string = '';
 
-    // 2个测试项目
-    await this.test01_getVersionInfo();
-    await this.test02_getBuildInfo();
-  }
+  // 加载版本信息
+  loadVersionInfo() {
+    this.isLoading = true;
+    this.errorMessage = '';
 
-  async test01_getVersionInfo() {
-    this.currentTest = '[1/2] 获取版本信息';
     try {
-      const versionInfo = XMPMetaFactory.getVersionInfo();
-      if (!versionInfo) {
-        this.addResult('获取版本信息对象', false, '版本信息对象为 null 或 undefined');
+      // 获取版本信息
+      this.versionInfo = XMPMetaFactory.getVersionInfo();
+
+      if (!this.versionInfo) {
+        this.errorMessage = '无法获取版本信息对象';
         return;
       }
 
-      const majorVersion = versionInfo.getMajor();
-      const minorVersion = versionInfo.getMinor();
-      const versionMessage = versionInfo.getMessage();
+      // 提取所有版本信息
+      this.majorVersion = this.versionInfo.getMajor();
+      this.minorVersion = this.versionInfo.getMinor();
+      this.microVersion = this.versionInfo.getMicro();
+      this.buildNumber = this.versionInfo.getBuild();
+      this.isDebugBuild = this.versionInfo.isDebug();
+      this.fullVersionMessage = this.versionInfo.getMessage();
 
-      const passed =  typeof minorVersion === 'number' &&
-        typeof majorVersion === 'number' ;
-
-      let message = '版本信息: \n';
-      message += '主版本号=' + majorVersion + ', 次版本号=' + minorVersion + ', 版本描述信息=' + versionMessage;
-      this.addResult('1. 获取版本信息', passed, message);
     } catch (e) {
-      this.addResult('1. 获取版本信息', false, (e as Error).message);
+      this.errorMessage = `获取版本信息失败: ${(e as Error).message}`;
+    } finally {
+      this.isLoading = false;
     }
   }
 
-  async test02_getBuildInfo() {
-    this.currentTest = '[2/2] 获取构建信息';
-    try {
-      const versionInfo = XMPMetaFactory.getVersionInfo();
-      if (!versionInfo) {
-        this.addResult('获取版本信息对象', false, '版本信息对象为 null 或 undefined');
-        return;
-      }
+  // 清空信息
+  clearInfo() {
+    this.versionInfo = null;
+    this.majorVersion = 0;
+    this.minorVersion = 0;
+    this.microVersion = 0;
+    this.buildNumber = 0;
+    this.isDebugBuild = false;
+    this.fullVersionMessage = '';
+    this.errorMessage = '';
+  }
 
-      const buildNumber = versionInfo.getBuild();
-      const microVersion = versionInfo.getMicro();
-      const isDebug = versionInfo.isDebug();
-
-      const passed =  typeof buildNumber === 'number' &&
-        typeof microVersion === 'number' ;
-
-      let message = '构建信息: \n';
-      message += '修订号=' + microVersion + ', 构建号=' + buildNumber + ', 是否为调式版本=' + isDebug;
-      this.addResult('2. 获取构建信息', passed, message);
-    } catch (e) {
-      this.addResult('2. 获取构建信息', false, (e as Error).message);
+  // 格式化版本号
+  formatVersion(): string {
+    if (this.majorVersion === 0 && this.minorVersion === 0 && this.microVersion === 0) {
+      return '未知版本';
     }
+    return `${this.majorVersion}.${this.minorVersion}.${this.microVersion}`;
+  }
+
+  // 获取构建类型文本
+  getBuildTypeText(): string {
+    return this.isDebugBuild ? '调试版本' : '发布版本';
+  }
+
+  // 获取构建类型颜色
+  getBuildTypeColor(): ResourceColor {
+    return this.isDebugBuild ? Color.Red : Color.Green;
+  }
+
+  // 初始化
+  aboutToAppear() {
+    this.loadVersionInfo();
   }
 
   build() {
-    Column() {
+    Column({ space: 15 }) {
       // 标题
-      Text('xmp_toolkit 自动化接口测试')
-        .fontSize(20)
+      Text(this.message)
+        .fontSize(24)
         .fontWeight(FontWeight.Bold)
-        .margin({ top: 12, bottom: 12 })
+        .fontColor(Color.Blue)
+        .margin({ top: 20, bottom: 10 })
+        .width('95%')
+        .textAlign(TextAlign.Center)
 
-      // 运行按钮
-      Button(this.isRunning ? `${this.currentTest}` : this.message)
-        .fontSize(14)
-        .fontWeight(FontWeight.Bold)
-        .width('85%')
-        .height(44)
-        .enabled(!this.isRunning)
-        .onClick(async () => {
-          this.isRunning = true;
-          this.message = '测试中...';
-          try {
-            await this.runAllTests();
-            this.message = '重新运行测试';
-          } catch (e) {
-            this.message = '测试出错，点击重试';
-          } finally {
-            this.isRunning = false;
-            this.currentTest = '';
-          }
-        })
-        .margin({ bottom: 12 })
-
-      // 统计信息
-      if (this.totalTests > 0) {
-        Row() {
-          Text(`总计: ${this.totalTests}`)
-            .fontSize(13)
-            .margin({ right: 12 })
-          Text(`✅ ${this.passedTests}`)
-            .fontSize(13)
-            .fontColor('#00AA00')
-            .margin({ right: 12 })
-          Text(`❌ ${this.failedTests}`)
-            .fontSize(13)
-            .fontColor('#FF0000')
-        }
-        .margin({ bottom: 8 })
-
-        // 总体结果
-        Text(this.failedTests === 0 ? '🎉 全部通过!' : `⚠️ ${this.failedTests}项失败`)
+      // 操作按钮
+      Row({ space: 10 }) {
+        Button('获取版本信息')
           .fontSize(16)
-          .fontWeight(FontWeight.Bold)
-          .fontColor(this.failedTests === 0 ? '#00AA00' : '#FF6600')
-          .margin({ bottom: 10 })
+          .fontColor(Color.White)
+          .backgroundColor(Color.Blue)
+          .height(45)
+          .flexGrow(1)
+          .enabled(!this.isLoading)
+          .onClick(() => {
+            this.loadVersionInfo();
+          })
+
+        Button('清空信息')
+          .fontSize(16)
+          .fontColor(Color.White)
+          .backgroundColor(Color.Grey)
+          .height(45)
+          .flexGrow(1)
+          .enabled(!this.isLoading)
+          .onClick(() => {
+            this.clearInfo();
+          })
+      }
+      .width('95%')
+      .margin({ bottom: 15 })
+
+      // 错误信息显示
+      if (this.errorMessage) {
+        Column({ space: 8 }) {
+          Text('错误信息')
+            .fontSize(16)
+            .fontWeight(FontWeight.Medium)
+            .fontColor(Color.Red)
+            .width('95%')
+            .textAlign(TextAlign.Start)
+
+          Text(this.errorMessage)
+            .fontSize(14)
+            .fontColor(Color.Red)
+            .width('95%')
+            .textAlign(TextAlign.Start)
+            .padding(12)
+            .backgroundColor('#FFF0F0')
+            .border({ width: 1, color: Color.Red })
+            .borderRadius(8)
+        }
+        .width('100%')
+        .padding(15)
+        .backgroundColor(Color.White)
+        .border({ width: 1, color: Color.Grey })
+        .borderRadius(8)
+        .margin({ bottom: 15 })
       }
 
-      // 测试结果列表
-      if (this.testResults.length > 0) {
-        List() {
-          ForEach(this.testResults, (item: TestResult) => {
-            ListItem() {
-              Row() {
-                Text(item.passed ? '✅' : '❌')
-                  .fontSize(14)
-                  .margin({ right: 6 })
-                Column() {
-                  Text(item.name)
-                    .fontSize(13)
-                    .fontWeight(FontWeight.Medium)
-                  Text(item.message)
-                    .fontSize(10)
-                    .fontColor(item.passed ? '#666666' : '#FF0000')
-                    .maxLines(12)
-                    .textOverflow({ overflow: TextOverflow.Ellipsis })
+      // 加载状态或无数据状态
+      Column() {
+        if (this.isLoading) {
+          // 加载状态
+          Column() {
+            Text('正在加载版本信息...')
+              .fontSize(16)
+              .fontColor(Color.Blue)
+              .padding(30)
+          }
+          .width('100%')
+          .backgroundColor(Color.White)
+          .border({ width: 1, color: Color.Grey })
+          .borderRadius(8)
+        } else if (this.errorMessage) {
+          // 错误信息已经在上方显示，这里可以留空或者显示其他内容
+        } else if (this.versionInfo) {
+          // 版本信息显示 - 滚动区域（关键修改部分）
+          Scroll() {
+            Column({ space: 15 }) {
+              // 主要版本信息卡片
+              Column({ space: 10 }) {
+                Text('版本信息概览')
+                  .fontSize(18)
+                  .fontWeight(FontWeight.Bold)
+                  .fontColor(Color.Blue)
+                  .width('95%')
+                  .textAlign(TextAlign.Start)
+
+                // 版本号显示
+                Row({ space: 10 }) {
+                  Column() {
+                    Text('版本号')
+                      .fontSize(12)
+                      .fontColor(Color.Gray)
+                    Text(this.formatVersion())
+                      .fontSize(24)
+                      .fontColor(Color.Blue)
+                      .fontWeight(FontWeight.Bold)
+                  }
+                  .layoutWeight(1)
+
+                  Column() {
+                    Text('构建类型')
+                      .fontSize(12)
+                      .fontColor(Color.Gray)
+                    Text(this.getBuildTypeText())
+                      .fontSize(16)
+                      .fontColor(this.getBuildTypeColor())
+                      .fontWeight(FontWeight.Bold)
+                  }
+                  .layoutWeight(1)
                 }
-                .alignItems(HorizontalAlign.Start)
-                .layoutWeight(1)
+                .width('95%')
+
+                // 构建号
+                Row({ space: 10 }) {
+                  Column() {
+                    Text('构建号')
+                      .fontSize(12)
+                      .fontColor(Color.Gray)
+                    Text(`#${this.buildNumber}`)
+                      .fontSize(18)
+                      .fontColor(Color.Green)
+                      .fontWeight(FontWeight.Bold)
+                  }
+                  .layoutWeight(1)
+                }
+                .width('95%')
+                .margin({ top: 10 })
               }
               .width('100%')
-              .padding({ top: 6, bottom: 6, left: 10, right: 10 })
-              .backgroundColor(item.passed ? '#F0FFF0' : '#FFF0F0')
-              .borderRadius(4)
+              .padding(20)
+              .backgroundColor('#F0F8FF')
+              .border({ width: 2, color: Color.Blue })
+              .borderRadius(12)
+
+              // 详细版本信息
+              Column({ space: 10 }) {
+                Text('详细版本信息')
+                  .fontSize(16)
+                  .fontWeight(FontWeight.Medium)
+                  .fontColor(Color.Blue)
+                  .width('95%')
+                  .textAlign(TextAlign.Start)
+
+                // 版本号详情
+                Column({ space: 8 }) {
+                  Row() {
+                    Text('主版本号 (Major):')
+                      .fontSize(14)
+                      .fontColor(Color.Black)
+                      .layoutWeight(1)
+                    Text(this.majorVersion.toString())
+                      .fontSize(14)
+                      .fontColor(Color.Blue)
+                      .fontWeight(FontWeight.Bold)
+                  }
+                  .width('95%')
+                  .padding({ top: 5, bottom: 5 })
+
+                  Row() {
+                    Text('次版本号 (Minor):')
+                      .fontSize(14)
+                      .fontColor(Color.Black)
+                      .layoutWeight(1)
+                    Text(this.minorVersion.toString())
+                      .fontSize(14)
+                      .fontColor(Color.Blue)
+                      .fontWeight(FontWeight.Bold)
+                  }
+                  .width('95%')
+                  .padding({ top: 5, bottom: 5 })
+                  .backgroundColor('#F8F8F8')
+
+                  Row() {
+                    Text('第三版本号 (Micro):')
+                      .fontSize(14)
+                      .fontColor(Color.Black)
+                      .layoutWeight(1)
+                    Text(this.microVersion.toString())
+                      .fontSize(14)
+                      .fontColor(Color.Blue)
+                      .fontWeight(FontWeight.Bold)
+                  }
+                  .width('95%')
+                  .padding({ top: 5, bottom: 5 })
+                }
+                .width('95%')
+                .padding(15)
+                .backgroundColor(Color.White)
+                .border({ width: 1, color: Color.Grey })
+                .borderRadius(8)
+
+                // 构建信息详情
+                Column({ space: 8 }) {
+                  Row() {
+                    Text('构建号 (Build):')
+                      .fontSize(14)
+                      .fontColor(Color.Black)
+                      .layoutWeight(1)
+                    Text(this.buildNumber.toString())
+                      .fontSize(14)
+                      .fontColor(Color.Green)
+                      .fontWeight(FontWeight.Bold)
+                  }
+                  .width('95%')
+                  .padding({ top: 5, bottom: 5 })
+
+                  Row() {
+                    Text('构建类型:')
+                      .fontSize(14)
+                      .fontColor(Color.Black)
+                      .layoutWeight(1)
+                    Text(this.getBuildTypeText())
+                      .fontSize(14)
+                      .fontColor(this.getBuildTypeColor())
+                      .fontWeight(FontWeight.Bold)
+                  }
+                  .width('95%')
+                  .padding({ top: 5, bottom: 5 })
+                  .backgroundColor('#F8F8F8')
+                }
+                .width('95%')
+                .padding(15)
+                .backgroundColor(Color.White)
+                .border({ width: 1, color: Color.Grey })
+                .borderRadius(8)
+                .margin({ top: 10 })
+
+                // 完整版本信息
+                Column({ space: 8 }) {
+                  Text('完整版本信息:')
+                    .fontSize(14)
+                    .fontWeight(FontWeight.Medium)
+                    .fontColor(Color.Blue)
+                    .width('95%')
+                    .textAlign(TextAlign.Start)
+
+                  Text(this.fullVersionMessage || '暂无描述信息')
+                    .fontSize(13)
+                    .fontColor(Color.Black)
+                    .width('95%')
+                    .textAlign(TextAlign.Start)
+                    .padding(12)
+                    .backgroundColor('#F8F8F8')
+                    .border({ width: 1, color: Color.Grey })
+                    .borderRadius(6)
+                }
+                .width('95%')
+                .margin({ top: 10 })
+              }
+              .width('100%')
+              .padding(20)
+              .backgroundColor(Color.White)
+              .border({ width: 1, color: Color.Grey })
+              .borderRadius(8)
             }
-            .margin({ bottom: 4 })
-          })
+            .width('100%')
+            .padding({ bottom: 20 })
+          }
+          .flexGrow(1)  // 关键修改：让滚动区域自动填充剩余空间
+          .width('100%')
+        } else {
+          // 无数据时的提示
+          Column() {
+            Text('暂无版本信息')
+              .fontSize(16)
+              .fontColor(Color.Gray)
+              .padding(30)
+            Text('请点击"获取版本信息"按钮')
+              .fontSize(14)
+              .fontColor(Color.Gray)
+          }
+          .width('100%')
+          .backgroundColor(Color.White)
+          .border({ width: 1, color: Color.Grey })
+          .borderRadius(8)
         }
-        .width('94%')
-        .layoutWeight(1)
-        .divider({ strokeWidth: 0 })
       }
+      .flexGrow(1)  // 关键修改：让内容区域自动填充剩余空间
+      .width('100%')
+      .justifyContent(FlexAlign.Start)
+
     }
     .width('100%')
     .height('100%')
-    .padding({ left: 10, right: 10, top: 6, bottom: 6 })
+    .backgroundColor('#F5F5F5')
+    .padding({ left: 10, right: 10 })
+    .alignItems(HorizontalAlign.Center)
+    .justifyContent(FlexAlign.Start)
   }
 }

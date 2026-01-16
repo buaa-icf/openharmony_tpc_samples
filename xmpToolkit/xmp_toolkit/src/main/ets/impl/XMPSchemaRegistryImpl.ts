@@ -105,6 +105,27 @@ export class XMPSchemaRegistryImpl extends XMPConst implements XMPSchemaRegistry
     }
 
     /**
+     * 根据命名空间URI删除所有相关的别名
+     * @param namespaceURI 要删除的命名空间URI
+     */
+    private deleteAliasesByNamespace(namespaceURI: string): void {
+        // 创建一个数组来存储需要删除的键
+        const keysToDelete: string[] = [];
+
+        // 遍历aliasMap，找出所有属于该命名空间的别名
+        for (const [key, aliasInfo] of this.aliasMap.entries()) {
+            if (aliasInfo.getNamespace() === namespaceURI) {
+                keysToDelete.push(key);
+            }
+        }
+
+        // 删除所有找到的别名
+        for (const key of keysToDelete) {
+            this.aliasMap.delete(key);
+        }
+    }
+
+    /**
      * 删除命名空间
      * @param namespaceURI 要删除的命名空间URI
      */
@@ -113,6 +134,7 @@ export class XMPSchemaRegistryImpl extends XMPConst implements XMPSchemaRegistry
         if (prefixToDelete !== null) {
             this.namespaceToPrefixMap.delete(namespaceURI);
             this.prefixToNamespaceMap.delete(prefixToDelete);
+            this.deleteAliasesByNamespace(namespaceURI);
         }
     }
 
