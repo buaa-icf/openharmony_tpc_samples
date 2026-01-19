@@ -46,7 +46,7 @@ export struct EvaDemo {
   build() {
     NavDestination() {
       Column() {
-        EvaAnimComponent({ playerEva: this.player })
+        EvaAnimComponent({ playerEva: this.player, hitTestBehaviorMode: HitTestMode.Default })
           .width('100%')
           .height('80%')
         List() {

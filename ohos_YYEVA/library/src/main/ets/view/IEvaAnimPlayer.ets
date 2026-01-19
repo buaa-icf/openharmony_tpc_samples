@@ -34,10 +34,13 @@ export abstract class IEvaAnimPlayer {
     position: { x: 0, y: 0 },
     globalPosition: { x: 0, y: 0 }
   }
+  @Track isNormalMp4 = false; //是否正常的不透明的mp4
+
   public controllerId: number = -1; //底层Native管理器id
   private uiContext: UIContext;
   public context: common.UIAbilityContext
   scaleTypeUtil: ScaleTypeUtil;
+
 
   constructor(context: UIContext, uuid: string) {
     this.uiContext = context;
@@ -143,13 +146,7 @@ export abstract class IEvaAnimPlayer {
         }
       }
       let newArea: Area = this.scaleTypeUtil.getLayoutParam(area)
-      this.xArea.width = this.px2vp(newArea.width as number)
-      this.xArea.height = this.px2vp(newArea.height as number)
-      this.xArea.position.x = this.px2vp(newArea.position.x as number)
-      this.xArea.position.y = this.px2vp(newArea.position.y as number)
-      this.xArea.globalPosition.x = this.px2vp(newArea.globalPosition.x as number)
-      this.xArea.globalPosition.y = this.px2vp(newArea.globalPosition.y as number)
-      // this.xArea = newArea;
+      this.xArea = newArea;
       ELog.i(IEvaAnimPlayer.TAG, `updateUI, ${modePosition.size.width}x${modePosition.size.height} -> ${this.xArea.width}x${this.xArea.height}`)
     } catch (error) {
       ELog.e(IEvaAnimPlayer.TAG, `updataUI, error = ${JSON.stringify(error)}`)

@@ -43,7 +43,7 @@ export class MediaCodec {
   configure(colorFormat?: number, surface?: SurfaceTexture): void;
   start(): Promise<void>;
   restart(): Promise<void>;
-  stop(): Promise<void>;
+  stop(): void;
   flush(): void;
   resume(): Promise<void>;
   pause(): Promise<void>;

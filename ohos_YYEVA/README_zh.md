@@ -122,16 +122,13 @@ emitter.off(EvaConstant.EVENT_ID_ON_VIDEO_START);
 | 方法 | 说明 |
 | --- | --- |
 | `startPlayByRawFile(context, fileName, rawFd)` | 播放应用资源目录中的混合 MP4。|
-| `startPlayByPath(context, filePath)` | 播放沙箱或外部路径下的 MP4 资源。|
-| `pausePlay()` / `resumePlay()` | 暂停与恢复播放。|
+| `pause()` / `resume()` | 暂停与恢复播放。|
 | `stop()` | 停止播放并释放底层解码器。|
 | `setMute(isMute: boolean)` | 控制播放器静音状态。|
 | `setLoop(loop: boolean)` | 设置是否循环播放。|
 | `setSpeed(speed: number)` | 调整播放速度（倍率）。|
-| `seekTo(timestampMs: number)` | 精准跳转到指定毫秒位置。|
-| `setFetchResource(fetcher: IEvaFetchResource)` | 注册动态资源替换回调。|
-| `setOnClickListener(listener: OnEvaResourceClickListener)` | 监听动画节点点击事件。|
-| `setLog(enable: boolean)` | 打开/关闭调试日志输出。|
+| `setFetchResource(evaFetchResource: IEvaFetchResource | null)` | 设置资源获取器。|
+| `setOnResourceClickListener(evaResourceClickListener: OnEvaResourceClickListener | null)` | 设置资源点击监听器。|
 
 
 ## 接口图标速览
@@ -140,9 +137,9 @@ emitter.off(EvaConstant.EVENT_ID_ON_VIDEO_START);
 | :-: | --- | --- |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `[🔗]` | 设置资源 | `setFetchResource(fetcher)` | 绑定 `IEvaFetchResource` 动态替换图片、文本等。                                                                                                                                                        |
 | `[▶]` | 播放视频 | `startPlayByRawFile(context, fileName, rawFd)` | 从应用资源启动播放。                                                                                                                                                                                |
-| `[⏸]` | 暂停视频 | `pausePlay()` | 暂停当前播放进度。                                                                                                                                                                                 |
+| `[⏸]` | 暂停视频 | `pause()` | 暂停当前播放进度。                                                                                                                                                                                 |
 | `[⏹]` | 停止视频 | `stop()` | 停止播放并释放底层资源。                                                                                                                                                                              |
-| `[⏯]` | 继续视频 | `resumePlay()` | 从暂停位置继续播放。                                                                                                                                                                                |
+| `[⏯]` | 继续视频 | `resume()` | 从暂停位置继续播放。                                                                                                                                                                                |
 | `[🔇]` | 静音控制 | `setMute(isMute)` | 切换播放静音状态。                                                                                                                                                                                 |
 | `[🔁]` | 重播视频 | `restart()` | 重新从头播放当前动画。                                                                                                                                                                               |
 | `[🚀]` | 动画开始回调 | `emitter.on(EvaConstant.EVENT_ID_ON_VIDEO_START, handler)` | 订阅动画启动等事件（`EVENT_ID_ON_VIDEO_CONFIG_READY`, `EVENT_ID_ON_VIDEO_START`, `EVENT_ID_ON_VIDEO_RESTART`, `EVENT_ID_ON_VIDEO_RENDER`, `EVENT_ID_ON_VIDEO_COMPLETE`, `EVENT_ID_ON_VIDEO_DESTROY`）。 |

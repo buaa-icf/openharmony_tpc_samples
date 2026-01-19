@@ -103,7 +103,6 @@ export class EvaAnimPlayer extends IEvaAnimPlayer {
   public isStartPlay = false
   public lastEvaFile: IEvaFileContainer | null = null;
   public bg: PixelMap | null = null;
-  public isNormalMp4 = false //是否正常的不透明的mp4
   public isSurfaceAvailable = false
   public surfaceId: string | null = null
   public surfaceTexure: SurfaceTexture | null = null;

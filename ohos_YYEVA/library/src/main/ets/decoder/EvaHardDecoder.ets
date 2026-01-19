@@ -260,8 +260,10 @@ export class EvaHardDecoder extends Decoder {
         }
         return;
       }
-      EvaUtil.renderClearFrame(this.playerEva.controllerId);
 
+      if (this.outputDone) {
+        EvaUtil.renderClearFrame(this.playerEva.controllerId);
+      }
     } catch (e) {
       if (this.retryCount > 5) {
         ELog.e(EvaHardDecoder.TAG, `MediaExtractor exception e=${e}`);
@@ -323,6 +325,11 @@ export class EvaHardDecoder extends Decoder {
               if (!this.outputDone) {
                 this.decodeEnd(status);
               }
+              if (!this.outputDone && (this.playerEva.playLoop > 0 || this.isLoop)) {
+                setTimeout(() => {
+                  this.startPlay(evaFileContainer);
+                }, 0);
+              }
               break;
           }
         } catch (e) {
@@ -372,6 +379,10 @@ export class EvaHardDecoder extends Decoder {
         loop = --this.playLoop;
         this.playerEva.playLoop = this.playLoop; // 消耗loop次数 自动恢复后能有正确的loop次数
         this.outputDone = this.playLoop <= 0;
+
+        if (this.playerEva.playLoop == 0){
+          this.playerEva.isNormalMp4 = false;
+        }
       }
     }
 
@@ -388,7 +399,6 @@ export class EvaHardDecoder extends Decoder {
         this.decoder?.flush();
         this.speedControlUtil.reset();
         this.frameIndex = 0;
-        this.isLoop = true;
         this.playerEva.sendEvent(EvaConstant.EVENT_ID_ON_VIDEO_RESTART, { data: { uuid: this.playerEva.uuid } });
         let startEventData: emitter.EventData = {
           data: {
@@ -464,7 +474,9 @@ export class EvaHardDecoder extends Decoder {
     if (this.needDestroy) {
       this.destroyInner();
     }
+    
     this.playLoop = 1;
+    this.playerEva.isNormalMp4 = false;
   }
 
   notReleaseLastFrame(decoder: MediaCodec | null, extractor: MediaExtractor | null) {
@@ -534,6 +546,11 @@ export class EvaHardDecoder extends Decoder {
     ELog.i(Decoder.TAG, `stop`);
     try {
       if (!this.outputDone) {
+        this.playerEva.isNormalMp4 = false;
+        this.playerEva.playLoop = 1; //点击stop 循环播放次数要重置为0
+        this.playLoop = 1;
+        this.isLoop = false;
+
         this.isStopReq = true;
         this.completeBlock = completeBlock;
         this.decoder?.stop();
@@ -591,12 +608,11 @@ export class EvaHardDecoder extends Decoder {
     try {
       this.decodeEnd(MediaConstant.PLAY_END); //强制让播放结束
 
-      this.decoder?.stop().then(()=>{
-        this.decoder?.release();
-        this.extractor?.release();
-        this.decoder = null;
-        this.extractor = null;
-      });
+      this.decoder?.stop();
+      this.decoder?.release();
+      this.extractor?.release();
+      this.decoder = null;
+      this.extractor = null;
 
       this.evaFileContainer?.close();
       this.destroyThread();
