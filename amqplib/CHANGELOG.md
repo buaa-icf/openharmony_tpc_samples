@@ -1,3 +1,6 @@
+## v1.0.2
+- Release official version
+
 ## v1.0.2-rc.1
 - Export the EventEmitter method
 - Fixed the issue where the socket message did not pass in the amqp message channel
