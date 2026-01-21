@@ -1,5 +1,11 @@
 # 版本记录
 
+## 1.1.7
+
+---
+
+1. Release the official version 1.1.7
+
 ## 1.1.7-rc.2
 
 ---
