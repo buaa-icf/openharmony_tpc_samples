@@ -628,12 +628,9 @@ static napi_value stop(napi_env env, napi_callback_info info)
         LOGE("Unbind Extractor nullptr");
         return nullptr;
     }
-    NapiAsyncHandler *asyncHandler = new NapiAsyncHandler(env, "stop");
-    asyncHandler->OnWork([mediaCodec](napi_env env, void *d) -> napi_status {
-        mediaCodec->Stop();
-        return napi_ok;
-    });
-    return napiHandler.Promise(asyncHandler);
+	
+    mediaCodec->Stop();
+	return nullptr;
 }
 
 static napi_value restart(napi_env env, napi_callback_info info)

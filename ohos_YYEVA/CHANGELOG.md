@@ -1,3 +1,8 @@
+## 1.0.1-rc.1
+
+- The player exposes the hitTestBehavior property, allowing users to customize its settings.
+- Fixed streaking issues during normal MP4 playback.
+
 ## 1.0.0
 
 The YYEVA engine has been adapted to support HarmonyOS, including core functionalities such as playback,

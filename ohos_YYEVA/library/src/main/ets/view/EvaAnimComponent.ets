@@ -35,6 +35,7 @@ export struct EvaAnimComponent {
     public xcompID: string = "";
     public xType: XComponentType = XComponentType.SURFACE;
     public evaView: EvaAnimView = new EvaAnimView();
+    public hitTestBehaviorMode: HitTestMode = HitTestMode.Default;
 
     build() {
         Stack() {
@@ -42,9 +43,11 @@ export struct EvaAnimComponent {
                 id: this.xcompID,
                 type: this.xType,
                 controller: this.evaView
-            }).width(this.playerEva.xArea.width)
+            })
+                .width(this.playerEva.xArea.width)
                 .height(this.playerEva.xArea.height)
-                .backgroundColor(Color.Transparent)
+                .hitTestBehavior(this.hitTestBehaviorMode)
+                .backgroundColor(this.playerEva.isNormalMp4 ? Color.Black : Color.Transparent)
                 .onTouch((event: TouchEvent) => {
                     const isRunning = this.playerEva.isRunning()
                     const isDispatch = event != null && this.playerEva?.onDispatchTouchEvent(event)
