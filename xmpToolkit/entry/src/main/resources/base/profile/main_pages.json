@@ -9,6 +9,7 @@
     "pages/MetaFactory",
     "pages/PathFactory",
     "pages/Utils",
+    "pages/PropertyType",
     "pages/Property"
   ]
 }
