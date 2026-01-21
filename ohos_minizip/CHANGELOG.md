@@ -1,3 +1,7 @@
+# 1.0.4
+
+- Release official version 1.0.4
+
 # 1.0.4-rc.0
 
 - Fixed the issue where decompressing a Zip file with empty content would cause the execution flow to enter the catch block.
