@@ -12,6 +12,7 @@ import {
   SerializeOptions
 } from '@ohos/xmp_toolkit';
 import { util } from '@kit.ArkTS';
+import versionCfg from '../../../main/resources/base/profile/version.json';
 
 // 测试用 RDF 数据
 const SIMPLE_RDF = `<rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'>
@@ -89,6 +90,34 @@ export default function xmpMetaFactoryTest() {
 
     describe('getVersionInfo', () => {
       it('should return version info with valid values', 0, () => {
+        // 读配置的版本信息
+        const versionStr = versionCfg.version;
+        let cfgMajor: number = 1;
+        let cfgMinor: number = 0;
+        let cfgMicro: number = 0;
+        let cfgEngBuild: number = 0;
+        let cfgDebug: boolean = versionCfg.isDebug;
+
+        const dashIndex = versionStr.indexOf('-');
+        const versionPart = dashIndex >= 0 ? versionStr.substring(0, dashIndex) : versionStr;
+        const engBuildStr = dashIndex >= 0 ? versionStr.substring(dashIndex + 1) : "";
+        const dotParts = versionPart.split('.');
+        if (dotParts.length >= 1) {
+          cfgMajor = parseInt(dotParts[0]) || 0;
+        }
+        if (dotParts.length >= 2) {
+          cfgMinor = parseInt(dotParts[1]) || 0;
+        }
+        if (dotParts.length >= 3) {
+          cfgMicro = parseInt(dotParts[2]) || 0;
+        }
+        if (engBuildStr) {
+          const match = engBuildStr.match(/\d+/);
+          if (match) {
+            cfgEngBuild = parseInt(match[0]) || 0;
+          }
+        }
+
         const versionInfo: XMPVersionInfo = XMPMetaFactory.getVersionInfo();
 
         let startTime = Date.now();
@@ -111,11 +140,11 @@ export default function xmpMetaFactoryTest() {
         console.log("===== XMPVersionInfo.getMessage 接口耗时：" + (Date.now() - startTime) / 10 + "ms");
 
         expect(versionInfo).not().assertNull();
-        expect(major).assertEqual(1);
-        expect(minor).assertEqual(0);
-        expect(micro).assertEqual(0);
-        expect(build).assertEqual(0);
-        expect(isDebug).assertEqual(false);
+        expect(major).assertEqual(cfgMajor);
+        expect(minor).assertEqual(cfgMinor);
+        expect(micro).assertEqual(cfgMicro);
+        expect(build).assertEqual(cfgEngBuild);
+        expect(isDebug).assertEqual(cfgDebug);
         expect(messInfo).assertContain('XMP Core');
       });
     });
