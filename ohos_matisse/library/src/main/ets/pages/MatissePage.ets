@@ -22,6 +22,7 @@ import {
   ReminderMode,
   photoAccessHelper
 } from '@kit.MediaLibraryKit';
+import { deviceInfo } from '@kit.BasicServicesKit';
 import { promptAction, window } from '@kit.ArkUI';
 import router from '@ohos.router';
 import { PhotoMetadataUtils } from '../internal/utils/PhotoMetadataUtils';
@@ -57,6 +58,7 @@ export struct MatissePage {
   @State private mItemClickedStatus: boolean = false;
   @State private isVisibilityToggleAllowed: boolean = false;
   @State private mainVisibility: Visibility = Visibility.Visible;
+  @State private previewTextVisibility: Visibility = Visibility.Visible;
   @Prop mimeType: string | null = null;
   @Prop mediaTypeExclusive: boolean = false;
   @Prop themeId: number = 0;
@@ -332,7 +334,12 @@ export struct MatissePage {
   private onEnterPhotoBrowser(photoBrowserInfo: PhotoBrowserInfo): boolean {
     this.isBrowserShow = true;
     this.mButtonPreviewStatus = true;
-    this.isPreviewText = $r('app.string.back_text');
+    if (deviceInfo.sdkApiVersion > 12) {
+      this.isPreviewText = $r('app.string.back_text');
+      this.previewTextVisibility = Visibility.Visible;
+    } else {
+      this.previewTextVisibility = Visibility.Hidden;
+    }
     return true;
   }
 
@@ -345,6 +352,7 @@ export struct MatissePage {
     this.isBrowserShow = false;
     this.isVisibilityToggleAllowed = false;
     this.mainVisibility = Visibility.Visible;
+    this.previewTextVisibility = Visibility.Visible;
     this.isPreviewText = $r('app.string.preview_text');
     this.mButtonPreviewStatus = this.selectUris.length > 0;
     return true;
@@ -354,8 +362,10 @@ export struct MatissePage {
    * Handles picker controller ready event
    */
   private onPickerControllerReady(): void {
-    const elements: number[] = [PhotoBrowserUIElement.BACK_BUTTON];
-    this.pickerController.setPhotoBrowserUIElementVisibility(elements, false);
+    if (deviceInfo.sdkApiVersion > 12) {
+       const elements: number[] = [PhotoBrowserUIElement.BACK_BUTTON];
+       this.pickerController.setPhotoBrowserUIElementVisibility(elements, false);
+    }
   }
 
   /**
@@ -495,7 +505,7 @@ export struct MatissePage {
                 return;
               }
               if (this.autoHideToobar && event) {
-                if (this.isVisibilityToggleAllowed && !this.mItemClickedStatus) {
+                if (this.isVisibilityToggleAllowed && !this.mItemClickedStatus &&  deviceInfo.sdkApiVersion > 12) {
                   this.mainVisibility =
                     this.mainVisibility === Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
                   const elements: number[] = [PhotoBrowserUIElement.CHECKBOX];
@@ -517,9 +527,12 @@ export struct MatissePage {
           .fontSize(16)
           .enabled(this.mButtonPreviewStatus)
           .opacity(this.mButtonPreviewStatus ? 1 : 0.4)
+          .visibility(this.previewTextVisibility)
           .onClick(() => {
             if (this.isBrowserShow) {
-              this.pickerController.exitPhotoBrowser();
+              if (deviceInfo.sdkApiVersion > 12) {
+                 this.pickerController.exitPhotoBrowser();
+              }
             } else if (this.mButtonPreviewStatus) {
               this.pickerController.setPhotoBrowserItem(
                 this.selectUris[0],

@@ -108,6 +108,22 @@ Matisse_ohos/
 ## 系统要求
 - DevEco Studio 5.1.1 Release，SDK：API12（5.0.0.66）
 
+## 已知限制
+
+### API12 环境限制说明
+
+本库基于 OpenHarmony API12（SDK 5.0.0.66）开发，在 API12 环境下存在以下功能限制：
+
+| 限制项 | 说明 | 影响范围 |
+|--------|------|----------|
+| **UI 元素可见性控制** | API12 不支持 `setPhotoBrowserUIElementVisibility()` 方法，无法通过编程方式隐藏照片浏览器的返回按钮（`PhotoBrowserUIElement.BACK_BUTTON`） | 照片浏览界面中的系统返回按钮将始终显示，无法隐藏 |
+| **工具栏自动隐藏** | 当 `autoHideToobar: true` 时，仅能隐藏工具栏，无法同时隐藏照片浏览器中的复选框（`PhotoBrowserUIElement.CHECKBOX`） | 预览模式下，即使工具栏已隐藏，复选框仍保持可见状态 |
+| **退出方式** | 仅支持通过照片浏览器组件自带的返回按钮退出预览页面，不支持通过 `pickerController.exitPhotoBrowser()` 方法进行编程式退出 | 无法通过代码控制退出照片浏览器，必须依赖用户手动点击返回按钮 |
+
+### 升级建议
+
+> **提示**：如需获得完整功能支持，建议升级至 API13 或更高版本的 SDK。
+
 ## 混淆
 如需排除库被混淆，在 `obfuscation-rules.txt` 增加：
 ```
