@@ -16,6 +16,8 @@ limitations under the License.
 import DateUtils from '../lang/DateUtils';
 import StringUtil from '../lang/StringUtil';
 import Directory from './Directory'
+import { util } from '@kit.ArkTS';
+
 /**
  * Base class for all tag descriptor classes.  Implementations are responsible for
  * providing the human-readable string representation of tag values stored in a directory.
@@ -371,29 +373,39 @@ class TagDescriptor <T extends Directory> {
 
     try {
       if (commentBytes.length >= 10) {
-        let firstTenBytesString = commentBytes.slice(0, 10).toString();
-
         // try each encoding name
         for (let key of encodingMap.keys()) {
           let encodingName: string = key;
           let charset = encodingMap.get(key);
+
+          let decoder = util.TextDecoder.create(charset);
+          let firstTenBytesString = decoder.decodeToString(new Uint8Array(commentBytes.slice(0, 10)))
+
           if (firstTenBytesString.startsWith(encodingName)) {
+            let startIndex = encodingName.length;
             // skip any null or blank characters commonly present after the encoding name, up to a limit of 10 from the start
             for (let j = encodingName.length; j < 10; j++) {
               let b = commentBytes[j];
-              if (b.toString() != '\0' && b.toString() != ' ')
-              //                                return new String(commentBytes, j, commentBytes.length - j, charset).trim();
-              return '';
+              if (b != 0 && b != 32) { // 0 is null, 32 is space
+                startIndex = j;
+                break;
+              }
             }
-            //                        return new String(commentBytes, 10, commentBytes.length - 10, charset).trim();
-            return '';
+            // Decode the actual text content
+            let textBytes = commentBytes.slice(startIndex);
+            let textDecoder = util.TextDecoder.create(charset);
+            let decodedText = textDecoder.decodeToString(new Uint8Array(textBytes));
+            console.info('getEncodedTextDescription decodedText = ', decodedText.trim());
+            return decodedText.trim();
           }
         }
       }
       // special handling fell through, return a plain string representation
-      //            return new String(commentBytes, System.getProperty("file.encoding")).trim();
-      return ''
+      let decoder = util.TextDecoder.create('utf-8');
+      let decodedText = decoder.decodeToString(new Uint8Array(commentBytes));
+      return decodedText.trim();
     } catch (e) {
+      console.error('Failed to decode encoded text:', e);
       return null;
     }
   }
