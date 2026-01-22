@@ -13,7 +13,7 @@
   "main": "Index.ts",
   "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/eventsource",
   "type": "module",
-  "version": "2.0.4-rc.0",
+  "version": "2.0.4",
   "tags": [
     "SSE"
   ],

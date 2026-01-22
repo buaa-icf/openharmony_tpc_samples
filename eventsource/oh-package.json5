@@ -1,6 +1,6 @@
 {
   "name": "eventsource",
-  "version": "2.0.4-rc.0",
+  "version": "2.0.4",
   "description": "This library is a pure JavaScript implementation of the EventSource client",
   "main": "",
   "author": "",
