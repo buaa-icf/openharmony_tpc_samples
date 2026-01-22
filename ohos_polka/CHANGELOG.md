@@ -1,3 +1,7 @@
+## v1.0.4
+## docs
+1. doc changes  release official version
+
 ## v1.0.4-rc.3
 ## fixes
 1. Fix `stop()` so servers shut down cleanly between runs
