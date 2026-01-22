@@ -37,7 +37,7 @@ private:
 
     static void Clear(OH_Drawing_Canvas *canvas)
     {
-        OH_Drawing_CanvasClear(canvas, 0xFFFFFFFF);
+        OH_Drawing_CanvasClear(canvas, 0x00000000);
     }
 
 public:

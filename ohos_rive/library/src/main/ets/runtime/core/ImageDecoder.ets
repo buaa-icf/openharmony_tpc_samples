@@ -22,8 +22,7 @@ interface ImageInfo {
 }
 
 export class ImageDecoder {
-
-  static decodeToBitmap(encoded: Uint8Array): number[] {
+  static decodeToBitmap(encoded: Uint8Array): Uint8Array {
     try {
       hilog.info(0xFF00, 'ImageDecoder', 'Starting image decode, data length: %{public}d', encoded.length);
 
@@ -37,7 +36,7 @@ export class ImageDecoder {
       const pixelMap = imageSource.createPixelMapSync(decodingOptions);
       if (!pixelMap) {
         hilog.error(0xFF00, 'ImageDecoder', 'Failed to create PixelMap from image source');
-        return [];
+        return new Uint8Array(0);
       }
 
       const imageInfo = pixelMap.getImageInfoSync();
@@ -48,43 +47,29 @@ export class ImageDecoder {
 
       if (width <= 0 || height <= 0) {
         hilog.error(0xFF00, 'ImageDecoder', 'Invalid image dimensions: %{public}d x %{public}d', width, height);
-        return [];
+        return new Uint8Array(0);
       }
-
-      const offset = 2;
-      const pixels = new Array<number>(offset + width * height);
-      pixels[0] = width;
-      pixels[1] = height;
 
       const pixelBuffer = new ArrayBuffer(width * height * 4);
       pixelMap.readPixelsToBufferSync(pixelBuffer);
 
       const rgbaData = new Uint8Array(pixelBuffer);
-      const argbData = new Uint32Array(width * height);
-
-      for (let i = 0; i < width * height; i++) {
-        const r = rgbaData[i * 4];
-        const g = rgbaData[i * 4 + 1];
-        const b = rgbaData[i * 4 + 2];
-        const a = rgbaData[i * 4 + 3];
-
-        argbData[i] = (a << 24) | (r << 16) | (g << 8) | b;
-      }
-
-      for (let i = 0; i < width * height; i++) {
-        pixels[offset + i] = argbData[i];
-      }
+      const totalSize = 8 + width * height * 4;
+      const result = new Uint8Array(totalSize);
+      new DataView(result.buffer).setUint32(0, width, true);
+      new DataView(result.buffer).setUint32(4, height, true);
+      result.set(rgbaData, 8);
 
       pixelMap.release();
       imageSource.release();
 
       hilog.info(0xFF00, 'ImageDecoder', 'Image decode completed successfully');
-      return pixels;
+      return result;
 
     } catch (error) {
       hilog.error(0xFF00, 'ImageDecoder', 'Failed to decode image: %{public}s', JSON.stringify(error));
 
-      return [];
+      return new Uint8Array(0);
     }
   }
 

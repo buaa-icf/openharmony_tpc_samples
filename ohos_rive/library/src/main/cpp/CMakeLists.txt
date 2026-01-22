@@ -249,8 +249,11 @@ find_library(pixelmap libpixelmap.so)
 find_library(native_window libnative_window.so)
 find_library(ohaudio libohaudio.so)
 
+add_subdirectory(boundscheck)
+
 # Link additional libraries
 target_link_libraries(ohos_rive PUBLIC
+        boundscheck
         ${log-lib}
         ${egl-lib}
         ${gles-lib}
