@@ -153,6 +153,20 @@ emitter.off(EvaConstant.EVENT_ID_ON_VIDEO_START);
 在下述版本验证通过：
 - DevEco Studio版本: 6.0.0.868, SDK: API18 Release(5.1.0)
 
+## 已知限制
+
+### API18 环境限制说明
+
+本库基于 OpenHarmony API 18 (SDK 5.1.0)开发，在 API18 环境下存在以下功能限制：
+
+| 限制项 | 说明 | 影响范围 |
+| --- | --- | --- |
+| **设置混合资源图片** | `IEvaFetchResource.setImage` 暂不支持，pixelMap.clone()方法仅在API18及以上才支持 | 在API18以下无法填充图片 |
+
+### 升级建议
+
+> **提示**: 如需获得完整功能支持，建议升级至 API18 或更高版本的 SDK。
+
 
 ## 目录结构
 
