@@ -2,6 +2,7 @@
 
 - fix: Fix the issue where the SpineC library animation background cannot be transparent.
 - fix: Fix the dynamic skin changing function of Spine animation at runtime.
+- fix: The fix to the CalculateColor function has altered the original color data of the attachment, resulting in a gradual darkening of colors during each rendering, ultimately causing the eyes and hands to disappear.
 
 ## 1.0.0
 

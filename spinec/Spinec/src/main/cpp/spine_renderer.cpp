@@ -432,9 +432,10 @@ void FillAttachmentData(SpineRenderer* renderer, spAttachment* attachment, Attac
 }
 
 // 计算颜色值
-void CalculateColor(ColorCalcData* data, bool pma)
+spColor CalculateColor(ColorCalcData* data, bool pma)
 {
-    if (!data || !data->skeleton || !data->slot || !data->attachmentColor) { return; }
+    spColor result = {1.0f, 1.0f, 1.0f, 1.0f};
+    if (!data || !data->skeleton || !data->slot || !data->attachmentColor) { return result; }
     
     float r = data->skeleton->color.r * data->slot->color.r * data->attachmentColor->r;
     float g = data->skeleton->color.g * data->slot->color.g * data->attachmentColor->g;
@@ -446,10 +447,11 @@ void CalculateColor(ColorCalcData* data, bool pma)
         g *= a;
         b *= a;
     }
-    data->attachmentColor->r = r;
-    data->attachmentColor->g = g;
-    data->attachmentColor->b = b;
-    data->attachmentColor->a = a;
+    result.r = r;
+    result.g = g;
+    result.b = b;
+    result.a = a;
+    return result;
 }
 
 // 获取混合模式
@@ -708,11 +710,11 @@ void ProcessSingleSlot(SlotProcessData* data)
     colorData.skeleton = data->skeleton;
     colorData.slot = data->slot;
     colorData.attachmentColor = attData.attachmentColor;
-    CalculateColor(&colorData, currentPma);
-    attData.r = colorData.attachmentColor->r;
-    attData.g = colorData.attachmentColor->g;
-    attData.b = colorData.attachmentColor->b;
-    attData.a = colorData.attachmentColor->a;
+    spColor calculatedColor = CalculateColor(&colorData, currentPma);
+    attData.r = calculatedColor.r;
+    attData.g = calculatedColor.g;
+    attData.b = calculatedColor.b;
+    attData.a = calculatedColor.a;
     // 应用裁剪
     if (!ApplyClipping(data->renderer, &attData)) {
         spSkeletonClipping_clipEnd(data->renderer->clipper, data->slot);
