@@ -548,3 +548,50 @@ SpineInstance* SpineContextGetInstance(SpineContext* context, const char* name)
     }
     return nullptr;
 }
+
+// 皮肤管理
+int SpineInstanceSetSkinByName(SpineInstance* instance, const char* skinName)
+{
+    if (!instance || !instance->skeleton) {
+        LOGE("SpineInstanceSetSkinByName: invalid instance");
+        return 0;
+    }
+    
+    // skinName 为 nullptr 或空字符串时，清除皮肤
+    if (skinName == nullptr || strlen(skinName) == 0) {
+        spSkeleton_setSkin(instance->skeleton, nullptr);
+        spSkeleton_setSlotsToSetupPose(instance->skeleton);
+        LOGI("Skin cleared");
+        return 1;
+    }
+    
+    // 设置皮肤
+    int result = spSkeleton_setSkinByName(instance->skeleton, skinName);
+    if (result) {
+        spSkeleton_setSlotsToSetupPose(instance->skeleton);
+        LOGI("Skin set to: %s", skinName);
+    } else {
+        LOGE("Failed to set skin: %s", skinName);
+    }
+    
+    return result;
+}
+
+int SpineInstanceGetSkinCount(SpineInstance* instance)
+{
+    if (!instance || !instance->skeletonData) {
+        return 0;
+    }
+    return instance->skeletonData->skinsCount;
+}
+
+const char* SpineInstanceGetSkinName(SpineInstance* instance, int index)
+{
+    if (!instance || !instance->skeletonData) {
+        return nullptr;
+    }
+    if (index < 0 || index >= instance->skeletonData->skinsCount) {
+        return nullptr;
+    }
+    return instance->skeletonData->skins[index]->name;
+}

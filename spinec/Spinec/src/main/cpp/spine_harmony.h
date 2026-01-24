@@ -103,6 +103,13 @@ void SpineInstanceUpdate(SpineInstance* instance, float deltaTime);
 void SpineInstanceSetPosition(SpineInstance* instance, float x, float y);
 void SpineInstanceSetScale(SpineInstance* instance, float scaleX, float scaleY);
 
+// 设置皮肤
+int SpineInstanceSetSkinByName(SpineInstance* instance, const char* skinName);
+
+// 获取皮肤列表
+int SpineInstanceGetSkinCount(SpineInstance* instance);
+const char* SpineInstanceGetSkinName(SpineInstance* instance, int index);
+
 // ============================================================================
 // EGL 上下文管理（用于 XComponent）
 // ============================================================================

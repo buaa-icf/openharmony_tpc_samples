@@ -112,3 +112,28 @@
    */
   export const removeInstance:(xComponentId: string, instanceName: string)=> void;
 
+/**
+ * 设置皮肤
+ * @param xComponentId XComponent ID
+ * @param instanceName 实例名称
+ * @param skinName 皮肤名称（传空字符串清除皮肤）
+ * @returns 是否成功
+ */
+export const setSkin: (
+  xComponentId: string,
+  instanceName: string,
+  skinName: string
+) => boolean;
+
+/**
+ * 获取皮肤列表
+ * @param xComponentId XComponent ID
+ * @param instanceName 实例名称
+ * @returns 皮肤名称数组
+ */
+export const getSkins: (
+  xComponentId: string,
+  instanceName: string
+) => string[];
+
+

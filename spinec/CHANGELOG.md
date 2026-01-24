@@ -1,6 +1,7 @@
 ## 1.0.1
 
 - fix: Fix the issue where the SpineC library animation background cannot be transparent.
+- fix: Fix the dynamic skin changing function of Spine animation at runtime.
 
 ## 1.0.0
 

@@ -72,4 +72,12 @@ export class Spine {
   static removeInstance(xComponentId: string, instanceName: string): void {
     testNapi.removeInstance(xComponentId,instanceName);
   }
+
+  static setSkin(xComponentId: string, instanceName: string, skinName: string): boolean {
+    return testNapi.setSkin(xComponentId,instanceName,skinName);
+  }
+
+  static getSkins(xComponentId: string, instanceName: string): string[] {
+    return testNapi.getSkins(xComponentId,instanceName);
+  }
 }

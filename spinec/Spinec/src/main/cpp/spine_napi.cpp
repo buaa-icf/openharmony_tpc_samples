@@ -511,6 +511,101 @@ static napi_value RemoveInstance(napi_env env, napi_callback_info info) {
     return nullptr;
 }
 
+// 设置皮肤
+static napi_value SetSkin(napi_env env, napi_callback_info info) {
+    size_t argc = 3;
+    napi_value args[3];
+    const int maxXcompLength = 256;
+    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+    
+    const size_t minArgCount = 3;
+    if (argc < minArgCount) {
+        napi_value result;
+        napi_get_boolean(env, false, &result);
+        return result;
+    }
+    
+    char xcompId[maxXcompLength] = {0};
+    char instanceName[maxXcompLength] = {0};
+    char skinName[maxXcompLength] = {0};
+    size_t len;
+    const size_t xcompIdSize = sizeof(xcompId);
+    const size_t instanceNameSize = sizeof(instanceName);
+    const size_t skinNameSize = sizeof(skinName);
+    const int argXcompIdIndex = 0;
+    const int argInstanceNameIndex = 1;
+    const int argSkinNameIndex = 2;
+    
+    napi_get_value_string_utf8(env, args[argXcompIdIndex], xcompId, xcompIdSize, &len);
+    napi_get_value_string_utf8(env, args[argInstanceNameIndex], instanceName, instanceNameSize, &len);
+    napi_get_value_string_utf8(env, args[argSkinNameIndex], skinName, skinNameSize, &len);
+    
+    auto it = g_contexts.find(xcompId);
+    if (it == g_contexts.end()) {
+        napi_value result;
+        napi_get_boolean(env, false, &result);
+        return result;
+    }
+    
+    SpineInstance* instance = SpineContextGetInstance(it->second, instanceName);
+    if (!instance) {
+        LOGE("SetSkin: Instance not found: %s", instanceName);
+        napi_value result;
+        napi_get_boolean(env, false, &result);
+        return result;
+    }
+    
+    int success = SpineInstanceSetSkinByName(instance, skinName);
+    
+    napi_value result;
+    napi_get_boolean(env, success != 0, &result);
+    return result;
+}
+
+// 获取皮肤列表
+static napi_value GetSkins(napi_env env, napi_callback_info info) {
+    size_t argc = 2;
+    napi_value args[2];
+    napi_get_cb_info(env, info, &argc, args, nullptr, nullptr);
+    
+    napi_value result;
+    napi_create_array(env, &result);
+    
+    const size_t minArgc = 2;
+    if (argc < minArgc) {
+        return result;
+    }
+    
+    char xcompId[256] = {0};
+    char instanceName[256] = {0};
+    size_t len;
+    
+    napi_get_value_string_utf8(env, args[0], xcompId, sizeof(xcompId), &len);
+    napi_get_value_string_utf8(env, args[1], instanceName, sizeof(instanceName), &len);
+    
+    auto it = g_contexts.find(xcompId);
+    if (it == g_contexts.end()) {
+        return result;
+    }
+    
+    SpineInstance* instance = SpineContextGetInstance(it->second, instanceName);
+    if (!instance) {
+        return result;
+    }
+    
+    int skinCount = SpineInstanceGetSkinCount(instance);
+    for (int i = 0; i < skinCount; i++) {
+        const char* skinName = SpineInstanceGetSkinName(instance, i);
+        if (skinName) {
+            napi_value name;
+            napi_create_string_utf8(env, skinName, NAPI_AUTO_LENGTH, &name);
+            napi_set_element(env, result, i, name);
+        }
+    }
+    
+    return result;
+}
+
 // ============================================================================
 // XComponent 导出
 // ============================================================================
@@ -544,9 +639,12 @@ static napi_value Export(napi_env env, napi_value exports) {
         {"renderFrame", nullptr, RenderFrame, nullptr, nullptr, nullptr, napi_default, nullptr},
         {"getAnimations", nullptr, GetAnimations, nullptr, nullptr, nullptr, napi_default, nullptr},
         {"removeInstance", nullptr, RemoveInstance, nullptr, nullptr, nullptr, napi_default, nullptr},
+        {"setSkin", nullptr, SetSkin, nullptr, nullptr, nullptr, napi_default, nullptr},
+        {"getSkins", nullptr, GetSkins, nullptr, nullptr, nullptr, napi_default, nullptr},
     };
     
-    napi_define_properties(env, exports, sizeof(desc) / sizeof(desc[0]), desc);
+    int argDescIndex = 0;
+    napi_define_properties(env, exports, sizeof(desc) / sizeof(desc[argDescIndex]), desc);
     
     LOGI("Spine NAPI module exported");
     return exports;
