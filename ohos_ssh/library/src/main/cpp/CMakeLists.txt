@@ -32,9 +32,9 @@ target_link_libraries(ssh_ohos_napi PUBLIC ${NATIVERENDER_ROOT_PATH}/thirdparty/
 target_link_libraries(ssh_ohos_napi PUBLIC ${NATIVERENDER_ROOT_PATH}/thirdparty/openssl/${OHOS_ARCH}/lib/libssl.so.3)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
-    target_link_options(ssh_ohos_napi PUBLIC -s)
+    target_link_options(ssh_ohos_napi PUBLIC)
     set(LTO_FLAG "-flto=thin")
-    add_compile_options(-O3 -march=native)
+    add_compile_options(-O3)
     target_compile_options(ssh_ohos_napi PRIVATE ${LTO_FLAG})
     target_link_options(ssh_ohos_napi PRIVATE ${LTO_FLAG})
 endif()
