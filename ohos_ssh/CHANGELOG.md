@@ -1,3 +1,7 @@
+## 1.0.3
+
+- Add symbol tables to the so file.
+
 ## 1.0.2
 
 - Optimize the level and content of log printing.

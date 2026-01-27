@@ -23,12 +23,12 @@ LYCIUM_TOOLS_DIR=$LYCIUM_ROOT_DIR/lycium
 LYCIUM_THIRDPARTY_DIR=$LYCIUM_ROOT_DIR/thirdparty
 DEPENDS_DIR=$ROOT_DIR/doc                                                   # 依赖库编译脚本在仓库中的位置
 LIBSSH_NAME=libssh                                                          # 依赖库名
-OPESSL_NAME=openssl-3.5.0                                                   # libssh的依赖库名，需和依赖库一起安装
+OPESSL_NAME=openssl-3.5.4                                                   # libssh的依赖库名，需和依赖库一起安装
 
 CI_OUTPUT_DIR=$ROOT_DIR/../out/tpc/                                         # hap/har安装目录
 
-LIBS_NAME=("libssh" "openssl-3.5.0")
-PACKAGE_NAME=("libssh-0.11.1.tar.xz" "openssl-openssl-3.5.0.zip")
+LIBS_NAME=("libssh" "openssl-3.5.4")
+PACKAGE_NAME=("libssh-0.11.1.tar.xz" "openssl-openssl-3.5.4.zip")
 
 function prepare_lycium_tools()
 {

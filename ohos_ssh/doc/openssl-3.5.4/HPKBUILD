@@ -14,8 +14,8 @@
 # Contributor: Jeff Han <hanjinfei@foxmail.com>
 # Maintainer: Jeff Han <hanjinfei@foxmail.com>
 
-pkgname=openssl-3.5.0
-pkgver=3.5.0
+pkgname=openssl-3.5.4
+pkgver=3.5.4
 pkgrel=0
 pkgdesc="OpenSSL is a robust, commercial-grade, full-featured Open Source Toolkit for the Transport Layer Security (TLS) protocol formerly known as the Secure Sockets Layer (SSL) protocol."
 url="https://www.openssl.org/"
@@ -33,7 +33,7 @@ buildtools="configure"
 
 builddir=openssl-${pkgname}
 packagename=$builddir.zip
-patchflag=true
+patchflag=false
 
 source envset.sh
 
@@ -44,7 +44,6 @@ prepare() {
     then
         cd $builddir
         # 屏蔽测试bug
-        patch -p1 < `pwd`/../fix_CVE.patch
         # patch只需要打一次,关闭打patch
         patchflag=false
         cd $OLDPWD
@@ -77,7 +76,33 @@ build() {
 
 package() {
     cd $builddir/$ARCH-build
-    make -j8 install >> $buildlog 2>&1
+    
+    # 定义安装路径（lycium框架约定）
+    local installdir="$LYCIUM_ROOT/usr/$pkgname/$ARCH"
+    
+    # 禁用自动strip，先安装带符号的版本
+    make -j8 install STRIP="" >> $buildlog 2>&1
+    
+    # 复制带符号的so文件为.debug版本（用于崩溃调试）
+    if [ -f "$installdir/lib/libcrypto.so.3" ]; then
+        echo "Creating debug version: libcrypto.so.3.debug" >> $buildlog
+        cp "$installdir/lib/libcrypto.so.3" "$installdir/lib/libcrypto.so.3.debug"
+    fi
+    if [ -f "$installdir/lib/libssl.so.3" ]; then
+        echo "Creating debug version: libssl.so.3.debug" >> $buildlog
+        cp "$installdir/lib/libssl.so.3" "$installdir/lib/libssl.so.3.debug"
+    fi
+    
+    # 剥离正式版本的符号（减小体积）
+    if [ -f "$installdir/lib/libcrypto.so.3" ]; then
+        echo "Stripping release version: libcrypto.so.3" >> $buildlog
+        ${STRIP} "$installdir/lib/libcrypto.so.3" >> $buildlog 2>&1
+    fi
+    if [ -f "$installdir/lib/libssl.so.3" ]; then
+        echo "Stripping release version: libssl.so.3" >> $buildlog
+        ${STRIP} "$installdir/lib/libssl.so.3" >> $buildlog 2>&1
+    fi
+    
     cd $OLDPWD
 }
 
