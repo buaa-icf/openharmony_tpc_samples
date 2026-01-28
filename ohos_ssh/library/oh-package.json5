@@ -5,7 +5,7 @@
   "main": "Index.ets",
   "author": "ohos_tpc",
   "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/ohos_ssh",
-  "license": "GNU-2.1",
+  "license": "LGPL-2.1",
   "dependencies": {},
   "devDependencies": {
     "libssh_ohos_napi.so": "file:./src/main/cpp/types/libentry"
