@@ -72,3 +72,6 @@
 [submodule "ohos_rive/submodules/rive-runtime"]
 	path = ohos_rive/submodules/rive-runtime
 	url = https://gitee.com/yp9522/rive-runtime.git
+[submodule "XLog/library/src/main/cpp/mars"]
+	path = XLog/library/src/main/cpp/mars
+	url = https://gitee.com/ttencent/mars.git

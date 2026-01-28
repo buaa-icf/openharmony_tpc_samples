@@ -1,0 +1,1567 @@
+diff --git a/boost/CMakeLists.txt b/boost/CMakeLists.txt
+index 40d8c15..20eee63 100644
+--- a/boost/CMakeLists.txt
++++ b/boost/CMakeLists.txt
+@@ -73,7 +73,34 @@ if(ANDROID)
+                 libs/context/src/asm/jump_x86_64_sysv_elf_gas.S
+                 libs/context/src/asm/make_x86_64_sysv_elf_gas.S)
+     endif()
++elseif(OHOS)
++    file(GLOB SELF_OHOS_SRC_FILE
++            libs/coroutine/src/*.cpp
++            libs/coroutine/src/detail/*.cpp
++            libs/coroutine/src/posix/*.cpp
++            libs/context/src/*.cpp
++            libs/context/src/posix/*.cpp)
+ 
++    list(APPEND SELF_SRC_FILES ${SELF_OHOS_SRC_FILE})
++    enable_language(ASM)
++    
++    if(OHOS_ABI MATCHES "^armeabi(-v7a)?$")
++        list(APPEND SELF_SRC_FILES
++                libs/context/src/asm/jump_arm_aapcs_elf_gas.S
++                libs/context/src/asm/make_arm_aapcs_elf_gas.S)
++    elseif(OHOS_ABI STREQUAL arm64-v8a)
++        list(APPEND SELF_SRC_FILES
++                libs/context/src/asm/jump_arm64_aapcs_elf_gas.S
++                libs/context/src/asm/make_arm64_aapcs_elf_gas.S)
++    elseif(OHOS_ABI STREQUAL x86)
++        list(APPEND SELF_SRC_FILES
++                libs/context/src/asm/jump_i386_sysv_elf_gas.S
++                libs/context/src/asm/make_i386_sysv_elf_gas.S)
++    elseif(OHOS_ABI STREQUAL x86_64)
++        list(APPEND SELF_SRC_FILES
++                libs/context/src/asm/jump_x86_64_sysv_elf_gas.S
++                libs/context/src/asm/make_x86_64_sysv_elf_gas.S)
++    endif()
+ endif()
+ 
+ 
+diff --git a/comm/CMakeLists.txt b/comm/CMakeLists.txt
+index 00b4f62..48cbf9f 100644
+--- a/comm/CMakeLists.txt
++++ b/comm/CMakeLists.txt
+@@ -125,6 +125,14 @@ elseif(APPLE)
+     file(GLOB SELF_TEMP_SRC_FILES RELATIVE ${PROJECT_SOURCE_DIR} objc/*.mm objc/*.h)
+     source_group(objc FILES ${SELF_TEMP_SRC_FILES})
+     list(APPEND SELF_SRC_FILES ${SELF_TEMP_SRC_FILES} debugger/debugger_utils.c)
++elseif(OHOS)
++add_definitions(-DUSING_XLOG_WEAK_FUNC)
++
++    file(GLOB SELF_OHOS_SRC_FILES RELATIVE ${PROJECT_SOURCE_DIR}
++            ohos/*.cc
++            ohos/*.c)
++        
++    list(APPEND SELF_SRC_FILES ${SELF_OHOS_SRC_FILES})
+ endif()
+ 
+ 
+diff --git a/comm/alarm.cc b/comm/alarm.cc
+index ec8cbd5..5d0d35e 100644
+--- a/comm/alarm.cc
++++ b/comm/alarm.cc
+@@ -53,7 +53,7 @@ bool Alarm::Start(int _after, bool _needWake) {
+         return false;
+     }
+ 
+-#ifdef ANDROID
++#if defined(ANDROID)||defined(OHOS)
+ 
+     if (_needWake && !startAlarm(type_, (int64_t) seq, _after)) {
+         xerror2(TSF"startAlarm error, id:%0, after:%1, seq:%2", (uintptr_t)this, _after, seq);
+@@ -83,7 +83,7 @@ bool Alarm::Cancel() {
+     MessageQueue::CancelMessage(reg_async_.Get());
+     if (INVAILD_SEQ == seq_) return true;
+ 
+-#ifdef ANDROID
++#if defined(ANDROID)||defined(OHOS)
+ 
+         if (!stopAlarm((int64_t)seq_)) {
+         xwarn2(TSF"stopAlarm error, id:%0, seq:%1", (uintptr_t)this, seq_);
+@@ -147,7 +147,7 @@ void Alarm::OnAlarm(const MessageQueue::MessagePost_t& _id, MessageQueue::Messag
+     xgroup2_define(group);
+     xinfo2(TSF"OnAlarm id:%_, seq:%_, elapsed:%_, after:%_, miss:%_, android alarm:%_, MQ:%_", (uintptr_t)this, seq_, elapseTime, after_, -missTime, isSystemAlarm, MessageQueue::GetDefMessageQueue()) >> group;
+ 
+-#ifdef ANDROID
++#if defined(ANDROID)||defined(OHOS)
+ 
+     if (missTime > 0) {
+         if (missTime <= MAX_LOCK_TIME) {
+@@ -187,14 +187,14 @@ const Thread& Alarm::RunThread() const {
+ }
+ 
+ static void StartWakeLock() {
+-#ifdef ANDROID
++#if defined(ANDROID)||defined(OHOS)
+     static WakeUpLock wakelock; 
+     wakelock.Lock(1000);    
+     xinfo2(TSF"StartWakeLock");
+ #endif
+ }
+ 
+-#ifdef ANDROID
++#if defined(ANDROID)||defined(OHOS)
+ void Alarm::onAlarmImpl(int64_t _id) {
+     xinfo2(TSF"onAlarm id:%_, MQ:%_", _id, MessageQueue::GetDefMessageQueue());
+     StartWakeLock(); //wakelock need be acquired in onalarm thread, or will fail if try to acquire in other threads.
+diff --git a/comm/alarm.h b/comm/alarm.h
+index 8ac30d0..a42a81e 100644
+--- a/comm/alarm.h
++++ b/comm/alarm.h
+@@ -1,7 +1,7 @@
+ // Tencent is pleased to support the open source community by making Mars available.
+ // Copyright (C) 2016 THL A29 Limited, a Tencent company. All rights reserved.
+ 
+-// Licensed under the MIT License (the "License"); you may not use this file except in 
++// Licensed under the MIT License (the "License"); you may not use this file except in
+ // compliance with the License. You may obtain a copy of the License at
+ // http://opensource.org/licenses/MIT
+ 
+@@ -10,7 +10,6 @@
+ // either express or implied. See the License for the specific language governing permissions and
+ // limitations under the License.
+ 
+-
+ /*
+  * alarm.h
+  *
+@@ -27,13 +26,15 @@
+ 
+ #ifdef ANDROID
+ #include "android/wakeuplock.h"
++#else defined(OHOS)
++#include "ohos/wakeuplock.h"
+ #endif
+ 
+ namespace mars {
+ namespace comm {
+ 
+ class Alarm {
+-  public:
++public:
+     enum {
+         kInit,
+         kStart,
+@@ -41,60 +42,72 @@ class Alarm {
+         kOnAlarm,
+     };
+ 
+-  public:
+-    template<class T>
+-    explicit Alarm(const T& _op, bool _inthread = true)
+-        : target_(detail::transform(_op))
+-        , reg_async_(MessageQueue::InstallAsyncHandler(MessageQueue::GetDefMessageQueue()))
+-        , broadcast_msg_id_(MessageQueue::KNullPost)
+-        , runthread_(boost::bind(&Alarm::__Run, this), "alarm")
+-        , inthread_(_inthread)
+-        , seq_(0), status_(kInit)
+-        , after_(0) , starttime_(0) , endtime_(0)
+-        , reg_(MessageQueue::InstallMessageHandler(boost::bind(&Alarm::OnAlarm, this, _1, _2), true))
+-#ifdef ANDROID
+-        , wakelock_(NULL)
+-        , type_(-1)
++public:
++    template <class T>
++    explicit Alarm(const T &_op, bool _inthread = true)
++        : target_(detail::transform(_op)),
++          reg_async_(MessageQueue::InstallAsyncHandler(MessageQueue::GetDefMessageQueue())),
++          broadcast_msg_id_(MessageQueue::KNullPost),
++          runthread_(boost::bind(&Alarm::__Run, this), "alarm"),
++          inthread_(_inthread),
++          seq_(0),
++          status_(kInit),
++          after_(0),
++          starttime_(0),
++          endtime_(0),
++          reg_(MessageQueue::InstallMessageHandler(boost::bind(&Alarm::OnAlarm, this, _1, _2), true))
++#if defined(ANDROID) || defined(OHOS)
++          ,
++          wakelock_(NULL),
++          type_(-1)
+ #endif
+     {
+-        xinfo2(TSF"handler:(%_,%_)", reg_async_.Get().queue, reg_async_.Get().seq);
++        xinfo2(TSF "handler:(%_,%_)", reg_async_.Get().queue, reg_async_.Get().seq);
+     }
+ 
+-    template<class T>
+-    explicit Alarm(const T& _op, const MessageQueue::MessageQueue_t& _id)
+-        : target_(detail::transform(_op))
+-        , reg_async_(MessageQueue::InstallAsyncHandler(_id))
+-        , broadcast_msg_id_(MessageQueue::KNullPost)
+-        , runthread_(boost::bind(&Alarm::__Run, this), "alarm")
+-        , inthread_(false)
+-        , seq_(0), status_(kInit)
+-        , after_(0) , starttime_(0) , endtime_(0)
+-        , reg_(MessageQueue::InstallMessageHandler(boost::bind(&Alarm::OnAlarm, this, _1, _2), true))
+-#ifdef ANDROID
+-        , wakelock_(NULL)
+-        , type_(-1)
++    template <class T>
++    explicit Alarm(const T &_op, const MessageQueue::MessageQueue_t &_id)
++        : target_(detail::transform(_op)),
++          reg_async_(MessageQueue::InstallAsyncHandler(_id)),
++          broadcast_msg_id_(MessageQueue::KNullPost),
++          runthread_(boost::bind(&Alarm::__Run, this), "alarm"),
++          inthread_(false),
++          seq_(0),
++          status_(kInit),
++          after_(0),
++          starttime_(0),
++          endtime_(0),
++          reg_(MessageQueue::InstallMessageHandler(boost::bind(&Alarm::OnAlarm, this, _1, _2), true))
++#if defined(ANDROID) || defined(OHOS)
++          ,
++          wakelock_(NULL),
++          type_(-1)
+ #endif
+     {
+-        xinfo2(TSF"handler:(%_,%_)", reg_async_.Get().queue, reg_async_.Get().seq);
++        xinfo2(TSF "handler:(%_,%_)", reg_async_.Get().queue, reg_async_.Get().seq);
+     }
+ 
+-    virtual ~Alarm() {
++    virtual ~Alarm()
++    {
+         Cancel();
+         reg_.CancelAndWait();
+         reg_async_.CancelAndWait();
+         runthread_.join();
+         delete target_;
+-#ifdef ANDROID
++#if defined(ANDROID) || defined(OHOS)
+         delete wakelock_;
+ #endif
+     }
+ 
+-#ifdef ANDROID
++#if defined(ANDROID) || defined(OHOS)
+     static void onAlarmImpl(int64_t _id);
+-    void SetType(int _type) {type_ = _type;}
++    void SetType(int _type)
++    {
++        type_ = _type;
++    }
+ #endif
+ 
+-    bool Start(int _after, bool _needWake=true);  // ms
++    bool Start(int _after, bool _needWake = true); // ms
+     bool Cancel();
+ 
+     bool IsWaiting() const;
+@@ -102,35 +115,36 @@ class Alarm {
+     int After() const;
+     int64_t ElapseTime() const;
+ 
+-    const Thread& RunThread() const;
++    const Thread &RunThread() const;
+ 
+-  private:
+-    Alarm(const Alarm&);
+-    Alarm& operator=(const Alarm&);
++private:
++    Alarm(const Alarm &);
++    Alarm &operator=(const Alarm &);
+ 
+-    void OnAlarm(const MessageQueue::MessagePost_t& _id, MessageQueue::Message& _message);
+-    virtual void    __Run();
++    void OnAlarm(const MessageQueue::MessagePost_t &_id, MessageQueue::Message &_message);
++    virtual void __Run();
+ 
+-  private:
+-    Runnable*                   target_;
++private:
++    Runnable *target_;
+     MessageQueue::ScopeRegister reg_async_;
+     MessageQueue::MessagePost_t broadcast_msg_id_;
+-    Thread                      runthread_;
+-    bool                        inthread_;
++    Thread runthread_;
++    bool inthread_;
+ 
+-    int64_t                  	seq_;
+-    int                         status_;
++    int64_t seq_;
++    int status_;
+ 
+-    int                         after_;
+-    uint64_t          			starttime_;
+-    uint64_t          			endtime_;
++    int after_;
++    uint64_t starttime_;
++    uint64_t endtime_;
+ 
+     MessageQueue::ScopeRegister reg_;
+-#ifdef ANDROID
+-    WakeUpLock*                 wakelock_;
+-    int                         type_;
++#if defined(ANDROID) || defined(OHOS)
++    WakeUpLock *wakelock_;
++    int type_;
+ #endif
+ };
+ 
+-}}
++} // namespace comm
++} // namespace mars
+ #endif /* COMM_ALARM_H_ */
+diff --git a/comm/assert/__assert.c b/comm/assert/__assert.c
+index 7429251..785fce7 100644
+--- a/comm/assert/__assert.c
++++ b/comm/assert/__assert.c
+@@ -59,7 +59,7 @@ EXPORT_FUNC void __ASSERT(const char * _pfile, int _line, const char * _pfunc, c
+        xlogger_Write(&info, assertlog);
+     
+     if (IS_ASSERT_ENABLE()) {
+-#if defined(ANDROID) //&& (defined(DEBUG))
++#if defined(ANDROID)||defined(OHOS) //&& (defined(DEBUG))
+         raise(SIGTRAP);
+         __assert2(_pfile, _line, _pfunc, _pexpression);
+ #endif
+@@ -95,7 +95,7 @@ void __ASSERTV2(const char * _pfile, int _line, const char * _pfunc, const char
+        xlogger_Write(&info, assertlog);
+     
+     if (IS_ASSERT_ENABLE()) {
+-#if defined(ANDROID) //&& (defined(DEBUG))
++#if defined(ANDROID)||defined(OHOS) //&& (defined(DEBUG))
+         raise(SIGTRAP);
+         __assert2(_pfile, _line, _pfunc, _pexpression);
+ #endif
+diff --git a/comm/memdbg.cc b/comm/memdbg.cc
+index a38f550..0622048 100644
+--- a/comm/memdbg.cc
++++ b/comm/memdbg.cc
+@@ -26,7 +26,7 @@
+ #include <assert.h>
+ #include <vector>
+ 
+-#ifdef ANDROID
++#if defined(ANDROID)||defined(OHOS)
+ #include <unistd.h>
+ #endif
+ #include "mars/comm/xlogger/xlogger.h"
+diff --git a/comm/platform_comm.h b/comm/platform_comm.h
+index 5575b84..969620b 100644
+--- a/comm/platform_comm.h
++++ b/comm/platform_comm.h
+@@ -24,7 +24,7 @@
+ #include <string>
+ #include <functional>
+ 
+-#ifdef ANDROID 
++#if defined(ANDROID)||defined(OHOS)
+ #include "mars/comm/thread/mutex.h"
+ #endif
+ 
+@@ -264,7 +264,7 @@ void FlushReachability();
+ float publiccomponent_GetSystemVersion();
+ #endif
+ 
+-#ifdef ANDROID
++#if defined(ANDROID)||defined(OHOS)
+ bool startAlarm(int type, int64_t id, int after);
+ bool stopAlarm(int64_t id);
+ 
+@@ -276,7 +276,7 @@ void  wakeupLock_Unlock(void* _object);
+ bool  wakeupLock_IsLocking(void* _object);
+ #endif
+ 
+-#ifdef ANDROID
++#if defined(ANDROID)||defined(OHOS)
+ 	extern int g_NetInfo;
+ 	extern WifiInfo g_wifi_info;
+ 	extern SIMInfo g_sim_info;
+diff --git a/comm/socket/block_socket.cc b/comm/socket/block_socket.cc
+index 642aa92..52eb706 100644
+--- a/comm/socket/block_socket.cc
++++ b/comm/socket/block_socket.cc
+@@ -52,7 +52,7 @@ SOCKET  block_socket_connect(const socket_address& _address, SocketBreaker& _bre
+     }
+     
+     if (getNetInfo() == kWifi && socket_fix_tcp_mss(sock) < 0) {
+-#ifdef ANDROID
++#if defined(ANDROID) || defined(OHOS)
+         xinfo2(TSF"wifi set tcp mss error:%0", strerror(socket_errno));
+ #endif
+     }
+diff --git a/comm/socket/getsocktcpinfo.cc b/comm/socket/getsocktcpinfo.cc
+index 482531e..01a6977 100644
+--- a/comm/socket/getsocktcpinfo.cc
++++ b/comm/socket/getsocktcpinfo.cc
+@@ -30,7 +30,7 @@
+ 
+ int getsocktcpinfo(int _sockfd, struct tcp_info* _info)
+ {
+-#if defined(__APPLE__) || defined(ANDROID)
++#if defined(__APPLE__) || defined(ANDROID) || defined(OHOS)
+ 	ASSERT(_info);
+ 	int length = sizeof(struct tcp_info);
+ 	return getsockopt( _sockfd, IPPROTO_TCP, TCP_INFO, (void *)_info, (socklen_t *)&length);
+@@ -65,7 +65,7 @@ char* tcpinfo2str(struct tcp_info* _info, char* _info_str_buf, size_t _buf_len)
+     << "， tcpi_rxbytes=0x"                 << string_cast_hex(_info->tcpi_rxbytes)
+     << "， tcpi_rxoutoforderbytes=0x"       << string_cast_hex(_info->tcpi_rxoutoforderbytes);
+ 
+-#elif defined(ANDROID)
++#elif defined(ANDROID) || defined(OHOS)
+     ss << "tcpi_state=0x"                  << string_cast_hex((uint32_t)_info->tcpi_state)
+     << "， tcpi_ca_state=0x"                << string_cast_hex((uint32_t)_info->tcpi_ca_state)
+     << "， tcpi_retransmits=0x"             << string_cast_hex((uint32_t)_info->tcpi_retransmits)
+diff --git a/comm/socket/getsocktcpinfo.h b/comm/socket/getsocktcpinfo.h
+index d30e344..8a3a91a 100644
+--- a/comm/socket/getsocktcpinfo.h
++++ b/comm/socket/getsocktcpinfo.h
+@@ -21,7 +21,7 @@
+ #ifndef GETSOCKTCPINFO_H_
+ #define GETSOCKTCPINFO_H_
+ 
+-#if defined(__APPLE__) || defined(ANDROID) || defined(__linux__)
++#if defined(__APPLE__) || defined(ANDROID) || defined(__linux__) || defined(OHOS)
+ #include <netinet/in.h>
+ #include <netinet/tcp.h>
+ #endif
+diff --git a/comm/socket/local_ipstack.cc b/comm/socket/local_ipstack.cc
+index 98aeb91..2aa912d 100644
+--- a/comm/socket/local_ipstack.cc
++++ b/comm/socket/local_ipstack.cc
+@@ -20,7 +20,7 @@
+ #include "local_ipstack.h"
+ #include <vector>
+ #include "xlogger/xlogger.h"
+-#if (defined(__APPLE__) || defined(ANDROID))
++#if (defined(__APPLE__) || defined(ANDROID) || defined(OHOS))
+ #include <strings.h>
+ #include "socket/unix_socket.h"
+ #include "network/getifaddrs.h"
+diff --git a/comm/socket/tcpclient.cc b/comm/socket/tcpclient.cc
+index 9bcf72d..6e494a4 100644
+--- a/comm/socket/tcpclient.cc
++++ b/comm/socket/tcpclient.cc
+@@ -170,7 +170,7 @@ void TcpClient::__Run() {
+     }
+ 
+     if (getNetInfo() == kWifi && socket_fix_tcp_mss(socket_) < 0) {
+-#ifdef ANDROID
++#if defined(ANDROID)||defined(OHOS)
+         xinfo2(TSF"wifi set tcp mss error:%0", strerror(socket_errno));
+ #endif
+     }
+diff --git a/comm/socket/tcpclient_fsm.cc b/comm/socket/tcpclient_fsm.cc
+index dcd3db2..e1382f0 100644
+--- a/comm/socket/tcpclient_fsm.cc
++++ b/comm/socket/tcpclient_fsm.cc
+@@ -178,7 +178,7 @@ void TcpClientFSM::PreConnectSelect(SocketSelect& _sel, XLogger& _log) {
+     }
+ 
+     if (getNetInfo() == kWifi && socket_fix_tcp_mss(sock_) < 0) {
+-#ifdef ANDROID
++#if defined(ANDROID) || defined(OHOS)
+         xinfo2(TSF"wifi set tcp mss error:%0", strerror(socket_errno));
+ #endif
+     }
+diff --git a/comm/socket/unix_socket.cc b/comm/socket/unix_socket.cc
+index bcfaeef..0aa1d2f 100644
+--- a/comm/socket/unix_socket.cc
++++ b/comm/socket/unix_socket.cc
+@@ -1,7 +1,7 @@
+ // Tencent is pleased to support the open source community by making Mars available.
+ // Copyright (C) 2016 THL A29 Limited, a Tencent company. All rights reserved.
+ 
+-// Licensed under the MIT License (the "License"); you may not use this file except in 
++// Licensed under the MIT License (the "License"); you may not use this file except in
+ // compliance with the License. You may obtain a copy of the License at
+ // http://opensource.org/licenses/MIT
+ 
+@@ -10,22 +10,22 @@
+ // either express or implied. See the License for the specific language governing permissions and
+ // limitations under the License.
+ 
+-
+ #ifndef _WIN32
+ #include <fcntl.h>
+ #endif
+ 
+ #include "socket/unix_socket.h"
+ 
+-#ifdef ANDROID
++#if defined(ANDROID) || defined(OHOS)
+ #include <asm/ioctls.h>
+ #endif
+ 
+ #ifndef _WIN32
+ 
+-int socket_set_nobio(SOCKET fd) {
++int socket_set_nobio(SOCKET fd)
++{
+     int ret = fcntl(fd, F_GETFL, 0);
+-    if(ret >= 0) {
++    if (ret >= 0) {
+         long flags = ret | O_NONBLOCK;
+         ret = fcntl(fd, F_SETFL, flags);
+     }
+@@ -33,9 +33,10 @@ int socket_set_nobio(SOCKET fd) {
+     return ret;
+ }
+ #else
+-int socket_set_nobio(SOCKET fd) {
++int socket_set_nobio(SOCKET fd)
++{
+     static const int noblock = 1;
+-    return ioctlsocket(fd, FIONBIO, (u_long*)&noblock);
++    return ioctlsocket(fd, FIONBIO, (u_long *)&noblock);
+ }
+ #endif
+ 
+@@ -48,9 +49,10 @@ int socket_set_nobio(SOCKET fd) {
+ #define NS_INADDRSZ 4
+ typedef unsigned int uint32;
+ typedef int int32;
+-typedef unsigned short uint16;  // NOLINT
+-typedef short int16;  // NOLINT
+-static int socket_inet_pton4(const char *src, void *dst) {
++typedef unsigned short uint16; // NOLINT
++typedef short int16;           // NOLINT
++static int socket_inet_pton4(const char *src, void *dst)
++{
+     static const char digits[] = "0123456789";
+     int saw_digit, octets, ch;
+     unsigned char tmp[NS_INADDRSZ], *tp;
+@@ -66,8 +68,8 @@ static int socket_inet_pton4(const char *src, void *dst) {
+ 
+             if (newNum > 255)
+                 return (0);
+-            *tp = (unsigned char) newNum;
+-            if (! saw_digit) {
++            *tp = (unsigned char)newNum;
++            if (!saw_digit) {
+                 if (++octets > 4)
+                     return (0);
+                 saw_digit = 1;
+@@ -85,128 +87,129 @@ static int socket_inet_pton4(const char *src, void *dst) {
+     memcpy(dst, tmp, NS_INADDRSZ);
+     return (1);
+ }
+-//https://chromium.googlesource.com/external/webrtc/+/edc6e57a92d2b366871f4c2d2e926748326017b9/webrtc/base/win32.cc
+-// Helper function for inet_pton for IPv6 addresses.
+-static int socket_inet_pton6(const char* src, void* dst) {
+-  // sscanf will pick any other invalid chars up, but it parses 0xnnnn as hex.
+-  // Check for literal x in the input string.
+-  const char* readcursor = src;
+-  char c = *readcursor++;
+-  while (c) {
+-    if (c == 'x') {
+-      return 0;
+-    }
+-    c = *readcursor++;
+-  }
+-  readcursor = src;
+-  struct in6_addr an_addr;
+-  memset(&an_addr, 0, sizeof(an_addr));
+-  uint16* addr_cursor = (uint16*)(&an_addr.s6_addr[0]);
+-  uint16* addr_end = (uint16*)(&an_addr.s6_addr[16]);
+-  int seencompressed = 0; //false c89 not define bool type
+-  // Addresses that start with "::" (i.e., a run of initial zeros) or
+-  // "::ffff:" can potentially be IPv4 mapped or compatibility addresses.
+-  // These have dotted-style IPv4 addresses on the end (e.g. "::192.168.7.1").
+-  if (*readcursor == ':' && *(readcursor+1) == ':' &&
+-      *(readcursor + 2) != 0) {
+-    // Check for periods, which we'll take as a sign of v4 addresses.
+-    const char* addrstart = readcursor + 2;
+-    if (strchr(addrstart, '.')) {
+-      const char* colon = strchr(addrstart, ':');
+-      if (colon) {
+-        uint16 a_short;
+-        int bytesread = 0;
+-        if (sscanf(addrstart, "%hx%n", &a_short, &bytesread) != 1 ||
+-            a_short != 0xFFFF || bytesread != 4) {
+-          // Colons + periods means has to be ::ffff:a.b.c.d. But it wasn't.
+-          return 0;
+-        } else {
+-          an_addr.s6_addr[10] = 0xFF;
+-          an_addr.s6_addr[11] = 0xFF;
+-          addrstart = colon + 1;
++// https://chromium.googlesource.com/external/webrtc/+/edc6e57a92d2b366871f4c2d2e926748326017b9/webrtc/base/win32.cc
++//  Helper function for inet_pton for IPv6 addresses.
++static int socket_inet_pton6(const char *src, void *dst)
++{
++    // sscanf will pick any other invalid chars up, but it parses 0xnnnn as hex.
++    // Check for literal x in the input string.
++    const char *readcursor = src;
++    char c = *readcursor++;
++    while (c) {
++        if (c == 'x') {
++            return 0;
+         }
+-      }
+-      struct in_addr v4;
+-      if (socket_inet_pton4(addrstart, &v4.s_addr)) {
+-        memcpy(&an_addr.s6_addr[12], &v4, sizeof(v4));
+-        memcpy(dst, &an_addr, sizeof(an_addr));
+-        return 1;
+-      } else {
+-        // Invalid v4 address.
+-        return 0;
+-      }
++        c = *readcursor++;
+     }
+-  }
+-  // For addresses without a trailing IPv4 component ('normal' IPv6 addresses).
+-  while (*readcursor != 0 && addr_cursor < addr_end) {
+-    if (*readcursor == ':') {
+-      if (*(readcursor + 1) == ':') {
+-        if (seencompressed) {
+-          // Can only have one compressed run of zeroes ("::") per address.
+-          return 0;
++    readcursor = src;
++    struct in6_addr an_addr;
++    memset(&an_addr, 0, sizeof(an_addr));
++    uint16 *addr_cursor = (uint16 *)(&an_addr.s6_addr[0]);
++    uint16 *addr_end = (uint16 *)(&an_addr.s6_addr[16]);
++    int seencompressed = 0; // false c89 not define bool type
++    // Addresses that start with "::" (i.e., a run of initial zeros) or
++    // "::ffff:" can potentially be IPv4 mapped or compatibility addresses.
++    // These have dotted-style IPv4 addresses on the end (e.g. "::192.168.7.1").
++    if (*readcursor == ':' && *(readcursor + 1) == ':' && *(readcursor + 2) != 0) {
++        // Check for periods, which we'll take as a sign of v4 addresses.
++        const char *addrstart = readcursor + 2;
++        if (strchr(addrstart, '.')) {
++            const char *colon = strchr(addrstart, ':');
++            if (colon) {
++                uint16 a_short;
++                int bytesread = 0;
++                if (sscanf(addrstart, "%hx%n", &a_short, &bytesread) != 1 || a_short != 0xFFFF || bytesread != 4) {
++                    // Colons + periods means has to be ::ffff:a.b.c.d. But it wasn't.
++                    return 0;
++                } else {
++                    an_addr.s6_addr[10] = 0xFF;
++                    an_addr.s6_addr[11] = 0xFF;
++                    addrstart = colon + 1;
++                }
++            }
++            struct in_addr v4;
++            if (socket_inet_pton4(addrstart, &v4.s_addr)) {
++                memcpy(&an_addr.s6_addr[12], &v4, sizeof(v4));
++                memcpy(dst, &an_addr, sizeof(an_addr));
++                return 1;
++            } else {
++                // Invalid v4 address.
++                return 0;
++            }
+         }
+-        // Hit a compressed run. Count colons to figure out how much of the
+-        // address is skipped.
+-        readcursor += 2;
+-        const char* coloncounter = readcursor;
+-        int coloncount = 0;
+-        if (*coloncounter == 0) {
+-          // Special case - trailing ::.
+-          addr_cursor = addr_end;
++    }
++    // For addresses without a trailing IPv4 component ('normal' IPv6 addresses).
++    while (*readcursor != 0 && addr_cursor < addr_end) {
++        if (*readcursor == ':') {
++            if (*(readcursor + 1) == ':') {
++                if (seencompressed) {
++                    // Can only have one compressed run of zeroes ("::") per address.
++                    return 0;
++                }
++                // Hit a compressed run. Count colons to figure out how much of the
++                // address is skipped.
++                readcursor += 2;
++                const char *coloncounter = readcursor;
++                int coloncount = 0;
++                if (*coloncounter == 0) {
++                    // Special case - trailing ::.
++                    addr_cursor = addr_end;
++                } else {
++                    while (*coloncounter) {
++                        if (*coloncounter == ':') {
++                            ++coloncount;
++                        }
++                        ++coloncounter;
++                    }
++                    // (coloncount + 1) is the number of shorts left in the address.
++                    addr_cursor = addr_end - (coloncount + 1);
++                    seencompressed = 1;
++                }
++            } else {
++                ++readcursor;
++            }
+         } else {
+-          while (*coloncounter) {
+-            if (*coloncounter == ':') {
+-              ++coloncount;
++            uint16 word;
++            int bytesread = 0;
++            if (sscanf(readcursor, "%hx%n", &word, &bytesread) != 1) {
++                return 0;
++            } else {
++                *addr_cursor = htons(word);
++                ++addr_cursor;
++                readcursor += bytesread;
++                if (*readcursor != ':' && *readcursor != '\0') {
++                    return 0;
++                }
+             }
+-            ++coloncounter;
+-          }
+-          // (coloncount + 1) is the number of shorts left in the address.
+-          addr_cursor = addr_end - (coloncount + 1);
+-          seencompressed = 1;
+         }
+-      } else {
+-        ++readcursor;
+-      }
+-    } else {
+-      uint16 word;
+-      int bytesread = 0;
+-      if (sscanf(readcursor, "%hx%n", &word, &bytesread) != 1) {
++    }
++    if (*readcursor != '\0' || addr_cursor < addr_end) {
++        // Catches addresses too short or too long.
+         return 0;
+-      } else {
+-        *addr_cursor = htons(word);
+-        ++addr_cursor;
+-        readcursor += bytesread;
+-        if (*readcursor != ':' && *readcursor != '\0') {
+-          return 0;
+-        }
+-      }
+     }
+-  }
+-  if (*readcursor != '\0' || addr_cursor < addr_end) {
+-    // Catches addresses too short or too long.
+-    return 0;
+-  }
+-  memcpy(dst, &an_addr, sizeof(an_addr));
+-  return 1;
++    memcpy(dst, &an_addr, sizeof(an_addr));
++    return 1;
+ }
+-int socket_inet_pton(int af, const char *src, void *dst) {
++int socket_inet_pton(int af, const char *src, void *dst)
++{
+     // if (IsWindows7OrGreater()){
+     //   return inet_pton(af, src, dst);
+     // }
+-    
++
+     // for OS below WINDOWS 7
+     switch (af) {
+-    case AF_INET :
+-        return socket_inet_pton4 (src, dst);
+-    case AF_INET6 :
+-        return socket_inet_pton6 (src, dst);
+-    default :
+-        //xerror("EAFNOSUPPORT");
+-        return 0;
++        case AF_INET:
++            return socket_inet_pton4(src, dst);
++        case AF_INET6:
++            return socket_inet_pton6(src, dst);
++        default:
++            // xerror("EAFNOSUPPORT");
++            return 0;
+     }
+ }
+ 
+-static const char *inet_ntop_v4 (const void *src, char *dst, socklen_t size) {
++static const char *inet_ntop_v4(const void *src, char *dst, socklen_t size)
++{
+     const char digits[] = "0123456789";
+     int i;
+     struct in_addr *addr = (struct in_addr *)src;
+@@ -214,7 +217,7 @@ static const char *inet_ntop_v4 (const void *src, char *dst, socklen_t size) {
+     const char *orig_dst = dst;
+ 
+     if (size < 16) {
+-        //xerror("ENOSPC: size = %0", size);
++        // xerror("ENOSPC: size = %0", size);
+         return NULL;
+     }
+     for (i = 0; i < 4; ++i) {
+@@ -240,103 +243,101 @@ static const char *inet_ntop_v4 (const void *src, char *dst, socklen_t size) {
+ }
+ 
+ // Helper function for inet_ntop for IPv6 addresses.
+-static const char* inet_ntop_v6(const void* src, char* dst, socklen_t size) {
+-  if (size < INET6_ADDRSTRLEN) {
+-    return NULL;
+-  }
+-  const uint16* as_shorts =
+-      reinterpret_cast<const uint16*>(src);
+-  int runpos[8];
+-  int current = 1;
+-  int max = 1;
+-  int maxpos = -1;
+-  int run_array_size = sizeof(runpos)/sizeof(runpos[0]);
+-  // Run over the address marking runs of 0s.
+-  for (int i = 0; i < run_array_size; ++i) {
+-    if (as_shorts[i] == 0) {
+-      runpos[i] = current;
+-      if (current > max) {
+-        maxpos = i;
+-        max = current;
+-      }
+-      ++current;
+-    } else {
+-      runpos[i] = -1;
+-      current =1;
+-    }
+-  }
+-  if (max > 1) {
+-    int tmpmax = maxpos;
+-    // Run back through, setting -1 for all but the longest run.
+-    for (int i = run_array_size - 1; i >= 0; i--) {
+-      if (i > tmpmax) {
+-        runpos[i] = -1;
+-      } else if (runpos[i] == -1) {
+-        // We're less than maxpos, we hit a -1, so the 'good' run is done.
+-        // Setting tmpmax -1 means all remaining positions get set to -1.
+-        tmpmax = -1;
+-      }
+-    }
+-  }
+-  char* cursor = dst;
+-  // Print IPv4 compatible and IPv4 mapped addresses using the IPv4 helper.
+-  // These addresses have an initial run of either eight zero-bytes followed
+-  // by 0xFFFF, or an initial run of ten zero-bytes.
+-  if (runpos[0] == 1 && (maxpos == 5 ||
+-                         (maxpos == 4 && as_shorts[5] == 0xFFFF))) {
+-    *cursor++ = ':';
+-    *cursor++ = ':';
+-    if (maxpos == 4) {
+-      cursor += snprintf(cursor, INET6_ADDRSTRLEN - 2, "ffff:");
++static const char *inet_ntop_v6(const void *src, char *dst, socklen_t size)
++{
++    if (size < INET6_ADDRSTRLEN) {
++        return NULL;
+     }
+-    const struct in_addr* as_v4 =
+-        reinterpret_cast<const struct in_addr*>(&(as_shorts[6]));
+-    inet_ntop_v4(as_v4, cursor,
+-                 static_cast<socklen_t>(INET6_ADDRSTRLEN - (cursor - dst)));
+-  } else {
++    const uint16 *as_shorts = reinterpret_cast<const uint16 *>(src);
++    int runpos[8];
++    int current = 1;
++    int max = 1;
++    int maxpos = -1;
++    int run_array_size = sizeof(runpos) / sizeof(runpos[0]);
++    // Run over the address marking runs of 0s.
+     for (int i = 0; i < run_array_size; ++i) {
+-      if (runpos[i] == -1) {
+-        cursor += snprintf(cursor,
+-                                      INET6_ADDRSTRLEN - (cursor - dst),
+-                                      "%x", ntohs(as_shorts[i]));
+-        if (i != 7 && runpos[i + 1] != 1) {
+-          *cursor++ = ':';
++        if (as_shorts[i] == 0) {
++            runpos[i] = current;
++            if (current > max) {
++                maxpos = i;
++                max = current;
++            }
++            ++current;
++        } else {
++            runpos[i] = -1;
++            current = 1;
++        }
++    }
++    if (max > 1) {
++        int tmpmax = maxpos;
++        // Run back through, setting -1 for all but the longest run.
++        for (int i = run_array_size - 1; i >= 0; i--) {
++            if (i > tmpmax) {
++                runpos[i] = -1;
++            } else if (runpos[i] == -1) {
++                // We're less than maxpos, we hit a -1, so the 'good' run is done.
++                // Setting tmpmax -1 means all remaining positions get set to -1.
++                tmpmax = -1;
++            }
+         }
+-      } else if (runpos[i] == 1) {
+-        // Entered the run; print the colons and skip the run.
++    }
++    char *cursor = dst;
++    // Print IPv4 compatible and IPv4 mapped addresses using the IPv4 helper.
++    // These addresses have an initial run of either eight zero-bytes followed
++    // by 0xFFFF, or an initial run of ten zero-bytes.
++    if (runpos[0] == 1 && (maxpos == 5 || (maxpos == 4 && as_shorts[5] == 0xFFFF))) {
+         *cursor++ = ':';
+         *cursor++ = ':';
+-        i += (max - 1);
+-      }
++        if (maxpos == 4) {
++            cursor += snprintf(cursor, INET6_ADDRSTRLEN - 2, "ffff:");
++        }
++        const struct in_addr *as_v4 = reinterpret_cast<const struct in_addr *>(&(as_shorts[6]));
++        inet_ntop_v4(as_v4, cursor, static_cast<socklen_t>(INET6_ADDRSTRLEN - (cursor - dst)));
++    } else {
++        for (int i = 0; i < run_array_size; ++i) {
++            if (runpos[i] == -1) {
++                cursor += snprintf(cursor, INET6_ADDRSTRLEN - (cursor - dst), "%x", ntohs(as_shorts[i]));
++                if (i != 7 && runpos[i + 1] != 1) {
++                    *cursor++ = ':';
++                }
++            } else if (runpos[i] == 1) {
++                // Entered the run; print the colons and skip the run.
++                *cursor++ = ':';
++                *cursor++ = ':';
++                i += (max - 1);
++            }
++        }
+     }
+-  }
+-  return dst;
++    return dst;
+ }
+-const char * socket_inet_ntop(int af, const void *src, char *dst, unsigned int size) {
++const char *socket_inet_ntop(int af, const void *src, char *dst, unsigned int size)
++{
+     // if (IsWindows7OrGreater()){
+     //   return inet_ntop(af, (PVOID)src, dst, size);
+     // }
+ 
+-  // for OS below WINDOWS 7
++    // for OS below WINDOWS 7
+     switch (af) {
+-    case AF_INET :
+-        return inet_ntop_v4 (src, dst, size);
+-	  case AF_INET6 :
+-        return inet_ntop_v6 (src, dst, size);		
+-    default :
+-        //xerror("EAFNOSUPPORT");
+-        return NULL;
++        case AF_INET:
++            return inet_ntop_v4(src, dst, size);
++        case AF_INET6:
++            return inet_ntop_v6(src, dst, size);
++        default:
++            // xerror("EAFNOSUPPORT");
++            return NULL;
+     }
+ }
+ 
+-int __win_closesocket(SOCKET s){
++int __win_closesocket(SOCKET s)
++{
+     return closesocket(s);
+ }
+ 
+ #endif
+ 
+-//not support in windows
+-int socket_set_tcp_mss(SOCKET sockfd, int size) {
++// not support in windows
++int socket_set_tcp_mss(SOCKET sockfd, int size)
++{
+ #ifdef _WIN32
+     return 0;
+ #else
+@@ -344,55 +345,66 @@ int socket_set_tcp_mss(SOCKET sockfd, int size) {
+ #endif
+ }
+ 
+-int socket_get_tcp_mss(SOCKET sockfd, int* size) {
++int socket_get_tcp_mss(SOCKET sockfd, int *size)
++{
+ #ifdef _WIN32
+     return 0;
+ #else
+     if (size == NULL)
+         return -1;
+     socklen_t len = sizeof(int);
+-    return getsockopt(sockfd, IPPROTO_TCP, TCP_MAXSEG, (void*)size, &len);
++    return getsockopt(sockfd, IPPROTO_TCP, TCP_MAXSEG, (void *)size, &len);
+ #endif
+ }
+ 
+-int socket_fix_tcp_mss(SOCKET sockfd) {
++int socket_fix_tcp_mss(SOCKET sockfd)
++{
+     return socket_set_tcp_mss(sockfd, 1400);
+ }
+ 
+-int socket_disable_nagle(SOCKET sock, int nagle) {
++int socket_disable_nagle(SOCKET sock, int nagle)
++{
+     return setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (char *)&nagle, sizeof(nagle));
+ }
+ 
+-
+-int socket_error(SOCKET sock) {
++int socket_error(SOCKET sock)
++{
+     int error = 0;
+     socklen_t len = sizeof(error);
+-    if (0 != getsockopt(sock, SOL_SOCKET, SO_ERROR, &error, &len))
+-    { error = socket_errno; }
++    if (0 != getsockopt(sock, SOL_SOCKET, SO_ERROR, &error, &len)) {
++        error = socket_errno;
++    }
+     return error;
+ }
+ 
+-int socket_isnonetwork(int error) {
+-    if (error==SOCKET_ERRNO(ENETDOWN)) return 1;
+-    if (error==SOCKET_ERRNO(ENETUNREACH)) return 1;
++int socket_isnonetwork(int error)
++{
++    if (error == SOCKET_ERRNO(ENETDOWN))
++        return 1;
++    if (error == SOCKET_ERRNO(ENETUNREACH))
++        return 1;
+ 
+     return 0;
+ }
+ 
+-int socket_reuseaddr(SOCKET sock, int optval) {
+-    return setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, (const char *)&optval , sizeof(int));
++int socket_reuseaddr(SOCKET sock, int optval)
++{
++    return setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, (const char *)&optval, sizeof(int));
+ }
+ 
+-int socket_reserve_sendbuf(SOCKET sock, uint32_t buflen){
++int socket_reserve_sendbuf(SOCKET sock, uint32_t buflen)
++{
+     uint32_t prevsize = 0;
+     socklen_t prevlen = sizeof(prevsize);
+     int rv = getsockopt(sock, SOL_SOCKET, SO_SNDBUF, &prevsize, &prevlen);
+-    if (rv != 0 || prevsize >= buflen)    return rv;
+-    
+-    return setsockopt(sock, SOL_SOCKET, SO_SNDBUF, (const char*)&buflen, sizeof(buflen));
++    if (rv != 0 || prevsize >= buflen)
++        return rv;
++
++    return setsockopt(sock, SOL_SOCKET, SO_SNDBUF, (const char *)&buflen, sizeof(buflen));
+ }
+ 
+-int socket_get_nwrite(SOCKET _sock, int* _nwriteLen) {
++int socket_get_nwrite(SOCKET _sock, int *_nwriteLen)
++{
+ #if defined(__APPLE__)
+     socklen_t len = sizeof(int);
+     return getsockopt(_sock, SOL_SOCKET, SO_NWRITE, _nwriteLen, &len);
+@@ -404,7 +416,8 @@ int socket_get_nwrite(SOCKET _sock, int* _nwriteLen) {
+ #endif
+ }
+ 
+-int socket_get_nread(SOCKET _sock, int* _nreadLen) {
++int socket_get_nread(SOCKET _sock, int *_nreadLen)
++{
+ #if defined(__APPLE__)
+     socklen_t len = sizeof(int);
+     return getsockopt(_sock, SOL_SOCKET, SO_NREAD, _nreadLen, &len);
+@@ -414,25 +427,31 @@ int socket_get_nread(SOCKET _sock, int* _nreadLen) {
+     *_nreadLen = -1;
+     return 0;
+ #endif
+-
+ }
+ 
+-int socket_nwrite(SOCKET _sock) {
++int socket_nwrite(SOCKET _sock)
++{
+     int value = 0;
+     int ret = socket_get_nwrite(_sock, &value);
+ 
+-    if (0==ret) return value;
+-    else return ret;
++    if (0 == ret)
++        return value;
++    else
++        return ret;
+ }
+ 
+-int socket_nread(SOCKET _sock) {
++int socket_nread(SOCKET _sock)
++{
+     int value = 0;
+     int ret = socket_get_nread(_sock, &value);
+ 
+-    if (0==ret) return value;
+-    else return ret;
++    if (0 == ret)
++        return value;
++    else
++        return ret;
+ }
+ 
+-int socket_ipv6only(SOCKET _sock, int _only) {
+-    return  setsockopt(_sock, IPPROTO_IPV6, IPV6_V6ONLY, (char*)&_only, sizeof(_only));
++int socket_ipv6only(SOCKET _sock, int _only)
++{
++    return setsockopt(_sock, IPPROTO_IPV6, IPV6_V6ONLY, (char *)&_only, sizeof(_only));
+ }
+diff --git a/comm/time_utils.c b/comm/time_utils.c
+index b90e771..f8144fa 100644
+--- a/comm/time_utils.c
++++ b/comm/time_utils.c
+@@ -8,40 +8,46 @@
+ #include <sys/time.h>
+ #include <stdint.h>
+ 
+-#ifdef ANDROID
++#if defined(ANDROID) || defined(OHOS)
+ 
+ #include <time.h>
+ #include <errno.h>
+ #include <linux/ioctl.h>
+ 
+-//#if __ANDROID_API__< 21 && !defined(__LP64__)
+-//#include <sys/atomics.h>
+-//#else
++// #if __ANDROID_API__< 21 && !defined(__LP64__)
++// #include <sys/atomics.h>
++// #else
+ #include <stdatomic.h>
+-//#endif
+-
++// #endif
++#ifdef ANDROID
+ #include "android/android_alarm.h"
++#elif defined(OHOS)
++#include "ohos/ohos_alarm.h"
++#endif
+ #include <fcntl.h>
+ #include <unistd.h>
+ 
+-uint64_t gettickcount() {
++uint64_t gettickcount()
++{
+     static int s_fd = -1;
+-    static int errcode  = 0;
++    static int errcode = 0;
+     if (s_fd == -1 && EACCES != errcode) {
+         int fd = open("/dev/alarm", O_RDONLY);
+-        if (-1 == fd) errcode = errno;
+-//#if __ANDROID_API__< 21 && !defined(__LP64__)
+-//        if (__atomic_cmpxchg(-1, fd, &s_fd)) {
+-//            if(fd != -1) close(fd);
+-//        }
+-//#else
++        if (-1 == fd)
++            errcode = errno;
++        // #if __ANDROID_API__< 21 && !defined(__LP64__)
++        //         if (__atomic_cmpxchg(-1, fd, &s_fd)) {
++        //             if(fd != -1) close(fd);
++        //         }
++        // #else
+         atomic_int x = ATOMIC_VAR_INIT(s_fd);
+         int expect = -1;
+         if (!atomic_compare_exchange_strong(&x, &expect, fd)) {
+-            if (fd >=0) close(fd);
++            if (fd >= 0)
++                close(fd);
+         }
+         s_fd = atomic_load(&x);
+-//#endif
++        // #endif
+     }
+ 
+     struct timespec ts;
+@@ -53,20 +59,22 @@ uint64_t gettickcount() {
+         // a real error, like an exception!
+         clock_gettime(CLOCK_BOOTTIME, &ts);
+     }
+-    return (uint64_t)ts.tv_sec*1000 + (uint64_t)ts.tv_nsec/1000000;
++    return (uint64_t)ts.tv_sec * 1000 + (uint64_t)ts.tv_nsec / 1000000;
+ }
+ 
+-uint64_t clock_app_monotonic() {
++uint64_t clock_app_monotonic()
++{
+     struct timespec ts;
+     clock_gettime(CLOCK_MONOTONIC_RAW, &ts);
+-    return (uint64_t)ts.tv_sec*1000 + (uint64_t)ts.tv_nsec/1000000;
++    return (uint64_t)ts.tv_sec * 1000 + (uint64_t)ts.tv_nsec / 1000000;
+ }
+ 
+-#elif defined __APPLE__ 
++#elif defined __APPLE__
+ 
+ #include <TargetConditionals.h>
+ 
+-#if 0 //defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR) //gettimeofday will rollback, KERN_BOOTTIME up late
++#if 0 // defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR) //gettimeofday will rollback, KERN_BOOTTIME up
++      // late
+ #include <sys/sysctl.h>
+ #include <assert.h>
+ #include <mach/kern_return.h>
+@@ -92,15 +100,15 @@ uint64_t gettickcount() {
+ 
+ #include <mach/mach_time.h>
+ 
+-uint64_t gettickcount() {
++uint64_t gettickcount()
++{
+     static mach_timebase_info_data_t timebase_info = {0};
+-    
++
+     // Convert to nanoseconds - if this is the first time we've run, get the timebase.
+-    if (timebase_info.denom == 0 )
+-    {
+-        (void) mach_timebase_info(&timebase_info);
++    if (timebase_info.denom == 0) {
++        (void)mach_timebase_info(&timebase_info);
+     }
+-    
++
+     // Convert the mach time to milliseconds
+     uint64_t mach_time = mach_absolute_time();
+     uint64_t millis = (mach_time * timebase_info.numer) / (timebase_info.denom * 1000000);
+@@ -108,7 +116,8 @@ uint64_t gettickcount() {
+ }
+ #endif
+ 
+-uint64_t clock_app_monotonic() {
++uint64_t clock_app_monotonic()
++{
+     return gettickcount();
+ }
+ 
+@@ -116,9 +125,10 @@ uint64_t clock_app_monotonic() {
+ 
+ #include <time.h>
+ 
+-uint64_t gettickcount() {//todoyy
++uint64_t gettickcount()
++{ // todoyy
+     struct timespec ts;
+-    if (0==clock_gettime(CLOCK_MONOTONIC, &ts)){
++    if (0 == clock_gettime(CLOCK_MONOTONIC, &ts)) {
+         return (ts.tv_sec * 1000ULL + ts.tv_nsec / 1000000);
+     }
+     return 0;
+@@ -128,39 +138,45 @@ uint64_t gettickcount() {//todoyy
+ 
+ #include <time.h>
+ 
+-uint64_t gettickcount() {//todoyy
++uint64_t gettickcount()
++{ // todoyy
+     struct timespec ts;
+-    if (0==clock_gettime(CLOCK_MONOTONIC, &ts)){
++    if (0 == clock_gettime(CLOCK_MONOTONIC, &ts)) {
+         return (ts.tv_sec * 1000ULL + ts.tv_nsec / 1000000);
+     }
+     return 0;
+ }
+ 
+-uint64_t clock_app_monotonic() {
++uint64_t clock_app_monotonic()
++{
+     return gettickcount();
+ }
+ 
+ #elif defined _WIN32
+-//#define NOMINMAX
+-//#define WIN32_LEAN_AND_MEAN
++// #define NOMINMAX
++// #define WIN32_LEAN_AND_MEAN
+ #include <windows.h>
+ 
+-uint64_t gettickcount() {
++uint64_t gettickcount()
++{
+     return GetTickCount();
+ }
+ 
+-uint64_t clock_app_monotonic() {
++uint64_t clock_app_monotonic()
++{
+     return gettickcount();
+ }
+-#elif WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP || UWP 
++#elif WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP || UWP
+ 
+ #include "unistd.h"
+ #include <stdint.h>
+ 
+-uint64_t gettickcount() {
++uint64_t gettickcount()
++{
+     return GetTickCount64();
+ }
+-uint64_t clock_app_monotonic() {
++uint64_t clock_app_monotonic()
++{
+     return gettickcount();
+ }
+ 
+@@ -168,15 +184,18 @@ uint64_t clock_app_monotonic() {
+ #error "not support"
+ #endif
+ 
+-int64_t gettickspan(uint64_t _old_tick) {
++int64_t gettickspan(uint64_t _old_tick)
++{
+     uint64_t cur_tick = gettickcount();
+-    if (_old_tick > cur_tick) return 0;
++    if (_old_tick > cur_tick)
++        return 0;
+ 
+     return cur_tick - _old_tick;
+ }
+ 
+-uint64_t timeMs() {
+-   struct timeval tv;
+-   gettimeofday(&tv,NULL);
+-   return (uint64_t)tv.tv_sec * 1000 + (uint64_t)tv.tv_usec / 1000;
++uint64_t timeMs()
++{
++    struct timeval tv;
++    gettimeofday(&tv, NULL);
++    return (uint64_t)tv.tv_sec * 1000 + (uint64_t)tv.tv_usec / 1000;
+ }
+diff --git a/comm/unix/thread/mutex.h b/comm/unix/thread/mutex.h
+index 4f29c30..7360c4a 100644
+--- a/comm/unix/thread/mutex.h
++++ b/comm/unix/thread/mutex.h
+@@ -112,14 +112,14 @@ class Mutex {
+         return 0 == ret;
+     }
+ 
+-#ifdef ANDROID
++#if defined(ANDROID) || defined(OHOS)
+     bool timedlock(long _millisecond) {
+         ASSERT2(reinterpret_cast<uintptr_t>(this) == magic_ && 0 != magic_, "this:%p != mageic:%p", this, (void*)magic_);
+ 
+         if (reinterpret_cast<uintptr_t>(this) != magic_) return false;
+ 
+         int ret = 0;
+-#if defined(ANDROID) && __ANDROID_API__ < 21 && !defined(__LP64__)
++#if (defined(ANDROID) && __ANDROID_API__ < 21 || defined(OHOS)) && !defined(__LP64__)
+         ret = pthread_mutex_lock_timeout_np(&mutex_, (unsigned)_millisecond);
+ #else
+         struct timespec ts;
+diff --git a/comm/unix/thread/thread.h b/comm/unix/thread/thread.h
+index 8979ffe..1eb53a6 100644
+--- a/comm/unix/thread/thread.h
++++ b/comm/unix/thread/thread.h
+@@ -322,7 +322,7 @@ class Thread {
+     }
+ 
+     int unsafe_exit() const {
+-#ifdef ANDROID
++#if defined(ANDROID) || defined(OHOS)
+         struct sigaction actions;
+         memset(&actions, 0, sizeof(actions));
+         sigemptyset(&actions.sa_mask);
+@@ -364,7 +364,7 @@ class Thread {
+ 
+   private:
+ 
+-#ifdef ANDROID
++#if defined(ANDROID) || defined(OHOS)
+     static void exit_handler(int _sig) {
+         pthread_exit(0);
+     }
+diff --git a/comm/xlogger/xlogger_category.cc b/comm/xlogger/xlogger_category.cc
+index d541612..086ea6a 100644
+--- a/comm/xlogger/xlogger_category.cc
++++ b/comm/xlogger/xlogger_category.cc
+@@ -8,40 +8,51 @@
+ namespace mars {
+ namespace comm {
+ 
+-XloggerCategory* XloggerCategory::NewInstance(uintptr_t _appender, std::function<void (const XLoggerInfo* _info, const char* _log)> _appender_func) {
++XloggerCategory *XloggerCategory::NewInstance(
++    uintptr_t _appender, std::function<void(const XLoggerInfo *_info, const char *_log)> _appender_func)
++{
+     return new XloggerCategory(_appender, _appender_func);
+ }
+-void XloggerCategory::DelayRelease(XloggerCategory* _category) {
++void XloggerCategory::DelayRelease(XloggerCategory *_category)
++{
+     Thread(std::bind(&__Release, _category)).start_after(5000);
+ }
+ 
+-void XloggerCategory::__Release(XloggerCategory* _category) {
++void XloggerCategory::__Release(XloggerCategory *_category)
++{
+     delete _category;
+ }
+ 
+-XloggerCategory::XloggerCategory(uintptr_t _appender, std::function<void (const XLoggerInfo* _info, const char* _log)> _appender_func)
+-: appender_(_appender), appender_func_(_appender_func) {
++XloggerCategory::XloggerCategory(
++    uintptr_t _appender, std::function<void(const XLoggerInfo *_info, const char *_log)> _appender_func)
++    : appender_(_appender), appender_func_(_appender_func)
++{
+ }
+ 
+-intptr_t XloggerCategory::GetAppender() {
++intptr_t XloggerCategory::GetAppender()
++{
+     return appender_;
+ }
+ 
+-TLogLevel XloggerCategory::GetLevel() {
++TLogLevel XloggerCategory::GetLevel()
++{
+     return level_;
+ }
+ 
+-void XloggerCategory::SetLevel(TLogLevel _level) {
++void XloggerCategory::SetLevel(TLogLevel _level)
++{
+     level_ = _level;
+ }
+ 
+-bool XloggerCategory::IsEnabledFor(TLogLevel _level) {
++bool XloggerCategory::IsEnabledFor(TLogLevel _level)
++{
+     return level_ <= _level;
+ }
+ 
+-void XloggerCategory::VPrint(const XLoggerInfo* _info, const char* _format, va_list _list) {
++void XloggerCategory::VPrint(const XLoggerInfo *_info, const char *_format, va_list _list)
++{
+     if (NULL == _format) {
+-        XLoggerInfo* info = (XLoggerInfo*)_info;
++        XLoggerInfo *info = (XLoggerInfo *)_info;
+         info->level = kLevelFatal;
+         __WriteImpl(_info, "NULL == _format");
+     } else {
+@@ -51,32 +62,35 @@ void XloggerCategory::VPrint(const XLoggerInfo* _info, const char* _format, va_l
+     }
+ }
+ 
+-void XloggerCategory::Print(const XLoggerInfo* _info, const char* _format, ...) {
+-	va_list valist;
+-	va_start(valist, _format);
++void XloggerCategory::Print(const XLoggerInfo *_info, const char *_format, ...)
++{
++    va_list valist;
++    va_start(valist, _format);
+     VPrint(_info, _format, valist);
+-	va_end(valist);
++    va_end(valist);
+ }
+ 
+-void XloggerCategory::Write(const XLoggerInfo* _info, const char* _log) {
++void XloggerCategory::Write(const XLoggerInfo *_info, const char *_log)
++{
+     __WriteImpl(_info, _log);
+ }
+ 
+-void XloggerCategory::__WriteImpl(const XLoggerInfo* _info, const char* _log) {
++void XloggerCategory::__WriteImpl(const XLoggerInfo *_info, const char *_log)
++{
+     if (!appender_func_) {
+         return;
+     }
+ 
+-    if (_info && -1==_info->pid && -1==_info->tid && -1==_info->maintid) {
+-        XLoggerInfo* info = (XLoggerInfo*)_info;
++    if (_info && -1 == _info->pid && -1 == _info->tid && -1 == _info->maintid) {
++        XLoggerInfo *info = (XLoggerInfo *)_info;
+         info->pid = xlogger_pid();
+         info->tid = xlogger_tid();
+         info->maintid = xlogger_maintid();
+     }
+-    
++
+     if (NULL == _log) {
+         if (_info) {
+-            XLoggerInfo* info = (XLoggerInfo*)_info;
++            XLoggerInfo *info = (XLoggerInfo *)_info;
+             info->level = kLevelFatal;
+         }
+         appender_func_(_info, "NULL == _log");
+@@ -85,5 +99,5 @@ void XloggerCategory::__WriteImpl(const XLoggerInfo* _info, const char* _log) {
+     }
+ }
+ 
+-}
+-}
+\ No newline at end of file
++} // namespace comm
++} // namespace mars
+\ No newline at end of file
+diff --git a/log/CMakeLists.txt b/log/CMakeLists.txt
+index b96aea4..78d4498 100644
+--- a/log/CMakeLists.txt
++++ b/log/CMakeLists.txt
+@@ -55,8 +55,24 @@ elseif(ANDROID)
+ 
+     get_filename_component(EXPORT_EXP_FILE jni/export.exp ABSOLUTE)
+     set (CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--version-script=${EXPORT_EXP_FILE}")
++elseif(OHOS)
++    file(GLOB SELF_OHOS_SRC_FILES RELATIVE ${PROJECT_SOURCE_DIR}
++            ../comm/xlogger/xloggerbase.c
++            ../comm/xlogger/xlogger.cc
++            # ../comm/mmap_util.cc
++            # ../comm/ptrbuffer.cc
++            # ../comm/autobuffer.cc
++            )
++    # aux_source_directory(../comm/assert ASSERT_SRC_FILES)
++    aux_source_directory(../comm/xlogger XLOGGER_SRC_FILES)
++    # aux_source_directory(../comm/ohos OHOS_PLATFORM_SRC_FILES)
++        
++    list(APPEND SELF_SRC_FILES ${SELF_OHOS_SRC_FILES} ${ASSERT_SRC_FILES}
++        ${XLOGGER_SRC_FILES} ${OHOS_PLATFORM_SRC_FILES}
++        )
+ 
+-
++    get_filename_component(EXPORT_EXP_FILE jni/export.exp ABSOLUTE)
++    set (CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--version-script=${EXPORT_EXP_FILE}")
+ endif()
+ 
+ # add_library(${PROJECT_NAME} STATIC ${SELF_SRC_FILES})
+diff --git a/log/xlogger_interface.h b/log/xlogger_interface.h
+index f30a4db..8944f56 100644
+--- a/log/xlogger_interface.h
++++ b/log/xlogger_interface.h
+@@ -1,7 +1,7 @@
+ // Tencent is pleased to support the open source community by making Mars available.
+ // Copyright (C) 2016 THL A29 Limited, a Tencent company. All rights reserved.
+ 
+-// Licensed under the MIT License (the "License"); you may not use this file except in 
++// Licensed under the MIT License (the "License"); you may not use this file except in
+ // compliance with the License. You may obtain a copy of the License at
+ // http://opensource.org/licenses/MIT
+ 
+@@ -31,20 +31,18 @@ namespace comm {
+ class XloggerCategory;
+ 
+ }
+-}
++} // namespace mars
+ 
+ namespace mars {
+ namespace xlog {
+ 
++mars::comm::XloggerCategory *NewXloggerInstance(const XLogConfig &_config, TLogLevel _level);
+ 
+-mars::comm::XloggerCategory* NewXloggerInstance(const XLogConfig& _config, TLogLevel _level);
+-
+-
+-mars::comm::XloggerCategory* GetXloggerInstance(const char* _nameprefix);
++mars::comm::XloggerCategory *GetXloggerInstance(const char *_nameprefix);
+ 
+-void ReleaseXloggerInstance(const char* _nameprefix);
++void ReleaseXloggerInstance(const char *_nameprefix);
+ 
+-void XloggerWrite(uintptr_t _instance_ptr, const XLoggerInfo* _info, const char* _log);
++void XloggerWrite(uintptr_t _instance_ptr, const XLoggerInfo *_info, const char *_log);
+ 
+ bool IsEnabledFor(uintptr_t _instance_ptr, TLogLevel _level);
+ 
+@@ -62,8 +60,7 @@ void SetMaxFileSize(uintptr_t _instance_ptr, long _max_file_size);
+ 
+ void SetMaxAliveTime(uintptr_t _instance_ptr, long _alive_seconds);
+ 
+-}
+-}
+-
++} // namespace xlog
++} // namespace mars
+ 
+-#endif  // MARS_LOG_XLOGGER_INTERFACE_H_
+\ No newline at end of file
++#endif // MARS_LOG_XLOGGER_INTERFACE_H_
+\ No newline at end of file

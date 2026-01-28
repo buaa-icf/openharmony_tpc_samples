@@ -1,0 +1,27 @@
+{
+  "types": "",
+  "keywords": [
+    "HarmonyOS",
+    "OpenHarmony",
+    "xlog"
+  ],
+  "author": "ohos_sig",
+  "description": "是一个日志组件",
+  "ohos": {
+    "org": "opensource"
+  },
+  "main": "Index.ets",
+  "type": "module",
+  "repository": "https://gitcode.com/openharmony-sig/mars",
+  "version": "2.0.5",
+  "tags": [
+    "Tool",
+    "HarmonyOS"
+  ],
+  "dependencies": {
+    "libxlog_napi.so": 'file:./src/main/cpp/types/xlog_napi'
+  },
+  "license": "MIT License",
+  "devDependencies": {},
+  "name": "@ohos/xlog"
+}

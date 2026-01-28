@@ -1,0 +1,54 @@
+{
+  "app": {
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "C:\\Users\\Administrator\\.ohos\\config\\default_XLog_h4E6ZS7fK01vt5JFbaRviMXYpNdRgr5iPyeXHiuQoF8=.cer",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001B8F44AE3385502B40AF87BEE5C63DDEA5F895FDB93BB7E97EE230E15202FEB04B1258027F71739E",
+          "profile": "C:\\Users\\Administrator\\.ohos\\config\\default_XLog_h4E6ZS7fK01vt5JFbaRviMXYpNdRgr5iPyeXHiuQoF8=.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "C:\\Users\\Administrator\\.ohos\\config\\default_XLog_h4E6ZS7fK01vt5JFbaRviMXYpNdRgr5iPyeXHiuQoF8=.p12",
+          "storePassword": "0000001BAB890FDE47FD87C963123ED2F6193AF65062DB870D8D656B306C1E1730E3869E06F57149180E97"
+        }
+      }
+    ],
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "default",
+        "compatibleSdkVersion": "5.0.0(12)",
+        "targetSdkVersion": "6.0.1(21)",
+        "runtimeOS": "HarmonyOS"
+      }
+    ],
+    "buildModeSet": [
+      {
+        "name": "debug",
+      },
+      {
+        "name": "release"
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "xlog",
+      "srcPath": "./library"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "modelVersion": "6.0.1",
+  "license": "",
+  "devDependencies": {
+    "@ohos/hypium": "1.0.11"
+  },
+  "author": "",
+  "name": "xlog",
+  "description": "xlog is a log component.",
+  "main": "",
+  "version": "2.0.4",
+  "dependencies": {}
+}
