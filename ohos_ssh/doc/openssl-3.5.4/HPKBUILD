@@ -77,31 +77,8 @@ build() {
 package() {
     cd $builddir/$ARCH-build
     
-    # 定义安装路径（lycium框架约定）
-    local installdir="$LYCIUM_ROOT/usr/$pkgname/$ARCH"
-    
     # 禁用自动strip，先安装带符号的版本
-    make -j8 install STRIP="" >> $buildlog 2>&1
-    
-    # 复制带符号的so文件为.debug版本（用于崩溃调试）
-    if [ -f "$installdir/lib/libcrypto.so.3" ]; then
-        echo "Creating debug version: libcrypto.so.3.debug" >> $buildlog
-        cp "$installdir/lib/libcrypto.so.3" "$installdir/lib/libcrypto.so.3.debug"
-    fi
-    if [ -f "$installdir/lib/libssl.so.3" ]; then
-        echo "Creating debug version: libssl.so.3.debug" >> $buildlog
-        cp "$installdir/lib/libssl.so.3" "$installdir/lib/libssl.so.3.debug"
-    fi
-    
-    # 剥离正式版本的符号（减小体积）
-    if [ -f "$installdir/lib/libcrypto.so.3" ]; then
-        echo "Stripping release version: libcrypto.so.3" >> $buildlog
-        ${STRIP} "$installdir/lib/libcrypto.so.3" >> $buildlog 2>&1
-    fi
-    if [ -f "$installdir/lib/libssl.so.3" ]; then
-        echo "Stripping release version: libssl.so.3" >> $buildlog
-        ${STRIP} "$installdir/lib/libssl.so.3" >> $buildlog 2>&1
-    fi
+    make -j8 install >> $buildlog 2>&1
     
     cd $OLDPWD
 }

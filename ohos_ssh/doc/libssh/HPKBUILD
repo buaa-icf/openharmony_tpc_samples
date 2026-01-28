@@ -33,8 +33,6 @@ patchflag=true
 builddir=$pkgname-${pkgver}
 packagename=$builddir.tar.xz
 
-source envset.sh
-
 prepare() {
     if $patchflag
     then
@@ -50,21 +48,9 @@ prepare() {
 build() {
     cd $builddir
     
-    # 设置环境变量（包括STRIP）
-    if [ $ARCH == "armeabi-v7a" ]; then
-        setarm32ENV
-    elif [ $ARCH == "arm64-v8a" ]; then
-        setarm64ENV
-    else
-        echo "${ARCH} not support"
-        return -1
-    fi
-    
     # -DUNIT_TESTING=ON # depends on cmocka
     ${OHOS_SDK}/native/build-tools/cmake/bin/cmake "$@" -DCLIENT_TESTING=ON \
-    -DSERVER_TESTING=ON -DWITH_EXAMPLES=ON \
-    -DCMAKE_INSTALL_PREFIX="$LYCIUM_ROOT/usr/$pkgname/$ARCH" \
-    -L -B$ARCH-build -S./ > $buildlog 2>&1
+    -DSERVER_TESTING=ON -DWITH_EXAMPLES=ON -L -B$ARCH-build -S./ > $buildlog 2>&1
     $MAKE VERBOSE=1 -C $ARCH-build >> $buildlog 2>&1
     ret=$?
     cd $OLDPWD
@@ -73,23 +59,13 @@ build() {
 
 package() {
     cd $builddir/$ARCH-build
-    local installdir="$LYCIUM_ROOT/usr/$pkgname/$ARCH"
-
-    make install STRIP="" >> $buildlog 2>&1
-
-    # 复制带符号的so文件为.debug版本（用于崩溃调试）
-    if [ -f "$installdir/lib/libssh.so.4" ]; then
-        echo "Creating debug version: libssh.so.4.debug" >> $buildlog
-        cp "$installdir/lib/libssh.so.4" "$installdir/lib/libssh.so.4.debug"
-    fi
-    
-    # 剥离正式版本的符号（减小体积）
-    if [ -f "$installdir/lib/libssh.so.4" ]; then
-        echo "Stripping release version: libssh.so.4" >> $buildlog
-        ${STRIP} "$installdir/lib/libssh.so.4" >> $buildlog 2>&1
-    fi
-
+    make install >> $buildlog 2>&1
+    ret=$?
     cd $OLDPWD
+    rm ${LYCIUM_ROOT}/usr/$pkgname/$ARCH/lib/libssh.so 
+    rm ${LYCIUM_ROOT}/usr/$pkgname/$ARCH/lib/libssh.so.4 
+    mv ${LYCIUM_ROOT}/usr/$pkgname/$ARCH/lib/libssh.so.4.10.1 ${LYCIUM_ROOT}/usr/$pkgname/$ARCH/lib/libssh.so.4 
+    return $ret
 }
 
 check() {
