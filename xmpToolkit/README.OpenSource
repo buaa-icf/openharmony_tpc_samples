@@ -5,7 +5,7 @@
         "License File": "LICENSE",
         "Version Number": "1.0.0",
         "Owner": "xiafeng@huawei.com",
-        "Upstream URL": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/xmp_toolkit",
+        "Upstream URL": "https://android.googlesource.com/platform/external/xmp_toolkit/+/jb-mr1-dev/XMPCore/src/com/adobe/xmp?autodive=0%2F%2F%2F%2F",
         "Description": "For extracting XMP metadata from image, video, and audio files."
     }
 ]
