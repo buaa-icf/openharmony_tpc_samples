@@ -72,3 +72,6 @@
 [submodule "ohos_rive/submodules/rive-runtime"]
 	path = ohos_rive/submodules/rive-runtime
 	url = https://gitee.com/yp9522/rive-runtime.git
+[submodule "ohos_rive/library/src/main/cpp/boundscheck/third_party_bounds_checking_function"]
+	path = ohos_rive/library/src/main/cpp/boundscheck/third_party_bounds_checking_function
+	url = https://gitee.com/openharmony/third_party_bounds_checking_function.git

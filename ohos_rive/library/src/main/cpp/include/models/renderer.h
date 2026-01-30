@@ -16,10 +16,10 @@
 #ifndef OHOS_RIVE_RENDERER_H
 #define OHOS_RIVE_RENDERER_H
 
-#include "../helpers/factories.h"
 #include "../helpers/render_type.h"
 #include "../helpers/tracer.h"
 #include "../helpers/worker_ref.h"
+#include "rive/artboard.hpp"
 #include "worker_impl.h"
 #include <napi/native_api.h>
 
@@ -38,8 +38,8 @@ public:
 
     // Surface management
     void SetSurface(SurfaceVariant &surface);
-    int GetWidth() const;
-    int GetHeight() const;
+    int GetWidth(bool isDraw = false) const;
+    int GetHeight(bool isDraw = false) const;
 
     // Renderer access
     rive::Renderer *GetRendererOnWorkerThread() const;
@@ -57,6 +57,47 @@ public:
     double AverageFps() const
     {
         return m_averageFps;
+    }
+
+    struct PendingDraw {
+        rive::ArtboardInstance* artboard = nullptr;
+        rive::Renderer* renderer = nullptr;
+        rive::Fit fit = rive::Fit::contain;
+        rive::Alignment alignment = rive::Alignment::center;
+        float scaleFactor = 1.0f;
+        bool isDrawAligned = false;
+        bool isValid = false;
+    };
+
+    void SetPendingDraw(rive::ArtboardInstance* ab, rive::Renderer* r)
+    {
+        m_pendingDraw.artboard = ab;
+        m_pendingDraw.renderer = r;
+        m_pendingDraw.isValid = (ab != nullptr);
+        m_hasPendingDraw.store(true, std::memory_order_release);
+        m_pendingDraw.isDrawAligned = false;
+    }
+
+    void SetPendingDraw(rive::ArtboardInstance* ab, rive::Renderer* r, rive::Fit f, rive::Alignment a, float scale)
+    {
+        m_pendingDraw.artboard = ab;
+        m_pendingDraw.renderer = r;
+        m_pendingDraw.fit = f;
+        m_pendingDraw.alignment = a;
+        m_pendingDraw.scaleFactor = scale;
+        m_pendingDraw.isValid = (ab != nullptr);
+        m_hasPendingDraw.store(true, std::memory_order_release);
+        m_pendingDraw.isDrawAligned = true;
+    }
+
+    bool TakePendingDraw(PendingDraw& out)
+    {
+        if (!m_hasPendingDraw.load(std::memory_order_acquire)) {
+            return false;
+        }
+        out = m_pendingDraw;
+        m_hasPendingDraw.store(false, std::memory_order_release);
+        return out.isValid;
     }
 
 private:
@@ -95,17 +136,15 @@ private:
     void ReleaseSurface(SurfaceVariant &surface);
 
     bool CallRendererMethod(const char *methodName);
-    void StartRenderer(std::chrono::high_resolution_clock::time_point now);
-    void DoMeshFrame();
 
     // About threadsafe
     napi_threadsafe_function m_tsfn = nullptr;
     static void TSFNCallback(napi_env env, napi_value js_callback, void *context, void *data);
     static void TSFNCallbackExecuteCallback(napi_env env, napi_value js_callback, TSFNData *tsfnData);
-    std::chrono::high_resolution_clock::time_point m_lastMeshFrameTime;
-};
 
-extern OhosRiveRenderFactory *g_RiveFactory;
+    std::atomic<bool> m_hasPendingDraw{false};
+    PendingDraw m_pendingDraw;
+};
 } // namespace ohos_rive
 #endif // OHOS_RIVE_RENDERER_H
 

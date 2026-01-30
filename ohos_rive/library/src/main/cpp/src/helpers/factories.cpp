@@ -183,7 +183,6 @@ rcp<RenderBuffer> OhosRiveRenderFactory::makeRenderBuffer(RenderBufferType type,
                                                           RenderBufferFlags flags,
                                                           size_t sizeInBytes)
 {
-    m_isMesh = true;
     return make_rcp<PLSRenderBuffer>(type, flags, sizeInBytes);
 }
 

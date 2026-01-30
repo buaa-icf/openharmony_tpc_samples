@@ -153,7 +153,14 @@ void Renderer::SetSurface(SurfaceVariant &surface)
         return;
     }
 
+    // 保留旧surface的最后一帧，直到surface完成切换，防止黑屏。
     auto oldSurface = m_surface;
+    OHNativeWindow *oldNativeWindow = nullptr;
+    if (auto oldWindow = std::get_if<EGLNativeWindowType>(&oldSurface)) {
+        oldNativeWindow = reinterpret_cast<OHNativeWindow *>(*oldWindow);
+    }
+    OH_NativeWindow_SetBufferHold(oldNativeWindow);
+
     AcquireSurface(surface);
 
     m_worker->Run([this, oldSurface](DrawableThreadState *threadState) mutable {
@@ -216,7 +223,6 @@ void Renderer::Start()
 
         auto now = std::chrono::steady_clock::now();
         m_fpsLastFrameTime = now;
-        m_lastMeshFrameTime = now;
         m_workerImpl->start(now);
     });
 }
@@ -250,100 +256,18 @@ void Renderer::DoFrame()
         return;
     }
 
-    if (g_riveFactory != nullptr && g_riveFactory->IsMesh()) { // Mesh animations need to use gl again.
-        DoMeshFrame();
-    } else {
-        m_worker->Run([this](DrawableThreadState *threadState) {
-            if (!m_workerImpl) {
-                return;
-            }
-
-            auto now = std::chrono::high_resolution_clock::now();
-            m_workerImpl->doFrame(m_tracer.get(), threadState, now, m_tsfn);
-            m_numScheduledFrames--;
-            CalculateFps(now);
-        });
-
-        // 增加已调度帧计数，表示已提交一个异步帧任务
-        m_numScheduledFrames++;
-    }
-}
-
-void Renderer::StartRenderer(std::chrono::high_resolution_clock::time_point now)
-{
-    m_worker->Run([this, now](DrawableThreadState *threadState) {
+    m_worker->Run([this](DrawableThreadState *threadState) {
         if (!m_workerImpl) {
             return;
         }
-        m_tracer->beginSection("flush()");
-        m_workerImpl->flush(threadState);
-        m_tracer->endSection(); // flush
 
-        m_tracer->beginSection("swapBuffers()");
-        threadState->SwapBuffers();
-        m_tracer->endSection(); // SwapBuffers
-
-        // The frame task is completed and the count is reduced.
+        auto now = std::chrono::high_resolution_clock::now();
+        m_workerImpl->doFrame(m_tracer.get(), threadState, now, this, m_tsfn);
         m_numScheduledFrames--;
-        // Update FPS statistics.
         CalculateFps(now);
     });
-}
 
-void Renderer::DoMeshFrame()
-{
-    if (!m_workerImpl) {
-        return;
-    }
-
-    auto now = std::chrono::high_resolution_clock::now();
-    float elapsedMs = std::chrono::duration<float>(now - m_lastMeshFrameTime).count();
-    m_lastMeshFrameTime = now;
-
-    napi_value ohosRenderer;
-    napi_status status = napi_get_reference_value(m_env, m_rendererRef, &ohosRenderer);
-    if (status != napi_ok) {
-        LOGE("Failed to get renderer reference");
-        return;
-    }
-
-    napi_value elapsedMsValue;
-    status = napi_create_double(m_env, elapsedMs, &elapsedMsValue);
-    if (status != napi_ok) {
-        LOGE("Failed to create elapsedMs value");
-        return;
-    }
-
-    // Call advance
-    GetObjectFromMethod(m_env, ohosRenderer, "advance", 1, &elapsedMsValue);
-
-    // Synchronize preparedfForDraw and flush.
-    std::mutex mtx;
-    std::condition_variable cv;
-    bool prepareFinished = false;
-    m_worker->Run([this, &mtx, &cv, &prepareFinished](DrawableThreadState *threadState) {
-        if (m_workerImpl) {
-            m_tracer->beginSection("prepareForDraw");
-            m_workerImpl->prepareForDraw(threadState);
-            m_tracer->endSection();
-        }
-        {
-            std::lock_guard<std::mutex> lock(mtx);
-            prepareFinished = true;
-        }
-        cv.notify_one();
-    });
-
-    // Wait for the GL thread to complete the prepare.
-    std::unique_lock<std::mutex> lock(mtx);
-    cv.wait(lock, [&prepareFinished] { return prepareFinished; });
-
-    // Call draw.
-    GetObjectFromMethod(m_env, ohosRenderer, "draw", 0, nullptr);
-
-    StartRenderer(now);
-
-    // Increasing the count of scheduled frames indicates that an asynchronous frame flush task has been committed.
+    // 增加已调度帧计数，表示已提交一个异步帧任务
     m_numScheduledFrames++;
 }
 
@@ -395,7 +319,7 @@ void Renderer::ReleaseSurface(SurfaceVariant &surface)
     }
 }
 
-int Renderer::GetWidth() const
+int Renderer::GetWidth(bool isDraw) const
 {
     if (GetRendererType() == RendererType::CANVAS) {
         if (m_workerThreadID == std::thread::id{} || !m_workerImpl) {
@@ -405,17 +329,21 @@ int Renderer::GetWidth() const
         auto renderer = static_cast<CanvasRenderer *>(GetRendererOnWorkerThread());
         return renderer ? renderer->Width() : INVALID_DIMENSION;
     } else if (auto window = std::get_if<EGLNativeWindowType>(&m_surface)) {
-        int width = 0;
-        int height = 0;
-        OHNativeWindow *nativeWindow = reinterpret_cast<OHNativeWindow *>(*window);
-        OH_NativeWindow_NativeWindowHandleOpt(nativeWindow, GET_BUFFER_GEOMETRY, &height, &width);
-        return width;
+        if (!isDraw) {
+            int width = 0;
+            int height = 0;
+            OHNativeWindow *nativeWindow = reinterpret_cast<OHNativeWindow *>(*window);
+            OH_NativeWindow_NativeWindowHandleOpt(nativeWindow, GET_BUFFER_GEOMETRY, &height, &width);
+            return width;
+        } else if (m_workerImpl) {
+            return m_workerImpl->getWidth();
+        }
     }
 
     return INVALID_DIMENSION;
 }
 
-int Renderer::GetHeight() const
+int Renderer::GetHeight(bool isDraw) const
 {
     if (GetRendererType() == RendererType::CANVAS) {
         if (m_workerThreadID == std::thread::id{} || !m_workerImpl) {
@@ -425,11 +353,15 @@ int Renderer::GetHeight() const
         auto renderer = static_cast<CanvasRenderer *>(GetRendererOnWorkerThread());
         return renderer ? renderer->Height() : INVALID_DIMENSION;
     } else if (auto window = std::get_if<EGLNativeWindowType>(&m_surface)) {
-        int width = 0;
-        int height = 0;
-        OHNativeWindow *nativeWindow = reinterpret_cast<OHNativeWindow *>(*window);
-        OH_NativeWindow_NativeWindowHandleOpt(nativeWindow, GET_BUFFER_GEOMETRY, &height, &width);
-        return height;
+        if (!isDraw) {
+            int width = 0;
+            int height = 0;
+            OHNativeWindow *nativeWindow = reinterpret_cast<OHNativeWindow *>(*window);
+            OH_NativeWindow_NativeWindowHandleOpt(nativeWindow, GET_BUFFER_GEOMETRY, &height, &width);
+            return height;
+        } else if (m_workerImpl) {
+            return m_workerImpl->getHeight();
+        }
     }
     return INVALID_DIMENSION;
 }

@@ -1,7 +1,9 @@
 ## 1.0.1
 
 - Added audio library functionality to support sound playback for Rive animations with audio
-- Fixed landscape rendering issue where one of two RiveViews would often fail to render
+- Fixed landscape rendering issue where one of two RiveAnimationView would often fail to render
+- Fixed RiveAnimationView background transparency issue
+- Optimized animation loading time for improved performance
 
 ## 1.0.0
 

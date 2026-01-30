@@ -79,7 +79,7 @@ function prebuild()
         return 1
     fi
     cd $ROOT_DIR
-    git submodule update --init --recursive submodules/rive-runtime
+    git submodule update --init --recursive
     cd $OLDPWD
     return 0
 }

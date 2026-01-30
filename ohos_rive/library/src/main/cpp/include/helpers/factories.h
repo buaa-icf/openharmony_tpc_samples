@@ -91,14 +91,8 @@ public:
 
     rive::rcp<rive::RenderImage> decodeImage(rive::Span<const uint8_t>) override;
 
-    bool IsMesh()
-    {
-        return m_isMesh;
-    }
-
 private:
     napi_env env;
-    bool m_isMesh = false;
 };
 
 class OhosImage : public rive::RiveRenderImage {
