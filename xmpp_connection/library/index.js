@@ -60,6 +60,11 @@ class Connection extends EventEmitter {
     _onData(data) {
         const str = data.toString("utf8");
         this.emit("input", str);
+        // 修复：检查parser是否存在
+        if (!this.parser) {
+            console.warn('[xmpp_connection] Received data but parser is null, discarding data');
+            return;
+        }
         this.parser.write(str);
     }
 
@@ -185,6 +190,14 @@ class Connection extends EventEmitter {
 
     _detachParser() {
         const listeners = this.parserListeners;
+        // 修复：检查socket是否存在
+        if (!socket) {
+            // Socket已经被清理，清空监听器记录即可
+            for (const k of Object.getOwnPropertyNames(socketListeners)) {
+                delete socketListeners[k];
+            }
+            return;
+        }
         for (const k of Object.getOwnPropertyNames(listeners)) {
             this.parser.removeListener(k, listeners[k]);
             delete listeners[k];
@@ -228,13 +241,9 @@ class Connection extends EventEmitter {
 
         this.service = service
         await this.connect(service);
-        const promiseOnline = promise(this.socket, "online","error",this.timeout);
+        const promiseOnline = promise(this, "online", "error", this.timeout * 15);
         await this.open({ domain, lang });
-
-
         return promiseOnline;
-
-
     }
 
     /**
@@ -246,7 +255,7 @@ class Connection extends EventEmitter {
 
         const socket = new this.Socket(this.socketParameters(service))
         this._attachSocket(socket);
-        if (protocol.includes('ws')) {
+        if (protocol && (protocol.includes('ws') || protocol.includes('xmpps'))) {
             let {caPath}=this.options
             socket.connect(service,caPath)
         } else {
