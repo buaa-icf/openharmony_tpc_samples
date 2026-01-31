@@ -1,3 +1,6 @@
+## 2.0.5
+- Fix the issue where reading the UserComment field from JGP images fails
+
 ## 2.0.4
 - Fix the errors and time-consuming issues in obtaining iptc data reports
 
