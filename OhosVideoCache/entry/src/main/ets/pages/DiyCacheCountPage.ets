@@ -114,6 +114,7 @@ struct DiyCacheCountPage {
     this.avPlayer?.off('availableBitrates');
     this.avPlayer?.off('error');
     this.avPlayer?.off('stateChange');
+    this.avPlayer?.off('timeUpdate');
   }
 
   //设置播放surfaceID，播放音频时无需设置

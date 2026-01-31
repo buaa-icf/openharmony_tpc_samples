@@ -36,6 +36,7 @@ import { VideoCacheConstant } from './constant/VideoCacheConstant';
 import { LogUtil } from './LogUtil';
 import HttpUrlSource from './HttpUrlSource';
 import StorageUtils from './StorageUtils';
+import deviceInfo from '@ohos.deviceInfo';
 
 const BASE_COUNT = 1
 
@@ -57,6 +58,7 @@ export default class HttpProxyCacheServer {
   private pinger: Pinger | null = null;
   private serverSocket: socket.TCPSocketServer | null = socket.constructTCPSocketServerInstance();
   private isServerReady: boolean = false;
+  private clientSocket: socket.TCPSocketConnection | null = null;
 
   public static setLibraryVersion(version: string) {
     if (version && version.length >= 1) {
@@ -106,6 +108,7 @@ export default class HttpProxyCacheServer {
         this.port = netAddress?.port;
       }
       this.serverSocket?.on("connect", async (clientSocket: socket.TCPSocketConnection) => {
+        this.clientSocket = clientSocket;
         clientSocket?.on("message", (data: MessageCallBackBean) => {
           if (data && data.message) {
             this.processSocket(data.message, clientSocket)
@@ -276,7 +279,7 @@ export default class HttpProxyCacheServer {
         this.config.diskUsage.touch(cacheFile);
       }
     } catch (err) {
-      console.error("Error touching file " + cacheFile + "  ,reason is " + err.message);
+      LogUtil.error("Error touching file " + cacheFile + "  ,reason is " + err.message);
     }
   }
 
@@ -288,7 +291,7 @@ export default class HttpProxyCacheServer {
     try {
       this.getClients(url).registerCacheListener(cacheListener);
     } catch (err) {
-      console.warn("Error registering cache listener,reason is : " + err.message);
+      LogUtil.warn("Error registering cache listener,reason is : " + err.message);
     }
   }
 
@@ -298,7 +301,7 @@ export default class HttpProxyCacheServer {
       try {
         this.getClients(url).unregisterCacheListener(cacheListener);
       } catch (err) {
-        console.warn("Error registering cache listener,reason is : " + err.message);
+        LogUtil.warn("Error registering cache listener,reason is : " + err.message);
       }
     } else {
       Preconditions.checkNotNull(cacheListener);
@@ -326,10 +329,34 @@ export default class HttpProxyCacheServer {
     emitter.off(VideoCacheConstant.SERVER_READY_ID.toString())
     emitter.off(VideoCacheConstant.RENAME_FINISH_ID.toString())
     emitter.off(VideoCacheConstant.SHUT_DOWN_TASKPOOL.toString())
+
+
+    try {
+      this.clientSocket?.off('message');
+      this.clientSocket?.off('error');
+      this.clientSocket?.off('close');
+      this.clientSocket?.close();
+    } catch (err) {
+      this.onError(err)
+    } finally {
+      this.clientSocket = null;
+    }
+
+    try {
+      this.serverSocket?.off("connect")
+      if(deviceInfo.sdkApiVersion >= 20){
+        this.serverSocket?.close();
+      }
+    } catch (err) {
+      this.onError(err)
+    } finally {
+      this.serverSocket = null;
+    }
+
   }
 
   private onError(e: Error | ProxyCacheException): void {
-    console.error("HttpProxyCacheServer error,reason is " + e.message);
+    LogUtil.error("HttpProxyCacheServer error,reason is " + e.message);
   }
 
   private shutdownClients(): void {

@@ -19,6 +19,8 @@ import Preconditions from '../Preconditions'
 import relationalStore from '@ohos.data.relationalStore';
 import { ValuesBucket } from '@ohos.data.ValuesBucket'
 import { Context } from '@ohos.abilityAccessCtrl';
+import { BusinessError } from '@kit.BasicServicesKit';
+import { LogUtil } from '../LogUtil';
 
 export default class DatabaseSourceInfoStorage implements SourceInfoStorage {
   private DB_NAME: string = "VideoCache.db";
@@ -48,7 +50,9 @@ export default class DatabaseSourceInfoStorage implements SourceInfoStorage {
     relationalStore.getRdbStore(context, STORE_CONFIG).then((result) => {
       self.store = result;
       self.createTable();
-    })
+    }).catch((err: BusinessError) => {
+      LogUtil.error(`Get RdbStore failed, code is ${err.code},message is ${err.message}`);
+    });
   }
 
   private createTable() {
