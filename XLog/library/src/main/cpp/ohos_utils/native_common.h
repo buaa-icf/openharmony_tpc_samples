@@ -16,96 +16,54 @@
 #define NAPI_NATIVE_COMMON_H_
 
 #include "ohos_log.h"
+#include <functional>
+#include <napi/native_api.h>
+#include <cinttypes>
+#include <string>
 
-#define NAPI_RETVAL_NOTHING
-
-#define GET_AND_THROW_LAST_ERROR(env)                                                                   \
-    do {                                                                                                \
-        const napi_extended_error_info *errorInfo = nullptr;                                            \
-        napi_get_last_error_info((env), &errorInfo);                                                    \
-        bool isPending = false;                                                                         \
-        napi_is_exception_pending((env), &isPending);                                                   \
-        if (!isPending && errorInfo != nullptr) {                                                       \
-            const char *errorMessage =                                                                  \
-                errorInfo->error_message != nullptr ? errorInfo->error_message : "empty error message"; \
-            napi_throw_error((env), nullptr, errorMessage);                                             \
-        }                                                                                               \
-    } while (0)
-
-#define NAPI_ASSERT_BASE(env, assertion, message, retVal)                                    \
-    do {                                                                                     \
-        if (!(assertion)) {                                                                  \
-            LOGE("assertion (" #assertion ") failed: " message);                             \
-            napi_throw_error((env), nullptr, "assertion (" #assertion ") failed: " message); \
-            return retVal;                                                                   \
-        }                                                                                    \
-    } while (0)
-
-#define NAPI_ASSERT(env, assertion, message) NAPI_ASSERT_BASE(env, assertion, message, nullptr)
-
-#define NAPI_ASSERT_RETURN_VOID(env, assertion, message) NAPI_ASSERT_BASE(env, assertion, message, NAPI_RETVAL_NOTHING)
-
-#define NAPI_CALL_BASE(env, theCall, retVal)                       \
-    do {                                                           \
-        napi_status status;                                        \
-        if ((status = (theCall)) != napi_ok) {                     \
-            LOGE("fail to call " #theCall ", status: %d", status); \
-            GET_AND_THROW_LAST_ERROR((env));                       \
-            return retVal;                                         \
-        }                                                          \
-    } while (0)
-
-#define NAPI_CALL(env, theCall) NAPI_CALL_BASE(env, theCall, nullptr)
-
-#define NAPI_CALL_RETURN_VOID(env, theCall) NAPI_CALL_BASE(env, theCall, NAPI_RETVAL_NOTHING)
-
-#define NAPI_CALL_HANDLE(env, theCall, retVal)                   \
-    do {                                                         \
-        napi_status stat;                                        \
-        if ((stat = (theCall)) != napi_ok) {                     \
-            LOGE("fail to call %s, status: %d", #theCall, stat); \
-            return retVal;                                       \
-        }                                                        \
-    } while (0)
-
-#define DECLARE_NAPI_PROPERTY(name, val)                                       \
-    {                                                                          \
-        (name), nullptr, nullptr, nullptr, nullptr, val, napi_default, nullptr \
+inline void GetAndThrowLastError(napi_env env)
+{
+    const napi_extended_error_info *errorInfo = nullptr;
+    napi_get_last_error_info(env, &errorInfo);
+    bool isPending = false;
+    napi_is_exception_pending((env), &isPending);
+    if (!isPending && errorInfo != nullptr) {
+        const char *errorMessage =
+            errorInfo->error_message != nullptr ? errorInfo->error_message : "empty error message";
+        napi_throw_error(env, nullptr, errorMessage);
     }
+}
 
-#define DECLARE_NAPI_STATIC_PROPERTY(name, val)                               \
-    {                                                                         \
-        (name), nullptr, nullptr, nullptr, nullptr, val, napi_static, nullptr \
+inline void NapiAssertBase(napi_env env, bool assertion, const std::string &message)
+{
+    if (!(assertion)) {
+        LOGE("assertion %s failed: %s", __func__, message.c_str());
+        napi_throw_error(env, nullptr, message.c_str());
     }
+}
+
+inline void NapiAssert(napi_env env, bool assertion, const std::string &message)
+{
+    NapiAssertBase(env, assertion, message);
+}
+
+inline napi_status NapiCallBase(napi_env env, napi_status status)
+{
+    if (status != napi_ok) {
+        LOGE("fail to call %s, status: %d", __func__, status);
+        GetAndThrowLastError(env);
+    }
+    return status;
+}
+
+inline napi_status NapiCall(napi_env env, napi_status status)
+{
+    return NapiCallBase(env, status);
+}
 
 #define DECLARE_NAPI_FUNCTION(name, func)                                         \
     {                                                                             \
         (name), nullptr, (func), nullptr, nullptr, nullptr, napi_default, nullptr \
-    }
-
-#define DECLARE_NAPI_FUNCTION_WITH_DATA(name, func, data)                      \
-    {                                                                          \
-        (name), nullptr, (func), nullptr, nullptr, nullptr, napi_default, data \
-    }
-
-#define DECLARE_NAPI_STATIC_FUNCTION(name, func)                                 \
-    {                                                                            \
-        (name), nullptr, (func), nullptr, nullptr, nullptr, napi_static, nullptr \
-    }
-
-#define DECLARE_NAPI_GETTER(name, getter)                                           \
-    {                                                                               \
-        (name), nullptr, nullptr, (getter), nullptr, nullptr, napi_default, nullptr \
-    }
-
-#define DECLARE_NAPI_SETTER(name, setter)                                           \
-    {                                                                               \
-        (name), nullptr, nullptr, nullptr, (setter), nullptr, napi_default, nullptr \
-    }
-
-#define DECLARE_NAPI_GETTER_SETTER(name, getter, setter)                             \
-    {                                                                                \
-        (name), nullptr, nullptr, (getter), (setter), nullptr, napi_default, nullptr \
     }
 
 #include <functional>

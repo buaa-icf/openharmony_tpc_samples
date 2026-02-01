@@ -17,6 +17,9 @@
 #include <cstdio>
 #include <cstdarg>
 #include <string>
+#ifdef __cpp_lib_format
+#include <format>
+#endif
 
 void OhosLogPrint(enum OhosLogLevel level, const char *tag, const char *fmt, ...)
 {
@@ -24,30 +27,34 @@ void OhosLogPrint(enum OhosLogLevel level, const char *tag, const char *fmt, ...
     if (level == IL_SILENT) {
         return;
     }
-    char buf[OHOS_LOG_BUF_SIZE] = {0};
-    va_list arg;
-    va_start(arg, fmt);
-    std::vsnprintf(buf, OHOS_LOG_BUF_SIZE - 1, fmt, arg);
-    va_end(arg);
+    std::string buf;
+#ifndef __cpp_lib_format
+    return;
+#else
+    va_list args;
+    va_start(args, fmt);
+    buf = std::vformat(fmt, std::make_format_args(args));
+    va_end(args);
+#endif
 
     switch (level) {
         case IL_INFO:
-            OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, tag, "%{public}s", buf);
+            OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, tag, "%{public}s", buf.c_str());
             break;
         case IL_DEBUG:
-            OH_LOG_Print(LOG_APP, LOG_DEBUG, LOG_DOMAIN, tag, "%{public}s", buf);
+            OH_LOG_Print(LOG_APP, LOG_DEBUG, LOG_DOMAIN, tag, "%{public}s", buf.c_str());
             break;
         case IL_WARN:
-            OH_LOG_Print(LOG_APP, LOG_WARN, LOG_DOMAIN, tag, "%{public}s", buf);
+            OH_LOG_Print(LOG_APP, LOG_WARN, LOG_DOMAIN, tag, "%{public}s", buf.c_str());
             break;
         case IL_ERROR:
-            OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, tag, "%{public}s", buf);
+            OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, tag, "%{public}s", buf.c_str());
             break;
         case IL_FATAL:
-            OH_LOG_Print(LOG_APP, LOG_FATAL, LOG_DOMAIN, tag, "%{public}s", buf);
+            OH_LOG_Print(LOG_APP, LOG_FATAL, LOG_DOMAIN, tag, "%{public}s", buf.c_str());
             break;
         default:
-            OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, tag, "%{public}s", buf);
+            OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, tag, "%{public}s", buf.c_str());
             break;
     }
 #endif
@@ -56,30 +63,40 @@ void OhosLogPrint(enum OhosLogLevel level, const char *tag, const char *fmt, ...
 void OhosLogPrintDebug(enum OhosLogLevel level, const char *tag, const char *file, int line, const char *fmt, ...)
 {
 #ifdef OHOS_LOG_ON
-    char buf[OHOS_LOG_BUF_SIZE] = {0};
-    va_list arg;
-    va_start(arg, fmt);
-    std::vsnprintf(buf, OHOS_LOG_BUF_SIZE - 1, fmt, arg);
-    va_end(arg);
+    std::string buf;
+#ifndef __cpp_lib_format
+    return;
+#else
+    va_list args;
+    va_start(args, fmt);
+    buf = std::vformat(fmt, std::make_format_args(args));
+    va_end(args);
+#endif
 
     switch (level) {
         case IL_INFO:
-            OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, tag, "%{public}s:%{public}d %{public}s", file, line, buf);
+            OH_LOG_Print(
+                LOG_APP, LOG_INFO, LOG_DOMAIN, tag, "%{public}s:%{public}d %{public}s", file, line, buf.c_str());
             break;
         case IL_DEBUG:
-            OH_LOG_Print(LOG_APP, LOG_DEBUG, LOG_DOMAIN, tag, "%{public}s:%{public}d %{public}s", file, line, buf);
+            OH_LOG_Print(
+                LOG_APP, LOG_DEBUG, LOG_DOMAIN, tag, "%{public}s:%{public}d %{public}s", file, line, buf.c_str());
             break;
         case IL_WARN:
-            OH_LOG_Print(LOG_APP, LOG_WARN, LOG_DOMAIN, tag, "%{public}s:%{public}d %{public}s", file, line, buf);
+            OH_LOG_Print(
+                LOG_APP, LOG_WARN, LOG_DOMAIN, tag, "%{public}s:%{public}d %{public}s", file, line, buf.c_str());
             break;
         case IL_ERROR:
-            OH_LOG_Print(LOG_APP, LOG_ERROR, LOG_DOMAIN, tag, "%{public}s:%{public}d %{public}s", file, line, buf);
+            OH_LOG_Print(
+                LOG_APP, LOG_ERROR, LOG_DOMAIN, tag, "%{public}s:%{public}d %{public}s", file, line, buf.c_str());
             break;
         case IL_FATAL:
-            OH_LOG_Print(LOG_APP, LOG_FATAL, LOG_DOMAIN, tag, "%{public}s:%{public}d %{public}s", file, line, buf);
+            OH_LOG_Print(
+                LOG_APP, LOG_FATAL, LOG_DOMAIN, tag, "%{public}s:%{public}d %{public}s", file, line, buf.c_str());
             break;
         default:
-            OH_LOG_Print(LOG_APP, LOG_INFO, LOG_DOMAIN, tag, "%{public}s:%{public}d %{public}s", file, line, buf);
+            OH_LOG_Print(
+                LOG_APP, LOG_INFO, LOG_DOMAIN, tag, "%{public}s:%{public}d %{public}s", file, line, buf.c_str());
             break;
     }
 #endif

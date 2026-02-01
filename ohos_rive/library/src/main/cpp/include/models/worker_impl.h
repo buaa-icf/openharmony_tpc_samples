@@ -21,6 +21,7 @@
 #include "helpers/thread_state_pls.h"
 #include "helpers/tracer.h"
 #include "refs.h"
+#include "rive/renderer/gl/render_target_gl.hpp"
 #include "rive/renderer/rive_renderer.hpp"
 #include <atomic>
 #include <native_window/external_window.h>
@@ -30,6 +31,7 @@
 // std::monostate holds an 'empty' variant.
 using SurfaceVariant = std::variant<std::monostate, EGLNativeWindowType, OHNativeWindow *>;
 namespace ohos_rive {
+class Renderer;
 constexpr size_t NUM_FOUR = 4;
 struct TSFNData {
     enum class Type { ADVANCE, DRAW, DISPOSE };
@@ -58,15 +60,26 @@ public:
     void doFrame(ITracer *tracer,
                  DrawableThreadState *threadState,
                  std::chrono::high_resolution_clock::time_point frameTime,
+                 Renderer* renderer,
                  napi_threadsafe_function worker_tsfn = nullptr);
 
-    virtual void prepareForDraw(DrawableThreadState *) const = 0;
+    virtual void prepareForDraw(DrawableThreadState *) = 0;
 
     virtual void destroy(DrawableThreadState *) = 0;
 
-    virtual void flush(DrawableThreadState *) const = 0;
+    virtual void flush(DrawableThreadState *) = 0;
 
     [[nodiscard]] virtual rive::Renderer *renderer() const = 0;
+
+    int32_t getWidth() const
+    {
+        return m_width;
+    }
+
+    int32_t getHeight() const
+    {
+        return m_height;
+    }
 
 protected:
     napi_env m_env = nullptr;
@@ -77,6 +90,8 @@ protected:
     bool m_isStarted = false;
     std::atomic<bool> drawCompleted;
     std::atomic<bool> advanceCompleted;
+    int32_t m_width = 0;
+    int32_t m_height = 0;
 };
 
 class EGLWorkerImpl : public WorkerImpl {
@@ -101,7 +116,7 @@ public:
         }
     }
 
-    void prepareForDraw(DrawableThreadState *threadState) const override
+    void prepareForDraw(DrawableThreadState *threadState) override
     {
         // 将传入的线程状态指针转换为 EGL 线程状态，以便访问 EGL 相关资源
         auto eglThreadState = static_cast<EGLThreadState *>(threadState);
@@ -139,9 +154,41 @@ public:
 
     void clear(DrawableThreadState *threadState) const override;
 
-    void flush(DrawableThreadState *threadState) const override;
+    void flush(DrawableThreadState *threadState) override;
 
     [[nodiscard]] rive::Renderer *renderer() const override;
+
+    void prepareForDraw(DrawableThreadState *threadState) override
+    {
+        // 将传入的线程状态指针转换为 EGL 线程状态，以便访问 EGL 相关资源
+        auto eglThreadState = static_cast<EGLThreadState *>(threadState);
+        // 将 EGL 上下文绑定到当前线程，确保后续绘制命令在此线程上执行
+        eglThreadState->makeCurrent(m_eglSurface);
+        // 检查窗口尺寸是否与当前渲染目标一致，不一致则重新创建渲染目标
+        checkNativeWindowSize();
+        // 清空绘制表面，为新的绘制帧做准备
+        clear(threadState);
+    }
+
+    void checkNativeWindowSize()
+    {
+        // 查询窗口实际宽高，用于创建与窗口尺寸匹配的渲染目标
+        int32_t width = 0;
+        int32_t height = 0;
+        OH_NativeWindow_NativeWindowHandleOpt(reinterpret_cast<OHNativeWindow *>(m_window), GET_BUFFER_GEOMETRY,
+                                              &height, &width);
+        if (m_width != width || m_height != height) {
+            // 获取系统默认帧缓冲区的多重采样样本数，用于后续创建同采样配置的渲染目标
+            GLint sampleCount;
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            glGetIntegerv(GL_SAMPLES, &sampleCount);
+
+            // 创建 PLS 渲染目标（FramebufferRenderTargetGL），尺寸与窗口一致，采样数与系统一致
+            m_renderTarget = rive::make_rcp<rive::gpu::FramebufferRenderTargetGL>(width, height, 0, sampleCount);
+            m_width = width;
+            m_height = height;
+        }
+    }
 
 private:
     rive::rcp<rive::gpu::RenderTargetGL> m_renderTarget;
@@ -156,6 +203,8 @@ private:
         // RTTI...
         return static_cast<PLSThreadState *>(threadState);
     }
+
+    EGLNativeWindowType m_window;
 };
 
 class CanvasWorkerImpl : public WorkerImpl {
@@ -181,13 +230,13 @@ public:
         return m_canvasRenderer.get();
     }
 
-    void flush(DrawableThreadState *) const override;
+    void flush(DrawableThreadState *) override;
 
-    void prepareForDraw(DrawableThreadState *) const override;
+    void prepareForDraw(DrawableThreadState *) override;
 
     void destroy(DrawableThreadState *) override;
 
-    void getDrawingCanvas();
+    void getDrawingCanvas(bool isGetWindowSize = true);
 
 private:
     bool requestAndPrepareBuffer(NativeWindowBuffer **outBuffer,

@@ -27,7 +27,7 @@ typedef struct {
 
 class Xlog_napiNapi : public NapiModuleHandler {
 public:
-    DEFINE_DEFAULT_CLASS(Xlog_napiNapi)
+    Xlog_napiNapi(napi_env env, napi_value exports) : NapiModuleHandler(env, exports) {}
     void ExportStub() override;
     static XLoggerInfo ParseXLoggerInfo(napi_env env, const napi_value &obj);
     static NapiXlogConfig ParseXLogConfig(napi_env env, const napi_value &obj);

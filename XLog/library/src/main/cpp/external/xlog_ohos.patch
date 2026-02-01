@@ -1,5 +1,5 @@
 diff --git a/boost/CMakeLists.txt b/boost/CMakeLists.txt
-index 40d8c15..20eee63 100644
+index 40d8c15..da1bfd9 100644
 --- a/boost/CMakeLists.txt
 +++ b/boost/CMakeLists.txt
 @@ -73,7 +73,34 @@ if(ANDROID)
@@ -16,7 +16,7 @@ index 40d8c15..20eee63 100644
  
 +    list(APPEND SELF_SRC_FILES ${SELF_OHOS_SRC_FILE})
 +    enable_language(ASM)
-+    
++
 +    if(OHOS_ABI MATCHES "^armeabi(-v7a)?$")
 +        list(APPEND SELF_SRC_FILES
 +                libs/context/src/asm/jump_arm_aapcs_elf_gas.S
@@ -38,10 +38,10 @@ index 40d8c15..20eee63 100644
  
  
 diff --git a/comm/CMakeLists.txt b/comm/CMakeLists.txt
-index 00b4f62..48cbf9f 100644
+index 00b4f62..851209d 100644
 --- a/comm/CMakeLists.txt
 +++ b/comm/CMakeLists.txt
-@@ -125,6 +125,14 @@ elseif(APPLE)
+@@ -125,6 +125,13 @@ elseif(APPLE)
      file(GLOB SELF_TEMP_SRC_FILES RELATIVE ${PROJECT_SOURCE_DIR} objc/*.mm objc/*.h)
      source_group(objc FILES ${SELF_TEMP_SRC_FILES})
      list(APPEND SELF_SRC_FILES ${SELF_TEMP_SRC_FILES} debugger/debugger_utils.c)
@@ -51,7 +51,6 @@ index 00b4f62..48cbf9f 100644
 +    file(GLOB SELF_OHOS_SRC_FILES RELATIVE ${PROJECT_SOURCE_DIR}
 +            ohos/*.cc
 +            ohos/*.c)
-+        
 +    list(APPEND SELF_SRC_FILES ${SELF_OHOS_SRC_FILES})
  endif()
  
@@ -459,7 +458,7 @@ index dcd3db2..e1382f0 100644
  #endif
      }
 diff --git a/comm/socket/unix_socket.cc b/comm/socket/unix_socket.cc
-index bcfaeef..0aa1d2f 100644
+index bcfaeef..f61c882 100644
 --- a/comm/socket/unix_socket.cc
 +++ b/comm/socket/unix_socket.cc
 @@ -1,7 +1,7 @@
@@ -471,7 +470,7 @@ index bcfaeef..0aa1d2f 100644
  // compliance with the License. You may obtain a copy of the License at
  // http://opensource.org/licenses/MIT
  
-@@ -10,22 +10,22 @@
+@@ -10,22 +10,24 @@
  // either express or implied. See the License for the specific language governing permissions and
  // limitations under the License.
  
@@ -483,8 +482,10 @@ index bcfaeef..0aa1d2f 100644
  #include "socket/unix_socket.h"
  
 -#ifdef ANDROID
-+#if defined(ANDROID) || defined(OHOS)
++#if defined(ANDROID)
  #include <asm/ioctls.h>
++#elif defined(OHOS)
++#include <sys/ioctl.h>
  #endif
  
  #ifndef _WIN32
@@ -498,7 +499,7 @@ index bcfaeef..0aa1d2f 100644
          long flags = ret | O_NONBLOCK;
          ret = fcntl(fd, F_SETFL, flags);
      }
-@@ -33,9 +33,10 @@ int socket_set_nobio(SOCKET fd) {
+@@ -33,9 +35,10 @@ int socket_set_nobio(SOCKET fd) {
      return ret;
  }
  #else
@@ -511,7 +512,7 @@ index bcfaeef..0aa1d2f 100644
  }
  #endif
  
-@@ -48,9 +49,10 @@ int socket_set_nobio(SOCKET fd) {
+@@ -48,9 +51,10 @@ int socket_set_nobio(SOCKET fd) {
  #define NS_INADDRSZ 4
  typedef unsigned int uint32;
  typedef int int32;
@@ -525,7 +526,7 @@ index bcfaeef..0aa1d2f 100644
      static const char digits[] = "0123456789";
      int saw_digit, octets, ch;
      unsigned char tmp[NS_INADDRSZ], *tp;
-@@ -66,8 +68,8 @@ static int socket_inet_pton4(const char *src, void *dst) {
+@@ -66,8 +70,8 @@ static int socket_inet_pton4(const char *src, void *dst) {
  
              if (newNum > 255)
                  return (0);
@@ -536,7 +537,7 @@ index bcfaeef..0aa1d2f 100644
                  if (++octets > 4)
                      return (0);
                  saw_digit = 1;
-@@ -85,128 +87,129 @@ static int socket_inet_pton4(const char *src, void *dst) {
+@@ -85,128 +89,129 @@ static int socket_inet_pton4(const char *src, void *dst) {
      memcpy(dst, tmp, NS_INADDRSZ);
      return (1);
  }
@@ -771,7 +772,7 @@ index bcfaeef..0aa1d2f 100644
      const char digits[] = "0123456789";
      int i;
      struct in_addr *addr = (struct in_addr *)src;
-@@ -214,7 +217,7 @@ static const char *inet_ntop_v4 (const void *src, char *dst, socklen_t size) {
+@@ -214,7 +219,7 @@ static const char *inet_ntop_v4 (const void *src, char *dst, socklen_t size) {
      const char *orig_dst = dst;
  
      if (size < 16) {
@@ -780,7 +781,7 @@ index bcfaeef..0aa1d2f 100644
          return NULL;
      }
      for (i = 0; i < 4; ++i) {
-@@ -240,103 +243,101 @@ static const char *inet_ntop_v4 (const void *src, char *dst, socklen_t size) {
+@@ -240,103 +245,101 @@ static const char *inet_ntop_v4 (const void *src, char *dst, socklen_t size) {
  }
  
  // Helper function for inet_ntop for IPv6 addresses.
@@ -959,7 +960,7 @@ index bcfaeef..0aa1d2f 100644
  #ifdef _WIN32
      return 0;
  #else
-@@ -344,55 +345,66 @@ int socket_set_tcp_mss(SOCKET sockfd, int size) {
+@@ -344,95 +347,117 @@ int socket_set_tcp_mss(SOCKET sockfd, int size) {
  #endif
  }
  
@@ -1044,7 +1045,13 @@ index bcfaeef..0aa1d2f 100644
  #if defined(__APPLE__)
      socklen_t len = sizeof(int);
      return getsockopt(_sock, SOL_SOCKET, SO_NWRITE, _nwriteLen, &len);
-@@ -404,7 +416,8 @@ int socket_get_nwrite(SOCKET _sock, int* _nwriteLen) {
+ #elif defined(ANDROID)
+     return ioctl(_sock, SIOCOUTQ, _nwriteLen);
++#elif defined(OHOS)
++    return ioctl(_sock, TIOCOUTQ, _nwriteLen);
+ #else
+     *_nwriteLen = -1;
+     return 0;
  #endif
  }
  
@@ -1054,7 +1061,11 @@ index bcfaeef..0aa1d2f 100644
  #if defined(__APPLE__)
      socklen_t len = sizeof(int);
      return getsockopt(_sock, SOL_SOCKET, SO_NREAD, _nreadLen, &len);
-@@ -414,25 +427,31 @@ int socket_get_nread(SOCKET _sock, int* _nreadLen) {
+ #elif defined(ANDROID)
+     return ioctl(_sock, SIOCINQ, _nreadLen);
++#elif defined(OHOS)
++    return ioctl(_sock, FIONREAD, _nreadLen);
+ #else
      *_nreadLen = -1;
      return 0;
  #endif
@@ -1483,25 +1494,18 @@ index d541612..086ea6a 100644
 +} // namespace mars
 \ No newline at end of file
 diff --git a/log/CMakeLists.txt b/log/CMakeLists.txt
-index b96aea4..78d4498 100644
+index b96aea4..017ca8a 100644
 --- a/log/CMakeLists.txt
 +++ b/log/CMakeLists.txt
-@@ -55,8 +55,24 @@ elseif(ANDROID)
+@@ -55,8 +55,17 @@ elseif(ANDROID)
  
      get_filename_component(EXPORT_EXP_FILE jni/export.exp ABSOLUTE)
      set (CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--version-script=${EXPORT_EXP_FILE}")
 +elseif(OHOS)
 +    file(GLOB SELF_OHOS_SRC_FILES RELATIVE ${PROJECT_SOURCE_DIR}
-+            ../comm/xlogger/xloggerbase.c
-+            ../comm/xlogger/xlogger.cc
-+            # ../comm/mmap_util.cc
-+            # ../comm/ptrbuffer.cc
-+            # ../comm/autobuffer.cc
-+            )
-+    # aux_source_directory(../comm/assert ASSERT_SRC_FILES)
-+    aux_source_directory(../comm/xlogger XLOGGER_SRC_FILES)
-+    # aux_source_directory(../comm/ohos OHOS_PLATFORM_SRC_FILES)
-+        
++        ../comm/xlogger/xloggerbase.c
++        ../comm/xlogger/xlogger.cc)
++    aux_source_directory(../comm/xlogger XLOGGER_SRC_FILES) 
 +    list(APPEND SELF_SRC_FILES ${SELF_OHOS_SRC_FILES} ${ASSERT_SRC_FILES}
 +        ${XLOGGER_SRC_FILES} ${OHOS_PLATFORM_SRC_FILES}
 +        )

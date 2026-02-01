@@ -1172,7 +1172,7 @@ napi_value ArtboardDraw(napi_env env, napi_callback_info info)
         napi_get_undefined(env, &undefined);
         return undefined;
     }
-    artboard->draw(renderer);
+    wrapper->SetPendingDraw(artboard, renderer);
     LOGI("Artboard drawn successfully");
     napi_value undefined;
     napi_get_undefined(env, &undefined);
@@ -1269,14 +1269,7 @@ napi_value ArtboardDrawAligned(napi_env env, napi_callback_info info)
         return nullptr;
     }
 
-    float width = static_cast<float>(wrapper->GetWidth());
-    float height = static_cast<float>(wrapper->GetHeight());
-
-    renderer->save();
-    renderer->align(fit, alignment, rive::AABB(0, 0, width, height), artboard->bounds(),
-                    static_cast<float>(scaleFactor));
-    artboard->draw(renderer);
-    renderer->restore();
+    wrapper->SetPendingDraw(artboard, renderer, fit, alignment, static_cast<float>(scaleFactor));
 
     LOGI("Artboard drawn aligned with scale: %{public}f", scaleFactor);
     napi_value undefined;

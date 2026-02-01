@@ -28,44 +28,44 @@
 
 template <class T>
 struct AsyncWorkerT {
-    using type = std::function<T(napi_env)>;
+    using Type = std::function<T(napi_env)>;
 };
 
 template <class T>
 struct AsyncFinalizerT {
-    using type = std::function<napi_value(napi_env, T)>;
+    using Type = std::function<napi_value(napi_env, T)>;
 };
 
 template <class T>
 struct AsyncFreeT {
-    using type = std::function<void(T)>;
+    using Type = std::function<void(T)>;
 };
 
 // void 类型的特化版本
 template <>
 struct AsyncWorkerT<void> {
-    using type = std::function<void(napi_env)>; // 返回 void
+    using Type = std::function<void(napi_env)>;
 };
 
 template <>
 struct AsyncFinalizerT<void> {
-    using type = std::function<napi_value(napi_env)>; // 移除了 T 类型的参数
+    using Type = std::function<napi_value(napi_env)>;
 };
 
 template <>
 struct AsyncFreeT<void> {
-    using type = std::function<void()>; // 移除了 T 类型的参数
+    using Type = std::function<void()>;
 };
 
 // 别名模板，方便使用
 template <class T>
-using AsyncWorker = typename AsyncWorkerT<T>::type;
+using AsyncWorker = typename AsyncWorkerT<T>::Type;
 
 template <class T>
-using AsyncFinalizer = typename AsyncFinalizerT<T>::type;
+using AsyncFinalizer = typename AsyncFinalizerT<T>::Type;
 
 template <class T>
-using AsyncFree = typename AsyncFreeT<T>::type;
+using AsyncFree = typename AsyncFreeT<T>::Type;
 
 template <class U, class T>
 class NapiAsyncData {

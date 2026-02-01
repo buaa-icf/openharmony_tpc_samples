@@ -32,7 +32,7 @@ template <typename T>
 T NapiHandler::ParseArgAs(int index) const
 {
     T result = {};
-    NAPI_ASSERT_BASE(env_, static_cast<size_t>(index) < argc_, "Index out of range", result);
+    NapiAssert(env_, static_cast<size_t>(index) < argc_, "Index out of range");
     result = ParseArg<T>(argv_[index]);
     return result;
 }
@@ -41,7 +41,7 @@ template <typename T>
 T NapiHandler::ParseArgAs(int index, const Parser<T> &doArgs) const
 {
     T result;
-    NAPI_ASSERT_BASE(env_, static_cast<size_t>(index) < argc_, "Index out of range", result);
+    NapiAssert(env_, static_cast<size_t>(index) < argc_, "Index out of range");
     result = doArgs(env_, argv_[index]);
     return result;
 }
@@ -78,15 +78,14 @@ T NapiHandler::GetObjectProp(int index, const std::string &prop, const Parser<T>
 {
     napi_value result;
     T t;
-    NAPI_ASSERT_BASE(env_, static_cast<size_t>(index) < argc_, "Index out of range", result);
+    NapiAssert(env_, static_cast<size_t>(index) < argc_, "Index out of range");
     return GetObjectProp<T>(argv_[index], prop, doArgs);
 }
 
 template <class T>
 T NapiHandler::GetObjectProp(int index, const std::string &prop)
 {
-    T t;
-    NAPI_ASSERT_BASE(env_, static_cast<size_t>(index) < argc_, "Index out of range", t);
+    NapiAssert(env_, static_cast<size_t>(index) < argc_, "Index out of range");
     return GetObjectProp<T>(argv_[index], prop);
 }
 
@@ -94,17 +93,15 @@ template <class T>
 T NapiHandler::GetObjectProp(napi_value obj, const std::string &prop, const Parser<T> &doArgs)
 {
     napi_value result;
-    T t;
-    NAPI_CALL_HANDLE(env_, napi_get_named_property(env_, obj, prop.c_str(), &result), t);
+    NapiCall(env_, napi_get_named_property(env_, obj, prop.c_str(), &result));
     return doArgs(env_, result);
 }
 
 template <class T>
 T NapiHandler::GetObjectProp(napi_value obj, const std::string &prop)
 {
-    T t;
     napi_value result;
-    NAPI_CALL_HANDLE(env_, napi_get_named_property(env_, obj, prop.c_str(), &result), t);
+    NapiCall(env_, napi_get_named_property(env_, obj, prop.c_str(), &result));
     return ParseArg<T>(result);
 }
 
@@ -112,10 +109,9 @@ template <class T>
 T NapiHandler::CallMethod(const napi_ref &funcRef, const std::vector<napi_value> &args)
 {
     napi_value jsFunc;
-    NAPI_CALL_HANDLE(env_, napi_get_reference_value(env_, funcRef, &jsFunc), DefaultValue<T>());
+    NapiCall(env_, napi_get_reference_value(env_, funcRef, &jsFunc));
     napi_value result;
-    NAPI_CALL_HANDLE(
-        env_, napi_call_function(env_, nullptr, jsFunc, args.size(), args.data(), &result), DefaultValue<T>());
+    NapiCall(env_, napi_call_function(env_, nullptr, jsFunc, args.size(), args.data(), &result));
     return ParseArg<T>(result);
 }
 
@@ -124,9 +120,9 @@ T NapiHandler::CallMethod(const napi_ref &funcRef, const std::vector<napi_value>
 {
     T v;
     napi_value jsFunc;
-    NAPI_CALL_HANDLE(env_, napi_get_reference_value(env_, funcRef, &jsFunc), v);
+    NapiCall(env_, napi_get_reference_value(env_, funcRef, &jsFunc));
     napi_value result;
-    NAPI_CALL_HANDLE(env_, napi_call_function(env_, nullptr, jsFunc, args.size(), args.data(), &result), v);
+    NapiCall(env_, napi_call_function(env_, nullptr, jsFunc, args.size(), args.data(), &result));
     if (doArgs != nullptr) {
         v = doArgs(env_, result);
     }
@@ -137,7 +133,7 @@ template <class T>
 napi_value NapiHandler::BindSendableObject(const std::shared_ptr<T> &object, napi_finalize destructor)
 {
     NapiSafeWrapper<T> *wrapper = new NapiSafeWrapper<T>(object);
-    NAPI_CALL(env_, napi_wrap_sendable(env_, thisArg_, static_cast<void *>(wrapper), destructor, nullptr));
+    NapiCall(env_, napi_wrap_sendable(env_, thisArg_, static_cast<void *>(wrapper), destructor, nullptr));
     return thisArg_;
 }
 
@@ -145,7 +141,7 @@ template <class T>
 std::shared_ptr<T> *NapiHandler::UnbindSendableObject()
 {
     NapiSafeWrapper<T> *t = nullptr;
-    NAPI_CALL_HANDLE(env_, napi_unwrap_sendable(env_, thisArg_, reinterpret_cast<void **>(&t)), t);
+    NapiCall(env_, napi_unwrap_sendable(env_, thisArg_, reinterpret_cast<void **>(&t)), t);
     if (t == nullptr) {
         return nullptr;
     }
@@ -157,7 +153,7 @@ napi_value NapiHandler::BindSafeObject(const std::shared_ptr<T> &object, napi_fi
 {
     NapiSafeWrapper<T> *wrapper = new NapiSafeWrapper<T>(object);
     napi_ref ref = nullptr;
-    NAPI_CALL(env_, napi_wrap(env_, thisArg_, static_cast<void *>(wrapper), destructor, nullptr, nullptr));
+    NapiCall(env_, napi_wrap(env_, thisArg_, static_cast<void *>(wrapper), destructor, nullptr, nullptr));
     wrapper->SetJsWrapper(env_, ref);
     return thisArg_;
 }
@@ -166,7 +162,7 @@ template <class T>
 napi_value NapiHandler::AttachSafeObject(const std::shared_ptr<T> &object, napi_value instance)
 {
     NapiSafeWrapper<T> *t = nullptr;
-    NAPI_CALL_HANDLE(env_, napi_unwrap(env_, instance, reinterpret_cast<void **>(&t)), nullptr);
+    NapiCall(env_, napi_unwrap(env_, instance, reinterpret_cast<void **>(&t)));
     if (t == nullptr) {
         return nullptr;
     }
@@ -178,7 +174,7 @@ template <class T>
 std::shared_ptr<T> NapiHandler::UnbindSafeObject()
 {
     NapiSafeWrapper<T> *t = nullptr;
-    NAPI_CALL_HANDLE(env_, napi_unwrap(env_, thisArg_, reinterpret_cast<void **>(&t)), nullptr);
+    NapiCall(env_, napi_unwrap(env_, thisArg_, reinterpret_cast<void **>(&t)));
     if (t == nullptr) {
         return nullptr;
     }
@@ -189,7 +185,7 @@ template <class T>
 void NapiHandler::ReleaseSafeObject()
 {
     NapiSafeWrapper<T> *t = nullptr;
-    NAPI_CALL_RETURN_VOID(env_, napi_unwrap(env_, thisArg_, reinterpret_cast<void **>(&t)));
+    NapiCall(env_, napi_unwrap(env_, thisArg_, reinterpret_cast<void **>(&t)));
     if (t == nullptr) {
         return;
     }

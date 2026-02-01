@@ -26,7 +26,7 @@ using ParameterSerializer = std::function<void(napi_env, std::vector<napi_value>
 
 class NapiContext {
 public:
-    NapiContext(napi_env env, TaskContextFlag flag = TASK_FLAG_NONE);
+    explicit NapiContext(napi_env env, TaskContextFlag flag = TASK_FLAG_NONE);
     virtual ~NapiContext();
     napi_env GetEnv();
     bool Valid();

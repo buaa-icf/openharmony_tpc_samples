@@ -2,7 +2,25 @@
 cmake_minimum_required(VERSION 3.5.0)
 project(xlog_napi)
 
-set(PATCH_SCRIPT "${CMAKE_CURRENT_SOURCE_DIR}/xlog_ohos.patch")
+set(PATCH_SCRIPT_COMM "${CMAKE_CURRENT_SOURCE_DIR}/external/xlog_comm.patch")
+
+if(EXISTS ${PATCH_SCRIPT_COMM})
+    execute_process(
+        COMMAND git apply --ignore-whitespace ${PATCH_SCRIPT_COMM}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/mars
+        RESULT_VARIABLE patch_result
+        OUTPUT_VARIABLE patch_output
+        ERROR_VARIABLE patch_error
+    )
+
+    if(patch_result EQUAL 1)
+        message(STATUS "Mars patch applied successfully")
+    else()
+        message(STATUS "apply patch: ${patch_error}")
+    endif()
+endif()
+
+set(PATCH_SCRIPT "${CMAKE_CURRENT_SOURCE_DIR}/external/xlog_ohos.patch")
 
 if(EXISTS ${PATCH_SCRIPT})
     execute_process(
@@ -16,14 +34,13 @@ if(EXISTS ${PATCH_SCRIPT})
     if(patch_result EQUAL 1)
         message(STATUS "Mars patch applied successfully")
     else()
-        message(FATAL_ERROR "Failed to apply patch: ${patch_error}")
+        message(STATUS "apply patch: ${patch_error}")
     endif()
 endif()
 
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/external/ohos
-     DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/mars/comm)
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/external/openssl_lib_ohos
-     DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/mars/openssl)
+     DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/mars/openssl
+     NO_SOURCE_PERMISSIONS)
 
 add_definitions(-DOHOS_LOG_TAG=\"xlog_napi\")
 add_definitions(-DOHOS_LOG_ON)

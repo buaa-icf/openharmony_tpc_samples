@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (c) 2024 Huawei Device Co., Ltd.
+# Copyright (c) 2026 Huawei Device Co., Ltd.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -16,7 +16,7 @@
 # 执行该脚本时需进入到脚本所在目录
 ROOT_DIR=$(pwd)
 API_VERSION=12                                                              # 三方库对应API版本，用于记录SDK路径,必须和"compileSdkVersion"字段表示的API版本保持一致
-SDK_DIR=$ROOT_DIR/../ohos-sdk-$API_VERSION/linux/$API_VERSION               # SDK路径（流水线环境中SDK路径）
+SDK_DIR=$OHOS_SDK_HOME/$API_VERSION   # SDK路径（流水线环境中SDK路径）
 LYCIUM_TOOLS_URL=https://gitcode.com/openharmony-sig/tpc_c_cplusplus.git
 LYCIUM_ROOT_DIR=$ROOT_DIR/tpc_c_cplusplus
 LYCIUM_TOOLS_DIR=$LYCIUM_ROOT_DIR/lycium

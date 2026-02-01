@@ -11,6 +11,7 @@
 ```bash
 git clone git@gitcode.com:openharmony-tpc/openharmony_tpc_samples.git
 git submodule update --init --recursive ohos_rive/submodules/rive-runtime
+git submodule update --init --recursive ohos_rive/library/src/main/cpp/boundscheck/third_party_bounds_checking_function
 ```
 
 ### 编译前准备

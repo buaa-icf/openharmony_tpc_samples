@@ -21,6 +21,7 @@
 #include "helpers/general.h"
 #include "helpers/resource.h"
 #include "refs.h"
+#include "securec.h"
 
 using namespace rive;
 
@@ -105,34 +106,43 @@ static bool lockBitmapRGBA8888(NativePixelMap *nativePixelMap, OhosPixelMapInfos
     return true;
 }
 
-static int *PixelsConvert(napi_env env, napi_value pixelArray, size_t pixelSize)
+static uint8_t *PixelsConvert(napi_env env, napi_value pixelArray, size_t* pixelSize)
 {
-    if (pixelSize == NUMBER_ZERO) {
-        LOGE("Memory allocation size is zero.");
+    bool isTypedArray = false;
+    napi_status status = napi_is_typedarray(env, pixelArray, &isTypedArray);
+    if (status != napi_ok || !isTypedArray) {
+        LOGE("Input is not a TypedArray");
         return nullptr;
     }
 
-    if (pixelSize > (SIZE_MAX / sizeof(int))) {
-        LOGE("Memory allocation size large.");
+    napi_typedarray_type type;
+    size_t length;
+    void* data = nullptr;
+    status = napi_get_typedarray_info(env, pixelArray, &type, &length, &data, nullptr, nullptr);
+    if (status != napi_ok || type != napi_uint8_array) {
+        LOGE("Expected Uint8Array");
         return nullptr;
     }
 
-    int *pixels = (int *)malloc(sizeof(int) * pixelSize);
-    for (uint32_t i = 0; i < pixelSize; i++) {
-        napi_value element;
-        if (napi_get_element(env, pixelArray, i, &element) != napi_ok) {
-            LOGE("Get pixelArray element error.");
-            free(pixels);
-            return nullptr;
-        }
+    if (length == 0 || length > SIZE_MAX / sizeof(uint8_t)) {
+        LOGE("Length(%{public}zu) is invalid.", length);
+        return nullptr;
+    }
 
-        int value;
-        if (napi_get_value_int32(env, element, &value) != napi_ok) {
-            LOGE("Get element value error.");
-            free(pixels);
-            return nullptr;
-        }
-        pixels[i] = value;
+    uint8_t* pixels = static_cast<uint8_t*>(malloc(length));
+    if (!pixels) {
+        LOGE("Malloc failed");
+        return nullptr;
+    }
+
+    if (memcpy_s(pixels, length, data, length) != EOK) {
+        LOGE("Memcpy_s failed");
+        free(pixels);
+        return nullptr;
+    }
+
+    if (pixelSize) {
+        *pixelSize = length;
     }
 
     return pixels;
@@ -176,49 +186,43 @@ static napi_value DecodeImageToBitmap(napi_env env, napi_value encoded)
 
 static rive::rcp<rive::RenderImage> ProcessPixelData(napi_env env, napi_value pixelArray, bool isPremultiplied)
 {
-    uint32_t pixelSize = 0;
-    napi_status status = napi_get_array_length(env, pixelArray, &pixelSize);
-    if (status != napi_ok || pixelSize < INDEX_TWO) {
-        LOGE("Bad array length (unexpected)");
-        return nullptr;
-    }
-
-    auto pixels = PixelsConvert(env, pixelArray, pixelSize);
+    size_t pixelSize = 0;
+    auto pixels = PixelsConvert(env, pixelArray, &pixelSize);
     if (pixels == nullptr) {
         return nullptr;
     }
 
-    const auto rawWidth = static_cast<uint32_t>(pixels[0]);
-    const auto rawHeight = static_cast<uint32_t>(pixels[1]);
-    const size_t pixelCount = static_cast<size_t>(rawWidth) * rawHeight;
+    const auto rawWidth = *reinterpret_cast<uint32_t*>(pixels);
+    const auto rawHeight = *reinterpret_cast<uint32_t*>(pixels + OFFSET_FOUR_BYTE);
+    const size_t pixelCount = static_cast<size_t>(rawWidth * rawHeight);
     if (pixelCount == 0) {
         LOGE("Unsupported empty image (zero dimension)");
         free(pixels);
         return nullptr;
     }
-    if (static_cast<size_t>(pixelSize) < 2u + pixelCount) {
+    if (pixelSize < 8u + pixelCount * OFFSET_FOUR_BYTE) {
         LOGE("Not enough elements in pixel array");
         free(pixels);
         return nullptr;
     }
 
-    std::unique_ptr<uint8_t[]> out = std::make_unique<uint8_t[]>(pixelCount * 4);
+    std::unique_ptr<uint8_t[]> out = std::make_unique<uint8_t[]>(pixelCount * OFFSET_FOUR_BYTE);
     auto *bytes = out.get();
+    const uint8_t* rgbaData = pixels + OFFSET_ONE_BITS;
     for (size_t i = 0; i < pixelCount; ++i) {
-        auto p = static_cast<uint32_t>(pixels[INDEX_TWO + i]);
-        uint32_t a = (p >> OFFSET_THREE_BITS) & LSB_MASK;
-        uint32_t r = (p >> OFFSET_TWO_BITS) & LSB_MASK;
-        uint32_t g = (p >> OFFSET_ONE_BITS) & LSB_MASK;
-        uint32_t b = (p >> 0) & LSB_MASK;
+        uint8_t r = rgbaData[i * OFFSET_FOUR_BYTE];
+        uint8_t g = rgbaData[i * OFFSET_FOUR_BYTE + INDEX_ONE];
+        uint8_t b = rgbaData[i * OFFSET_FOUR_BYTE + INDEX_TWO];
+        uint8_t a  = rgbaData[i * OFFSET_FOUR_BYTE + INDEX_THREE];
         if (!isPremultiplied) {
             r = premultiply(r, a);
             g = premultiply(g, a);
             b = premultiply(b, a);
         }
-        bytes[0] = static_cast<uint8_t>(r);
-        bytes[INDEX_ONE] = static_cast<uint8_t>(g);
-        bytes[INDEX_TWO] = static_cast<uint8_t>(b);
-        bytes[INDEX_THREE] = static_cast<uint8_t>(a);
+        bytes[0] = r;
+        bytes[INDEX_ONE] = g;
+        bytes[INDEX_TWO] = b;
+        bytes[INDEX_THREE] = a;
         bytes += OFFSET_FOUR_BYTE;
     }
     free(pixels);

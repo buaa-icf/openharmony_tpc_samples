@@ -20,18 +20,14 @@
 #include <cinttypes>
 #include <vector>
 
-#define DEFINE_DEFAULT_CLASS(className) \
-    className(napi_env env, napi_value exports): NapiModuleHandler(env, exports) {}                      \
-    ~className() {};
-
 class NapiModuleHandler {
 public:
     NapiModuleHandler(napi_env env, napi_value exports);
     void Exports();
     virtual void ExportStub() = 0;
-    
+
     napi_value GetConstructor();
-    
+
     static void AddModule(const std::string &name, NapiModuleHandler *module);
     static NapiModuleHandler *GetModule(const std::string &name);
     static napi_value GetConstructor(const std::string &name);

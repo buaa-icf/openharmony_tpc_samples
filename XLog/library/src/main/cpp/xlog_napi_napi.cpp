@@ -15,13 +15,11 @@
 #include "xlog_napi_napi.h"
 #include <string>
 
-#define LONGTHREADID2INT(a) (((a) >> 32) ^ (((a) & 0xFFFF)))
-
-#define CHECK_LOG_INSTANCE(log_instance, ret)              \
-    if ((log_instance) <= 0) {                             \
-        LOGE("log instance is illegal, %d", log_instance); \
-        return ret;                                        \
-    }
+const uint32_t SHIFT_BIT = 32;
+inline static uint32_t LongThreadId2Int(uint64_t a)
+{
+    return (((a) >> SHIFT_BIT) ^ (((a) & 0xFFFF)));
+}
 
 XLoggerInfo Xlog_napiNapi::ParseXLoggerInfo(napi_env env, const napi_value &obj)
 {
@@ -32,9 +30,16 @@ XLoggerInfo Xlog_napiNapi::ParseXLoggerInfo(napi_env env, const napi_value &obj)
     result.filename = strdup(napiHandler.GetObjectProp<std::string>(obj, "filename").c_str());
     result.func_name = strdup(napiHandler.GetObjectProp<std::string>(obj, "funcname").c_str());
     result.line = napiHandler.GetObjectProp<int32_t>(obj, "line");
-    result.pid = napiHandler.GetObjectProp<int32_t>(obj, "pid");
-    result.tid = LONGTHREADID2INT(napiHandler.GetObjectProp<int32_t>(obj, "tid"));
-    result.maintid = LONGTHREADID2INT(napiHandler.GetObjectProp<int32_t>(obj, "maintid"));
+    result.pid = napiHandler.GetObjectProp<int64_t>(obj, "pid");
+    result.tid = napiHandler.GetObjectProp<int64_t>(obj, "tid");
+    if (result.tid > 0) {
+        result.tid = LongThreadId2Int(result.tid);
+    }
+
+    result.maintid = napiHandler.GetObjectProp<int64_t>(obj, "maintid");
+    if (result.maintid > 0) {
+        result.maintid = LongThreadId2Int(result.maintid);
+    }
     return result;
 }
 
@@ -85,7 +90,10 @@ napi_value Xlog_napiNapi::native_logWrite2(napi_env env, napi_callback_info info
 {
     NapiHandler napiHandler(env, info, PARAM_COUNT_3);
     int64_t logInstancePtr = napiHandler.ParseArgAs<int64_t>(INDEX_0);
-    CHECK_LOG_INSTANCE(logInstancePtr, napiHandler.GetNapiValue<bool>(false));
+    if ((logInstancePtr) <= 0) {
+        LOGE("log instance is illegal, %d", logInstancePtr);
+        return napiHandler.GetNapiValue<bool>(false);
+    }
 
     XLoggerInfo logInfo =
         napiHandler.ParseArgAs<XLoggerInfo>(INDEX_1, [&](const napi_env env, const napi_value &obj) -> XLoggerInfo {
@@ -115,8 +123,10 @@ napi_value Xlog_napiNapi::native_setLogLevel(napi_env env, napi_callback_info in
     NapiHandler napiHandler(env, info, PARAM_COUNT_2);
     int64_t logInstancePtr = napiHandler.ParseArgAs<int64_t>(INDEX_0);
     int32_t level = napiHandler.ParseArgAs<int32_t>(INDEX_1);
-
-    CHECK_LOG_INSTANCE(logInstancePtr, napiHandler.GetNapiValue<bool>(false));
+    if ((logInstancePtr) <= 0) {
+        LOGE("log instance is illegal, %d", logInstancePtr);
+        return napiHandler.GetNapiValue<bool>(false);
+    }
     mars::xlog::SetLevel(logInstancePtr, (TLogLevel)level);
     return napiHandler.GetNapiValue<bool>(true);
     ;
@@ -126,8 +136,10 @@ napi_value Xlog_napiNapi::native_getLogLevel(napi_env env, napi_callback_info in
 {
     NapiHandler napiHandler(env, info, PARAM_COUNT_1);
     int64_t logInstancePtr = napiHandler.ParseArgAs<int64_t>(INDEX_0);
-
-    CHECK_LOG_INSTANCE(logInstancePtr, napiHandler.GetNapiValue<int32_t>(0));
+    if ((logInstancePtr) <= 0) {
+        LOGE("log instance is illegal, %d", logInstancePtr);
+        return napiHandler.GetNapiValue<int32_t>(0);
+    }
     int32_t level = mars::xlog::GetLevel(logInstancePtr);
     return napiHandler.GetNapiValue<int32_t>(level);
 }
@@ -137,8 +149,10 @@ napi_value Xlog_napiNapi::native_setAppenderMode(napi_env env, napi_callback_inf
     NapiHandler napiHandler(env, info, PARAM_COUNT_2);
     int64_t logInstancePtr = napiHandler.ParseArgAs<int64_t>(INDEX_0);
     int32_t mode = napiHandler.ParseArgAs<int32_t>(INDEX_1);
-
-    CHECK_LOG_INSTANCE(logInstancePtr, napiHandler.GetNapiValue<bool>(false));
+    if (logInstancePtr <= 0) {
+        LOGE("log instance is illegal, %d", logInstancePtr);
+        return napiHandler.GetNapiValue<bool>(false);
+    }
     mars::xlog::SetAppenderMode(logInstancePtr, (mars::xlog::TAppenderMode)mode);
     return napiHandler.GetNapiValue<bool>(true);
 }
@@ -185,8 +199,10 @@ napi_value Xlog_napiNapi::native_setConsoleLogOpen(napi_env env, napi_callback_i
     NapiHandler napiHandler(env, info, PARAM_COUNT_2);
     int64_t logInstancePtr = napiHandler.ParseArgAs<int64_t>(INDEX_0);
     bool isOpen = napiHandler.ParseArgAs<bool>(INDEX_1);
-
-    CHECK_LOG_INSTANCE(logInstancePtr, napiHandler.GetNapiValue<bool>(false));
+    if (logInstancePtr <= 0) {
+        LOGE("log instance is illegal, %d", logInstancePtr);
+        return napiHandler.GetNapiValue<bool>(false);
+    }
     mars::xlog::SetConsoleLogOpen(logInstancePtr, isOpen);
 
     return napiHandler.GetNapiValue<bool>(true);
@@ -216,8 +232,10 @@ napi_value Xlog_napiNapi::native_setMaxFileSize(napi_env env, napi_callback_info
     NapiHandler napiHandler(env, info, PARAM_COUNT_2);
     int64_t logInstancePtr = napiHandler.ParseArgAs<int64_t>(INDEX_0);
     int32_t aliveSeconds = napiHandler.ParseArgAs<int32_t>(INDEX_1);
-
-    CHECK_LOG_INSTANCE(logInstancePtr, napiHandler.GetNapiValue<bool>(false));
+    if (logInstancePtr <= 0) {
+        LOGE("log instance is illegal, %d", logInstancePtr);
+        return napiHandler.GetNapiValue<bool>(false);
+    }
     mars::xlog::SetMaxFileSize(logInstancePtr, aliveSeconds);
     return napiHandler.GetNapiValue<bool>(true);
 }
@@ -227,8 +245,10 @@ napi_value Xlog_napiNapi::native_appenderFlush(napi_env env, napi_callback_info 
     NapiHandler napiHandler(env, info, PARAM_COUNT_2);
     int64_t logInstancePtr = napiHandler.ParseArgAs<int64_t>(INDEX_0);
     bool isSync = napiHandler.ParseArgAs<bool>(INDEX_1);
-
-    CHECK_LOG_INSTANCE(logInstancePtr, napiHandler.GetNapiValue<bool>(false));
+    if (logInstancePtr <= 0) {
+        LOGE("log instance is illegal, %d", logInstancePtr);
+        return napiHandler.GetNapiValue<bool>(false);
+    }
     mars::xlog::Flush(logInstancePtr, isSync);
 
     return napiHandler.GetNapiValue<bool>(true);
@@ -239,7 +259,10 @@ napi_value Xlog_napiNapi::native_setMaxAliveTime(napi_env env, napi_callback_inf
     NapiHandler napiHandler(env, info, PARAM_COUNT_2);
     int64_t logInstancePtr = napiHandler.ParseArgAs<int64_t>(INDEX_0);
     int32_t aliveSeconds = napiHandler.ParseArgAs<int32_t>(INDEX_1);
-    CHECK_LOG_INSTANCE(logInstancePtr, napiHandler.GetNapiValue<bool>(false));
+    if (logInstancePtr <= 0) {
+        LOGE("log instance is illegal, %d", logInstancePtr);
+        return napiHandler.GetNapiValue<bool>(false);
+    }
     mars::xlog::SetMaxAliveTime(logInstancePtr, aliveSeconds);
 
     return napiHandler.GetNapiValue<bool>(false);

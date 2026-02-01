@@ -25,16 +25,14 @@
 
 namespace mars {
 namespace xlog {
-
-// 这里不能加日志，会导致循环调用
-void ConsoleLog(const XLoggerInfo *_info, const char *_log)
+void ConsoleLog(const XLoggerInfo *info, const char *log)
 {
-    if (_info) {
-        const char *filename = ExtractFileName(_info->filename);
-        const char *strFuncName = NULL == _info->func_name ? "" : _info->func_name;
+    if (info) {
+        const char *filename = ExtractFileName(info->filename);
+        const char *strFuncName = NULL == info->func_name ? "" : info->func_name;
 
         LogLevel level = LOG_INFO;
-        switch (_info->level) {
+        switch (info->level) {
             case kLevelDebug:
                 level = LOG_DEBUG;
                 break;
@@ -54,11 +52,11 @@ void ConsoleLog(const XLoggerInfo *_info, const char *_log)
                 break;
         }
         OH_LOG_Print(
-            LOG_APP, level, LOG_DOMAIN, _info->tag ? _info->tag : "xlog",
-            "[%{public}s:%{public}d, %{public}s]:%{public}s", filename, _info->line, strFuncName,
-            _log ? _log : "NULL==log!!!");
+            LOG_APP, level, LOG_DOMAIN, info->tag ? info->tag : "xlog",
+            "[%{public}s:%{public}d, %{public}s]:%{public}s", filename, info->line, strFuncName,
+            log ? log : "NULL==log!!!");
     } else {
-        OH_LOG_Print(LOG_APP, LOG_WARN, LOG_DOMAIN, "xlog", "%{public}s", _log ? _log : "NULL==log!!!");
+        OH_LOG_Print(LOG_APP, LOG_WARN, LOG_DOMAIN, "xlog", "%{public}s", log ? log : "NULL==log!!!");
     }
 }
 

@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 
+#include "models/renderer.h"
 #include "models/worker_impl.h"
 #include "helpers/exception_handler.h"
 #include "helpers/thread_state_egl.h"
@@ -89,10 +90,34 @@ void WorkerImpl::stop()
     m_isStarted = false;
 }
 
+static void draw(Renderer* renderer)
+{
+    Renderer::PendingDraw draw;
+    if (renderer->TakePendingDraw(draw) && draw.isValid) {
+        auto* dArtboard = draw.artboard;
+        auto* dRenderer = draw.renderer;
+        if (dArtboard != nullptr && dRenderer != nullptr) {
+            if (draw.isDrawAligned) {
+                float w = static_cast<float>(renderer->GetWidth(true));
+                float h = static_cast<float>(renderer->GetHeight(true));
+
+                dRenderer->save();
+                dRenderer->align(draw.fit, draw.alignment, rive::AABB(0, 0, w, h), dArtboard->bounds(),
+                                 draw.scaleFactor);
+                dArtboard->draw(dRenderer);
+                dRenderer->restore();
+            } else {
+                dArtboard->draw(dRenderer);
+            }
+        }
+    }
+}
+
 // 执行一帧渲染的主流程
 void WorkerImpl::doFrame(ITracer *tracer,
                          DrawableThreadState *threadState,
                          std::chrono::high_resolution_clock::time_point frameTime,
+                         Renderer* renderer,
                          napi_threadsafe_function worker_tsfn)
 {
     // 将帧时间转换为毫秒精度，方便后续日志或调试
@@ -129,18 +154,21 @@ void WorkerImpl::doFrame(ITracer *tracer,
     tracer->beginSection("draw()");
     prepareForDraw(threadState); // 准备绘制上下文
 
-    // 再次通过线程安全函数通知 JS 层执行 DRAW 逻辑
+    // 再次通过线程安全函数通知 JS 层提供draw的有效数据
     if (worker_tsfn != nullptr) {
         auto *drawData = new TSFNData{TSFNData::Type::DRAW};
         drawCompleted.store(false);
         drawData->completionCallback = [&]() { drawCompleted.store(true); };
-        // 阻塞调用，确保 JS 绘制指令全部提交
+        // 阻塞调用
         napi_call_threadsafe_function(worker_tsfn, drawData, napi_tsfn_blocking);
-        // 自旋等待 JS 层绘制完成
+        // 自旋等待 JS 层提供有效Renderer和Artboard等有效数据
         while (!drawCompleted.load()) {
             std::this_thread::yield();
         };
     }
+
+    // gl线程自主完成绘制逻辑
+    draw(renderer);
 
     // 刷新 GPU 指令，提交渲染命令
     tracer->beginSection("flush()");
@@ -201,13 +229,9 @@ PLSWorkerImpl::PLSWorkerImpl(EGLNativeWindowType window, DrawableThreadState *th
     // 创建 Rive 渲染器，绑定到当前 GPU 渲染上下文
     m_plsRenderer = std::make_unique<rive::RiveRenderer>(renderContext);
 
-    // 设置视口与窗口同尺寸，并清空背景为白色，避免首帧出现脏数据
-    glViewport(0, 0, width, height);
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    // 首次交换缓冲区，将初始空白帧呈现到屏幕，确保后续绘制节奏正常
-    eglSwapBuffers(eglThreadState->getDisplay(), m_eglSurface);
+    m_width = width;
+    m_height = height;
+    m_window = window;
 
     // 全部初始化成功，标记 success 为 true
     *success = true;
@@ -227,22 +251,24 @@ void PLSWorkerImpl::clear(DrawableThreadState *threadState) const
     PLSThreadState *plsThreadState = PLSWorkerImpl::PlsThreadState(threadState);
     // 取出 GPU 渲染上下文，用于提交清空命令
     rive::gpu::RenderContext *renderContext = plsThreadState->renderContext();
-    // 开始新帧，指定渲染目标尺寸、加载动作为清空，并设置清空颜色为白色（0xFFFFFFFF）
+    // 开始新帧，指定渲染目标尺寸、加载动作为清空，并设置清空颜色为透明（0x00000000）
     renderContext->beginFrame({
         .renderTargetWidth = m_renderTarget->width(),
         .renderTargetHeight = m_renderTarget->height(),
         .loadAction = rive::gpu::LoadAction::clear,
-        .clearColor = 0xFFFFFFFF,
+        .clearColor = 0x00000000,
     });
 }
 
 // 将当前帧的渲染命令提交到 GPU，完成 PLS（Pixel Local Storage）管线的 flush 操作
-void PLSWorkerImpl::flush(DrawableThreadState *threadState) const
+void PLSWorkerImpl::flush(DrawableThreadState *threadState)
 {
     // 获取当前线程的 PLS 状态对象，确保上下文正确
     PLSThreadState *plsThreadState = PLSWorkerImpl::PlsThreadState(threadState);
     // 取出与当前线程绑定的 Rive GPU 渲染上下文
     rive::gpu::RenderContext *renderContext = plsThreadState->renderContext();
+    // 检查窗口尺寸是否与当前渲染目标一致，不一致则重新创建渲染目标
+    checkNativeWindowSize();
     // 向 GPU 提交渲染命令，使用已构建的帧缓冲区渲染目标
     renderContext->flush({.renderTarget = m_renderTarget.get()});
 }
@@ -266,12 +292,14 @@ void CanvasWorkerImpl::destroy(DrawableThreadState *)
     m_nativeWindow = nullptr;
 }
 
-void CanvasWorkerImpl::getDrawingCanvas()
+void CanvasWorkerImpl::getDrawingCanvas(bool isGetWindowSize)
 {
-    OH_NativeWindow_NativeWindowHandleOpt(m_nativeWindow, GET_BUFFER_GEOMETRY, &height_, &width_);
-    if (width_ <= 0 || height_ <= 0) {
-        LOGE("Invalid window dimensions: %{public}d, %{public}d", width_, height_);
-        return;
+    if (isGetWindowSize) {
+        OH_NativeWindow_NativeWindowHandleOpt(m_nativeWindow, GET_BUFFER_GEOMETRY, &height_, &width_);
+        if (width_ <= 0 || height_ <= 0) {
+            LOGE("Invalid window dimensions: %{public}d, %{public}d", width_, height_);
+            return;
+        }
     }
 
     cScreenBitmap_ = OH_Drawing_BitmapCreate();
@@ -289,17 +317,19 @@ void CanvasWorkerImpl::getDrawingCanvas()
     OH_Drawing_CanvasBind(cScreenCanvas_, cScreenBitmap_);
 }
 
-void CanvasWorkerImpl::prepareForDraw(DrawableThreadState *) const
+void CanvasWorkerImpl::prepareForDraw(DrawableThreadState *)
 {
     int32_t currentWidth = 0;
     int32_t currentHeight = 0;
     OH_NativeWindow_NativeWindowHandleOpt(m_nativeWindow, GET_BUFFER_GEOMETRY, &currentHeight, &currentWidth);
 
     if (width_ != currentWidth || height_ != currentHeight || !cScreenCanvas_ || !cScreenBitmap_) {
+        width_ = currentWidth;
+        height_ = currentHeight;
         OH_Drawing_Canvas *oldCanvas = cScreenCanvas_;
         OH_Drawing_Bitmap *oldBitmap = cScreenBitmap_;
 
-        const_cast<CanvasWorkerImpl *>(this)->getDrawingCanvas();
+        const_cast<CanvasWorkerImpl *>(this)->getDrawingCanvas(false);
         if (oldCanvas && oldCanvas != cScreenCanvas_) {
             OH_Drawing_CanvasDestroy(oldCanvas);
         }
@@ -368,9 +398,16 @@ bool CanvasWorkerImpl::getBitmapData(void **outBitmapAddr,
     return true;
 }
 
-void CanvasWorkerImpl::flush(DrawableThreadState *) const
+void CanvasWorkerImpl::flush(DrawableThreadState *)
 {
     if (!cScreenCanvas_ || !m_nativeWindow || !m_canvasRenderer || !cScreenBitmap_) {
+        return;
+    }
+
+    int32_t windowWidth = 0;
+    int32_t windowHeight = 0;
+    OH_NativeWindow_NativeWindowHandleOpt(m_nativeWindow, GET_BUFFER_GEOMETRY, &windowHeight, &windowWidth);
+    if (width_ != windowWidth || height_ != windowHeight) {
         return;
     }
 
@@ -390,11 +427,8 @@ void CanvasWorkerImpl::flush(DrawableThreadState *) const
         munmap(mappedAddr, bufferHandle->size);
         return;
     }
-    int32_t windowWidth = 0;
-    int32_t windowHeight = 0;
-    OH_NativeWindow_NativeWindowHandleOpt(m_nativeWindow, GET_BUFFER_GEOMETRY, &windowHeight, &windowWidth);
-    int32_t windowStrideBytes = bufferHandle->stride;
 
+    int32_t windowStrideBytes = bufferHandle->stride;
     uint8_t *srcPixels = static_cast<uint8_t *>(bitmapAddr);
     uint8_t *dstPixels = reinterpret_cast<uint8_t *>(mappedAddr);
     for (int32_t y = 0; y < bitmapHeight && y < windowHeight; ++y) {

@@ -284,6 +284,7 @@ export struct RiveAnimationView {
         type: XComponentType.SURFACE,
         controller: this.xComponentController
       })
+        .backgroundColor(Color.Transparent)
         .onTouch((event: TouchEvent) => {
           return this.handleTouchEvent(event);
         })

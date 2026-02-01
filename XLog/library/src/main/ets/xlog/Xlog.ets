@@ -45,8 +45,8 @@ class Xlog extends Log.LogImp {
   public static readonly COMPRESS_LEVEL7: number = 7;
   public static readonly COMPRESS_LEVEL8: number = 8;
   public static readonly COMPRESS_LEVEL9: number = 9;
-  public static readonly AppednerModeAsync: number = 0;
-  public static readonly AppednerModeSync: number = 1;
+  public static readonly APPENDER_MODE_ASYNC: number = 0;
+  public static readonly APPENDER_MODE_SYNC: number = 1;
   public static readonly ZLIB_MODE: number = 0;
   public static readonly ZSTD_MODE: number = 1;
   private compressmode: number = 0;
@@ -65,13 +65,13 @@ class Xlog extends Log.LogImp {
     cacheDays?: number): XLogConfig {
     return {
       level: level ?? Xlog.LEVEL_INFO,
-      mode: mode ?? Xlog.AppednerModeAsync,
-      logdir: logDir ?? "",
-      nameprefix: nameprefix ?? "",
-      pubkey: pubkey ?? "",
+      mode: mode ?? Xlog.APPENDER_MODE_ASYNC,
+      logdir: logDir ?? '',
+      nameprefix: nameprefix ?? '',
+      pubkey: pubkey ?? '',
       compressmode: compressmode ?? Xlog.ZLIB_MODE,
       compresslevel: compresslevel ?? 0,
-      cachedir: cacheDir ?? "",
+      cachedir: cacheDir ?? '',
       cachedays: cacheDays ?? 0
     }
   }
@@ -83,31 +83,37 @@ class Xlog extends Log.LogImp {
   public logV(tag: string, filename: string, funcname: string,
     line: number, log: string): void {
     this.logWrite2(Xlog.LEVEL_VERBOSE, Xlog.decryptTag(tag), filename, funcname, line, -1, -1, -1, log);
+    this.appenderFlush(true);
   }
 
   public logD(tag: string, filename: string, funcname: string,
     line: number, log: string): void {
     this.logWrite2(Xlog.LEVEL_DEBUG, Xlog.decryptTag(tag), filename, funcname, line, -1, -1, -1, log);
+    this.appenderFlush(true);
   }
 
   public logI(tag: string, filename: string, funcname: string,
     line: number, log: string): void {
     this.logWrite2(Xlog.LEVEL_INFO, Xlog.decryptTag(tag), filename, funcname, line, -1, -1, -1, log);
+    this.appenderFlush(true);
   }
 
   public logW(tag: string, filename: string, funcname: string,
     line: number, log: string): void {
     this.logWrite2(Xlog.LEVEL_WARNING, Xlog.decryptTag(tag), filename, funcname, line, -1, -1, -1, log);
+    this.appenderFlush(true);
   }
 
   public logE(tag: string, filename: string, funcname: string,
     line: number, log: string): void {
     this.logWrite2(Xlog.LEVEL_ERROR, Xlog.decryptTag(tag), filename, funcname, line, -1, -1, -1, log);
+    this.appenderFlush(true);
   }
 
   public logF(tag: string, filename: string, funcname: string,
     line: number, log: string): void {
     this.logWrite2(Xlog.LEVEL_FATAL, Xlog.decryptTag(tag), filename, funcname, line, -1, -1, -1, log);
+    this.appenderFlush(true);
   }
 
   public static logWrite(logInfo: XLoggerInfo, log: string): boolean {
@@ -115,35 +121,28 @@ class Xlog extends Log.LogImp {
     return native.native_logWrite(logInfo, log);
   }
 
-  public static fromLogConfig(config: XLogConfig): Xlog|null {
-    let logInstance = native.native_newXlogInstance(config);
-    if (logInstance == -1) {
-      console.error('创建Xlog失败')
-      return null;
-    }
-    let log = new Xlog(logInstance, config.nameprefix??"");
-    log.setConfig(config);
-    return log;
+  public static appenderOpen(config: XLogConfig): void {
+    native.native_appenderOpen(config);
   }
 
-  public loadFromNameprefix(nameprefix: string): boolean {
-    let logInstance = native.native_getXlogInstance(nameprefix);
-    if (logInstance == -1) {
-      console.error('加载Xlog失败')
+  public static appenderClose(): void {
+    native.native_appenderClose();
+  }
+
+  public constructor() {
+    super();
+  }
+
+  public createXlog(config: XLogConfig): boolean {
+    if (this.logInstance >= 0) {
       return false;
     }
-    this.logInstance = logInstance;
-    return true;
-  }
-
-  private constructor(logInstance: number, nameprefix: string) {
-    super();
-    this.logInstance = logInstance;
-    this.xlogConfig.nameprefix = nameprefix;
-  }
-
-  public setConfig(xlogConfig: XLogConfig) {
-    this.xlogConfig = xlogConfig;
+    this.xlogConfig = config;
+    this.logInstance = native.native_newXlogInstance(config);
+    if (this.logInstance > 0) {
+      return true;
+    }
+    return false;
   }
 
   public logWrite2(level: number, tag: string, filename: string, funcname: string,
@@ -205,16 +204,6 @@ class Xlog extends Log.LogImp {
       return false
     }
     return native.native_setConsoleLogOpen(this.logInstance, isOpen);
-  }
-
-  public appenderOpen(level: number, mode: number, cacheDir: string, logDir: string, nameprefix: string, cacheDays: number): void {
-    let logConfig: XLogConfig = Xlog.getXLogConfig(level, mode, logDir, nameprefix, "", Xlog.ZLIB_MODE, 0, cacheDir, cacheDays)
-    native.native_appenderOpen(logConfig);
-  }
-
-  public appenderClose(): void {
-    console.log('native_appenderClose')
-    return native.native_appenderClose();
   }
 
   public appenderFlush(isSync: boolean): void {

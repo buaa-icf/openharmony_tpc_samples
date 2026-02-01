@@ -49,7 +49,7 @@ NapiAsyncHandler::~NapiAsyncHandler() {}
 napi_value NapiAsyncHandler::CreatePromise()
 {
     napi_value promise;
-    NAPI_CALL(context_.GetEnv(), napi_create_promise(context_.GetEnv(), &deferred_, &promise));
+    NapiCall(context_.GetEnv(), napi_create_promise(context_.GetEnv(), &deferred_, &promise));
     return promise;
 }
 

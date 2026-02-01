@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-import { Xlog, Log, XLoggerInfo, XLogConfig } from '@ohos/xlog';
+import { Xlog, XLogConfig } from '@ohos/xlog';
 import prompt from '@system.prompt';
 import app from '@system.app';
 
@@ -31,43 +31,43 @@ struct Demo {
   sendCount: number = 0;
   receiveCount: number = 0;
   pubKey: string = 'PUBKEY';
-  log: Xlog|null = null;
-  @State nameprefix: string = "test_prefix";
-  @State logPath: string = getContext().filesDir + "/xlog";
-  @State cachDir: string = getContext().cacheDir + "/xlog";
+  log: Xlog|null = new Xlog();
+  @State nameprefix: string = 'test_prefix';
+  @State logPath: string = getContext().filesDir + '/xlog';
+  @State cachDir: string = getContext().cacheDir + '/xlog';
   controller: TextAreaController = new TextAreaController();
-  @State logContent: string = "";
+  @State logContent: string[] = [];
   @State levelIndex: number = 1;
   @State arrayLevel: Array<SelectOption> = [
-    {value: "VERBOSE"},
-    {value: "DEBUG"},
-    {value: "INFO"},
-    {value: "WARNING"},
-    {value: "ERROR"},
-    {value: "FATAL"},
-    {value: "NONE"}
+    {value: 'VERBOSE'},
+    {value: 'DEBUG'},
+    {value: 'INFO'},
+    {value: 'WARNING'},
+    {value: 'ERROR'},
+    {value: 'FATAL'},
+    {value: 'NONE'}
   ];
   @State modeIndex: number = 1;
   @State arrayMode: Array<SelectOption> = [
-    {value: "AppednerModeAsync(异步)"},
-    {value: "kAppenderSync(同步)"}
+    {value: 'APPENDER_MODE_ASYNC(异步)'},
+    {value: 'APPENDER_MODE_SYNC(同步)'}
   ];
   @State compressModeIndex: number = 0;
   @State arrayCompressMode: Array<SelectOption> = [
-    {value: "ZLIB"},
-    {value: "ZSTD"}
+    {value: 'ZLIB'},
+    {value: 'ZSTD'}
   ];
   @State compressLevelIndex: number = 0;
   @State arrayCompressLevel: Array<SelectOption> = [
-    {value: "COMPRESS_LEVEL1"},
-    {value: "COMPRESS_LEVEL12"},
-    {value: "COMPRESS_LEVEL13"},
-    {value: "COMPRESS_LEVEL14"},
-    {value: "COMPRESS_LEVEL15"},
-    {value: "COMPRESS_LEVEL16"},
-    {value: "COMPRESS_LEVEL17"},
-    {value: "COMPRESS_LEVEL18"},
-    {value: "COMPRESS_LEVEL19"},
+    {value: 'COMPRESS_LEVEL1'},
+    {value: 'COMPRESS_LEVEL12'},
+    {value: 'COMPRESS_LEVEL13'},
+    {value: 'COMPRESS_LEVEL14'},
+    {value: 'COMPRESS_LEVEL15'},
+    {value: 'COMPRESS_LEVEL16'},
+    {value: 'COMPRESS_LEVEL17'},
+    {value: 'COMPRESS_LEVEL18'},
+    {value: 'COMPRESS_LEVEL19'},
   ];
   @State cacheDays: number = 1;
 
@@ -75,12 +75,12 @@ struct Demo {
   @State tag: string = 'xlog_test'
   @State outLevelIndex: number = 1;
   @State arrayOutLevel: Array<SelectOption> = [
-    {value: "VERBOSE"},
-    {value: "DEBUG"},
-    {value: "INFO"},
-    {value: "WARNING"},
-    {value: "ERROR"},
-    {value: "FATAL"}
+    {value: 'VERBOSE'},
+    {value: 'DEBUG'},
+    {value: 'INFO'},
+    {value: 'WARNING'},
+    {value: 'ERROR'},
+    {value: 'FATAL'}
   ];
 
   public getConfig() : XLogConfig {
@@ -100,15 +100,19 @@ struct Demo {
 
   private showOutput(name: string, desc: string): void {
     console.log(`${name}: ${desc}`)
-    this.logContent += `${name} ${desc}\n`;
+    if (this.logContent.length >= 20) {
+      this.logContent = this.logContent.slice(1);
+    }
+    this.logContent.push(`${name} ${desc}`);
+
     setTimeout(()=>{
-      this.controller.caretPosition(this.logContent.length);
+      this.controller.caretPosition(this.logContent.join('\n').length);
     }, 5)
   }
 
   public showResult(name: string, result: number, desc?: string): void {
     if (result == 1) {
-      this.showOutput(name, "Sucess");
+      this.showOutput(name, 'Sucess');
     } else if(result == 0) {
       this.showOutput(name, `Error: ${desc}`);
     } else {
@@ -132,16 +136,16 @@ struct Demo {
         .fontSize(30)
         .fontWeight(FontWeight.Bold)
       Column() {
-        TextArea({text: this.logContent, controller: this.controller})
+        TextArea({text: this.logContent.join('\n'), controller: this.controller})
           .fontSize(14)
-          .fontColor("#666666")
+          .fontColor('#666666')
           .margin({ bottom: 3 })
           .textAlign(TextAlign.Start)
           .width('100%')
       }.width('100%')
       .height('30%')
       .padding(10)
-      .backgroundColor("#F5F5F5")
+      .backgroundColor('#F5F5F5')
       .borderRadius(8)
       .margin({ bottom: 5 })
       Scroll() {
@@ -155,7 +159,7 @@ struct Demo {
               .value(this.arrayLevel[this.levelIndex].value)
               .onSelect((index: number, value: String) => {
                 this.levelIndex = index;
-                this.showOutput("日志级别", this.arrayLevel[this.levelIndex].value.toString())
+                this.showOutput('日志级别', this.arrayLevel[this.levelIndex].value.toString())
               })
           }
           Flex({ direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
@@ -167,7 +171,7 @@ struct Demo {
               .value(this.arrayMode[this.modeIndex].value)
               .onSelect((index: number, value: String) => {
                 this.modeIndex = index;
-                this.showOutput("Appender模式", this.arrayMode[this.modeIndex].value.toString())
+                this.showOutput('Appender模式', this.arrayMode[this.modeIndex].value.toString())
               })
           }
           Flex({ direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
@@ -179,7 +183,7 @@ struct Demo {
               .value(this.arrayCompressMode[this.compressModeIndex].value)
               .onSelect((index: number, value: String) => {
                 this.compressModeIndex = index;
-                this.showOutput("压缩模式", this.arrayCompressMode[this.compressModeIndex].value.toString())
+                this.showOutput('压缩模式', this.arrayCompressMode[this.compressModeIndex].value.toString())
               })
           }
           Flex({ direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
@@ -191,7 +195,7 @@ struct Demo {
               .value(this.arrayCompressLevel[this.compressLevelIndex].value)
               .onSelect((index: number, value: String) => {
                 this.compressLevelIndex = index;
-                this.showOutput("压缩级别", this.arrayCompressLevel[this.compressLevelIndex].value.toString())
+                this.showOutput('压缩级别', this.arrayCompressLevel[this.compressLevelIndex].value.toString())
               })
           }
           Flex({ direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
@@ -201,7 +205,7 @@ struct Demo {
               .height('40vp')
               .onChange((value: string) => {
                 this.nameprefix = value;
-                this.showOutput("名称前缀", this.nameprefix)
+                this.showOutput('名称前缀', this.nameprefix)
               })
           }
           Flex({ direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
@@ -211,7 +215,7 @@ struct Demo {
               .height('40vp')
               .onChange((value: string) => {
                 this.logPath = value;
-                this.showOutput("日志路径", `${this.logPath}/${this.nameprefix}_xxxx.xlog`)
+                this.showOutput('日志路径', `${this.logPath}/${this.nameprefix}_xxxx.xlog`)
               })
           }
           Flex({ direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
@@ -221,7 +225,7 @@ struct Demo {
               .height('40vp')
               .onChange((value: string) => {
                 this.cachDir = value;
-                this.showOutput("cache路径", `${this.cachDir}/${this.nameprefix}_xxxx.xlog`)
+                this.showOutput('cache路径', `${this.cachDir}/${this.nameprefix}_xxxx.xlog`)
               })
           }
           Flex({ direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
@@ -245,19 +249,21 @@ struct Demo {
           }
           Flex({ direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
             Button(`创建对象`).onClick(event => {
-              console.log("Xlog_newXlogInstance ");
+              console.log('Xlog_newXlogInstance ');
               let xLogConfig: XLogConfig = this.getConfig()
-              this.log = Xlog.fromLogConfig(xLogConfig);
-              this.showResult("创建", this.log==null?0:1, `${this.cachDir}/${this.nameprefix}_xxxx.xlog`);
+              let ret = this.log?.createXlog(xLogConfig);
+              if (ret) {
+                this.log?.setConsoleLogOpen(this.isConsole)
+              }
+              this.showResult('创建', ret==false?0:1, `${this.cachDir}/${this.nameprefix}_xxxx.xlog`);
             }).width('100%')
             Button(`释放对象`).onClick(event => {
               if (this.log == null) {
                 this.showOutput('错误信息', '已经被释放或没有创建')
                 return;
               }
-              this.log?.release()
-              this.log = null
-              this.showResult("释放", 1, `${this.cachDir}/${this.nameprefix}_xxxx.xlog`);
+              this.log.release()
+              this.showResult('释放', 1, `${this.cachDir}/${this.nameprefix}_xxxx.xlog`);
             }).width('100%')
           }
           Flex({ direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
@@ -269,7 +275,7 @@ struct Demo {
               .value(this.arrayOutLevel[this.outLevelIndex].value)
               .onSelect((index: number, value: String) => {
                 this.outLevelIndex = index;
-                this.showOutput("日志级别", this.arrayOutLevel[this.outLevelIndex].value.toString())
+                this.showOutput('日志级别', this.arrayOutLevel[this.outLevelIndex].value.toString())
               })
           }
           Flex({ direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
@@ -279,7 +285,7 @@ struct Demo {
               .height('40vp')
               .onChange((value: string) => {
                 this.tag = value;
-                this.showOutput("输出tag", `${this.tag}`)
+                this.showOutput('输出tag', `${this.tag}`)
               })
             Text('输出到控制台:').width('15%').fontSize('30px').margin('15px')
             Toggle({ type: ToggleType.Switch, isOn: this.isConsole })
@@ -300,7 +306,7 @@ struct Demo {
                 this.showOutput(`输出日志`, '已经被释放或没有创建')
                 return;
               }
-              let logOut = ""
+              let logOut = ''
               switch (this.outLevelIndex) {
                 case Xlog.LEVEL_VERBOSE:
                   logOut = 'verbose log'
@@ -328,9 +334,9 @@ struct Demo {
                   break;
               }
               if (this.isConsole) {
-                this.showOutput('输出日志', `输出到控制台, tag: ${this.tag}, [test.kkk:37, test]:${logOut}`);
+                this.showOutput('输出日志', `输出到控制台,测试时请检查输出。 tag: ${this.tag}, [test.kkk:37, test]:${logOut}`);
               } else {
-                this.showOutput('输出日志', `输出到文件${this.cachDir}/${this.nameprefix}_xxxx.xlog,  tag: ${this.tag}, [test.kkk:37, test]:${logOut}`);
+                this.showOutput('输出日志', `输出到文件${this.cachDir}/${this.nameprefix}_xxxx.xlog,测试时请检查文件。  tag: ${this.tag}, [test.kkk:37, test]:${logOut}`);
               }
             }).width('100%')
           }
