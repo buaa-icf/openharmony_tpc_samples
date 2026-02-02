@@ -1,6 +1,6 @@
 {
   "name": "@ohos/xmpp_tls",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/xmpp_tls",
   "description": "在OpenHarmony上提供了一个用于与xmpp（Extensible Messaging and Presence Protocol）服务器建立加密TLS连接的library",
   "main": "index.js",
@@ -11,7 +11,7 @@
   "dependencies": {
     "@ohos/xmpp_connection_tcp": "^1.0.1",
     "@ohos/xmpp_connection": "^1.0.1",
-    "@ohos/node-polyfill": "1.0.0"
+    "@ohos/node-polyfill": "^1.0.0"
   },
   "devDependencies": {},
   "dynamicDependencies": {}
