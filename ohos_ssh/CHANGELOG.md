@@ -1,3 +1,7 @@
+## 1.0.4-rc.0
+
+- Compile OpenSSL with getauxval for OHOS.
+
 ## 1.0.3
 
 - Add symbol tables to the so file.

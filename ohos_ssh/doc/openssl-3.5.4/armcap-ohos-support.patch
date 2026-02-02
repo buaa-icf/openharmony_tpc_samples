@@ -1,0 +1,14 @@
+diff --git a/crypto/armcap.c b/crypto/armcap.c
+index 66c9001..834fd4b 100644
+--- a/crypto/armcap.c
++++ b/crypto/armcap.c
+@@ -77,6 +77,9 @@ void OPENSSL_cpuid_setup(void) __attribute__ ((constructor));
+ #   include <sys/auxv.h>
+ #   define OSSL_IMPLEMENT_GETAUXVAL
+ #  endif
++# elif defined(__OHOS__)
++#  include <sys/auxv.h>
++#  define OSSL_IMPLEMENT_GETAUXVAL
+ # endif
+ # if defined(__FreeBSD__) || defined(__OpenBSD__)
+ #  include <sys/param.h>
