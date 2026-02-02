@@ -1,6 +1,6 @@
 /**
  * ISC License
- * Copyright (C) 2024 Huawei Device Co., Ltd.
+ * Copyright (C) 2026 Huawei Device Co., Ltd.
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -15,121 +15,188 @@
  * PERFORMANCE OF THIS SOFTWARE.
  * */
 
-"use strict";
+'use strict';
 import webSocket from '@ohos.net.webSocket';
-
-import {EventEmitter} from "@ohos/node-polyfill";
-
-const CODE = "ECONNERROR";
+import {EventEmitter} from '@ohos/node-polyfill';
 
 export class Socket extends EventEmitter {
+    mWebSocket; // WebSocket实例
+    url; // 连接URL
+    connecting; // 连接状态
+
     constructor() {
         super();
-        this.listeners = Object.create(null);
+        this.mWebSocket = webSocket.createWebSocket();
+        this.url = null;
+        this.connecting = false;
     }
 
-    async connect(url,caPath) {
-        this.url = url;
-        const socket = webSocket.createWebSocket();
-        const header = {
-            caPath: caPath,
-            protocol: "xmpp",
-            clientCert: {
-                certPath: "",
-                keyPath: "",
-                keyPassword: ""
-            },
-            header: {
-                Upgrade: 'WebSocket',
-                Connection: 'Upgrade',
-            }
+    async connect(url, caPath) {
+        // 防止重复连接
+        if (this.connecting) {
+            console.warn('WebSocket已在连接中，忽略重复调用');
+            return;
         }
-        socket.connect(url, header, (err, value) => {
-            if (!err) {
-                console.info('connect------value' + JSON.stringify(value))
-            } else {
-                console.error('connect------err' + JSON.stringify(err))
-            }
-        })
+        this.connecting = true;
+        this.url = url;
 
-        this._attachSocket(socket);
+        try {
+            const options = {
+                caPath: caPath,
+                protocol: 'xmpp',
+                clientCert: {
+                    certPath: '',
+                    keyPath: '',
+                    keyPassword: ''
+                },
+                header: {
+                    Upgrade: 'WebSocket',
+                    Connection: 'Upgrade',
+                }
+            };
+            this._attachSocket();
+            if (!await this.mWebSocket.connect(url, options)) {
+                this.emit('error', new Error('webSocket连接请求创建失败'));
+            }
+        } catch (e) {
+            console.error('WebSocket连接异常:', JSON.stringify(e));
+            this._detachSocket();
+            this.emit('error', e);
+            this.emit('close', true);
+        } finally {
+            this.connecting = false;
+        }
     }
 
-    _attachSocket(socket) {
-        this.socket = socket;
-        const { listeners } = this;
-        listeners.open = () => {
-            this.emit("connect");
-        };
-
-        listeners.message = ({ data }) => this.emit("data", data);
-        listeners.error = (err) => {
+    _attachSocket() {
+        this._detachSocket();
+        this.mWebSocket.on('open', (err, value) => {
             if (err) {
-                console.error('websocket error:' + JSON.stringify(err))
+                console.error('WebSocket open错误:', JSON.stringify(err));
+                this.emit('error', err);
+            } else {
+                console.log('WebSocket open:', JSON.stringify(value));
+                this.emit('connect');
             }
-        };
-
-        listeners.close = (event) => {
-            this._detachSocket();
-            this.emit("close", !event.wasClean, event);
-        };
-        this.socket.on('open',(err,value)=>{
-            console.log("NB----open err "+JSON.stringify(err))
-            console.log("NB----open "+JSON.stringify(value))
-            this.emit("connect");
-        })
-        this.socket.on('message',(err,value)=>{
-            this.emit("data", value)
-        })
-
-        this.socket.on('headerReceive', (data) => {
-            console.log("on headerReceive " + JSON.stringify(data));
         });
 
-        this.socket.on('error',(err)=>{
+        this.mWebSocket.on('message', (err, value) => {
             if (err) {
-                if (err.code == 200) {
-                    this.emit('close');
-                }
-                console.error('websocket error:' + JSON.stringify(err))
+                console.error('WebSocket message错误:', JSON.stringify(err));
+                this.emit('error', err);
+            } else {
+                this.emit('data', value);
             }
-        })
+        });
 
-        this.socket.on('close', (err, value) => {
-            console.info("CQ-----socket on-"+JSON.stringify(value))
+        this.mWebSocket.on('headerReceive', (data) => {
+            console.log('WebSocket headerReceive:', JSON.stringify(data));
+        });
+
+        this.mWebSocket.on('error', (err) => {
+            if (err) {
+                console.error('WebSocket error:', JSON.stringify(err));
+                this.emit('error', err);
+                this.emit('close', true);
+            }
+        });
+
+        this.mWebSocket.on('close', (err, value) => {
+            console.info('WebSocket close:', JSON.stringify(value));
             this._detachSocket();
-            this.emit("close", !value.wasClean, value);
-        })
-        // this.socket.addEventListener("open",listeners.open );
-        // this.socket.addEventListener("message", listeners.message);
-        // this.socket.addEventListener("error", listeners.error);
-        // this.socket.addEventListener("close", listeners.close);
+            if (err) {
+                console.error('WebSocket close错误:', JSON.stringify(err));
+                this.emit('error', err);
+                this.emit('close', true);
+            } else {
+                this.emit('close', false);
+            }
 
+        });
     }
 
     _detachSocket() {
-        delete this.url;
-        const { socket, listeners } = this;
-        for (const k of Object.getOwnPropertyNames(listeners)) {
-            socket.off(k, listeners[k]);
-            delete listeners[k];
+        if (this.mWebSocket) {
+            this.mWebSocket.off('open');
+            this.mWebSocket.off('message');
+            this.mWebSocket.off('headerReceive');
+            this.mWebSocket.off('error');
+            this.mWebSocket.off('close');
+            console.info('WebSocket监听器已移除');
         }
-        delete this.socket;
+        this.url = null;
     }
 
-    end() {
-        this.socket.close();
-    }
-
-    write(data, fn) {
-        console.log("xmpp---write"+JSON.stringify(data))
-        this.socket.send(data, (err, value) => {
-            if (err) {
-                console.error('send-----------------------err-' + JSON.stringify(err))
-            } else {
-                console.info('send-----------------------value-' + JSON.stringify(value))
+    async end() {
+        try {
+            if (this.mWebSocket) {
+                this._detachSocket();
+                await this.mWebSocket.close();
             }
-        });
-        fn();
+            this.emit('close', false);
+            this.removeAllListeners();
+        } catch (error) {
+            console.error('WebSocket关闭异常:', error);
+            this.emit('error', error);
+            this.emit('close', true);
+        }
     }
-};
+
+    async write(data, fn) {
+        // 等待连接建立
+        if (this.connecting) {
+            console.log('WebSocket等待连接建立...');
+            await new Promise(resolve => this.once('connect', resolve));
+        }
+
+        // 检查socket是否存在
+        if (!this.mWebSocket) {
+            const err = new Error('WebSocket未连接，请先调用connect()');
+            console.error(err.message);
+            if (fn) {
+                fn(err);
+            }
+            return;
+        }
+
+        try {
+            if (!await this.mWebSocket.send(data)) {
+                if (fn) {
+                    fn(new Error('WebSocket发送失败'));
+                }
+            } else {
+                if (fn) {
+                    fn();
+                }
+            }
+        } catch (err) {
+            console.error('WebSocket发送异常:', err);
+            if (fn) {
+                fn(err);
+            }
+        }
+    }
+
+    destroy() {
+        try {
+            console.log('强制销毁WebSocket连接');
+            if (this.mWebSocket) {
+                this.connecting = false;
+                this._detachSocket();
+                this.mWebSocket.close();
+            }
+            this.emit('close', true);
+            this.removeAllListeners();
+        } catch (err) {
+            console.error('WebSocket destroy失败:', err);
+        }
+    }
+
+    removeAllListeners(event) {
+        if (event) {
+            super.removeAllListeners(event);
+        } else {
+            super.removeAllListeners();
+        }
+    }
+}
