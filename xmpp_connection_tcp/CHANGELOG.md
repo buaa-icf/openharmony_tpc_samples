@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.4
+- Optimize the calling logic and add event listeners and callbacks.
+
 ## 1.0.3
 - Update README url
 
