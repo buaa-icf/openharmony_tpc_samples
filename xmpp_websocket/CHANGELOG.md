@@ -1,6 +1,9 @@
 # Changelog[.gitignore](entry%2F.gitignore)
 
-## 1.0.4
+## 1.0.5
+- Optimize the calling logic and add event listeners and callbacks.
+
+- ## 1.0.4
 - Update README url
 
 ## 1.0.3

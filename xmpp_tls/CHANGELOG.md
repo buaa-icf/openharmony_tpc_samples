@@ -1,6 +1,10 @@
 # Changelog
 
-## 1.0.2
+## 1.0.3
+- Optimize the calling logic, add listener events and callback events, and add CA certificate verification.
+
+
+- ## 1.0.2
 - Update README url
 
 ## 1.0.1
