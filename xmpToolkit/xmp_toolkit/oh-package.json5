@@ -9,10 +9,10 @@
   "ohos": {
     "org": "opensource"
   },
-  "version": "1.0.0-rc.0",
+  "version": "1.0.0-rc.1",
   "description": "For extracting XMP metadata from image, video, and audio files",
   "main": "Index.ets",
-  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/xmp_toolkit",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/xmpToolkit",
   "type": "module",
   "license": "Apache-2.0",
   "tags": [
