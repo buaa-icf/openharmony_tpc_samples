@@ -106,14 +106,20 @@ class Connection extends EventEmitter {
     _detachSocket() {
         console.log("xmpp--- _detachSocket --start")
         const { socketListeners, socket } = this;
+        // 修复：检查socket是否存在
+        if (!socket) {
+            // Socket已经被清理，清空监听器记录即可
+            for (const k of Object.getOwnPropertyNames(socketListeners)) {
+                delete socketListeners[k];
+            }
+            return;
+        }
         for (const k of Object.getOwnPropertyNames(socketListeners)) {
             socket.removeListener(k, socketListeners[k]);
             delete socketListeners[k];
         }
         this.socket = null;
         console.log("xmpp--- _detachSocket --end")
-
-        return socket;
     }
 
     _onElement(element) {
@@ -190,11 +196,10 @@ class Connection extends EventEmitter {
 
     _detachParser() {
         const listeners = this.parserListeners;
-        // 修复：检查socket是否存在
-        if (!socket) {
-            // Socket已经被清理，清空监听器记录即可
-            for (const k of Object.getOwnPropertyNames(socketListeners)) {
-                delete socketListeners[k];
+        if (!this.parser) {
+            // parser已经被清理，清空监听器记录即可
+            for (const k of Object.getOwnPropertyNames(listeners)) {
+                delete listeners[k];
             }
             return;
         }
