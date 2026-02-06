@@ -155,6 +155,8 @@ constructor(macSizeInBits: number, padding: BlockCipherPadding | null)
 
 ## 约束与限制
 
+在下述版本验证通过
+
 - DevEco Studio: 6.0.0 Release SDK: API20(6.0.0.47)
 - DevEco Studio: 5.1.1 Release SDK: API19(5.1.1.208)
 - DevEco Studio: 5.1.0 Release SDK: API17(5.1.0.150)
