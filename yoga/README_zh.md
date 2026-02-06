@@ -92,7 +92,7 @@ child.free();
 
 在下述版本验证通过：
 
-- IDE: DevEco Studio 5.1.0 Release - 5.1.0.849, SDK: API12。
+- DevEco Studio: 5.1.0 Release - 5.1.0.849, SDK: API12。
 
 ## 目录结构
 
