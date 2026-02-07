@@ -222,6 +222,27 @@ static void SetupTextureParameters(spAtlasPage* self, GLuint textureId,
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, uWrap);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, vWrap);
     
+    const int maxValue = 255;
+    const int bytesPerPixel = 4;
+
+    // 定义RGBA分量的偏移量常量
+    const int greedOffset = 1;
+    const int blueOffset = 2;
+    const int alphaOffset = 3;
+    
+    // 对像素数据进行预乘透明度处理
+    for (int i = 0; i < width * height * bytesPerPixel; i += bytesPerPixel) {
+        unsigned char r = pixels[i];
+        unsigned char g = pixels[i + greedOffset];
+        unsigned char b = pixels[i + blueOffset];
+        unsigned char a = pixels[i + alphaOffset];
+        
+        pixels[i] = (r * a) / maxValue;
+        pixels[i + greedOffset] = (g * a) / maxValue;
+        pixels[i + blueOffset] = (b * a) / maxValue;
+        // alpha通道保持不变
+    }
+    
     // 上传纹理数据
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
     
