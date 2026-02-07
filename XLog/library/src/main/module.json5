@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "xlog",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

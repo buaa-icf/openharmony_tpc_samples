@@ -1,0 +1,23 @@
+{
+  "types": "",
+  "keywords": [
+    "OpenHarmony",
+    "HarmonyOS",
+    "OpenHarmony",
+    "xlog"
+  ],
+  "author": "ohos_tpc",
+  "description": "Lightweight,High Performance,log component",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/XLog",
+  "main": "Index.ets",
+  "type": "module",
+  "version": "1.3.1-rc.1",
+  "tags": [
+    "Tool"
+  ],
+  "license": "Apache License 2.0",
+  "dependencies": {
+    "libxlog_napi.so": 'file:./src/main/cpp/types/xlog_napi'
+  },
+  "name": "@ohos/xlog"
+}

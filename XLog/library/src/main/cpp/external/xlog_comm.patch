@@ -1,0 +1,325 @@
+From e864a9577839425ca7ef37de32f6df6d4c627701 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?=E5=9F=8Emeto?= <myxuan475@126.com>
+Date: Mon, 2 Feb 2026 18:11:31 +0800
+Subject: [PATCH] =?UTF-8?q?xlog=E9=B8=BF=E8=92=99=E5=8C=96?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: 城meto <myxuan475@126.com>
+---
+ comm/ohos/get_thread_id.cc      | 32 +++++++++++++++++
+ comm/ohos/get_thread_id.h       | 29 +++++++++++++++
+ comm/ohos/ohos_alarm.h          | 57 +++++++++++++++++++++++++++++
+ comm/ohos/wakeuplock.cc         | 64 +++++++++++++++++++++++++++++++++
+ comm/ohos/wakeuplock.h          | 40 +++++++++++++++++++++
+ comm/ohos/xlogger_threadinfo.cc | 38 ++++++++++++++++++++
+ 6 files changed, 260 insertions(+)
+ create mode 100644 comm/ohos/get_thread_id.cc
+ create mode 100644 comm/ohos/get_thread_id.h
+ create mode 100644 comm/ohos/ohos_alarm.h
+ create mode 100644 comm/ohos/wakeuplock.cc
+ create mode 100644 comm/ohos/wakeuplock.h
+ create mode 100644 comm/ohos/xlogger_threadinfo.cc
+
+diff --git a/comm/ohos/get_thread_id.cc b/comm/ohos/get_thread_id.cc
+new file mode 100644
+index 0000000..15f8835
+--- /dev/null
++++ b/comm/ohos/get_thread_id.cc
+@@ -0,0 +1,32 @@
++/*
++ * Copyright (c) 2021 Huawei Device Co., Ltd.
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *     http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++#if !is_mingw
++#include <unistd.h>
++#include <sys/syscall.h>
++#else
++#include <windows.h>
++#endif
++
++#include "get_thread_id.h"
++
++long get_thread_id(void)
++{
++#if !is_mingw
++    return syscall(SYS_gettid);
++#else
++    return GetCurrentThreadId();
++#endif // !is_mingw
++}
+\ No newline at end of file
+diff --git a/comm/ohos/get_thread_id.h b/comm/ohos/get_thread_id.h
+new file mode 100644
+index 0000000..9211a05
+--- /dev/null
++++ b/comm/ohos/get_thread_id.h
+@@ -0,0 +1,29 @@
++/*
++ * Copyright (c) 2021 Huawei Device Co., Ltd.
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *     http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++#ifndef GET_TID_H
++#define GET_TID_H
++
++#ifdef __cplusplus
++extern "C" {
++#endif
++
++long get_thread_id(void);
++
++#ifdef __cplusplus
++}
++#endif
++
++#endif /* GET_TID_H */
+\ No newline at end of file
+diff --git a/comm/ohos/ohos_alarm.h b/comm/ohos/ohos_alarm.h
+new file mode 100644
+index 0000000..85063fe
+--- /dev/null
++++ b/comm/ohos/ohos_alarm.h
+@@ -0,0 +1,57 @@
++/****************************************************************************
++ ****************************************************************************
++ ***
++ ***   This header was automatically generated from a Linux kernel header
++ ***   of the same name, to make information necessary for userspace to
++ ***   call into the kernel available to libc.  It contains only constants,
++ ***   structures, and macros generated from the original header, and thus,
++ ***   contains no copyrightable information.
++ ***
++ ***   To edit the content of this header, modify the corresponding
++ ***   source file (e.g. under external/kernel-headers/original/) then
++ ***   run bionic/libc/kernel/tools/update_all.py
++ ***
++ ***   Any manual change here will be lost the next time this script will
++ ***   be run. You've been warned!
++ ***
++ ****************************************************************************
++ ****************************************************************************/
++#ifndef _UAPI_LINUX_OHOS_ALARM_H
++#define _UAPI_LINUX_OHOS_ALARM_H
++#include <linux/ioctl.h>
++// #include <linux/time.h>
++/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
++enum android_alarm_type {
++    ANDROID_ALARM_RTC_WAKEUP,
++    ANDROID_ALARM_RTC,
++    ANDROID_ALARM_ELAPSED_REALTIME_WAKEUP,
++    /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
++    ANDROID_ALARM_ELAPSED_REALTIME,
++    ANDROID_ALARM_SYSTEMTIME,
++    ANDROID_ALARM_TYPE_COUNT,
++};
++/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
++enum android_alarm_return_flags {
++    ANDROID_ALARM_RTC_WAKEUP_MASK = 1U << ANDROID_ALARM_RTC_WAKEUP,
++    ANDROID_ALARM_RTC_MASK = 1U << ANDROID_ALARM_RTC,
++    ANDROID_ALARM_ELAPSED_REALTIME_WAKEUP_MASK =
++        /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
++    1U << ANDROID_ALARM_ELAPSED_REALTIME_WAKEUP,
++    ANDROID_ALARM_ELAPSED_REALTIME_MASK = 1U << ANDROID_ALARM_ELAPSED_REALTIME,
++    ANDROID_ALARM_SYSTEMTIME_MASK = 1U << ANDROID_ALARM_SYSTEMTIME,
++    /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
++    ANDROID_ALARM_TIME_CHANGE_MASK = 1U << 16
++};
++#define ANDROID_ALARM_CLEAR(type) _IO('a', 0 | ((type) << 4))
++#define ANDROID_ALARM_WAIT        _IO('a', 1)
++/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
++#define ALARM_IOW(c, type, size)         _IOW('a', (c) | ((type) << 4), size)
++#define ANDROID_ALARM_SET(type)          ALARM_IOW(2, type, struct timespec)
++#define ANDROID_ALARM_SET_AND_WAIT(type) ALARM_IOW(3, type, struct timespec)
++#define ANDROID_ALARM_GET_TIME(type)     ALARM_IOW(4, type, struct timespec)
++/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
++#define ANDROID_ALARM_SET_RTC            _IOW('a', 5, struct timespec)
++#define ANDROID_ALARM_BASE_CMD(cmd)      (cmd & ~(_IOC(0, 0, 0xf0, 0)))
++#define ANDROID_ALARM_IOCTL_TO_TYPE(cmd) (_IOC_NR(cmd) >> 4)
++#endif
++/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+diff --git a/comm/ohos/wakeuplock.cc b/comm/ohos/wakeuplock.cc
+new file mode 100644
+index 0000000..356b6c5
+--- /dev/null
++++ b/comm/ohos/wakeuplock.cc
+@@ -0,0 +1,64 @@
++/*
++ * Copyright (C) 2025 Huawei Device Co., Ltd.
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *     http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++#include "wakeuplock.h"
++#include "assert/__assert.h"
++#include "xlogger/xlogger.h"
++
++#include "platform_comm.h"
++
++namespace mars {
++namespace comm {
++
++WakeUpLock::WakeUpLock()
++{
++    object_ = wakeupLock_new();
++    ASSERT(object_);
++    xinfo2("new wakeuplock:%p", object_);
++}
++
++WakeUpLock::~WakeUpLock()
++{
++    ASSERT(object_);
++    xinfo2("delete wakeuplock:%p", object_);
++
++    if (IsLocking())
++        wakeupLock_Unlock(object_);
++
++    wakeupLock_delete(object_);
++}
++
++void WakeUpLock::Lock(int64_t _timelock)
++{
++    wakeupLock_Lock_Timeout(object_, _timelock);
++}
++
++void WakeUpLock::Lock()
++{
++    wakeupLock_Lock(object_);
++}
++
++void WakeUpLock::Unlock()
++{
++    wakeupLock_Unlock(object_);
++}
++
++bool WakeUpLock::IsLocking()
++{
++    return wakeupLock_IsLocking(object_);
++}
++
++} // namespace comm
++} // namespace mars
+diff --git a/comm/ohos/wakeuplock.h b/comm/ohos/wakeuplock.h
+new file mode 100644
+index 0000000..46662cd
+--- /dev/null
++++ b/comm/ohos/wakeuplock.h
+@@ -0,0 +1,40 @@
++/*
++ * Copyright (C) 2025 Huawei Device Co., Ltd.
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *     http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++#ifndef OHOS_WAKEUPLOCK_H_
++#define OHOS_WAKEUPLOCK_H_
++
++#include <stdint.h>
++
++namespace mars {
++namespace comm {
++
++class WakeUpLock {
++public:
++    WakeUpLock();
++    ~WakeUpLock();
++
++    void Lock(int64_t _timelock); // ms
++    void Lock();
++    void Unlock();
++    bool IsLocking();
++
++private:
++    void *object_;
++};
++
++} // namespace comm
++} // namespace mars
++#endif /* WAKEUPLOCK_H_ */
+diff --git a/comm/ohos/xlogger_threadinfo.cc b/comm/ohos/xlogger_threadinfo.cc
+new file mode 100644
+index 0000000..6a7cc36
+--- /dev/null
++++ b/comm/ohos/xlogger_threadinfo.cc
+@@ -0,0 +1,38 @@
++/*
++ * Copyright (C) 2025 Huawei Device Co., Ltd.
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *     http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++#include <unistd.h>
++#include <boost/cstdint.hpp>
++#include "compiler_util.h"
++#include "get_thread_id.h"
++
++extern "C" {
++EXPORT_FUNC int_least64_t xlogger_pid()
++{
++    static int_least64_t pid = getpid();
++    return pid;
++}
++
++EXPORT_FUNC int_least64_t xlogger_tid()
++{
++    return get_thread_id();
++}
++
++EXPORT_FUNC int_least64_t xlogger_maintid()
++{
++    static int_least64_t pid = getpid();
++    return pid;
++}
++}
+--
+2.43.0
+

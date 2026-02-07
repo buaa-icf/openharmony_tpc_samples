@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "Xlog",
+        "License": "Apache License",
+        "License File": "LICENSE",
+        "Version Number": "v1.3.0",
+        "Owner" : "xiafeng@huawei.com",
+        "Upstream URL": "https://gitee.com/ttencent/mars.git",
+        "Description": "Lightweight,High Performance,Cross Platform, log component"
+    }
+]

@@ -75,3 +75,6 @@
 [submodule "ohos_rive/library/src/main/cpp/boundscheck/third_party_bounds_checking_function"]
 	path = ohos_rive/library/src/main/cpp/boundscheck/third_party_bounds_checking_function
 	url = https://gitee.com/openharmony/third_party_bounds_checking_function.git
+[submodule "XLog/library/src/main/cpp/mars"]
+	path = XLog/library/src/main/cpp/mars
+	url = https://gitee.com/ttencent/mars.git
