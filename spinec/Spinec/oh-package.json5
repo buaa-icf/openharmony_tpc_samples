@@ -9,7 +9,7 @@
   "ohos": {
     "org": "opensource"
   },
-  "version": "1.0.3",
+  "version": "1.0.3-rc.1",
   "description": "2D skeletal animation runtimes for Spine.",
   "main": "Index.ets",
   "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/spinec",
