@@ -33,7 +33,7 @@ buildtools="configure"
 
 builddir=openssl-${pkgname}
 packagename=$builddir.zip
-patchflag=false
+patchflag=true
 
 source envset.sh
 
@@ -43,7 +43,7 @@ prepare() {
     if $patchflag
     then
         cd $builddir
-        # 屏蔽测试bug
+        patch -p1 < `pwd`/../armcap-ohos-support.patch
         # patch只需要打一次,关闭打patch
         patchflag=false
         cd $OLDPWD

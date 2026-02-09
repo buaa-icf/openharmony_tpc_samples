@@ -1,6 +1,6 @@
 {
   "name": "@ohos/libssh",
-  "version": "1.0.3",
+  "version": "1.0.4-rc.0",
   "description": "A HarmonyOS third-party library that supports both SFTP servers and SSH clients, encapsulated based on the libssh-0.11.1 C++ library.",
   "main": "Index.ets",
   "author": "ohos_tpc",
