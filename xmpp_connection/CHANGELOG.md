@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.0.4
+## 1.0.4-rc.0
 - Fixed an issue with online status monitoring.
 - Added socket empty check logic.
 - Fixed a logic error during XMPPS connection.
