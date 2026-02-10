@@ -35,8 +35,6 @@ struct Demo {
   @State nameprefix: string = 'test_prefix';
   @State logPath: string = getContext().filesDir + '/xlog';
   @State cachDir: string = getContext().cacheDir + '/xlog';
-  controller: TextAreaController = new TextAreaController();
-  @State logContent: string[] = [];
   @State levelIndex: number = 1;
   @State arrayLevel: Array<SelectOption> = [
     {value: 'VERBOSE'},
@@ -100,14 +98,6 @@ struct Demo {
 
   private showOutput(name: string, desc: string): void {
     console.log(`${name}: ${desc}`)
-    if (this.logContent.length >= 20) {
-      this.logContent = this.logContent.slice(1);
-    }
-    this.logContent.push(`${name} ${desc}`);
-
-    setTimeout(()=>{
-      this.controller.caretPosition(this.logContent.join('\n').length);
-    }, 5)
   }
 
   public showResult(name: string, result: number, desc?: string): void {
@@ -135,19 +125,6 @@ struct Demo {
       Text('XLog Demo')
         .fontSize(30)
         .fontWeight(FontWeight.Bold)
-      Column() {
-        TextArea({text: this.logContent.join('\n'), controller: this.controller})
-          .fontSize(14)
-          .fontColor('#666666')
-          .margin({ bottom: 3 })
-          .textAlign(TextAlign.Start)
-          .width('100%')
-      }.width('100%')
-      .height('30%')
-      .padding(10)
-      .backgroundColor('#F5F5F5')
-      .borderRadius(8)
-      .margin({ bottom: 5 })
       Scroll() {
         Column({ space: 5 }) {
           Flex({ direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
@@ -205,7 +182,6 @@ struct Demo {
               .height('40vp')
               .onChange((value: string) => {
                 this.nameprefix = value;
-                this.showOutput('名称前缀', this.nameprefix)
               })
           }
           Flex({ direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
@@ -250,6 +226,7 @@ struct Demo {
           Flex({ direction: FlexDirection.Row, alignItems: ItemAlign.Center }) {
             Button(`创建对象`).onClick(event => {
               console.log('Xlog_newXlogInstance ');
+              this.showOutput('名称前缀', this.nameprefix)
               let xLogConfig: XLogConfig = this.getConfig()
               let ret = this.log?.createXlog(xLogConfig);
               if (ret) {

@@ -1,7 +1,7 @@
 [
     {
         "Name": "Xlog",
-        "License": "Apache License",
+        "License": "Apache License 2.0",
         "License File": "LICENSE",
         "Version Number": "v1.3.0",
         "Owner" : "xiafeng@huawei.com",
