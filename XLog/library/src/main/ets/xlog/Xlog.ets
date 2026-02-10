@@ -135,14 +135,16 @@ class Xlog extends Log.LogImp {
 
   public createXlog(config: XLogConfig): boolean {
     if (this.logInstance >= 0) {
+      console.error('Xlog没有释放，请先释放')
       return false;
     }
     this.xlogConfig = config;
     this.logInstance = native.native_newXlogInstance(config);
-    if (this.logInstance > 0) {
-      return true;
+    if (this.logInstance < 0) {
+      console.error('Xlog创建失败')
+      return false;
     }
-    return false;
+    return true;
   }
 
   public logWrite2(level: number, tag: string, filename: string, funcname: string,
