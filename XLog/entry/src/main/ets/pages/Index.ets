@@ -321,7 +321,7 @@ struct Demo {
         .margin({ bottom: 150, right: 20 })
       }
       .scrollable(ScrollDirection.Vertical).scrollBar(BarState.Auto)
-      .scrollBarColor(Color.Blue).scrollBarWidth(20).height('65%')
+      .scrollBarColor(Color.Blue).scrollBarWidth(20).height('100%')
     }.gridSpan(10)
   }
 }

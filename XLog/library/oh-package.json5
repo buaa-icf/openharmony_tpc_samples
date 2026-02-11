@@ -8,7 +8,7 @@
   ],
   "author": "ohos_tpc",
   "description": "Lightweight,High Performance,log component",
-  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/XLog",
+  "repository": "https://gitcode.com/openharmony-tpc/openharmony_tpc_samples/tree/master/XLog",
   "main": "Index.ets",
   "type": "module",
   "version": "1.0.0-rc.1",
