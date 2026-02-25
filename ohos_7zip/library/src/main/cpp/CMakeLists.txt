@@ -22,6 +22,7 @@ add_library(oh7zip SHARED napi_init.cpp
 
 
 target_link_libraries(oh7zip PUBLIC libace_napi.z.so libffrt.z.so)
+target_link_libraries(oh7zip PUBLIC hilog_ndk.z.so)
 target_link_libraries(oh7zip PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../../../libs/${OHOS_ARCH}/lib7zz.so)
 target_include_directories(oh7zip PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
                                          ${CMAKE_CURRENT_SOURCE_DIR}/include)

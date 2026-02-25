@@ -24,23 +24,24 @@ struct Test7z {
   @State uncompressAsyncText: string = "stop test"
   @State compressSyncText: string = "stop test"
   @State compressAsyncText: string = "stop test"
+  @State dstCheckText: string = "dst check not run"
   private uncompress: Uncompress = new Uncompress()
   private compress: Compress = new Compress()
   private uncompressConfig: Config7z[] = [
     {
       src: getContext().resourceDir + "/test_7z.7z",
       dst: getContext().filesDir,
-      pwd: "test_7z"
+      pwd: 'test_7z'
     },
     {
       src: getContext().resourceDir + "/test_rar.rar",
       dst: getContext().filesDir,
-      pwd: "test_rar"
+      pwd: 'test_rar'
     },
     {
       src: getContext().resourceDir + "/test_zip.zip",
       dst: getContext().filesDir,
-      pwd: "test_zip"
+      pwd: 'test_zip'
     },
     {
       src: getContext().resourceDir + "/test_tar.tar.gz",
@@ -55,34 +56,34 @@ struct Test7z {
     {
       src: getContext().resourceDir + "/test",
       dst: getContext().filesDir + "/test_7z.7z",
-      pwd: "test_7z",
-      fmt: "7z"
+      pwd: 'test_7z',
+      fmt: '7z'
     },
     {
       src: getContext().resourceDir + "/test",
       dst: getContext().filesDir + "/test_zip.zip",
-      pwd: "test_zip",
-      fmt: "zip"
+      pwd: 'test_zip',
+      fmt: 'zip'
     },
     {
       src: getContext().resourceDir + "/test",
       dst: getContext().filesDir + "/test_tar.tar",
-      fmt: "tar"
+      fmt: 'tar '
     },
     {
       src: getContext().resourceDir + "/test_tar.tar",
       dst: getContext().filesDir + "/test_tar.tar.xz",
-      fmt: "xz"
+      fmt: 'xz'
     },
     {
       src: getContext().resourceDir + "/test_tar.tar",
       dst: getContext().filesDir + "/test_tar.tar.bzip2",
-      fmt: "bzip2"
+      fmt: 'bzip2'
     },
     {
       src: getContext().resourceDir + "/test_tar.tar",
       dst: getContext().filesDir + "/test_tar.tar.gz",
-      fmt: "gzip"
+      fmt: 'gzip'
     }
   ]
 
@@ -149,6 +150,47 @@ struct Test7z {
     }
   }
 
+  // demo：专门测试压缩时 dst 路径合法性相关的错误码（主要是 3 和 4 ）
+  testDstValidation() {
+    // 复用已有的 src 路径，保证源路径是合法的
+    const baseSrc: string = getContext().resourceDir + '/test';
+
+    const configs: Config7z[] = [
+      // 场景1：dst 为空字符串 -> 期望触发错误码 3 (ILLEGAL_DST)
+      {
+        src: baseSrc,
+        dst: '',
+        fmt: '7z'
+      },
+      // 场景2：dst 指向一个已存在的目录 -> 期望触发错误码 3 (ILLEGAL_DST)
+      {
+        src: baseSrc,
+        dst: getContext().filesDir,
+        fmt: '7z'
+      },
+      // 场景3：dst 的父目录不存在 -> 期望触发错误码 3 (ILLEGAL_DST)
+      {
+        src: baseSrc,
+        dst: getContext().filesDir + '/not_exist_dir/out.7z',
+        fmt: '7z'
+      },
+      // 场景4：尝试写入可能无权限的路径 -> 通常期望错误码 4 (DST_NO_PERMISSION)，视实际系统权限而定
+      {
+        src: baseSrc,
+        dst: '/system/oh7zip_test.7z',
+        fmt: '7z'
+      }
+    ];
+
+    const results: number[] = [];
+    for (let i = 0; i < configs.length; i++) {
+      let code = this.compress.compressSync(configs[i]);
+      results.push(code);
+    }
+
+    this.dstCheckText = `dstEmpty=${results[0]}, dstDir=${results[1]}, dstNoParent=${results[2]}, dstNoPerm=${results[3]}`;
+  }
+
   build() {
     Column() {
       Text(this.uncompressSyncText)
@@ -190,6 +232,17 @@ struct Test7z {
         .onClick(async () => {
           this.testCompressAsync()
         })
+      Text().height("10%")
+      Text(this.dstCheckText)
+        .fontSize(16)
+        .fontWeight(FontWeight.Bold)
+        .margin({ bottom: 5 })
+      Button("test dst validation")
+        .width("50%")
+        .onClick(() => {
+          this.testDstValidation()
+        })
+
     }
     .height('100%')
     .width('100%')
