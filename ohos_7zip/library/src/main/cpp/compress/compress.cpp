@@ -16,13 +16,68 @@
 #include "compress.h"
 #include "task_pool/task_pool.h"
 #include <fstream>
+#include <filesystem>
+#include <cstdio>
+
+#if __has_include(<hilog/log.h>)
+#include <hilog/log.h>
+#define OH7ZIP_HAS_HILOG 1
+#else
+#define OH7ZIP_HAS_HILOG 0
+#endif
+
 
 extern int Main2(int, char **);
 
 namespace Oh7zip {
 
+static constexpr unsigned int OH7ZIP_LOG_DOMAIN = 0x0201;
+static constexpr const char* OH7ZIP_LOG_TAG = "oh7zip";
+
 static constexpr int MaxSupportFmt = 6;
 static const std::string supportFmt_[MaxSupportFmt]{"zip", "7z", "tar", "xz", "gzip", "bzip2"};
+
+static void LogIllegalDst(const std::string &dst, const char *reason)
+{
+    const char *safeReason = (reason == nullptr) ? "(null)" : reason;
+
+#if OH7ZIP_HAS_HILOG
+    OH_LOG_Print(LOG_APP, LOG_ERROR, OH7ZIP_LOG_DOMAIN, OH7ZIP_LOG_TAG,
+        "illegal dst, reason=%{public}s dst=%{public}s", safeReason, dst.c_str());
+#endif
+}
+
+static void LogDstParentPermOnWriteFail(const std::string &dst)
+{
+    std::filesystem::path dstPath(dst);
+    std::filesystem::path parentPath = dstPath.parent_path();
+    if (parentPath.empty()) {
+        std::error_code ec;
+        parentPath = std::filesystem::current_path(ec);
+    }
+    std::error_code ec;
+    auto st = std::filesystem::status(parentPath, ec);
+    auto perms = st.permissions();
+
+    char rwx[10] = {
+        (perms & std::filesystem::perms::owner_read) != std::filesystem::perms::none ? 'r' : '-',
+        (perms & std::filesystem::perms::owner_write) != std::filesystem::perms::none ? 'w' : '-',
+        (perms & std::filesystem::perms::owner_exec) != std::filesystem::perms::none ? 'x' : '-',
+        (perms & std::filesystem::perms::group_read) != std::filesystem::perms::none ? 'r' : '-',
+        (perms & std::filesystem::perms::group_write) != std::filesystem::perms::none ? 'w' : '-',
+        (perms & std::filesystem::perms::group_exec) != std::filesystem::perms::none ? 'x' : '-',
+        (perms & std::filesystem::perms::others_read) != std::filesystem::perms::none ? 'r' : '-',
+        (perms & std::filesystem::perms::others_write) != std::filesystem::perms::none ? 'w' : '-',
+        (perms & std::filesystem::perms::others_exec) != std::filesystem::perms::none ? 'x' : '-',
+        '\0'
+    };
+
+#if OH7ZIP_HAS_HILOG
+    OH_LOG_Print(LOG_APP, LOG_ERROR, OH7ZIP_LOG_DOMAIN, OH7ZIP_LOG_TAG,
+        "write-open failed, dst=%{public}s parent=%{public}s perms(oct)=%{public}o perms(rwx)=%{public}s ec=%{public}d",
+        dst.c_str(), parentPath.string().c_str(), static_cast<unsigned>(perms), rwx, ec.value());
+#endif
+}
 
 static bool HasWritePermission(std::string path)
 {
@@ -45,6 +100,28 @@ static int IsSupport(std::string fmt)
     return -1;
 }
 
+static ErrorInfo CheckDstPath(const std::string &dst)
+{
+    if (dst.empty()) {
+        LogIllegalDst(dst, "dst empty");
+        return ErrorInfo::ILLEGAL_DST;
+    }
+    std::filesystem::path dstPath(dst);
+    std::filesystem::path parentPath = dstPath.parent_path();
+    if (parentPath.empty()) {
+        parentPath = std::filesystem::current_path();
+    }
+    if (!std::filesystem::exists(parentPath) || !std::filesystem::is_directory(parentPath)) {
+        LogIllegalDst(dst, "parent missing or not directory");
+        return ErrorInfo::ILLEGAL_DST;
+    }
+    if (std::filesystem::exists(dstPath) && std::filesystem::is_directory(dstPath)) {
+        LogIllegalDst(dst, "dst is a directory");
+        return ErrorInfo::ILLEGAL_DST;
+    }
+    return ErrorInfo::OK;
+}
+
 static ErrorInfo CheckConfig(std::shared_ptr<Config7z> config)
 {
     if (config == nullptr) {
@@ -58,9 +135,6 @@ static ErrorInfo CheckConfig(std::shared_ptr<Config7z> config)
             return ErrorInfo::ILLEGAL_SRC;
         }
     }
-    if (config->dst.empty()) {
-        return ErrorInfo::ILLEGAL_DST;
-    }
     int ret = IsSupport(config->fmt);
     if (ret < 0) {
         return ErrorInfo::COMPRESS_FMT_NOT_SUPPURT;
@@ -69,7 +143,12 @@ static ErrorInfo CheckConfig(std::shared_ptr<Config7z> config)
     } else {
         
     }
+    ErrorInfo dstRet = CheckDstPath(config->dst);
+    if (dstRet != ErrorInfo::OK) {
+        return dstRet;
+    }
     if (!HasWritePermission(config->dst)) {
+        LogDstParentPermOnWriteFail(config->dst);
         return ErrorInfo::DST_NO_PERMISSION;
     }
     return ErrorInfo::OK;
