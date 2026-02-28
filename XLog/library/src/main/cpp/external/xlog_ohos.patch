@@ -1516,6 +1516,68 @@ index b96aea4..017ca8a 100644
  endif()
  
  # add_library(${PROJECT_NAME} STATIC ${SELF_SRC_FILES})
+diff --git a/log/src/appender.cc b/log/src/appender.cc
+index 7a0c181..83d4b31 100644
+--- a/log/src/appender.cc
++++ b/log/src/appender.cc
+@@ -131,8 +131,13 @@ void XloggerAppender::Release(XloggerAppender*& _appender) {
+     _appender = nullptr;
+ }
+ 
+-XloggerAppender::XloggerAppender(const XLogConfig& _config)
+-                        : thread_async_(boost::bind(&XloggerAppender::__AsyncLogThread, this)) {
++XloggerAppender::XloggerAppender(const XLogConfig &_config)
++    : thread_async_(boost::bind(&XloggerAppender::__AsyncLogThread, this)),
++      thread_delete_cache_timeout_(boost::bind(&XloggerAppender::__DelTimeoutFile, this, _config.cachedir_)),
++      thread_move_oldfiles_(
++          boost::bind(&XloggerAppender::__MoveOldFiles, this, _config.cachedir_, _config.logdir_, _config.nameprefix_)),
++      thread_delete_file_timeout_(boost::bind(&XloggerAppender::__DelTimeoutFile, this, _config.logdir_))
++{
+     Open(_config);
+ }
+ 
+@@ -229,6 +234,9 @@ void XloggerAppender::Close() {
+ 
+     if (thread_async_.isruning())
+         thread_async_.join();
++	thread_delete_cache_timeout_.cancel_after();
++    thread_delete_file_timeout_.cancel_after();
++    thread_move_oldfiles_.cancel_after();
+     
+     ScopedLock buffer_lock(mutex_buffer_async_);
+     if (mmap_file_.is_open()) {
+@@ -256,14 +264,14 @@ void XloggerAppender::Open(const XLogConfig& _config) {
+     if (!config_.cachedir_.empty()) {
+         boost::filesystem::create_directories(config_.cachedir_);
+ 
+-        Thread(boost::bind(&XloggerAppender::__DelTimeoutFile, this, config_.cachedir_)).start_after(2 * 60 * 1000);
+-        Thread(boost::bind(&XloggerAppender::__MoveOldFiles, this, config_.cachedir_, config_.logdir_, config_.nameprefix_)).start_after(3 * 60 * 1000);
++        thread_delete_cache_timeout_.start_after(2 * 60 * 1000);
++        thread_move_oldfiles_.start_after(3 * 60 * 1000);
+ #ifdef __APPLE__
+         setAttrProtectionNone(config_.cachedir_.c_str());
+ #endif
+     }
+ 
+-    Thread(boost::bind(&XloggerAppender::__DelTimeoutFile, this, config_.logdir_)).start_after(2 * 60 * 1000);
++    thread_delete_file_timeout_.start_after(2 * 60 * 1000);
+     boost::filesystem::create_directories(config_.logdir_);
+ #ifdef __APPLE__
+     setAttrProtectionNone(config_.logdir_.c_str());
+diff --git a/log/src/xlogger_appender.h b/log/src/xlogger_appender.h
+index d9bc841..8e7beb1 100644
+--- a/log/src/xlogger_appender.h
++++ b/log/src/xlogger_appender.h
+@@ -90,6 +90,9 @@ class XloggerAppender {
+     comm::Condition cond_buffer_async_;
+     uint64_t max_file_size_ = 0; // 0, will not split log file.
+     long max_alive_time_ = 10 * 24 * 60 * 60;    // 10 days in second
++    comm::Thread thread_delete_cache_timeout_;
++    comm::Thread thread_move_oldfiles_;
++    comm::Thread thread_delete_file_timeout_;
+ 
+     time_t last_time_ = 0;
+     uint64_t last_tick_ = 0;
 diff --git a/log/xlogger_interface.h b/log/xlogger_interface.h
 index f30a4db..8944f56 100644
 --- a/log/xlogger_interface.h

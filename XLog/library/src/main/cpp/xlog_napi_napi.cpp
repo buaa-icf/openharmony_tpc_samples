@@ -265,7 +265,7 @@ napi_value Xlog_napiNapi::native_setMaxAliveTime(napi_env env, napi_callback_inf
     }
     mars::xlog::SetMaxAliveTime(logInstancePtr, aliveSeconds);
 
-    return napiHandler.GetNapiValue<bool>(false);
+    return napiHandler.GetNapiValue<bool>(true);
 }
 
 void Xlog_napiNapi::ExportStub()
