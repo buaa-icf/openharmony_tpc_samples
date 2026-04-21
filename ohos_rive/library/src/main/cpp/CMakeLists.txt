@@ -84,6 +84,21 @@ else ()
     message(FATAL_ERROR "rive-runtime not found at expected location: ${PROJECT_SOURCE_DIR}/../../../../submodules/rive-runtime")
 endif ()
 set(ENV{RIVE_RUNTIME_DIR} "${RIVE_RUNTIME_DIR}")
+
+# Apply local patches to submodules (idempotent)
+set(PATCH_SCRIPT "${PACKAGES_DIR}/patches/apply_patches.sh")
+if(EXISTS "${PATCH_SCRIPT}" AND NOT CMAKE_HOST_WIN32)
+    execute_process(
+        COMMAND bash "${PATCH_SCRIPT}"
+        RESULT_VARIABLE PATCH_RESULT
+        OUTPUT_VARIABLE PATCH_OUTPUT
+        ERROR_VARIABLE PATCH_ERROR
+    )
+    message(STATUS "Patch output:\n${PATCH_OUTPUT}")
+    if(NOT PATCH_RESULT EQUAL 0)
+        message(FATAL_ERROR "Failed to apply submodule patches:\n${PATCH_ERROR}")
+    endif()
+endif()
 # Add an option to remove miniaudio
 # Passed from Gradle with -DWITH_RIVE_AUDIO=ON|OFF
 option(WITH_RIVE_AUDIO "Enable Rive audio support" ON)
@@ -154,6 +169,9 @@ elseif(DEFINED ENV{OHOS_SDK_HOME})
     set(SDK_DIR $ENV{OHOS_SDK_HOME}/${API_VERSION})
     set(OHOS_NDK_PATH ${SDK_DIR}/native)
     message("Using OHOS_NDK from OHOS_SDK_HOME: ${OHOS_NDK_PATH}")
+elseif(DEFINED OHOS_SDK_NATIVE)
+    set(OHOS_NDK_PATH ${OHOS_SDK_NATIVE})
+    message("Using OHOS_NDK from OHOS_SDK_NATIVE (hvigor): ${OHOS_NDK_PATH}")
 else()
     message(FATAL_ERROR "OpenHarmony NDK not found. Please set OHOS_NDK or OHOS_SDK_HOME environment variable.")
 endif()

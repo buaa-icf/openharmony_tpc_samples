@@ -1,0 +1,13 @@
+diff --git a/renderer/premake5_pls_renderer.lua b/renderer/premake5_pls_renderer.lua
+index fe5a95d5..b321706e 100644
+--- a/renderer/premake5_pls_renderer.lua
++++ b/renderer/premake5_pls_renderer.lua
+@@ -126,7 +126,7 @@ newoption({
+ --
+ -- makecommand = makecommand .. ' FLAGS="' .. minify_flags .. '"'
+ 
+-if os.host() == 'macosx' then
++if os.host() == 'macosx' and (rive_target_os == 'macosx' or rive_target_os == 'ios') then
+     if _OPTIONS['os'] == 'ios' and _OPTIONS['variant'] == 'system' then
+         makecommand = makecommand .. ' rive_pls_ios_metallib'
+     elseif _OPTIONS['os'] == 'ios' and _OPTIONS['variant'] == 'emulator' then
