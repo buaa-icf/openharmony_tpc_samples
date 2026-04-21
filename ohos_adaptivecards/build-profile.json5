@@ -7,7 +7,8 @@
         "compatibleSdkVersion": 14,
         "runtimeOS": "OpenHarmony",
         "name": "default",
-        "signingConfig": "default"
+        "signingConfig": "default",
+        "targetSdkVersion": 14
       }
     ]
   },
