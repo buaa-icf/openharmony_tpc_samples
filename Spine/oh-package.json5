@@ -1,4 +1,5 @@
 {
+  "modelVersion": "6.0.2",
   "name": "@ohos/spine",
   "description": "2D skeletal animation runtimes for Spine.",
   "dependencies": {
