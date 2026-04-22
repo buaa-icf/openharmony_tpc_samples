@@ -1,3 +1,9 @@
+import Example1Test from './Example1.test'
+import Example2Test from './Example2.test'
+import Example3Test from './Example3.test'
+import Example4Test from './Example4.test'
+import NetworkExampleTest from './NetworkExample.test'
+import SingleExampleTest from './SingleExample.test'
 /**
  * Apache License
  *
@@ -19,4 +25,10 @@ import abilityTest from './Ability.test';
 
 export default function testsuite() {
   abilityTest();
+  SingleExampleTest()
+  NetworkExampleTest()
+  Example4Test()
+  Example3Test()
+  Example2Test()
+  Example1Test()
 }

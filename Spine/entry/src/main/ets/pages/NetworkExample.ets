@@ -200,35 +200,33 @@ struct NetWorkExample {
 
   render(context: CanvasRenderingContext2D, lastFrameTime: number, skeleton: Skeleton, animationState: AnimationState,
     skeletonRenderer: SkeletonRenderer, bounds: Bound): Delay {
-    // Calculate the delta time between this and the last frame in seconds.
-    let now = Date.now() / 1000;
-    let delta = now - lastFrameTime;
-    lastFrameTime = now;
-
-    // Resize the canvas drawing buffer if the canvas CSS width and height changed
-    // and clear the canvas.
-
-    context.clearRect(0, 0, context.width, context.height);
-
-    // Center the skeleton and resize it so it fits inside the canvas.
-    skeleton.x = context.width / 2;
-    skeleton.y = context.height - context.height * 0.1;
-    let scale = context.height / bounds.height * 0.8;
-    skeleton.scaleX = scale;
-    skeleton.scaleY = -scale;
-
-    // Update and apply the animation state, update the skeleton's
-    // world transforms and render the skeleton.
-    animationState.update(delta);
-    animationState.apply(skeleton);
-    skeleton.updateWorldTransform(Physics.update);
-    skeletonRenderer.draw(skeleton);
-
-    let result: Delay = { time: lastFrameTime, isFinish: true };
-    return result;
+    return renderNetworkExampleFrame(context, lastFrameTime, skeleton, animationState, skeletonRenderer, bounds);
   }
 
   onBackPress(): boolean | void {
     return false;
   }
+}
+
+export function renderNetworkExampleFrame(context: CanvasRenderingContext2D, lastFrameTime: number, skeleton: Skeleton,
+  animationState: AnimationState, skeletonRenderer: SkeletonRenderer, bounds: Bound): Delay {
+  let now = Date.now() / 1000;
+  let delta = now - lastFrameTime;
+  lastFrameTime = now;
+
+  context.clearRect(0, 0, context.width, context.height);
+
+  skeleton.x = context.width / 2;
+  skeleton.y = context.height - context.height * 0.1;
+  let scale = context.height / bounds.height * 0.8;
+  skeleton.scaleX = scale;
+  skeleton.scaleY = -scale;
+
+  animationState.update(delta);
+  animationState.apply(skeleton);
+  skeleton.updateWorldTransform(Physics.update);
+  skeletonRenderer.draw(skeleton);
+
+  let result: Delay = { time: lastFrameTime, isFinish: true };
+  return result;
 }

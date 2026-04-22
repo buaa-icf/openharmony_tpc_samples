@@ -38,6 +38,29 @@ import {
 
 import { Animator as animator, AnimatorResult, AnimatorOptions } from '@kit.ArkUI';
 
+export function renderExample4Frame(context: CanvasRenderingContext2D, lastFrameTime: number, skeleton: Skeleton,
+  animationState: AnimationState, skeletonRenderer: SkeletonRenderer, bounds: Bound): Delay {
+  let now = Date.now() / 1000;
+  let delta = now - lastFrameTime;
+  lastFrameTime = now;
+
+  context.clearRect(0, 0, context.width, context.height);
+
+  skeleton.x = context.width / 2;
+  skeleton.y = context.height - context.height * 0.1;
+  let scale = context.height / bounds.height * 0.5;
+  skeleton.scaleX = scale;
+  skeleton.scaleY = -scale;
+
+  animationState.update(delta);
+  animationState.apply(skeleton);
+  skeleton.updateWorldTransform(Physics.update);
+  skeletonRenderer.draw(skeleton);
+
+  let result: Delay = { time: lastFrameTime, isFinish: true };
+  return result;
+}
+
 @Entry
 @Component
 struct SingleExample {
@@ -314,30 +337,7 @@ struct SingleExample {
 
   render(context: CanvasRenderingContext2D, lastFrameTime: number, skeleton: Skeleton, animationState: AnimationState,
     skeletonRenderer: SkeletonRenderer, bounds: Bound): Delay {
-    // Calculate the delta time between this and the last frame in seconds.
-    let now = Date.now() / 1000; // 获取当前时间（秒）
-    let delta = now - lastFrameTime; // 计算与上一帧的时间差（秒）
-    lastFrameTime = now; // 更新上一帧时间为当前时间
-
-    // and clear the canvas.
-    context.clearRect(0, 0, context.width, context.height); // 清空画布
-
-    // Center the skeleton and resize it so it fits inside the canvas.
-    skeleton.x = context.width / 2; // 将骨骼水平居中（Canvas 宽度的一半）
-    skeleton.y = context.height - context.height * 0.1; // 垂直位置：靠近 Canvas 底部（留 10% 边距）
-    let scale = context.height / bounds.height * 0.5; // 计算缩放比例（基于 Canvas 高度和动画边界框高度）
-    skeleton.scaleX = scale; // 水平缩放
-    skeleton.scaleY = -scale; // 垂直缩放（负值表示 Y 轴翻转，使动画朝上）
-
-    // Update and apply the animation state, update the skeleton's
-    // world transforms and render the skeleton.
-    animationState.update(delta); // 更新动画状态（根据时间差推进动画）
-    animationState.apply(skeleton); // 将动画状态应用到骨骼（更新骨骼的骨骼变换）
-    skeleton.updateWorldTransform(Physics.update); // 更新骨骼的全局变换
-    skeletonRenderer.draw(skeleton); // 渲染骨骼到 Canvas
-
-    let result: Delay = { time: lastFrameTime, isFinish: true };
-    return result;
+    return renderExample4Frame(context, lastFrameTime, skeleton, animationState, skeletonRenderer, bounds);
   }
 
   onBackPress(): boolean | void {
