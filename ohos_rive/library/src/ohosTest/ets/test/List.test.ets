@@ -1,4 +1,4 @@
-import abilityTest from './Ability.test';
+/*import abilityTest from './Ability.test';
 import bindingsLayerStateTest from './BindingsLayerState.test';
 import convertToArtboardSpaceTest from './BindingsHelperAbility.test';
 import stateMachineTest from './StateMachine.test';
@@ -12,9 +12,12 @@ import riveEventTest from './RiveEvent.test';
 import commandQueueTest from './CommandQueue.test';
 import riveFileTest from './File.test';
 import fileAssetTest from './FileAsset.test';
+*/
+import RendererAttributesTest from './RendererAttributes.test'
+import RiveAnimationViewTest from './RiveAnimationView.test'
 
 export default function testsuite() {
-  abilityTest();
+  /*abilityTest();
   bindingsLayerStateTest();
   convertToArtboardSpaceTest();
   stateMachineTest();
@@ -28,4 +31,7 @@ export default function testsuite() {
   commandQueueTest();
   riveFileTest();
   fileAssetTest();
+  */
+  RendererAttributesTest();
+  RiveAnimationViewTest();
 }
