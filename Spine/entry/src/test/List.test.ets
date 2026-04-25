@@ -17,7 +17,9 @@
  */
 
 import localUnitTest from './LocalUnit.test';
+import singleExampleRenderTest from './SingleExampleRender.test';
 
 export default function testsuite() {
   localUnitTest();
+  singleExampleRenderTest();
 }
