@@ -57,6 +57,7 @@ struct NetWorkExample {
           Canvas(this.canvasRenderingContext)
             .width('100%')
             .height('100%')
+            .id('network_canvas')
             .onClick(() => {
               if (this.currentIndex < this.animations.length) {
                 this.animationName = this.animations[this.currentIndex];
@@ -77,18 +78,22 @@ struct NetWorkExample {
         // 加载网络Img
         Row() {
           Button($r('app.string.Load_animation'))
+            .id('network_btn_load')
             .onClick(() => {
               this.loadAnimation();
             });
           Button($r('app.string.Play_animation'))
+            .id('network_btn_play')
             .onClick(() => {
               this._animator?.play();
             });
           Button($r('app.string.Pause_animation'))
+            .id('network_btn_pause')
             .onClick(() => {
               this._animator?.pause();
             });
           Button($r('app.string.Clear_canvas'))
+            .id('network_btn_clear')
             .onClick(() => {
               this._animator?.finish();
               this.animationState?.setEmptyAnimations(0);
@@ -100,31 +105,38 @@ struct NetWorkExample {
 
         Row() {
           Button($r('app.string.aim'))
+            .id('network_btn_aim')
             .onClick(() => {
               this.animationState?.setAnimation(0, 'aim', true);
             });
           Button($r('app.string.death'))
+            .id('network_btn_death')
             .onClick(() => {
               this.animationState?.setAnimation(0, 'death', true);
             });
           Button($r('app.string.idle'))
+            .id('network_btn_idle')
             .onClick(() => {
               this.animationState?.setAnimation(0, 'idle', true);
             });
           Button($r('app.string.jump'))
+            .id('network_btn_jump')
             .onClick(() => {
               this.animationState?.setAnimation(0, 'jump', true);
             });
           Button($r('app.string.run'))
+            .id('network_btn_run')
             .onClick(() => {
               this.animationState?.setAnimation(0, 'run', true);
             });
           Button($r('app.string.shoot'))
+            .id('network_btn_shoot')
             .onClick(() => {
               this.animationState?.setAnimation(0, 'shoot', true);
             });
 
           Button($r('app.string.walk'))
+            .id('network_btn_walk')
             .onClick(() => {
               this.animationState?.setAnimation(0, 'walk', true);
             });
