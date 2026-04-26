@@ -59,6 +59,7 @@ struct SingleExample {
           Canvas(this.canvasRenderingContext)
             .width('100%')
             .height('100%')
+            .id('single_canvas')
             .onClick(() => {
               if (this.currentIndex < this.animations.length) {
                 this.animationName = this.animations[this.currentIndex];
@@ -78,14 +79,17 @@ struct SingleExample {
         // 加载网络Img
         Row() {
           Button($r('app.string.Pause_animation'))
+            .id('single_btn_pause')
             .onClick(() => {
               this._animator?.pause();
             });
           Button($r('app.string.Play_animation'))
+            .id('single_btn_play')
             .onClick(() => {
               this._animator?.play();
             });
           Button($r('app.string.Clear_canvas'))
+            .id('single_btn_clear')
             .onClick(() => {
               this._animator?.finish();
               this.animationState?.setEmptyAnimations(0);
@@ -94,6 +98,7 @@ struct SingleExample {
             });
 
           Button($r('app.string.Resource_6'))
+            .id('single_btn_res6')
             .onClick(() => {
               this.rawfilePath = 'animation6/';
               this.sourcesData.json = 'stretchyman-pro.json';
@@ -109,6 +114,7 @@ struct SingleExample {
 
         Row() {
           Button($r('app.string.Resource_1'))
+            .id('single_btn_res1')
             .onClick(() => {
               this.rawfilePath = 'animation/';
               this.sourcesData.json = 'spineboy-ess.json';
@@ -121,6 +127,7 @@ struct SingleExample {
             });
 
           Button($r('app.string.Resource_2'))
+            .id('single_btn_res2')
             .onClick(() => {
               this.rawfilePath = 'animation2/';
               this.sourcesData.json = 'snowglobe-pro.json';
@@ -132,6 +139,7 @@ struct SingleExample {
               this.animationState?.setAnimation(0, this.animationName, true);
             });
           Button($r('app.string.Resource_3'))
+            .id('single_btn_res3')
             .onClick(() => {
               this.rawfilePath = 'animation3/';
               this.sourcesData.json = 'cloud-pot.json';
@@ -144,6 +152,7 @@ struct SingleExample {
             });
 
           Button($r('app.string.Resource_4'))
+            .id('single_btn_res4')
             .onClick(() => {
               this.rawfilePath = 'animation4/';
               this.sourcesData.json = 'owl-pro.json';
@@ -156,6 +165,7 @@ struct SingleExample {
             });
 
           Button($r('app.string.Resource_5'))
+            .id('single_btn_res5')
             .onClick(() => {
               this.rawfilePath = 'animation5/';
               this.sourcesData.json = 'dragon-ess.json';

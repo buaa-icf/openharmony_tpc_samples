@@ -69,6 +69,7 @@ struct Example3 {
           Canvas(this.canvasRenderingContext)
             .width('100%')
             .height('100%')
+            .id('example3_canvas')
             .onReady(() => {
             })
             .onClick(() => {
@@ -90,10 +91,12 @@ struct Example3 {
         // 加载网络Img
         Row() {
           Button($r('app.string.Store_sandbox_animations'))
+            .id('example3_btn_store')
             .onClick(() => {
               this.copyBundledRealmFiles();
             });
           Button($r('app.string.Load_sandbox_animation'))
+            .id('example3_btn_load')
             .onClick(() => {
               this.loadAnimation();
             });

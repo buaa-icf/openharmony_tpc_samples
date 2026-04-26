@@ -4,6 +4,12 @@ import Example3Test from './Example3.test'
 import Example4Test from './Example4.test'
 import NetworkExampleTest from './NetworkExample.test'
 import SingleExampleTest from './SingleExample.test'
+import SingleExampleUITest from './SingleExampleUI.test'
+import NetworkExampleUITest from './NetworkExampleUI.test'
+import Example1UITest from './Example1UI.test'
+import Example2UITest from './Example2UI.test'
+import Example3UITest from './Example3UI.test'
+import Example4UITest from './Example4UI.test'
 
 /**
  * Apache License
@@ -32,4 +38,10 @@ export default function testsuite() {
   Example3Test()
   Example2Test()
   Example1Test()
+  SingleExampleUITest()
+  NetworkExampleUITest()
+  Example1UITest()
+  Example2UITest()
+  Example3UITest()
+  Example4UITest()
 }

@@ -79,6 +79,7 @@ struct SingleExample {
           Canvas(this.canvasRenderingContext)
             .width('100%')
             .height('100%')
+            .id('example4_canvas')
             .onVisibleAreaChange([0], (isVisible: boolean) => {
               if (isVisible) {
                 this._animator?.play();
@@ -91,18 +92,22 @@ struct SingleExample {
         // 加载网络Img
         Row() {
           Button($r('app.string.Load_animation'))
+            .id('example4_btn_load')
             .onClick(async () => {
               await this.load();
             });
           Button($r('app.string.Pause_animation'))
+            .id('example4_btn_pause')
             .onClick(() => {
               this._animator?.pause();
             });
           Button($r('app.string.Play_animation'))
+            .id('example4_btn_play')
             .onClick(() => {
               this._animator?.play();
             });
           Button($r('app.string.Clear_canvas'))
+            .id('example4_btn_clear')
             .onClick(() => {
               this._animator?.finish();
               this.animationState?.setEmptyAnimations(0);
@@ -113,6 +118,7 @@ struct SingleExample {
 
         Row() {
           Button($r('app.string.Add_listener'))
+            .id('example4_btn_add_listener')
             .onClick(() => {
               // 监听添加方式一
               this.animationState?.addListener({
@@ -154,6 +160,7 @@ struct SingleExample {
             });
 
           Button($r('app.string.Remove_the_listener'))
+            .id('example4_btn_remove_listener')
             .onClick(() => {
               if (this.listener1) {
                 this.animationState?.removeListener(this.listener1);
@@ -161,6 +168,7 @@ struct SingleExample {
             });
 
           Button($r('app.string.Remove_all_listeners'))
+            .id('example4_btn_clear_listeners')
             .onClick(() => {
               this.animationState?.clearListeners();
             });
@@ -168,12 +176,14 @@ struct SingleExample {
 
         Row() {
           Button('getCurrent')
+            .id('example4_btn_get_current')
             .onClick(() => {
               let obj = this.animationState?.getCurrent(0);
               console.info('spine demo getCurrent :' + JSON.stringify(obj));
             });
 
           Button('setAnimationWith')
+            .id('example4_btn_set_anim_with')
             .onClick(async () => {
               let animation = this.skeletonData?.findAnimation('aim');
               this.animationState?.setAnimationWith(1, animation, false);
@@ -182,10 +192,12 @@ struct SingleExample {
 
         Row() {
           Button('clearTrack')
+            .id('example4_btn_clear_track')
             .onClick(async () => {
               this.animationState?.clearTrack(0);
             });
           Button('addAnimation')
+            .id('example4_btn_add_anim')
             .onClick(() => {
               this.animationState?.addAnimation(2, 'shoot');
             });
