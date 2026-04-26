@@ -1,13 +1,26 @@
 {
   "app": {
-    "signingConfigs": [],
+    "signingConfigs": [
+      {
+        "name": "default",
+        "material": {
+          "certpath": "C:/Users/chuanzhenqi/.ohos/config/openharmony/default_Spine_sbywU6K7xKdzj0ZiF6hVS6dKLucx7DJiFIOtaqH3q7A=.cer",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001BF011A81420247229CFF513FF3F62F46C3FFC8BD6F7A2B356B64A0664791D668F80B74687CA774D",
+          "profile": "C:/Users/chuanzhenqi/.ohos/config/openharmony/default_Spine_sbywU6K7xKdzj0ZiF6hVS6dKLucx7DJiFIOtaqH3q7A=.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "C:/Users/chuanzhenqi/.ohos/config/openharmony/default_Spine_sbywU6K7xKdzj0ZiF6hVS6dKLucx7DJiFIOtaqH3q7A=.p12",
+          "storePassword": "0000001BA80E2F72694DAC4EED2D3F0B4FA7597ABA3CD0A918949A8FA6A0C99079735CBF9DFE76D9887150"
+        }
+      }
+    ],
     "products": [
       {
         "name": "default",
         "signingConfig": "default",
-        "compileSdkVersion": 12,
-        "compatibleSdkVersion": 12,
-        "targetSdkVersion": 12
+        "compileSdkVersion": 20,
+        "compatibleSdkVersion": 20,
+        "targetSdkVersion": 20
       }
     ],
     "buildModeSet": [
