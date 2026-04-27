@@ -230,6 +230,41 @@ export class RiveAnimationViewBuilder {
   }
 }
 
+/**
+ * Applies common scene parameters to a RendererAttributes instance.
+ * Extracted so unit tests can call it directly without needing a
+ * @Component struct instance.
+ */
+export function applySceneParams(
+  attrs: RendererAttributes,
+  alignment: Alignment | undefined,
+  fit: Fit | undefined,
+  loop: Loop | undefined,
+  autoplay: boolean,
+  autoBind: boolean | undefined,
+  artboardName: string | undefined,
+  animationName: string | undefined,
+  stateMachineName: string | undefined
+): void {
+  if (alignment !== undefined) {
+    attrs.alignmentIndex = alignment.valueOf();
+    attrs.alignment = alignment;
+  }
+  if (fit !== undefined) {
+    attrs.fitIndex = fit.valueOf();
+    attrs.fit = fit;
+  }
+  if (loop !== undefined) {
+    attrs.loopIndex = loop.valueOf();
+    attrs.loop = loop;
+  }
+  attrs.autoplay = autoplay;
+  attrs.autoBind = autoBind ?? false;
+  attrs.artboardName = artboardName ?? null;
+  attrs.animationName = animationName ?? null;
+  attrs.stateMachineName = stateMachineName ?? null;
+}
+
 @Component
 export struct RiveAnimationView {
 
@@ -828,25 +863,13 @@ export struct RiveAnimationView {
     alignment?: Alignment,
     loop?: Loop
   ): void {
-    const attrs = this.rendererAttributes;
-    if (alignment !== undefined) {
-      attrs.alignmentIndex = alignment.valueOf();
-      attrs.alignment = alignment;
-    }
-    if (fit !== undefined) {
-      attrs.fitIndex = fit.valueOf();
-      attrs.fit = fit;
-    }
-    if (loop !== undefined) {
-      attrs.loopIndex = loop.valueOf();
-      attrs.loop = loop;
-    }
-    attrs.autoplay = autoplay ?? this.controller?.autoplay ?? this.defaultAutoplay;
-    attrs.autoBind = autoBind ?? false;
-    attrs.artboardName = artboardName ?? null;
-    attrs.animationName = animationName ?? null;
-    attrs.stateMachineName = stateMachineName ?? null;
-    attrs.resource = ResourceTypeFactory.makeMaybeResource(resId) || undefined;
+    applySceneParams(
+      this.rendererAttributes,
+      alignment, fit, loop,
+      autoplay ?? this.controller?.autoplay ?? this.defaultAutoplay,
+      autoBind, artboardName, animationName, stateMachineName
+    );
+    this.rendererAttributes.resource = ResourceTypeFactory.makeMaybeResource(resId) || undefined;
 
     this.loadFileFromResource((file: File) => {
       if (this.controller && file) {
@@ -871,25 +894,14 @@ export struct RiveAnimationView {
     alignment?: Alignment,
     loop?: Loop
   ): void {
-    const attrs = this.rendererAttributes;
-    if (alignment !== undefined) {
-      attrs.alignmentIndex = alignment.valueOf();
-      attrs.alignment = alignment;
-    }
-    if (fit !== undefined) {
-      attrs.fitIndex = fit.valueOf();
-      attrs.fit = fit;
-    }
-    if (loop !== undefined) {
-      attrs.loopIndex = loop.valueOf();
-      attrs.loop = loop;
-    }
-    attrs.autoplay = autoplay ?? this.controller?.autoplay ?? this.defaultAutoplay;
-    attrs.autoBind = autoBind ?? false;
-    attrs.artboardName = artboardName ?? null;
-    attrs.animationName = animationName ?? null;
-    attrs.stateMachineName = stateMachineName ?? null;
-    attrs.resource = ResourceTypeFactory.makeMaybeResource(bytes) || undefined;
+    applySceneParams(
+      this.rendererAttributes,
+      alignment, fit, loop,
+      autoplay ?? this.controller?.autoplay ?? this.defaultAutoplay,
+      autoBind, artboardName, animationName, stateMachineName
+    );
+    this.rendererAttributes.resource = ResourceTypeFactory.makeMaybeResource(bytes) || undefined;
+
     this.loadFileFromResource((file: File) => {
       if (this.controller && file) {
         this.controller.setRiveFile(file);
@@ -916,29 +928,17 @@ export struct RiveAnimationView {
     if (file.rendererType !== this.rendererAttributes.rendererType) {
       throw new Error(
         `Incompatible Renderer types: file initialized with ${file.rendererType} ` +
-        `but View is set up for ${this.rendererAttributes.rendererType}`
+          `but View is set up for ${this.rendererAttributes.rendererType}`
       );
     }
 
-    const attrs = this.rendererAttributes;
-    if (alignment !== undefined) {
-      attrs.alignmentIndex = alignment.valueOf();
-      attrs.alignment = alignment;
-    }
-    if (fit !== undefined) {
-      attrs.fitIndex = fit.valueOf();
-      attrs.fit = fit;
-    }
-    if (loop !== undefined) {
-      attrs.loopIndex = loop.valueOf();
-      attrs.loop = loop;
-    }
-    attrs.autoplay = autoplay ?? this.controller?.autoplay ?? this.defaultAutoplay;
-    attrs.autoBind = autoBind ?? false;
-    attrs.artboardName = artboardName ?? null;
-    attrs.animationName = animationName ?? null;
-    attrs.stateMachineName = stateMachineName ?? null;
-    attrs.resource = ResourceTypeFactory.makeMaybeResource(file) || undefined;
+    applySceneParams(
+      this.rendererAttributes,
+      alignment, fit, loop,
+      autoplay ?? this.controller?.autoplay ?? this.defaultAutoplay,
+      autoBind, artboardName, animationName, stateMachineName
+    );
+    this.rendererAttributes.resource = ResourceTypeFactory.makeMaybeResource(file) || undefined;
 
     if (this.controller) {
       this.controller.setRiveFile(file);
