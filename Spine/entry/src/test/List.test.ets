@@ -18,8 +18,18 @@
 
 import localUnitTest from './LocalUnit.test';
 import singleExampleRenderTest from './SingleExampleRender.test';
+import networkExampleRenderTest from './NetworkExampleRender.test';
+import example1RenderTest from './Example1Render.test';
+import example2RenderTest from './Example2Render.test';
+import example3RenderTest from './Example3Render.test';
+import example4RenderTest from './Example4Render.test';
 
 export default function testsuite() {
   localUnitTest();
   singleExampleRenderTest();
+  networkExampleRenderTest();
+  example1RenderTest();
+  example2RenderTest();
+  example3RenderTest();
+  example4RenderTest();
 }
