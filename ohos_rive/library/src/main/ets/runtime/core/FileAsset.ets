@@ -281,7 +281,7 @@ export class RiveRenderImage extends NativeObject {
     if (pixelBytes.byteLength !== width * height * 4) {
       throw new RangeError('Bytes must have size = width * height * 4');
     }
-    const pointer = rive.Napi_RiveRenderImage_cppCreateFromRGBABytes(
+    const pointer: BigInt = rive.Napi_RiveRenderImage_cppCreateFromRGBABytes(
       pixelBytes,
       width,
       height,
@@ -321,7 +321,7 @@ export class RiveRenderImage extends NativeObject {
     if (pixels.length !== width * height) {
       throw new RangeError('Colors must have size = width * height');
     }
-    const pointer = rive.Napi_RiveRenderImage_cppCreateFromARGBInts(
+    const pointer: BigInt = rive.Napi_RiveRenderImage_cppCreateFromARGBInts(
       pixels,
       width,
       height,
@@ -348,7 +348,7 @@ export class RiveRenderImage extends NativeObject {
     rendererType: RendererType = RendererType.Rive,
     premultiplied: boolean = true
   ): RiveRenderImage {
-    const pointer = rive.Napi_RiveRenderImage_cppCreateFromBitmap(pixelMap, rendererType, premultiplied);
+    const pointer: BigInt = rive.Napi_RiveRenderImage_cppCreateFromBitmap(pixelMap, rendererType, premultiplied);
     return new RiveRenderImage(pointer);
   }
 
@@ -389,7 +389,7 @@ export class RiveFont extends NativeObject {
     rendererType: RendererType = RendererType.Rive
   ): RiveFont {
     console.log(`[ohos_rive_ui] FileAsset.ets: cppMakeFont C++ Napi_RiveFont_00024Companion_cppMakeFont`);
-    const pointer = rive.Napi_RiveFont_00024Companion_cppMakeFont(bytes, rendererType);
+    const pointer: BigInt = rive.Napi_RiveFont_00024Companion_cppMakeFont(bytes, rendererType);
     return new RiveFont(pointer);
   }
 }
@@ -424,7 +424,7 @@ export class RiveAudio extends NativeObject {
     rendererType: RendererType = RendererType.Rive
   ): RiveAudio {
     console.log(`[ohos_rive_ui] FileAsset.ets: cppMakeAudio C++ Napi_RiveAudio_00024Companion_cppMakeAudio`);
-    const pointer = rive.Napi_RiveAudio_00024Companion_cppMakeAudio(bytes, rendererType);
+    const pointer: BigInt = rive.Napi_RiveAudio_00024Companion_cppMakeAudio(bytes, rendererType);
     return new RiveAudio(pointer);
   }
 }

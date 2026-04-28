@@ -15,12 +15,13 @@
 
 import { describe, beforeAll, it, expect } from '@ohos/hypium';
 import AbilityDelegatorRegistry from '@ohos.app.ability.abilityDelegatorRegistry';
+import { Component, Driver, ON } from '@kit.TestKit';
 import rive from 'libohos_rive.so';
 import {
   ChangedInput,
   RiveAnimationViewBuilder,
   Bounds,
-  applySceneParams,
+  RiveAnimationView,
 } from '../../../main/ets/runtime/RiveAnimationView';
 import {
   ResourceTypeFactory,
@@ -38,8 +39,51 @@ import { FileAsset, ImageAsset, FontAsset, AudioAsset } from '../../../main/ets/
 import { FallbackAssetLoader } from '../../../main/ets/runtime/core/FileAssetLoader';
 import { File as RiveFile } from '../../../main/ets/runtime/core/File';
 
+const HOST_ANCHOR_ID = 'rive_host_anchor';
+const SET_RES_BTN_ID = 'btn_set_rive_resource';
+const SET_BYTES_BTN_ID = 'btn_set_rive_bytes';
+const SET_FILE_BTN_ID = 'btn_set_rive_file';
+const SET_FILE_INCOMPAT_BTN_ID = 'btn_set_rive_file_incompat';
+const STATUS_TEXT_ID = 'rive_status';
+
+const DRIVER = Driver.create();
+
 function ctx(): Context {
   return AbilityDelegatorRegistry.getAbilityDelegator().getAppContext();
+}
+
+async function findById(id: string, timeout: number = 8000): Promise<Component> {
+  const c = await DRIVER.waitForComponent(ON.id(id), timeout);
+  if (c === null) {
+    throw new Error(`Component not found by id: ${id}`);
+  }
+  return c;
+}
+
+async function clickById(id: string): Promise<void> {
+  const c = await findById(id);
+  await c.click();
+  await DRIVER.waitForIdle(300, 3000);
+}
+
+async function textOf(id: string): Promise<string> {
+  const c = await findById(id);
+  return c.getText();
+}
+
+async function waitForText(id: string, expected: string, timeout: number = 6000): Promise<void> {
+  const deadline = Date.now() + timeout;
+  let last = '';
+  while (Date.now() <= deadline) {
+    try {
+      last = await textOf(id);
+      if (last === expected) {
+        return;
+      }
+    } catch (_) {}
+    await DRIVER.waitForIdle(150, 1000);
+  }
+  throw new Error(`Text mismatch on ${id}: expected "${expected}", last "${last}"`);
 }
 
 export default function RiveAnimationViewTest() {
@@ -892,322 +936,6 @@ export default function RiveAnimationViewTest() {
       expect(stateMachineName ?? null).assertNull();
     });
 
-    // ── applySceneParams: alignment branch ───────────────────────────────
-
-    it('applySceneParams_alignment_topLeft_updatesAlignmentAndIndex', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, Alignment.TOP_LEFT, undefined, undefined, true, undefined, undefined, undefined, undefined);
-      expect(attrs.alignment).assertEqual(Alignment.TOP_LEFT);
-      expect(attrs.alignmentIndex).assertEqual(0);
-    });
-
-    it('applySceneParams_alignment_bottomRight_updatesAlignmentAndIndex', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, Alignment.BOTTOM_RIGHT, undefined, undefined, true, undefined, undefined, undefined, undefined);
-      expect(attrs.alignment).assertEqual(Alignment.BOTTOM_RIGHT);
-      expect(attrs.alignmentIndex).assertEqual(Alignment.BOTTOM_RIGHT.valueOf());
-    });
-
-    it('applySceneParams_alignment_centerLeft_updatesIndex', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, Alignment.CENTER_LEFT, undefined, undefined, true, undefined, undefined, undefined, undefined);
-      expect(attrs.alignment).assertEqual(Alignment.CENTER_LEFT);
-      expect(attrs.alignmentIndex).assertEqual(Alignment.CENTER_LEFT.valueOf());
-    });
-
-    it('applySceneParams_alignment_undefined_keepsDefault', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, undefined, undefined, undefined, true, undefined, undefined, undefined, undefined);
-      expect(attrs.alignment).assertEqual(Alignment.CENTER);
-      expect(attrs.alignmentIndex).assertEqual(Alignment.CENTER.valueOf());
-    });
-
-    it('applySceneParams_alignment_topCenter_updatesIndex', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, Alignment.TOP_CENTER, undefined, undefined, true, undefined, undefined, undefined, undefined);
-      expect(attrs.alignment).assertEqual(Alignment.TOP_CENTER);
-      expect(attrs.alignmentIndex).assertEqual(Alignment.TOP_CENTER.valueOf());
-    });
-
-    it('applySceneParams_alignment_topRight_updatesIndex', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, Alignment.TOP_RIGHT, undefined, undefined, true, undefined, undefined, undefined, undefined);
-      expect(attrs.alignment).assertEqual(Alignment.TOP_RIGHT);
-      expect(attrs.alignmentIndex).assertEqual(Alignment.TOP_RIGHT.valueOf());
-    });
-
-    it('applySceneParams_alignment_bottomLeft_updatesIndex', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, Alignment.BOTTOM_LEFT, undefined, undefined, true, undefined, undefined, undefined, undefined);
-      expect(attrs.alignment).assertEqual(Alignment.BOTTOM_LEFT);
-      expect(attrs.alignmentIndex).assertEqual(Alignment.BOTTOM_LEFT.valueOf());
-    });
-
-    it('applySceneParams_alignment_bottomCenter_updatesIndex', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, Alignment.BOTTOM_CENTER, undefined, undefined, true, undefined, undefined, undefined, undefined);
-      expect(attrs.alignment).assertEqual(Alignment.BOTTOM_CENTER);
-      expect(attrs.alignmentIndex).assertEqual(Alignment.BOTTOM_CENTER.valueOf());
-    });
-
-    it('applySceneParams_alignment_centerRight_updatesIndex', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, Alignment.CENTER_RIGHT, undefined, undefined, true, undefined, undefined, undefined, undefined);
-      expect(attrs.alignment).assertEqual(Alignment.CENTER_RIGHT);
-      expect(attrs.alignmentIndex).assertEqual(Alignment.CENTER_RIGHT.valueOf());
-    });
-
-    // ── applySceneParams: fit branch ──────────────────────────────────────
-
-    it('applySceneParams_fit_fill_updatesFitAndIndex', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, undefined, Fit.FILL, undefined, true, undefined, undefined, undefined, undefined);
-      expect(attrs.fit).assertEqual(Fit.FILL);
-      expect(attrs.fitIndex).assertEqual(Fit.FILL.valueOf());
-    });
-
-    it('applySceneParams_fit_cover_updatesFitAndIndex', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, undefined, Fit.COVER, undefined, true, undefined, undefined, undefined, undefined);
-      expect(attrs.fit).assertEqual(Fit.COVER);
-      expect(attrs.fitIndex).assertEqual(Fit.COVER.valueOf());
-    });
-
-    it('applySceneParams_fit_none_indexIsZero', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, undefined, Fit.NONE, undefined, true, undefined, undefined, undefined, undefined);
-      expect(attrs.fit).assertEqual(Fit.NONE);
-      expect(attrs.fitIndex).assertEqual(0);
-    });
-
-    it('applySceneParams_fit_fitWidth_updatesIndex', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, undefined, Fit.FIT_WIDTH, undefined, true, undefined, undefined, undefined, undefined);
-      expect(attrs.fit).assertEqual(Fit.FIT_WIDTH);
-      expect(attrs.fitIndex).assertEqual(Fit.FIT_WIDTH.valueOf());
-    });
-
-    it('applySceneParams_fit_fitHeight_updatesIndex', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, undefined, Fit.FIT_HEIGHT, undefined, true, undefined, undefined, undefined, undefined);
-      expect(attrs.fit).assertEqual(Fit.FIT_HEIGHT);
-      expect(attrs.fitIndex).assertEqual(Fit.FIT_HEIGHT.valueOf());
-    });
-
-    it('applySceneParams_fit_scaleDown_updatesIndex', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, undefined, Fit.SCALE_DOWN, undefined, true, undefined, undefined, undefined, undefined);
-      expect(attrs.fit).assertEqual(Fit.SCALE_DOWN);
-      expect(attrs.fitIndex).assertEqual(Fit.SCALE_DOWN.valueOf());
-    });
-
-    it('applySceneParams_fit_undefined_keepsDefault', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, undefined, undefined, undefined, true, undefined, undefined, undefined, undefined);
-      expect(attrs.fit).assertEqual(Fit.CONTAIN);
-      expect(attrs.fitIndex).assertEqual(Fit.CONTAIN.valueOf());
-    });
-
-    // ── applySceneParams: loop branch ─────────────────────────────────────
-
-    it('applySceneParams_loop_loop_updatesLoopAndIndex', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, undefined, undefined, Loop.LOOP, true, undefined, undefined, undefined, undefined);
-      expect(attrs.loop).assertEqual(Loop.LOOP);
-      expect(attrs.loopIndex).assertEqual(Loop.LOOP.valueOf());
-    });
-
-    it('applySceneParams_loop_pingpong_updatesIndex', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, undefined, undefined, Loop.PINGPONG, true, undefined, undefined, undefined, undefined);
-      expect(attrs.loop).assertEqual(Loop.PINGPONG);
-      expect(attrs.loopIndex).assertEqual(Loop.PINGPONG.valueOf());
-    });
-
-    it('applySceneParams_loop_oneshot_indexIsZero', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, undefined, undefined, Loop.ONESHOT, true, undefined, undefined, undefined, undefined);
-      expect(attrs.loop).assertEqual(Loop.ONESHOT);
-      expect(attrs.loopIndex).assertEqual(0);
-    });
-
-    it('applySceneParams_loop_undefined_keepsDefault', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, undefined, undefined, undefined, true, undefined, undefined, undefined, undefined);
-      expect(attrs.loop).assertEqual(Loop.AUTO);
-      expect(attrs.loopIndex).assertEqual(Loop.AUTO.valueOf());
-    });
-
-    // ── applySceneParams: autoplay ────────────────────────────────────────
-
-    it('applySceneParams_autoplay_true_stored', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, undefined, undefined, undefined, true, undefined, undefined, undefined, undefined);
-      expect(attrs.autoplay).assertTrue();
-    });
-
-    it('applySceneParams_autoplay_false_stored', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined);
-      expect(attrs.autoplay).assertFalse();
-    });
-
-    it('applySceneParams_autoplay_trueAfterFalse', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, undefined, undefined, undefined, false, undefined, undefined, undefined, undefined);
-      applySceneParams(attrs, undefined, undefined, undefined, true, undefined, undefined, undefined, undefined);
-      expect(attrs.autoplay).assertTrue();
-    });
-
-    // ── applySceneParams: autoBind null-coalescing ────────────────────────
-
-    it('applySceneParams_autoBind_undefined_defaultsFalse', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, undefined, undefined, undefined, true, undefined, undefined, undefined, undefined);
-      expect(attrs.autoBind).assertFalse();
-    });
-
-    it('applySceneParams_autoBind_true_stored', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, undefined, undefined, undefined, true, true, undefined, undefined, undefined);
-      expect(attrs.autoBind).assertTrue();
-    });
-
-    it('applySceneParams_autoBind_false_stored', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, undefined, undefined, undefined, true, false, undefined, undefined, undefined);
-      expect(attrs.autoBind).assertFalse();
-    });
-
-    // ── applySceneParams: artboardName null-coalescing ────────────────────
-
-    it('applySceneParams_artboardName_undefined_storesNull', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, undefined, undefined, undefined, true, undefined, undefined, undefined, undefined);
-      expect(attrs.artboardName).assertNull();
-    });
-
-    it('applySceneParams_artboardName_provided_stored', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, undefined, undefined, undefined, true, undefined, 'MainBoard', undefined, undefined);
-      expect(attrs.artboardName).assertEqual('MainBoard');
-    });
-
-    it('applySceneParams_artboardName_empty_stored', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, undefined, undefined, undefined, true, undefined, '', undefined, undefined);
-      expect(attrs.artboardName).assertEqual('');
-    });
-
-    it('applySceneParams_artboardName_overwrite_updatesValue', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, undefined, undefined, undefined, true, undefined, 'First', undefined, undefined);
-      applySceneParams(attrs, undefined, undefined, undefined, true, undefined, 'Second', undefined, undefined);
-      expect(attrs.artboardName).assertEqual('Second');
-    });
-
-    // ── applySceneParams: animationName null-coalescing ───────────────────
-
-    it('applySceneParams_animationName_undefined_storesNull', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, undefined, undefined, undefined, true, undefined, undefined, undefined, undefined);
-      expect(attrs.animationName).assertNull();
-    });
-
-    it('applySceneParams_animationName_provided_stored', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, undefined, undefined, undefined, true, undefined, undefined, 'Idle', undefined);
-      expect(attrs.animationName).assertEqual('Idle');
-    });
-
-    it('applySceneParams_animationName_empty_stored', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, undefined, undefined, undefined, true, undefined, undefined, '', undefined);
-      expect(attrs.animationName).assertEqual('');
-    });
-
-    // ── applySceneParams: stateMachineName null-coalescing ────────────────
-
-    it('applySceneParams_stateMachineName_undefined_storesNull', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, undefined, undefined, undefined, true, undefined, undefined, undefined, undefined);
-      expect(attrs.stateMachineName).assertNull();
-    });
-
-    it('applySceneParams_stateMachineName_provided_stored', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, undefined, undefined, undefined, true, undefined, undefined, undefined, 'Drive');
-      expect(attrs.stateMachineName).assertEqual('Drive');
-    });
-
-    it('applySceneParams_stateMachineName_empty_stored', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, undefined, undefined, undefined, true, undefined, undefined, undefined, '');
-      expect(attrs.stateMachineName).assertEqual('');
-    });
-
-    // ── applySceneParams: full sequences ──────────────────────────────────
-
-    it('applySceneParams_allParams_provided_fullSequence', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(
-        attrs,
-        Alignment.TOP_LEFT, Fit.FILL, Loop.LOOP,
-        false, true,
-        'Board', 'Run', 'SM'
-      );
-      expect(attrs.alignment).assertEqual(Alignment.TOP_LEFT);
-      expect(attrs.alignmentIndex).assertEqual(0);
-      expect(attrs.fit).assertEqual(Fit.FILL);
-      expect(attrs.fitIndex).assertEqual(Fit.FILL.valueOf());
-      expect(attrs.loop).assertEqual(Loop.LOOP);
-      expect(attrs.loopIndex).assertEqual(Loop.LOOP.valueOf());
-      expect(attrs.autoplay).assertFalse();
-      expect(attrs.autoBind).assertTrue();
-      expect(attrs.artboardName).assertEqual('Board');
-      expect(attrs.animationName).assertEqual('Run');
-      expect(attrs.stateMachineName).assertEqual('SM');
-    });
-
-    it('applySceneParams_noOptionals_allDefaults', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, undefined, undefined, undefined, true, undefined, undefined, undefined, undefined);
-      expect(attrs.alignment).assertEqual(Alignment.CENTER);
-      expect(attrs.fit).assertEqual(Fit.CONTAIN);
-      expect(attrs.loop).assertEqual(Loop.AUTO);
-      expect(attrs.autoplay).assertTrue();
-      expect(attrs.autoBind).assertFalse();
-      expect(attrs.artboardName).assertNull();
-      expect(attrs.animationName).assertNull();
-      expect(attrs.stateMachineName).assertNull();
-    });
-
-    it('applySceneParams_secondCall_overwritesFirstCall', 0, () => {
-      const attrs = RendererAttributes.default();
-      applySceneParams(attrs, Alignment.TOP_LEFT, Fit.FILL, Loop.LOOP, false, true, 'A', 'Anim1', 'SM1');
-      applySceneParams(attrs, Alignment.BOTTOM_RIGHT, Fit.COVER, Loop.PINGPONG, true, false, 'B', 'Anim2', 'SM2');
-      expect(attrs.alignment).assertEqual(Alignment.BOTTOM_RIGHT);
-      expect(attrs.fit).assertEqual(Fit.COVER);
-      expect(attrs.loop).assertEqual(Loop.PINGPONG);
-      expect(attrs.autoplay).assertTrue();
-      expect(attrs.autoBind).assertFalse();
-      expect(attrs.artboardName).assertEqual('B');
-      expect(attrs.animationName).assertEqual('Anim2');
-      expect(attrs.stateMachineName).assertEqual('SM2');
-    });
-
-    it('applySceneParams_independentAttrs_mutuallyIsolated', 0, () => {
-      const attrs1 = RendererAttributes.default();
-      const attrs2 = RendererAttributes.default();
-      applySceneParams(attrs1, Alignment.TOP_LEFT, undefined, undefined, true, undefined, 'A', undefined, undefined);
-      applySceneParams(attrs2, Alignment.BOTTOM_RIGHT, undefined, undefined, false, true, 'B', undefined, undefined);
-      expect(attrs1.alignment).assertEqual(Alignment.TOP_LEFT);
-      expect(attrs1.artboardName).assertEqual('A');
-      expect(attrs1.autoplay).assertTrue();
-      expect(attrs2.alignment).assertEqual(Alignment.BOTTOM_RIGHT);
-      expect(attrs2.artboardName).assertEqual('B');
-      expect(attrs2.autoplay).assertFalse();
-    });
 
     // ── setRiveFile: renderer type compatibility guard ────────────────────
 
@@ -1298,6 +1026,73 @@ export default function RiveAnimationViewTest() {
       expect(attrs.resource instanceof ResourceRiveFile).assertTrue();
       expect((attrs.resource as ResourceRiveFile).value === file).assertTrue();
     });
+
+    // ════════════════════════════════════════════════════════════════════════
+    // Real production-path coverage for setRiveResource / setRiveBytes /
+    // setRiveFile via the testability host page (mounts RiveAnimationView,
+    // captures the @Component instance, exposes scenario buttons by id).
+    // ════════════════════════════════════════════════════════════════════════
+
+    it('Host_PageReady_anchorVisible', 0, async (done: Function) => {
+      await DRIVER.waitForIdle(800, 10000);
+      await findById(HOST_ANCHOR_ID, 10000);
+      done();
+    });
+
+    it('Host_RiveAnimationView_aboutToAppear_capturesInstance', 0, async (done: Function) => {
+      // The host page's onReady writes into a @State that echoes "view_ready"
+      // through a Text node. Prove the @Component instance has been captured
+      // before any setRive* scenario runs.
+      await waitForText('rive_view_ready', 'view_ready', 12000);
+      done();
+    });
+
+    it('setRiveResource_realInvocation_drivesProductionPath', 0, async (done: Function) => {
+      await waitForText('rive_view_ready', 'view_ready', 12000);
+      await clickById(SET_RES_BTN_ID);
+      // The button onClick runs setRiveResource end-to-end on the captured view.
+      await waitForText(STATUS_TEXT_ID, 'setRiveResource_ok', 6000);
+      // Side-effect echoes — these go through view.getAutoplay/Fit/Alignment getters
+      // which read the controller / rendererAttributes the production code mutated.
+      const autoplay = await textOf('rive_echo_autoplay');
+      const fit = await textOf('rive_echo_fit');
+      const align = await textOf('rive_echo_alignment');
+      expect(autoplay !== 'autoplay=none').assertTrue();
+      expect(fit !== 'fit=none').assertTrue();
+      expect(align !== 'alignment=none').assertTrue();
+      done();
+    });
+
+    it('setRiveBytes_realInvocation_drivesProductionPath', 0, async (done: Function) => {
+      await waitForText('rive_view_ready', 'view_ready', 12000);
+      await clickById(SET_BYTES_BTN_ID);
+      await waitForText(STATUS_TEXT_ID, 'setRiveBytes_ok', 6000);
+      done();
+    });
+
+    it('setRiveFile_realInvocation_drivesProductionPath', 0, async (done: Function) => {
+      await waitForText('rive_view_ready', 'view_ready', 12000);
+      await clickById(SET_FILE_BTN_ID);
+      await waitForText(STATUS_TEXT_ID, 'setRiveFile_ok', 6000);
+      done();
+    });
+
+    it('setRiveFile_rendererTypeMismatch_throwsAtRuntime', 0, async (done: Function) => {
+      await waitForText('rive_view_ready', 'view_ready', 12000);
+      await clickById(SET_FILE_INCOMPAT_BTN_ID);
+      // The setRiveFile entry guard throws when file.rendererType !== view.rendererType.
+      await waitForText(STATUS_TEXT_ID, 'setRiveFileIncompat_threw', 6000);
+      done();
+    });
+
+    // NOTE: Renderer.transform (line 308) and Renderer.cppTransform (line 114)
+    // are invoked by the rive native lib only during an active render frame —
+    // calling Napi_Renderer_cppTransform outside cppDoFrame SIGSEGVs in
+    // libohos_rive.so. They cannot be driven deterministically from an
+    // Instrument Test, so records 824 / 873 stay uncovered (logged via the
+    // CSV `note` column). The TestRenderer-based unit tests above cover the
+    // ets-side semantics of `transform`/`scale`/`translate` parameter routing
+    // via an override that captures arguments without entering native code.
 
   });
 }
