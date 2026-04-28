@@ -36,8 +36,10 @@ class MockFileForRA {
 }
 
 /**
- * 测试用具体子类：重写 transform 捕获参数，cppDelete 空实现，
- * 使所有测试完全绕开 native 调用。
+ * 测试用具体子类：重写 transform 捕获参数。
+ * 仅用于断言入参传递正确，不进入 native。Renderer.transform / cppTransform
+ * 的真实生产代码路径覆盖由 RiveAnimationView.test.ets 中的 host page
+ * 场景按钮（btn_renderer_transform）触发——那里有合法的 UIContext。
  */
 class TestRenderer extends Renderer {
   public capturedArgs: number[] = [];
@@ -646,5 +648,6 @@ export default function RendererAttributesTest() {
       expect(r.capturedArgs[4]).assertEqual(5);
       expect(r.capturedArgs[5]).assertEqual(4);
     });
+
   });
 }

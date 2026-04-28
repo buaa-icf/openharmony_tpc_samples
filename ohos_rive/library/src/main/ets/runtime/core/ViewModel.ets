@@ -55,11 +55,11 @@ export class ViewModel extends NativeObject {
   /** The available properties of the ViewModel. */
   get properties(): PropertyData[] {
     try {
-      const nativeProperties = rive.Napi_ViewModel_getProperties(this.cppPointer);
       interface NativeProperty {
         type: number;
         name: string;
       }
+      const nativeProperties: NativeProperty[] = rive.Napi_ViewModel_getProperties(this.cppPointer);
       return nativeProperties.map((prop: NativeProperty) => {
         return new PropertyData(prop.type, prop.name);
       });
@@ -86,7 +86,7 @@ export class ViewModel extends NativeObject {
    */
   createBlankInstance(): ViewModelInstance {
     try {
-      const instancePointer = rive.Napi_ViewModel_createBlankInstance(this.cppPointer);
+      const instancePointer: BigInt = rive.Napi_ViewModel_createBlankInstance(this.cppPointer);
       if (instancePointer === NativeObject.NULL_POINTER) {
         throw new ViewModelException('Could not create a blank ViewModel instance');
       }
@@ -114,7 +114,7 @@ export class ViewModel extends NativeObject {
   createDefaultInstance(): ViewModelInstance {
     try {
       console.log(`[ohos_rive_ui] ViewModel.ets: createDefaultInstance C++ Napi_ViewModel_createDefaultInstance`);
-      const  instancePointer = rive.Napi_ViewModel_createDefaultInstance(this.cppPointer)
+      const instancePointer: BigInt = rive.Napi_ViewModel_createDefaultInstance(this.cppPointer)
       if (instancePointer === NativeObject.NULL_POINTER) {
         throw new ViewModelException('Could not create default ViewModel instance');
       }
@@ -144,7 +144,7 @@ export class ViewModel extends NativeObject {
   createInstanceFromIndex(index: number): ViewModelInstance {
     try {
       console.log(`[ohos_rive_ui] ViewModel.ets: createInstanceFromIndex C++ Napi_ViewModel_createInstanceFromIndex`);
-      const instancePointer = rive.Napi_ViewModel_createInstanceFromIndex(this.cppPointer, index);
+      const instancePointer: BigInt = rive.Napi_ViewModel_createInstanceFromIndex(this.cppPointer, index);
       if (instancePointer === NativeObject.NULL_POINTER) {
         throw new ViewModelException(`ViewModel instance not found: ${index}`);
       }
@@ -175,7 +175,7 @@ export class ViewModel extends NativeObject {
   createInstanceFromName(name: string): ViewModelInstance {
     try {
       console.log(`[ohos_rive_ui] ViewModel.ets: createInstanceFromName C++ Napi_ViewModel_createInstanceFromName`);
-      const instancePointer = rive.Napi_ViewModel_createInstanceFromName(this.cppPointer, name);
+      const instancePointer: BigInt = rive.Napi_ViewModel_createInstanceFromName(this.cppPointer, name);
       if (instancePointer === NativeObject.NULL_POINTER) {
         throw new ViewModelException(`ViewModel instance not found: ${name}`);
       }

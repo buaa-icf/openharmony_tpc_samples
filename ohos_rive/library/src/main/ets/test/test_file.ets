@@ -47,16 +47,16 @@ export function test_ArtboardByName_withValidName(filePtr: BigInt) {
     }
 
     // 首先获取artboard数量
-    const count = rive.Napi_File_cppArtboardCount(filePtr);
+    const count: number = rive.Napi_File_cppArtboardCount(filePtr);
     console.info(`${testCase}: Artboard count = ${count}`);
 
     if (count > 0) {
       // 获取第一个artboard的名称
-      const firstName = rive.Napi_File_cppArtboardNameByIndex(filePtr, 0);
+      const firstName: string = rive.Napi_File_cppArtboardNameByIndex(filePtr, 0);
       console.info(`${testCase}: First artboard name = ${firstName}`);
 
       // 通过名称获取artboard
-      const artboardPtr = rive.Napi_File_cppArtboardByName(filePtr, firstName);
+      const artboardPtr: BigInt = rive.Napi_File_cppArtboardByName(filePtr, firstName);
       console.info(`${testCase}: Artboard pointer = ${artboardPtr}`);
 
       // 清理资源
@@ -84,7 +84,7 @@ export function test_ArtboardCount_ValidFile(filePtr: BigInt) {
       return;
     }
 
-    const count = rive.Napi_File_cppArtboardCount(filePtr);
+    const count: number = rive.Napi_File_cppArtboardCount(filePtr);
     console.info(`${testCase}: Artboard count = ${count}`);
 
     console.info(`${testCase}: PASSED`);
@@ -102,11 +102,11 @@ export function test_Artboard_ByIndexValid(filePtr: BigInt) {
       return;
     }
 
-    const count = rive.Napi_File_cppArtboardCount(filePtr);
+    const count: number = rive.Napi_File_cppArtboardCount(filePtr);
     console.info(`${testCase}: Artboard count = ${count}`);
 
     if (count > 0) {
-      const artboardPtr = rive.Napi_File_cppArtboardByIndex(filePtr, 0);
+      const artboardPtr: BigInt = rive.Napi_File_cppArtboardByIndex(filePtr, 0);
       console.info(`${testCase}: Artboard pointer = ${artboardPtr}`);
 
       // 清理资源
@@ -132,9 +132,9 @@ export function test_ArtboardName_ValidIndex(filePtr: BigInt) {
       return;
     }
 
-    const count = rive.Napi_File_cppArtboardCount(filePtr);
+    const count: number = rive.Napi_File_cppArtboardCount(filePtr);
     if (count > 0) {
-      const name = rive.Napi_File_cppArtboardNameByIndex(filePtr, 0);
+      const name: string = rive.Napi_File_cppArtboardNameByIndex(filePtr, 0);
       console.info(`${testCase}: Artboard name = ${name}`);
 
       console.info(`${testCase}: PASSED`);
@@ -155,12 +155,12 @@ export function test_CreateDefault_BindableArtboard(filePtr: BigInt) {
       return;
     }
 
-    const bindableArtboardPtr = rive.Napi_File_cppCreateDefaultBindableArtboard(filePtr);
+    const bindableArtboardPtr: BigInt = rive.Napi_File_cppCreateDefaultBindableArtboard(filePtr);
     console.info(`${testCase}: Bindable artboard pointer = ${bindableArtboardPtr}`);
 
     if (bindableArtboardPtr !== 0n) {
       // 测试获取名称
-      const name = rive.Napi_BindableArtboard_cppName(bindableArtboardPtr);
+      const name: string = rive.Napi_BindableArtboard_cppName(bindableArtboardPtr);
       console.info(`${testCase}: Bindable artboard name = ${name}`);
 
       // 清理资源
@@ -182,15 +182,15 @@ export function test_CreateBindableArtboard_ByName(filePtr: BigInt) {
       return;
     }
 
-    const count = rive.Napi_File_cppArtboardCount(filePtr);
+    const count: number = rive.Napi_File_cppArtboardCount(filePtr);
     if (count > 0) {
-      const firstName = rive.Napi_File_cppArtboardNameByIndex(filePtr, 0);
-      const bindableArtboardPtr = rive.Napi_File_cppCreateBindableArtboardByName(filePtr, firstName);
+      const firstName: string = rive.Napi_File_cppArtboardNameByIndex(filePtr, 0);
+      const bindableArtboardPtr: BigInt = rive.Napi_File_cppCreateBindableArtboardByName(filePtr, firstName);
       console.info(`${testCase}: Bindable artboard pointer = ${bindableArtboardPtr}`);
 
       if (bindableArtboardPtr !== 0n) {
         // 测试获取名称
-        const name = rive.Napi_BindableArtboard_cppName(bindableArtboardPtr);
+        const name: string = rive.Napi_BindableArtboard_cppName(bindableArtboardPtr);
         console.info(`${testCase}: Bindable artboard name = ${name}`);
 
         // 清理资源
@@ -215,7 +215,7 @@ export function test_ViewModel_Count(filePtr: BigInt) {
       return;
     }
 
-    const count = rive.Napi_File_cppViewModelCount(filePtr);
+    const count: number = rive.Napi_File_cppViewModelCount(filePtr);
     console.info(`${testCase}: ViewModel count = ${count}`);
 
     console.info(`${testCase}: PASSED`);
@@ -233,9 +233,9 @@ export function test_ViewModel_ByIndex(filePtr: BigInt) {
       return;
     }
 
-    const count = rive.Napi_File_cppViewModelCount(filePtr);
+    const count: number = rive.Napi_File_cppViewModelCount(filePtr);
     if (count > 0) {
-      const viewModelPtr = rive.Napi_File_cppViewModelByIndex(filePtr, 0);
+      const viewModelPtr: BigInt = rive.Napi_File_cppViewModelByIndex(filePtr, 0);
       console.info(`${testCase}: ViewModel pointer = ${viewModelPtr}`);
 
       console.info(`${testCase}: PASSED`);
@@ -256,7 +256,7 @@ export function test_ViewModel_ByName(filePtr: BigInt) {
       return;
     }
 
-    const viewModelPtr = rive.Napi_File_cppViewModelByName(filePtr, "TestViewModel");
+    const viewModelPtr: BigInt = rive.Napi_File_cppViewModelByName(filePtr, "TestViewModel");
     console.info(`${testCase}: ViewModel pointer = ${viewModelPtr}`);
 
     console.info(`${testCase}: PASSED`);
