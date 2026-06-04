@@ -29,12 +29,26 @@ import { File as RiveFile } from '../../../../../main/ets/runtime/core/File';
 
 const HOST_TAG = 'RiveTestabilityHost';
 
+// The captured RiveAnimationView instance is shared between the onReady and
+// the button onClick closures (same JS realm), so the scenario buttons can
+// invoke setRive* on a valid view. IMPORTANT: ArkUI evaluates build() Text
+// template expressions in a SEPARATE realm where this reference reads back as
+// null — so we must NOT read `capturedRiveView?.getX()` directly inside a
+// Text(...). Instead each scenario onClick reads the getters (valid realm)
+// and writes the results into @State strings, which build() renders reliably.
+let capturedRiveView: RiveAnimationView | null = null;
+
 @Entry
 @Component
 struct Index {
   @State status: string = 'init';
   @State viewReady: boolean = false;
-  private capturedView: RiveAnimationView | null = null;
+  // Echo strings written by the scenario onClicks (valid realm) and rendered
+  // by build(). See note above for why we cannot read the view in a template.
+  @State echoAutoplay: string = 'autoplay=none';
+  @State echoFit: string = 'fit=none';
+  @State echoAlignment: string = 'alignment=none';
+  @State echoArtboard: string = 'artboard=none';
   private testRivBytes: ArrayBuffer | null = null;
   private testFile: RiveFile | null = null;
 
@@ -53,6 +67,15 @@ struct Index {
     } catch (e) {
       console.error(`${HOST_TAG}: aboutToAppear failed: ${e}`);
     }
+  }
+
+  // Read the view-state getters in this (valid) realm and store the results
+  // into @State so build() can render them. Called from each scenario onClick.
+  captureEchoes(): void {
+    this.echoAutoplay = `autoplay=${capturedRiveView?.getAutoplay() ?? 'none'}`;
+    this.echoFit = `fit=${capturedRiveView?.getFit() ?? 'none'}`;
+    this.echoAlignment = `alignment=${capturedRiveView?.getAlignment() ?? 'none'}`;
+    this.echoArtboard = `artboard=${capturedRiveView?.getArtboardName() ?? 'none'}`;
   }
 
   build() {
@@ -76,20 +99,21 @@ struct Index {
           .fontSize(12)
           .height(20)
 
-        // Echoed view-state fields after each setRive* call so the test can read them back.
-        Text(`autoplay=${this.capturedView?.getAutoplay() ?? 'none'}`)
+        // Echoed view-state fields, written by each setRive* onClick so the
+        // test can read them back (see realm note above).
+        Text(this.echoAutoplay)
           .id('rive_echo_autoplay')
           .fontSize(12)
           .height(20)
-        Text(`fit=${this.capturedView?.getFit() ?? 'none'}`)
+        Text(this.echoFit)
           .id('rive_echo_fit')
           .fontSize(12)
           .height(20)
-        Text(`alignment=${this.capturedView?.getAlignment() ?? 'none'}`)
+        Text(this.echoAlignment)
           .id('rive_echo_alignment')
           .fontSize(12)
           .height(20)
-        Text(`artboard=${this.capturedView?.getArtboardName() ?? 'none'}`)
+        Text(this.echoArtboard)
           .id('rive_echo_artboard')
           .fontSize(12)
           .height(20)
@@ -99,12 +123,13 @@ struct Index {
           .id('btn_set_rive_resource')
           .onClick(() => {
             try {
-              this.capturedView?.setRiveResource(
+              capturedRiveView?.setRiveResource(
                 '@rawfile/acqua_text.riv',
                 'Artboard', 'idle', 'sm',
                 false, true,
                 Fit.COVER, Alignment.TOP_LEFT, Loop.LOOP
               );
+              this.captureEchoes();
               this.status = 'setRiveResource_ok';
             } catch (e) {
               this.status = `setRiveResource_err:${e}`;
@@ -115,7 +140,7 @@ struct Index {
           .id('btn_set_rive_bytes')
           .onClick(() => {
             try {
-              this.capturedView?.setRiveBytes(
+              capturedRiveView?.setRiveBytes(
                 this.testRivBytes!,
                 'Artboard', 'idle', 'sm',
                 true, false,
@@ -131,7 +156,7 @@ struct Index {
           .id('btn_set_rive_file')
           .onClick(() => {
             try {
-              this.capturedView?.setRiveFile(
+              capturedRiveView?.setRiveFile(
                 this.testFile!,
                 'Artboard', 'idle', 'sm',
                 false, true,
@@ -149,7 +174,7 @@ struct Index {
           .onClick(() => {
             try {
               const canvasFile = new RiveFile(this.testRivBytes!, RendererType.Canvas);
-              this.capturedView?.setRiveFile(canvasFile);
+              capturedRiveView?.setRiveFile(canvasFile);
               this.status = 'setRiveFileIncompat_no_throw';
             } catch (e) {
               this.status = 'setRiveFileIncompat_threw';
@@ -171,7 +196,7 @@ struct Index {
         RiveAnimationView({
           riveFit: 'contain',
           onReady: (view: RiveAnimationView) => {
-            this.capturedView = view;
+            capturedRiveView = view;
             this.viewReady = true;
           }
         })
